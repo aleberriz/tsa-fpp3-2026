@@ -1,87 +1,125 @@
 # =============================================================================
-# Session 01 — Course intro, what forecasting is, local install day
-# Time Series Analysis · Fall 2026 · IE University
+# Session 01 - Course intro, what forecasting is, local install day
+# Time Series Analysis - Fall 2026 - IE University
 #
-# Live-demo script. Companion to 01_Introduction_UseCase.html.
+# This script is the companion to 01_Introduction_UseCase.html. Open that
+# notebook alongside it: the notebook explains the ideas, this script is the
+# code you run.
 #
-# Runs top to bottom and needs NO external data files: every dataset used here
-# ships inside the fpp3 packages. That is deliberate — on install day the last
-# thing you want is a file path problem.
+# HOW TO RUN IT
+#   1. Open tsa.Rproj in RStudio first (File > Open Project). That sets the
+#      working directory to the project root, so nothing has to be re-pathed.
+#   2. Run it one section at a time: select a section and press Ctrl+Enter
+#      (Cmd+Enter on macOS). Read the output before moving on.
 #
-# Open tsa.Rproj in RStudio first, so the working directory is the project root.
-# Run section by section (Ctrl/Cmd + Enter), not all at once.
+# You do not need any data files. Every dataset here comes from the fpp3
+# packages, so there is no file path that can go wrong on your machine.
 # =============================================================================
 
 
 # -----------------------------------------------------------------------------
-# 0. INSTALL-DAY ENVIRONMENT CHECK
+# 0. CHECK YOUR SETUP
 #
-#    Run this FIRST, before library(fpp3). It never fails on a missing package,
-#    it reports one — so a student with a broken install gets a readable answer
-#    instead of a wall of red text. Walk the room on the output of this section.
+# Run this section FIRST, before anything else. It only looks at your machine
+# and reports back - it will not fail or install anything. If a package shows
+# as MISSING, install it and run this section again.
 # -----------------------------------------------------------------------------
 
 cat("R version :", R.version.string, "\n")
 cat("Platform  :", R.version$platform, "\n")
 cat("Library   :", .libPaths()[1], "\n\n")
 
-needed <- c("fpp3", "tsibble", "tsibbledata", "feasts", "fable",
-            "dplyr", "ggplot2", "lubridate", "tidyr")
+# The fpp3 toolkit. One install.packages("fpp3") should provide all of these.
+core <- c("fpp3", "tsibble", "tsibbledata", "feasts", "fable",
+          "dplyr", "ggplot2", "lubridate", "tidyr")
 
-have <- needed %in% rownames(installed.packages())
+# urca is a separate install. install.packages("fpp3") does NOT include it,
+# because fpp3 only "suggests" it. Section 2 needs it: ARIMA() runs a
+# statistical test (KPSS) that lives in urca. Without it, ARIMA() cannot run.
+extra <- c("urca")
 
-check <- data.frame(
-  package   = needed,
-  status    = ifelse(have, "OK", "MISSING"),
-  version   = vapply(needed, function(p) {
-    tryCatch(as.character(utils::packageVersion(p)),
-             error = function(e) "-")
-  }, character(1)),
-  row.names = NULL
-)
-print(check, right = FALSE)
-
-missing <- needed[!have]
-if (length(missing) > 0) {
-  cat("\n>>> MISSING:", paste(missing, collapse = ", "), "\n")
-  cat(">>> Fix with:  install.packages(\"fpp3\")\n")
-  cat(">>> Then restart R (Session > Restart R) and re-run this section.\n")
-  cat(">>> Full instructions: setup/SETUP.md\n")
-} else {
-  cat("\n>>> All packages present. Continue to section 1.\n")
+report_packages <- function(pkgs, label) {
+  have <- pkgs %in% rownames(installed.packages())
+  out <- data.frame(
+    package = pkgs,
+    status  = ifelse(have, "OK", "MISSING"),
+    version = vapply(pkgs, function(p) {
+      tryCatch(as.character(utils::packageVersion(p)),
+               error = function(e) "-")
+    }, character(1)),
+    row.names = NULL
+  )
+  cat(label, "\n")
+  print(out, right = FALSE)
+  cat("\n")
+  pkgs[!have]
 }
 
-# R 4.2 or newer is expected. Older versions will fight you over the |> pipe.
+missing_core  <- report_packages(core,  "Core toolkit:")
+missing_extra <- report_packages(extra, "Also needed for section 2:")
+
+if (length(missing_core) > 0) {
+  cat(">>> MISSING from the core toolkit:", paste(missing_core, collapse = ", "), "\n")
+  cat(">>> Run:  install.packages(\"fpp3\")\n")
+  cat(">>> Then restart R (Session > Restart R) and re-run this section.\n")
+}
+if (length(missing_extra) > 0) {
+  cat(">>> MISSING:", paste(missing_extra, collapse = ", "), "\n")
+  cat(">>> Run:  install.packages(\"urca\")\n")
+}
+if (length(missing_core) == 0 && length(missing_extra) == 0) {
+  cat(">>> Everything is installed. Continue to section 1.\n")
+}
+
+# Full install instructions, per operating system: setup/SETUP.md
+
+# This course assumes R 4.2 or newer.
 if (getRversion() < "4.2.0") {
-  warning("R is older than 4.2. Please upgrade — see setup/SETUP.md")
+  warning("Your R is older than 4.2. Please upgrade - see setup/SETUP.md")
 }
 
 
 # -----------------------------------------------------------------------------
 # 1. WHAT IS A TIME SERIES?
-#
-#    fpp3 is a meta-package: one library() call loads the tidyverse pieces we
-#    need plus the tidyverts stack (tsibble, feasts, fable). Expect a wall of
-#    attach messages and a conflicts table — that is normal, not an error.
 # -----------------------------------------------------------------------------
 
+# fpp3 is a "meta-package": this one line loads several packages at once -
+# the data-handling tools (dplyr, tidyr), the plotting tool (ggplot2), and the
+# time series tools (tsibble, feasts, fable).
+#
+# You will see a list of attached packages and a "Conflicts" table. That is
+# normal output, not an error. A conflict just means two packages define a
+# function with the same name, and R is telling you which one wins.
 library(fpp3)
 
-# global_economy is a tsibble: a data frame that knows which column is time
-# (the index) and which identifies each series (the key). Read the header:
-#   "A tsibble: 15,150 x 9 [1Y]"  -> 1-year interval
-#   "Key: Country [263]"          -> 263 separate series in one table
+# global_economy is a TSIBBLE - a table that knows which of its columns
+# represents time. Read the header carefully:
+#
+#   "A tsibble: 15,150 x 9 [1Y]"  -> 15,150 rows, 9 columns, one observation
+#                                    per YEAR. [1Y] is the interval.
+#   "Key: Country [263]"          -> the rows are 263 separate time series,
+#                                    one per country, stacked in one table.
+#
+# The time column is called the INDEX. The column(s) identifying each series
+# are the KEY. Every tsibble has both, and that is what separates it from an
+# ordinary data frame.
 global_economy
 
-# One country = one time series. Start with a single series before 263 of them.
+# 263 series in one object is a lot. Start with one country.
 spain_economy <-
   global_economy %>%
   filter(Country == "Spain")
 
+# Now the header reads "Key: Country [1]" - a single series, 58 yearly
+# observations.
 spain_economy
 
-# The first plot of the course. autoplot() reads the tsibble's index, so there
-# is no x = Year to specify — that is the payoff of a tsibble over a data frame.
+# Your first plot. Notice what is NOT here: we never say x = Year. autoplot()
+# reads the index straight off the tsibble and puts time on the x-axis for us.
+# That is the practical payoff of a tsibble over a data frame.
+#
+# scale_x_continuous() just controls the axis ticks: a labelled line every
+# 10 years, a faint one every 5.
 major_ticks_seq <- seq(0, max(spain_economy$Year), 10)
 minor_ticks_seq <- seq(0, max(spain_economy$Year), 5)
 
@@ -93,30 +131,33 @@ spain_economy %>%
        y     = "People",
        x     = "Year")
 
-# Talking point: what makes this a time series rather than a sample?
-# The observations are ordered, and adjacent ones are correlated. That single
-# fact is why the statistics you already know does not transfer directly, and
-# it is the subject of Session 2.
+# Something to think about before Session 2:
+# What makes this a time series rather than just a sample of 58 numbers?
+# The observations are ordered in time, and neighbouring ones are related to
+# each other. Most of the statistics you have already learned assumes your
+# observations are independent. Here they are not. That single fact is why
+# time series needs its own methods - and it is where Session 2 starts.
 
 
 # -----------------------------------------------------------------------------
-# 2. THE USE CASE — AUTOMATED FORECASTS FOR MANY SERIES AT ONCE
+# 2. WHY BOTHER? FORECASTING MANY SERIES AT ONCE
 #
-#    The point of this section is scale, not modelling. Students are not
-#    expected to understand ETS or ARIMA today; they should see that one
-#    pipeline forecasts hundreds of series, and that we will spend the term
-#    learning what those two lines actually do.
+# This section is a preview, not something you are expected to understand
+# today. The goal is to see WHERE the course is going. You will spend the term
+# learning what the two model lines below actually do.
 # -----------------------------------------------------------------------------
 
 # How many countries are in the dataset?
-# as_tibble() drops the time index so that distinct() behaves like normal dplyr.
+# as_tibble() temporarily drops the time index so that distinct() behaves like
+# ordinary dplyr. A tsibble protects its index, which would otherwise keep
+# every row unique.
 global_economy %>%
   as_tibble() %>%
   select(Country) %>%
   distinct() %>%
   nrow()
 
-# Population in millions, nothing else.
+# Population in millions, and nothing else.
 populations <-
   global_economy %>%
   mutate(Pop = Population / 1e6) %>%
@@ -124,119 +165,141 @@ populations <-
 
 populations
 
-# ---- LIVE DEMO: five countries, fits in a couple of seconds ----
-#
-# Fitting two auto-selected models to all 263 countries takes minutes and some
-# series fail (missing or zero-length data), which produces alarming warnings
-# on a projector. Demo the subset; run the full thing only if you have time.
+# We will use five countries rather than all 263, so this runs in seconds
+# instead of minutes.
 demo_countries <- c("Spain", "Germany", "Japan", "Brazil", "Nigeria")
 
 populations_demo <-
   populations %>%
   filter(Country %in% demo_countries)
 
-fit <-
-  populations_demo %>%
-  model(
-    ets   = ETS(Pop),    # exponential smoothing, chosen automatically — Block D
-    arima = ARIMA(Pop)   # ARIMA, chosen automatically — the FOLLOW-UP course
-  )
+# ETS() is exponential smoothing; ARIMA() is a different family of models.
+# Given no further instructions, each one inspects the data and selects its own
+# structure. ETS is the main subject of the last block of this course. ARIMA
+# belongs to the follow-up course, Forecasting for Time Series - it appears
+# here only to show that the same pipeline handles both.
+#
+# ARIMA() needs the urca package (see section 0). If urca is missing we fit
+# ETS on its own, so this section still works.
+if (requireNamespace("urca", quietly = TRUE)) {
+  fit <-
+    populations_demo %>%
+    model(
+      ets   = ETS(Pop),
+      arima = ARIMA(Pop)
+    )
+} else {
+  message("urca is not installed, so ARIMA() is being skipped. ",
+          "Run install.packages(\"urca\") and re-run this section to include it.")
+  fit <-
+    populations_demo %>%
+    model(
+      ets = ETS(Pop)
+    )
+}
 
-# A mable: one row per series, one column per model. Each cell holds a model.
+# The result is a MABLE (model table): one row per series, one column per
+# model, and every cell holds a fitted model object.
 fit
 
-# ---- The full 263-country version. Slow and noisy. Uncomment deliberately. ----
-# fit_all <- populations %>% model(ets = ETS(Pop), arima = ARIMA(Pop))
-
-# Forecast four years ahead for every series and model in one call.
+# Forecast four years ahead - for every series and every model, in one call.
 fc <- fit %>% forecast(h = 4)
 
-# A fable. Note the Pop column: it is a DISTRIBUTION, not a number. Every
-# forecast in this course is a random variable — that is the Session 2 idea,
-# visible here on day one.
+# The result is a FABLE (forecast table). Look closely at the Pop column: the
+# entries are not single numbers, they are DISTRIBUTIONS, written like
+# N(47, 0.1) - a normal distribution with a mean and a variance.
+#
+# This is the central idea of the whole course: a forecast is not a number, it
+# is a random variable. The single number you usually see quoted is just the
+# mean of that distribution.
 fc
 
-# Point forecasts only.
+# The forecast as a single line per model - the point forecasts only.
 spain_fc   <- fc               %>% filter(Country == "Spain")
 spain_hist <- populations_demo %>% filter(Country == "Spain")
 
 spain_fc %>%
   autoplot(level = NULL) +
-  labs(title = "Spain — point forecasts, no uncertainty shown")
+  labs(title = "Spain - point forecasts only")
 
-# Now with a 95% prediction interval: the honest version of the same forecast.
+# The same forecast, now showing a 95% prediction interval: the range the model
+# thinks the true value will fall in. This is the honest picture, and the one
+# you should always ask to see.
 spain_fc %>%
   autoplot(level = 95, alpha = 0.6) +
-  labs(title = "Spain — 95% prediction interval")
+  labs(title = "Spain - 95% prediction interval")
 
-# With history attached, so the forecast is in context.
+# With the history attached, so the forecast sits in context.
 spain_fc %>%
   autoplot(spain_hist, level = 95, alpha = 0.6) +
-  labs(title = "Spain — population forecast, ETS vs ARIMA",
+  labs(title = "Spain - population forecast",
        y     = "Millions of people")
 
-# A second country, same pipeline, zero extra code. Germany's history has a
-# kink at reunification — good prompt for "what should a model do with that?"
+# A different country, the same pipeline, no extra code. Look at the shape of
+# Germany's history around 1990 and ask yourself what a model should do with a
+# sudden jump like that.
 germany_fc   <- fc               %>% filter(Country == "Germany")
 germany_hist <- populations_demo %>% filter(Country == "Germany")
 
 germany_fc %>%
   autoplot(germany_hist, level = 95, alpha = 0.6) +
-  labs(title = "Germany — population forecast, ETS vs ARIMA",
+  labs(title = "Germany - population forecast",
        y     = "Millions of people")
 
 
 # -----------------------------------------------------------------------------
-# 3. INSTALLATION — see §3 of 01_Introduction_UseCase.html and setup/SETUP.md
+# 3. IF SOMETHING WENT WRONG
 #
-#    Troubleshooting one-liners for the room:
+# These lines are commented out. Uncomment and run the one you need.
 # -----------------------------------------------------------------------------
 
-# Where is R installing packages, and is that directory writable?
+# Where is R installing packages, and can it write there?
 # .libPaths()
-# file.access(.libPaths()[1], mode = 2)   # 0 = writable, -1 = not
+# file.access(.libPaths()[1], mode = 2)    # 0 = writable, -1 = not writable
 
-# A package installed but won't load? Usually a stale binary. Reinstall it:
+# A package is installed but will not load? Usually a half-finished install.
 # install.packages("fpp3", dependencies = TRUE)
 
-# Windows: compilation errors on install almost always mean Rtools is missing
-# or its version does not match R. macOS: install Command Line Tools first.
-# Fedora: sudo dnf install R, then the RStudio .rpm.
+# Stuck at a prompt that says "Selection:" or "Enter an item from the menu"?
+# Type 0 and press Enter, or press Esc, to get back to the > prompt. This
+# happens when R asks a question and then reads your next lines as answers.
 
-# Everything about the environment, in one block. Ask students to paste this
-# into the chat if they are stuck — it answers most questions immediately.
+# Everything about your setup in one block. If you ask for help, paste this in.
 # sessionInfo()
+
+# Installation guide, per operating system: setup/SETUP.md
 
 
 # -----------------------------------------------------------------------------
-# 4. THE FINISH LINE — "I have a working environment"
+# 4. THE FINISH LINE
 #
-#    The session outcome is exactly this: fpp3 loads, and a first series plots.
-#    Every student should leave having run these three lines themselves.
+# The goal of Session 1 is exactly this: fpp3 loads, and you can plot a series.
+# Run these lines yourself before you leave.
 # -----------------------------------------------------------------------------
 
 library(fpp3)
 
 aus_production %>%
   autoplot(Beer) +
-  labs(title = "My first time series plot",
+  labs(title    = "My first time series plot",
        subtitle = "Australian quarterly beer production",
-       y = "Megalitres")
+       y        = "Megalitres")
 
-# If that plot appeared, you are ready for Session 2.
+# If that plot appeared, your environment works and you are ready for Session 2.
 
 
 # -----------------------------------------------------------------------------
-# HOMEWORK (due before Session 2)
+# HOMEWORK - due before Session 2
 #
-#   1. Work through, in order, in self-study/00-r-basics/:
+#   1. Work through these, in order, in self-study/00-r-basics/ :
 #        00_A_1_Intro
 #        00_A_2_BasicTypes_Operators
 #        00_A_3_Lists_Vectors
 #        00_A_4_conditionals_forloops
 #        00_B_1_tibbles_dplyr_fundamentals
-#   2. Confirm library(fpp3) loads without error on your own machine.
 #
-#   Submit on Blackboard. Reminder: the course GenAI policy is strict — see
-#   COURSE-OUTLINE.md. Write the code yourself.
+#   2. Confirm that library(fpp3) loads on your own machine without errors.
+#
+# Submit on Blackboard. Write the code yourself: the course policy on
+# generative AI is strict, and it is in COURSE-OUTLINE.md.
 # -----------------------------------------------------------------------------
