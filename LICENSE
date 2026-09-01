@@ -1,0 +1,84 @@
+# Licence
+
+**Copyright (c) 2026 Juan Garbayo and Alejandro Berrizbeitia.**
+
+The course materials in this repository are the joint work of both authors. Juan Garbayo
+authored the original course and the substantial majority of the teaching materials;
+Alejandro Berrizbeitia adapted, restructured and extended them for the 2026 edition. Both
+authors retain copyright in their own contributions and license them jointly on the terms
+below. IE University does not hold rights in these materials.
+
+This repository contains two different kinds of work, licensed differently.
+
+## 1. Course materials — CC BY-NC-SA 4.0
+
+The teaching materials — the rendered notebooks (`.html`), slide decks (`.pdf`), Excel
+workbooks (`.xlsx`), Quarto sources (`.qmd`), and the written documentation
+(`README.md`, `COURSE-OUTLINE.md`, `setup/SETUP.md`, the per-session `README.md`
+files) — are licensed under the
+
+**Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Licence
+(CC BY-NC-SA 4.0)**
+
+Full legal text: <https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode>
+Summary: <https://creativecommons.org/licenses/by-nc-sa/4.0/>
+
+You are free to share and adapt these materials, provided you:
+
+- **give appropriate credit** to the authors and indicate if changes were made;
+- **do not use them for commercial purposes**;
+- **distribute any adaptation under this same licence**.
+
+## 2. R code — MIT
+
+The R source files (`*.R`) and any code snippets written for this course are licensed
+under the MIT Licence:
+
+```
+MIT Licence
+
+Copyright (c) 2026 Juan Garbayo and Alejandro Berrizbeitia
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this
+software and associated documentation files (the "Software"), to deal in the Software
+without restriction, including without limitation the rights to use, copy, modify,
+merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to the following
+conditions:
+
+The above copyright notice and this permission notice shall be included in all copies
+or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
+OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+```
+
+---
+
+# NOTICE — third-party and inherited content
+
+**The licences above apply only to material whose rights the authors hold.** Parts of this
+repository are not theirs to license, and nothing here grants you rights in them:
+
+- **Textbook-derived content.** Several notebooks work through examples, datasets and
+  figures from *Forecasting: Principles and Practice* (3rd ed.) by Rob J. Hyndman and
+  George Athanasopoulos (<https://otexts.com/fpp3/>). That book's text and figures remain
+  the authors' copyright. The `fpp3` R package itself is separately licensed (GPL-3).
+
+- **Third-party datasets.** The files in `data/` were obtained from external sources and
+  carry their own terms. They are included for classroom use only. Check the original
+  source before redistributing any of them.
+
+- **Institutional material.** Course rules, assessment structure and policies originate
+  with IE University and are reproduced here for students' convenience only. The official
+  syllabus governs.
+
+If you want to reuse any part of this repository beyond what the licences above allow,
+please ask first:
+
+- Alejandro Berrizbeitia — aberrizbeitia@faculty.ie.edu
+- Juan Garbayo — jgarbayo@faculty.ie.edu

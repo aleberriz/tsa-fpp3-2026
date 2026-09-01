@@ -1,0 +1,14 @@
+# R
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+renv/library/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Agent guidance must never ship to students: this repo is the source of the
+# public instance. Keep a local untracked AGENTS.md here if you want one.
+AGENTS.md
