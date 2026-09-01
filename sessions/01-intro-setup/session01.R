@@ -33,10 +33,25 @@ cat("Library   :", .libPaths()[1], "\n\n")
 core <- c("fpp3", "tsibble", "tsibbledata", "feasts", "fable",
           "dplyr", "ggplot2", "lubridate", "tidyr")
 
-# urca is a separate install. install.packages("fpp3") does NOT include it,
-# because fpp3 only "suggests" it. Section 2 needs it: ARIMA() runs a
-# statistical test (KPSS) that lives in urca. Without it, ARIMA() cannot run.
-extra <- c("urca")
+# These are separate installs. install.packages("fpp3") does NOT include them,
+# so you have to ask for them by name. See setup/SETUP.md.
+#
+#   tidyverse, nycflights13, babynames  the R primer in self-study/ - your
+#                                       first homework needs these. Note that
+#                                       fpp3 attaches five tidyverse MEMBER
+#                                       packages (dplyr, tibble, tidyr,
+#                                       lubridate, ggplot2) but not the
+#                                       tidyverse package itself, and not readr
+#                                       (read_csv) or readxl (read_xlsx), which
+#                                       later sessions use.
+#   urca                                section 2 below: ARIMA() runs a
+#                                       statistical test (KPSS) living in urca
+#   GGally, fma, patchwork              sessions 3, 7, 9 and 12
+#   cowplot, seasonal                   sessions 12 and 7
+extra <- c("tidyverse", "nycflights13", "babynames",
+           "urca",
+           "GGally", "fma", "patchwork",
+           "cowplot", "seasonal")
 
 report_packages <- function(pkgs, label) {
   have <- pkgs %in% rownames(installed.packages())
@@ -55,8 +70,8 @@ report_packages <- function(pkgs, label) {
   pkgs[!have]
 }
 
-missing_core  <- report_packages(core,  "Core toolkit:")
-missing_extra <- report_packages(extra, "Also needed for section 2:")
+missing_core  <- report_packages(core,  "Core toolkit (from install.packages(\"fpp3\")):")
+missing_extra <- report_packages(extra, "Course packages (installed separately):")
 
 if (length(missing_core) > 0) {
   cat(">>> MISSING from the core toolkit:", paste(missing_core, collapse = ", "), "\n")
@@ -65,7 +80,8 @@ if (length(missing_core) > 0) {
 }
 if (length(missing_extra) > 0) {
   cat(">>> MISSING:", paste(missing_extra, collapse = ", "), "\n")
-  cat(">>> Run:  install.packages(\"urca\")\n")
+  cat(">>> Run:  install.packages(c(",
+      paste0("\"", missing_extra, "\"", collapse = ", "), "))\n", sep = "")
 }
 if (length(missing_core) == 0 && length(missing_extra) == 0) {
   cat(">>> Everything is installed. Continue to section 1.\n")
