@@ -37,7 +37,13 @@ core <- c("fpp3", "tsibble", "tsibbledata", "feasts", "fable",
 # so you have to ask for them by name. See setup/SETUP.md.
 #
 #   tidyverse, nycflights13, babynames  the R primer in self-study/ - your
-#                                       first homework needs these
+#                                       first homework needs these. Note that
+#                                       fpp3 attaches five tidyverse MEMBER
+#                                       packages (dplyr, tibble, tidyr,
+#                                       lubridate, ggplot2) but not the
+#                                       tidyverse package itself, and not readr
+#                                       (read_csv) or readxl (read_xlsx), which
+#                                       later sessions use.
 #   urca                                section 2 below: ARIMA() runs a
 #                                       statistical test (KPSS) living in urca
 #   GGally, fma, patchwork              sessions 3, 7, 9 and 12

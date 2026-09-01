@@ -69,12 +69,21 @@ The first line installs the forecasting toolkit — `tsibble`, `feasts`, `fable`
 
 **Please don't skip the second line.** These packages are used by the course materials but are *not* pulled in by `fpp3`, so you have to ask for them by name. Installing them now means nothing stops halfway through a session later:
 
-| Package | First needed |
-|---|---|
-| `tidyverse`, `nycflights13`, `babynames` | the R primer, **your first homework** |
-| `urca` | Session 1, and Group Assignment 2 |
-| `GGally`, `fma`, `patchwork` | Session 3 onwards |
-| `cowplot`, `seasonal` | Sessions 12 and 7 |
+| Package | First needed | Why `fpp3` doesn't cover it |
+|---|---|---|
+| `tidyverse` | the R primer, **your first homework** | see the note below |
+| `nycflights13`, `babynames` | the R primer | example datasets it uses |
+| `urca` | Session 1, and Group Assignment 2 | `ARIMA()`'s unit-root test |
+| `GGally`, `fma`, `patchwork` | Session 3 onwards | plotting and extra datasets |
+| `cowplot`, `seasonal` | Sessions 12 and 7 | loaded by those notebooks |
+
+> **"Doesn't `fpp3` already give me the tidyverse?"** Not quite, and the distinction bites.
+> Loading `fpp3` attaches **five** tidyverse member packages — `dplyr`, `tibble`, `tidyr`,
+> `lubridate` and `ggplot2` — which is why its startup message mentions the tidyverse. But
+> the `tidyverse` package *itself* is not among them, so `library(tidyverse)` fails until
+> you install it. Two of its members you will definitely need are missing too: **`readr`**
+> (for `read_csv()`, used in Sessions 3, 4 and 11) and **`readxl`** (for `read_xlsx()`, in
+> the Session 4 homework). Installing `tidyverse` brings both.
 
 > **If R ever stops and shows `Selection:` or `Enter an item from the menu`,** it is asking whether to install something. Type `0` and press Enter to get back to the `>` prompt, then install the package it named with `install.packages("<name>")`.
 
