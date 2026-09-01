@@ -56,9 +56,12 @@ Open RStudio and, in the **Console** (bottom-left), run:
 
 ```r
 install.packages("fpp3")
+install.packages("urca")
 ```
 
-This installs the whole toolkit we use — `tsibble`, `feasts`, `fable`, `tsibbledata`, and their dependencies. It can take a few minutes. Watch for red **error** lines; plain warnings are usually fine.
+The first line installs the whole toolkit we use — `tsibble`, `feasts`, `fable`, `tsibbledata`, and their dependencies. It can take a few minutes. Watch for red **error** lines; plain warnings are usually fine.
+
+The second line is small but **please don't skip it**. `urca` provides a statistical test that the automatic `ARIMA()` model needs, and it is *not* included in `fpp3`. Without it, the Session 1 notebook and Group Assignment 2 will stop partway and ask you a question you can't answer. If that happens, type `0` and press Enter to get back to the `>` prompt, then install it.
 
 ## 4. Get the course materials
 
@@ -83,9 +86,13 @@ library(fpp3)
 
 aus_production |>
   autoplot(Beer)
+
+"urca" %in% rownames(installed.packages())
 ```
 
-If a plot of Australian beer production appears in the bottom-right pane, you're ready for class. 🎉
+If a plot of Australian beer production appears in the bottom-right pane **and** that last line prints `TRUE`, you're ready for class. 🎉
+
+If it prints `FALSE`, run `install.packages("urca")` and check again.
 
 ---
 
