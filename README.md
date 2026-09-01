@@ -44,9 +44,10 @@ tsa-fpp3-2026/
 │   │   └── ...          ← the notebooks/materials for that session
 │   └── ...              ← one folder per session, 01–20
 ├── assignments/         ← the two group assignments
-├── data/                ← data files several exercises need (see below)
-└── slides/              ← lecture decks
+└── data/                ← data files several exercises need (see below)
 ```
+
+Slides and notebooks for a session live **inside that session's folder**, so everything you need for a given class is in one place.
 
 Open **`tsa.Rproj`** in RStudio first (File → Open Project). Working inside the project sets the working directory correctly, so the materials' code runs.
 
