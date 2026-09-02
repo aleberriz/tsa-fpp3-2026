@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Session 1 · Time Series Analysis · Fall 2026</title>
+<style>
+/* ============================================================
+   Session 01 slides. Self-contained: no fonts, scripts or images
+   are fetched from the network, so this renders identically on a
+   projector with no internet.
+   ============================================================ */
+
+:root{
+  --paper:#FAF8F5;
+  --ink:#161513;
+  --muted:#6B665E;
+  --faint:#98928a;
+  --hair:#E4DFD5;
+  --slate:#1F3A4D;
+  --terra:#B5471E;
+  --sage:#6B7F5E;
+  --sand:#EFEAE1;
+
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
+  --mono:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+
+  --fs-huge:clamp(3.4rem,9vw,10rem);
+  --fs-sowhat:clamp(2.1rem,4.3vw,4.8rem);
+  --fs-h2:clamp(1.5rem,2.6vw,2.9rem);
+  --fs-lead:clamp(1.05rem,1.62vw,1.95rem);
+  --fs-body:clamp(0.95rem,1.25vw,1.5rem);
+  --fs-small:clamp(0.82rem,0.98vw,1.15rem);
+  --fs-kicker:clamp(0.66rem,0.8vw,0.95rem);
+  --fs-mono:clamp(0.88rem,1.28vw,1.62rem);
+
+  --rail:266px;
+  --notes-h:0px;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  -webkit-font-smoothing:antialiased;
+  display:flex;
+  overflow:hidden;
+}
+
+/* ---------------- left rail ---------------- */
+
+#rail{
+  width:var(--rail);
+  flex:0 0 var(--rail);
+  border-right:1px solid var(--hair);
+  background:var(--sand);
+  display:flex;
+  flex-direction:column;
+  padding:2.1rem 0 1.1rem;
+  transition:margin-left .25s ease;
+  z-index:5;
+}
+body.rail-hidden #rail{margin-left:calc(-1 * var(--rail))}
+
+#rail .brand{padding:0 1.6rem 1.5rem;border-bottom:1px solid var(--hair)}
+#rail .brand b{
+  display:block;font-family:var(--serif);font-size:1.18rem;
+  font-weight:500;line-height:1.15;letter-spacing:.005em;
+}
+#rail .brand span{
+  display:block;margin-top:.42rem;font-size:.7rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--muted);
+}
+
+#toc{list-style:none;margin:0;padding:1rem 0;flex:1;overflow:auto}
+#toc li{
+  display:flex;gap:.72rem;align-items:baseline;
+  padding:.52rem 1.6rem .52rem 1.25rem;
+  font-size:.83rem;line-height:1.3;color:var(--muted);
+  border-left:3px solid transparent;cursor:pointer;
+  transition:color .15s ease,border-color .15s ease;
+}
+#toc li .num{
+  font-variant-numeric:tabular-nums;font-size:.68rem;
+  color:var(--faint);min-width:.9rem;
+}
+#toc li:hover{color:var(--ink)}
+#toc li.on{color:var(--ink);border-left-color:var(--terra);font-weight:600}
+#toc li.on .num{color:var(--terra)}
+#toc li.done{color:var(--faint)}
+
+#rail .foot{padding:.9rem 1.6rem 0;border-top:1px solid var(--hair)}
+#bar{height:2px;background:var(--hair);border-radius:2px;overflow:hidden}
+#bar i{display:block;height:100%;width:0;background:var(--terra);transition:width .3s ease}
+#rail .foot .keys{
+  margin-top:.7rem;font-size:.63rem;color:var(--faint);
+  line-height:1.7;letter-spacing:.02em;
+}
+kbd{
+  font-family:var(--mono);font-size:.62rem;background:var(--paper);
+  border:1px solid var(--hair);border-radius:3px;padding:.05em .32em;color:var(--muted);
+}
+
+/* ---------------- stage ---------------- */
+
+#stage{position:relative;flex:1;min-width:0;overflow:hidden}
+
+.slide{
+  position:absolute;inset:0;bottom:var(--notes-h);
+  display:flex;overflow:auto;
+  padding:5vh 5.5vw 5vh 5vw;
+  opacity:0;visibility:hidden;
+  transition:opacity .26s ease;
+}
+.slide.active{opacity:1;visibility:visible}
+.slide > .inner{margin:auto;width:100%;max-width:1240px}
+
+/* ---------------- typography ---------------- */
+
+.kicker{
+  margin:0 0 1.15rem;font-size:var(--fs-kicker);letter-spacing:.19em;
+  text-transform:uppercase;color:var(--terra);font-weight:600;
+}
+.kicker.q{color:var(--muted)}
+
+h1.sowhat{
+  margin:0;font-family:var(--serif);font-weight:500;
+  font-size:var(--fs-sowhat);line-height:1.04;letter-spacing:-.012em;
+  max-width:19ch;
+}
+h1.sowhat.wide{max-width:26ch}
+h2.sub{
+  margin:1.5rem 0 0;font-family:var(--serif);font-weight:500;
+  font-size:var(--fs-h2);line-height:1.15;color:var(--slate);max-width:26ch;
+}
+.lead{font-size:var(--fs-lead);line-height:1.4;color:var(--muted);max-width:44ch;margin:1.3rem 0 0}
+.small{font-size:var(--fs-small);color:var(--faint);line-height:1.55;margin:1.5rem 0 0;max-width:60ch}
+.hr{height:1px;background:var(--hair);border:0;margin:1.9rem 0 0}
+
+/* inline code sits inside serif headlines and sans body alike, so it is
+   sized relative to its parent rather than at a fixed size */
+code{
+  font-family:var(--mono);font-size:.86em;letter-spacing:-.01em;
+  background:#fff;border:1px solid var(--hair);border-radius:3px;
+  padding:.08em .34em;color:var(--slate);white-space:nowrap;
+}
+h1.sowhat code{font-size:.82em;padding:.05em .26em;color:var(--ink)}
+.callout code,ul.build code{background:var(--sand);border-color:#DCD5C8}
+
+.punch{
+  font-family:var(--serif);font-size:var(--fs-h2);line-height:1.16;
+  color:var(--terra);margin:1.7rem 0 0;max-width:24ch;font-weight:500;
+}
+.punch.ink{color:var(--ink)}
+.punch.slate{color:var(--slate)}
+
+.huge{
+  font-family:var(--mono);font-size:var(--fs-huge);line-height:1;
+  letter-spacing:-.03em;margin:0;color:var(--ink);
+}
+/* a longer literal needs a smaller ceiling or it runs off the slide */
+.huge.long{font-size:clamp(2.1rem,5.4vw,5.8rem)}
+.url{
+  font-family:var(--mono);font-size:clamp(1.1rem,2.55vw,3rem);
+  line-height:1.2;color:var(--slate);margin:1.3rem 0 0;word-break:break-word;
+}
+
+/* ---------------- builds ---------------- */
+
+ul.build{list-style:none;margin:1.9rem 0 0;padding:0}
+ul.build li{
+  font-size:var(--fs-lead);line-height:1.34;margin:0 0 1.02rem;
+  padding-left:2.1rem;position:relative;max-width:46ch;
+}
+ul.build li:last-child{margin-bottom:0}
+ul.build li::before{
+  content:counter(step);counter-increment:step;
+  position:absolute;left:0;top:.24em;
+  font-family:var(--mono);font-size:.62em;color:var(--terra);
+  font-weight:700;letter-spacing:.04em;
+}
+ul.build{counter-reset:step}
+ul.build.plain li::before{content:"·";font-size:1em;top:.02em;color:var(--terra)}
+ul.build li b{font-weight:600}
+
+.step{opacity:0;transform:translateY(6px);transition:opacity .3s ease,transform .3s ease}
+.step.on{opacity:1;transform:none}
+
+/* ---------------- blocks ---------------- */
+
+.console{
+  font-family:var(--mono);font-size:var(--fs-mono);line-height:1.62;
+  background:#fff;border:1px solid var(--hair);border-left:3px solid var(--slate);
+  border-radius:3px;padding:1.05rem 1.3rem;margin:1.7rem 0 0;
+  white-space:pre;overflow-x:auto;color:var(--slate);
+}
+.console .hl{color:var(--terra);font-weight:700}
+.console.terra{border-left-color:var(--terra)}
+
+.callout{
+  margin:1.7rem 0 0;padding:.95rem 1.25rem;border-radius:3px;
+  background:#fff;border:1px solid var(--hair);border-left:3px solid var(--terra);
+  font-size:var(--fs-body);line-height:1.45;max-width:52ch;
+}
+.callout b{color:var(--terra)}
+
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem 1.5rem;margin:1.9rem 0 0}
+.cards.four{grid-template-columns:repeat(4,1fr);gap:1.2rem}
+.card{border-top:2px solid var(--slate);padding:.85rem 0 0}
+.card h3{
+  margin:0 0 .5rem;font-size:var(--fs-small);letter-spacing:.11em;
+  text-transform:uppercase;color:var(--slate);font-weight:700;
+}
+.card p{margin:0;font-size:var(--fs-body);line-height:1.38;color:var(--muted)}
+
+table.grade{border-collapse:collapse;margin:1.9rem 0 0;width:100%;max-width:760px}
+table.grade td{
+  padding:.66rem 0;border-bottom:1px solid var(--hair);
+  font-size:var(--fs-lead);line-height:1.3;
+}
+table.grade td.w{
+  text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;
+  color:var(--slate);font-weight:700;white-space:nowrap;
+}
+table.grade tr.big td{font-weight:600}
+
+table.traps{border-collapse:collapse;margin:1.6rem 0 0;width:100%}
+table.traps td{
+  padding:.58rem .9rem .58rem 0;border-bottom:1px solid var(--hair);
+  font-size:var(--fs-body);line-height:1.35;vertical-align:top;
+}
+table.traps td.os{
+  white-space:nowrap;color:var(--slate);font-weight:700;
+  font-size:var(--fs-small);letter-spacing:.05em;text-transform:uppercase;padding-top:.72rem;
+}
+table.traps td.fix{color:var(--muted)}
+
+.dates{display:grid;grid-template-columns:1fr 1fr;gap:2.6rem;margin:1.6rem 0 0;max-width:1000px}
+.date h3{
+  margin:0 0 .55rem;font-size:var(--fs-kicker);letter-spacing:.19em;
+  text-transform:uppercase;color:var(--muted);font-weight:600;
+}
+.date .d{
+  font-family:var(--serif);font-size:clamp(1.6rem,3.2vw,3.4rem);
+  line-height:1.08;margin:0;font-weight:500;
+}
+.date .m{margin:.55rem 0 0;font-size:var(--fs-body);color:var(--muted);line-height:1.4}
+
+.chips{display:flex;flex-wrap:wrap;gap:.5rem;margin:1.5rem 0 0}
+.chip{
+  font-size:var(--fs-small);border:1px solid var(--hair);background:#fff;
+  border-radius:100px;padding:.34em .95em;color:var(--slate);letter-spacing:.02em;
+}
+
+.blocks{display:grid;grid-template-columns:repeat(4,1fr);gap:1.4rem;margin:1.4rem 0 0}
+.blk{border-top:3px solid var(--slate);padding:.75rem 0 0}
+.blk:nth-child(2){border-color:var(--sage)}
+.blk:nth-child(3){border-color:var(--terra)}
+.blk:nth-child(4){border-color:#8A7355}
+.blk b{display:block;font-size:var(--fs-body);line-height:1.25}
+.blk span{display:block;margin-top:.3rem;font-size:var(--fs-small);color:var(--muted);font-family:var(--mono)}
+
+figure{margin:1.7rem 0 0}
+figure svg{width:100%;height:auto;max-height:44vh;display:block}
+figcaption{
+  margin-top:1rem;font-size:var(--fs-body);color:var(--muted);
+  line-height:1.4;max-width:56ch;
+}
+.figrow{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem;margin-top:.9rem}
+.figrow p{margin:0;font-size:var(--fs-body);line-height:1.38}
+.figrow p b{display:block;color:var(--slate);letter-spacing:.05em;font-size:.8em;text-transform:uppercase;margin-bottom:.3rem}
+
+.split{display:grid;grid-template-columns:1.05fr .95fr;gap:3rem;align-items:center}
+@media (max-width:1080px){.split{grid-template-columns:1fr;gap:1.5rem}.cards.four{grid-template-columns:repeat(2,1fr)}}
+
+/* ---------------- title slide ---------------- */
+
+.title-slide .inner{max-width:none}
+.title-slide h1{
+  font-family:var(--serif);font-weight:500;margin:0;
+  font-size:clamp(2.6rem,6.4vw,7.2rem);line-height:1;letter-spacing:-.02em;
+}
+.title-slide .rule{width:84px;height:3px;background:var(--terra);margin:2rem 0}
+.title-slide .who{font-size:var(--fs-lead);line-height:1.5;color:var(--muted);margin:0}
+.title-slide .who b{color:var(--ink);font-weight:600}
+
+/* ---------------- HUD ---------------- */
+
+#hud{
+  position:fixed;right:1.1rem;bottom:.85rem;z-index:20;
+  display:flex;align-items:center;gap:.55rem;
+  font-family:var(--mono);font-size:.72rem;color:var(--faint);
+}
+#hud button{
+  font:inherit;border:1px solid var(--hair);background:var(--paper);
+  color:var(--muted);border-radius:3px;width:26px;height:24px;cursor:pointer;line-height:1;
+}
+#hud button:hover{color:var(--ink);border-color:var(--muted)}
+#count{font-variant-numeric:tabular-nums;letter-spacing:.05em}
+
+/* ---------------- notes ---------------- */
+
+.notes{display:none}
+#notepane{
+  position:absolute;left:0;right:0;bottom:0;height:212px;z-index:10;
+  background:#F3EFE7;border-top:1px solid var(--hair);
+  padding:1rem 1.6rem 1.1rem;overflow:auto;display:none;
+}
+body.notes-on #notepane{display:block}
+#notepane h4{
+  margin:0 0 .55rem;font-size:.63rem;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--terra);font-weight:700;
+}
+#notepane .body{font-size:.94rem;line-height:1.58;color:#3d3a35;max-width:96ch}
+#notepane .body em{color:var(--slate);font-style:normal;font-weight:600}
+#notepane .body .clock{
+  font-family:var(--mono);background:var(--paper);border:1px solid var(--hair);
+  border-radius:3px;padding:.05em .4em;font-size:.86em;color:var(--terra);font-weight:700;
+}
+
+/* ---------------- overview ---------------- */
+
+#overview{
+  position:fixed;inset:0;z-index:40;background:var(--paper);
+  padding:2.4rem 3vw;overflow:auto;display:none;
+}
+body.ov-on #overview{display:block}
+#overview h3{
+  margin:0 0 1.4rem;font-family:var(--serif);font-weight:500;font-size:1.5rem;
+}
+#ovlist{columns:3;column-gap:2.6rem;list-style:none;margin:0;padding:0}
+@media (max-width:1000px){#ovlist{columns:2}}
+#ovlist li{
+  break-inside:avoid;display:flex;gap:.7rem;padding:.28rem 0;
+  font-size:.86rem;line-height:1.35;color:var(--muted);cursor:pointer;
+}
+#ovlist li:hover{color:var(--ink)}
+#ovlist li.on{color:var(--terra);font-weight:600}
+#ovlist li .n{font-family:var(--mono);font-size:.72rem;color:var(--faint);min-width:1.6rem;text-align:right}
+#ovlist li.head{
+  margin-top:1.1rem;color:var(--slate);font-weight:700;font-size:.68rem;
+  letter-spacing:.16em;text-transform:uppercase;cursor:default;
+}
+#ovlist li.head:first-child{margin-top:0}
+
+/* ---------------- print ---------------- */
+
+@media print{
+  body{display:block;overflow:visible;background:#fff}
+  #rail,#hud,#notepane,#overview{display:none !important}
+  #stage{overflow:visible;position:static}
+  .slide{
+    position:static;visibility:visible;opacity:1;bottom:0;
+    height:auto;min-height:92vh;page-break-after:always;
+    border-bottom:1px solid #ddd;
+  }
+  .step{opacity:1 !important;transform:none !important}
+  figure svg{max-height:32vh}
+}
+</style>
+</head>
+<body>
+
+<!-- ============================== RAIL ============================== -->
+<nav id="rail">
+  <div class="brand">
+    <b>Time Series Analysis</b>
+    <span>Session 1 · Fall 2026</span>
+  </div>
+  <ul id="toc"></ul>
+  <div class="foot">
+    <div id="bar"><i></i></div>
+    <div class="keys">
+      <kbd>&rarr;</kbd> next &nbsp; <kbd>&larr;</kbd> back &nbsp; <kbd>N</kbd> notes<br>
+      <kbd>O</kbd> jump &nbsp; <kbd>F</kbd> full &nbsp; <kbd>[</kbd> hide this pane
+    </div>
+  </div>
+</nav>
+
+<!-- ============================== STAGE ============================== -->
+<main id="stage">
+
+<!-- ---------- 1 ---------- -->
+<section class="slide title-slide" data-section="1" data-title="Title">
+  <div class="inner">
+    <p class="kicker">IE University · Dual Degree BBA &amp; Data and Business Analytics</p>
+    <h1>Time Series<br>Analysis</h1>
+    <div class="rule"></div>
+    <p class="who"><b>Session 1.</b> What forecasting is, and getting your machine ready.<br>
+    Alejandro Berrizbeitia · aberrizbeitia@faculty.ie.edu</p>
+  </div>
+  <aside class="notes"><span class="clock">0:00 &rarr; 0:09 for this section</span>
+  Do not read the title out loud. Open on slide 2 instead and let the title sit for ten seconds while people settle.</aside>
+</section>
+
+<!-- ---------- 2 ---------- -->
+<section class="slide" data-section="1" data-title="Every plan is a forecast">
+  <div class="inner">
+    <p class="kicker">Why this course exists</p>
+    <h1 class="sowhat">Every plan is a forecast.</h1>
+    <ul class="build">
+      <li class="step">&ldquo;We hire 40 people next quarter.&rdquo; <b>Somebody forecast demand.</b></li>
+      <li class="step">&ldquo;Order 10,000 units.&rdquo; <b>Somebody forecast sales.</b></li>
+      <li class="step">&ldquo;We will close the year at &euro;12M.&rdquo; <b>Somebody forecast revenue.</b></li>
+    </ul>
+    <p class="punch step">The forecast is already inside the decision. The only question is whether anyone checked it.</p>
+  </div>
+  <aside class="notes">Ask for a show of hands: who has ever seen a number in a plan and wondered where it came from. Do not take answers yet, just plant it. Keep this slide to about ninety seconds.</aside>
+</section>
+
+<!-- ---------- 3 ---------- -->
+<section class="slide" data-section="1" data-title="Both errors cost money">
+  <div class="inner">
+    <h1 class="sowhat">Both errors cost money.</h1>
+    <figure>
+      <svg viewBox="0 0 760 250" role="img" aria-label="A full shelf and an empty shelf">
+        <g fill="none" stroke="#1F3A4D" stroke-width="2.4" stroke-linecap="round">
+          <path d="M30 55 V225 M330 55 V225 M30 225 H330 M30 168 H330 M30 111 H330"/>
+          <path d="M20 238 H345" stroke-width="1.4"/>
+        </g>
+        <g fill="#B5471E" opacity=".85">
+          <rect x="40" y="176" width="42" height="47" rx="2"/><rect x="88" y="176" width="42" height="47" rx="2"/>
+          <rect x="136" y="176" width="42" height="47" rx="2"/><rect x="184" y="176" width="42" height="47" rx="2"/>
+          <rect x="232" y="176" width="42" height="47" rx="2"/><rect x="280" y="176" width="42" height="47" rx="2"/>
+          <rect x="40" y="119" width="42" height="47" rx="2"/><rect x="88" y="119" width="42" height="47" rx="2"/>
+          <rect x="136" y="119" width="42" height="47" rx="2"/><rect x="184" y="119" width="42" height="47" rx="2"/>
+          <rect x="232" y="119" width="42" height="47" rx="2"/><rect x="280" y="119" width="42" height="47" rx="2"/>
+          <rect x="40" y="62" width="42" height="47" rx="2"/><rect x="88" y="62" width="42" height="47" rx="2"/>
+          <rect x="136" y="62" width="42" height="47" rx="2"/><rect x="184" y="62" width="42" height="47" rx="2"/>
+          <rect x="232" y="62" width="42" height="47" rx="2"/><rect x="280" y="62" width="42" height="47" rx="2"/>
+        </g>
+        <g fill="#B5471E" opacity=".55">
+          <rect x="40" y="12" width="42" height="42" rx="2" transform="rotate(-7 61 33)"/>
+          <rect x="96" y="16" width="42" height="42" rx="2" transform="rotate(5 117 37)"/>
+          <rect x="152" y="10" width="42" height="42" rx="2" transform="rotate(-3 173 31)"/>
+        </g>
+        <g fill="none" stroke="#1F3A4D" stroke-width="2.4" stroke-linecap="round">
+          <path d="M420 55 V225 M720 55 V225 M420 225 H720 M420 168 H720 M420 111 H720"/>
+          <path d="M410 238 H735" stroke-width="1.4"/>
+        </g>
+        <g fill="none" stroke="#98928a" stroke-width="1.6" stroke-dasharray="5 6">
+          <rect x="430" y="176" width="42" height="47" rx="2"/><rect x="478" y="176" width="42" height="47" rx="2"/>
+          <rect x="574" y="176" width="42" height="47" rx="2"/><rect x="622" y="176" width="42" height="47" rx="2"/>
+          <rect x="670" y="176" width="42" height="47" rx="2"/>
+          <rect x="430" y="119" width="42" height="47" rx="2"/><rect x="478" y="119" width="42" height="47" rx="2"/>
+          <rect x="526" y="119" width="42" height="47" rx="2"/><rect x="574" y="119" width="42" height="47" rx="2"/>
+          <rect x="622" y="119" width="42" height="47" rx="2"/><rect x="670" y="119" width="42" height="47" rx="2"/>
+        </g>
+        <rect x="526" y="176" width="42" height="47" rx="2" fill="#B5471E" opacity=".85"/>
+      </svg>
+      <div class="figrow">
+        <p class="step"><b>Forecast too high</b>Cash frozen in a warehouse, and a markdown at the end of the season.</p>
+        <p class="step"><b>Forecast too low</b>Empty shelf. Your customer buys from somebody else, and may not come back.</p>
+      </div>
+    </figure>
+    <p class="punch step">You cannot opt out of forecasting. You only choose how badly you do it.</p>
+  </div>
+  <aside class="notes">The right-hand error is the expensive one and almost nobody measures it, because a sale that never happened leaves no record. Worth saying out loud: <em>the stockout is invisible in your data.</em></aside>
+</section>
+
+<!-- ---------- 4 ---------- -->
+<section class="slide" data-section="1" data-title="A number vs a distribution">
+  <div class="inner">
+    <p class="kicker">The one idea of this course</p>
+    <h1 class="sowhat wide">A number is a guess.<br>A distribution is a forecast.</h1>
+    <figure>
+      <svg viewBox="0 0 760 210" role="img" aria-label="A point forecast next to a forecast with a widening interval">
+        <g stroke="#98928a" stroke-width="1.4" fill="none">
+          <path d="M30 178 H350 M30 178 V26"/><path d="M410 178 H730 M410 178 V26"/>
+        </g>
+        <polyline fill="none" stroke="#1F3A4D" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"
+          points="44,158 76,150 108,155 140,138 172,130 204,118 236,110 268,98 300,90"/>
+        <circle cx="336" cy="76" r="7.5" fill="#B5471E"/>
+        <path d="M424 158 L456 150 L488 155 L520 138 L552 130 L584 118 L616 110 L648 98 L680 90"
+          fill="none" stroke="#1F3A4D" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+        <path d="M680 90 L726 46 L726 110 Z" fill="#B5471E" opacity=".18"/>
+        <path d="M680 90 L726 78" stroke="#B5471E" stroke-width="2.4" stroke-dasharray="6 5" fill="none"/>
+      </svg>
+      <div class="figrow">
+        <p class="step"><b>A point forecast says</b>47 million.</p>
+        <p class="step"><b>A real forecast says</b>Most likely 47, and very probably between 46.3 and 47.7.</p>
+      </div>
+    </figure>
+    <p class="punch step">Only one of those can be planned against. You will see it on my screen in about forty minutes.</p>
+  </div>
+  <aside class="notes">Do not explain intervals yet. This slide only has to make the shape memorable, so that the <em>N(47, 0.1)</em> moment later in the live run lands as a payoff rather than as new material.</aside>
+</section>
+
+<!-- ---------- 5 ---------- -->
+<section class="slide" data-section="1" data-title="Why time series is its own field">
+  <div class="inner">
+    <h1 class="sowhat">Yesterday tells you something about today.</h1>
+    <figure>
+      <svg viewBox="0 0 760 180" role="img" aria-label="Scattered independent points beside points linked in a chain">
+        <g fill="#98928a">
+          <circle cx="60" cy="112" r="6"/><circle cx="112" cy="52" r="6"/><circle cx="148" cy="134" r="6"/>
+          <circle cx="196" cy="80" r="6"/><circle cx="238" cy="146" r="6"/><circle cx="276" cy="42" r="6"/>
+          <circle cx="312" cy="104" r="6"/><circle cx="88" cy="88" r="6"/><circle cx="252" cy="96" r="6"/>
+          <circle cx="180" cy="34" r="6"/><circle cx="128" cy="106" r="6"/><circle cx="300" cy="66" r="6"/>
+        </g>
+        <polyline fill="none" stroke="#1F3A4D" stroke-width="2.6" stroke-linejoin="round"
+          points="430,120 458,104 486,112 514,86 542,94 570,68 598,74 626,52 654,60 682,38 710,46"/>
+        <g fill="#B5471E">
+          <circle cx="430" cy="120" r="6"/><circle cx="458" cy="104" r="6"/><circle cx="486" cy="112" r="6"/>
+          <circle cx="514" cy="86" r="6"/><circle cx="542" cy="94" r="6"/><circle cx="570" cy="68" r="6"/>
+          <circle cx="598" cy="74" r="6"/><circle cx="626" cy="52" r="6"/><circle cx="654" cy="60" r="6"/>
+          <circle cx="682" cy="38" r="6"/><circle cx="710" cy="46" r="6"/>
+        </g>
+      </svg>
+      <div class="figrow">
+        <p class="step"><b>What your statistics courses assumed</b>The observations are independent. Each one is a fresh draw.</p>
+        <p class="step"><b>What a time series actually is</b>Ordered in time, and neighbors are related. The draws are not independent.</p>
+      </div>
+    </figure>
+    <p class="punch step">That single fact breaks most of the toolkit you already have. Rebuilding it is this course. Session 2 starts exactly here.</p>
+  </div>
+  <aside class="notes">Leave this one open. Do not mention the central limit theorem or say what replaces the independence assumption. The unanswered question is the hook that Session 2 opens on.</aside>
+</section>
+
+<!-- ---------- 6 ---------- -->
+<section class="slide" data-section="1" data-title="Who actually needs this">
+  <div class="inner">
+    <p class="kicker">Where the question actually gets asked</p>
+    <h1 class="sowhat wide">Four industries, one question.</h1>
+    <div class="cards four">
+      <div class="card"><h3>Consulting</h3><p>How many people do we staff on this account next quarter?</p></div>
+      <div class="card"><h3>Consumer goods</h3><p>How much of this product ships to each region before the promotion?</p></div>
+      <div class="card"><h3>Marketplaces</h3><p>How many drivers do we need online at eight on a Friday night?</p></div>
+      <div class="card"><h3>SaaS</h3><p>What is next year's revenue, and how wrong could that number be?</p></div>
+    </div>
+    <p class="punch step">Every one of those is a time series question. None of them is optional.</p>
+  </div>
+  <aside class="notes">Pick whichever of the four the room reacts to and give it thirty seconds of a real story. This slide is also the bridge into who you are, so end on the industry you want to open with next.</aside>
+</section>
+
+<!-- ---------- 7 ---------- -->
+<section class="slide" data-section="2" data-title="Alejandro Berrizbeitia">
+  <div class="inner">
+    <p class="kicker">Why me</p>
+    <h1 class="sowhat">Alejandro Berrizbeitia</h1>
+    <p class="lead">MEng and MBA. A forecasting practitioner before I was a professor, and still one.</p>
+    <div class="chips step">
+      <span class="chip">Consulting</span><span class="chip">Consumer goods</span>
+      <span class="chip">Marketplaces</span><span class="chip">SaaS</span>
+    </div>
+    <p class="punch step">I have had to defend forecasts to people who then had to spend real money on them.</p>
+    <p class="small step">This course was created by Prof. Juan Garbayo, who wrote the original materials. I adapted and extended them for 2026.</p>
+  </div>
+  <aside class="notes"><span class="clock">0:09 &rarr; 0:13</span>
+  Keep this short and concrete. One sentence per industry is plenty. The credibility comes from the story on the next slide, not from the CV.</aside>
+</section>
+
+<!-- ---------- 8 ---------- -->
+<section class="slide" data-section="2" data-title="This course is the floor of the next">
+  <div class="inner">
+    <p class="kicker">Fair warning</p>
+    <h1 class="sowhat">This course is the floor of the next one.</h1>
+    <ul class="build">
+      <li class="step">Next term you take <b>Forecasting for Time Series</b>, with me. Regression, ARIMA, and beyond.</li>
+      <li class="step">That course assumes everything here landed. It does not re-teach it.</li>
+    </ul>
+    <p class="punch step">I cannot build ARIMA on a shaky ACF. So I am going to push you here.</p>
+  </div>
+  <aside class="notes">This is the honest reason for the demanding tone, and it reads as care rather than as threat. Say it that way.</aside>
+</section>
+
+<!-- ---------- 9 ---------- -->
+<section class="slide" data-section="3" data-title="The book">
+  <div class="inner">
+    <p class="kicker">The textbook</p>
+    <h1 class="sowhat">One book. Free. Online.</h1>
+    <p class="url">otexts.com/fpp3</p>
+    <p class="lead">Hyndman and Athanasopoulos, <i>Forecasting: Principles and Practice</i>, third edition. We cover chapters 1, 2, 3, 5 and 8.</p>
+    <div class="callout step"><b>Scope, so nobody worries later.</b> ARIMA is next term's material. It is not on the midterm and it is not on the final.</div>
+    <p class="punch step">Read the sections before class. You will get roughly twice as much out of the hour.</p>
+  </div>
+  <aside class="notes"><span class="clock">0:13 &rarr; 0:25 for this section</span>
+  State the ARIMA boundary clearly here. It surfaces again in the live run when ARIMA() appears on screen, and if it is unresolved it becomes an exam-scope question later.</aside>
+</section>
+
+<!-- ---------- 10 ---------- -->
+<section class="slide" data-section="3" data-title="Twenty sessions, four blocks">
+  <div class="inner">
+    <h1 class="sowhat wide">Twenty sessions, four blocks.</h1>
+    <figure>
+      <svg viewBox="0 0 900 118" role="img" aria-label="Course timeline from session 1 to session 20 with two exam markers">
+        <line x1="30" y1="78" x2="870" y2="78" stroke="#E4DFD5" stroke-width="2"/>
+        <g stroke="#98928a" stroke-width="1.4">
+          <line x1="30" y1="73" x2="30" y2="83"/><line x1="74" y1="73" x2="74" y2="83"/>
+          <line x1="118" y1="73" x2="118" y2="83"/><line x1="163" y1="73" x2="163" y2="83"/>
+          <line x1="207" y1="73" x2="207" y2="83"/><line x1="251" y1="73" x2="251" y2="83"/>
+          <line x1="295" y1="73" x2="295" y2="83"/><line x1="340" y1="73" x2="340" y2="83"/>
+          <line x1="384" y1="73" x2="384" y2="83"/><line x1="472" y1="73" x2="472" y2="83"/>
+          <line x1="516" y1="73" x2="516" y2="83"/><line x1="561" y1="73" x2="561" y2="83"/>
+          <line x1="605" y1="73" x2="605" y2="83"/><line x1="649" y1="73" x2="649" y2="83"/>
+          <line x1="693" y1="73" x2="693" y2="83"/><line x1="737" y1="73" x2="737" y2="83"/>
+          <line x1="782" y1="73" x2="782" y2="83"/><line x1="826" y1="73" x2="826" y2="83"/>
+        </g>
+        <g stroke-width="9" stroke-linecap="round" fill="none">
+          <line x1="30" y1="52" x2="163" y2="52" stroke="#1F3A4D"/>
+          <line x1="207" y1="52" x2="295" y2="52" stroke="#6B7F5E"/>
+          <line x1="340" y1="52" x2="384" y2="52" stroke="#B5471E"/>
+          <line x1="472" y1="52" x2="605" y2="52" stroke="#B5471E"/>
+          <line x1="649" y1="52" x2="826" y2="52" stroke="#8A7355"/>
+        </g>
+        <g fill="#B5471E">
+          <rect x="426" y="60" width="3" height="36"/><path d="M429 62 L459 70 L429 78 Z"/>
+          <rect x="868" y="60" width="3" height="36"/><path d="M871 62 L901 70 L871 78 Z"/>
+        </g>
+        <g fill="#6B665E" font-family="SFMono-Regular,Menlo,monospace" font-size="13">
+          <text x="26" y="30">S1</text><text x="856" y="30">S20</text>
+        </g>
+      </svg>
+    </figure>
+    <div class="blocks">
+      <div class="blk"><b>A. Foundations</b><span>S1 &ndash; S4</span></div>
+      <div class="blk"><b>B. Decomposition</b><span>S5 &ndash; S7</span></div>
+      <div class="blk"><b>C. The forecaster's toolbox</b><span>S8 &ndash; S9, S11 &ndash; S14</span></div>
+      <div class="blk"><b>D. Exponential smoothing</b><span>S15 &ndash; S19</span></div>
+    </div>
+    <p class="small">The two flags are the exams. Two group assignments launch in Session 7 and Session 17.</p>
+  </div>
+  <aside class="notes">Do not walk through all twenty. Name the four blocks, point at the two flags, and move. The full session list is in COURSE-OUTLINE.md and they can read it.</aside>
+</section>
+
+<!-- ---------- 11 ---------- -->
+<section class="slide" data-section="3" data-title="The two dates">
+  <div class="inner">
+    <p class="kicker">Put these in your calendar before you leave this room</p>
+    <div class="dates">
+      <div class="date">
+        <h3>Midterm · Session 10</h3>
+        <p class="d">Wed 14 October<br>2026</p>
+        <p class="m">Covers Sessions 1 to 9.</p>
+      </div>
+      <div class="date">
+        <h3>Final · Session 20</h3>
+        <p class="d">Mon 14 December<br>2026</p>
+        <p class="m">Covers the whole course.</p>
+      </div>
+    </div>
+    <p class="lead step">Both exams: 20 multiple-choice questions, four options each. An optional online prep tutorial runs the week before each one.</p>
+    <div class="callout step"><b>There is no retake for the midterm.</b> If you cannot sit it, the final carries 60% of your grade instead of 30%.</div>
+  </div>
+  <aside class="notes">Slow down here and let people actually type the dates into a phone. This is the one slide where phones out is fine. Say so.</aside>
+</section>
+
+<!-- ---------- 12 ---------- -->
+<section class="slide" data-section="3" data-title="Build it by hand, then check it">
+  <div class="inner">
+    <p class="kicker">How this course works</p>
+    <h1 class="sowhat">Build it by hand. Then check it against the library.</h1>
+    <ul class="build">
+      <li class="step">You will compute a decomposition by hand, then run <code>classical_decomposition()</code> and check that every component matches exactly.</li>
+      <li class="step">You will fit exponential smoothing yourself with <code>optim()</code>, then compare your parameters with the ones <code>ETS()</code> finds.</li>
+    </ul>
+    <p class="punch step">Anyone can call a function. You are here to know what the function did.</p>
+  </div>
+  <aside class="notes">This slide is the setup for the AI rule. Land the last line clearly, then go straight into the rules section without a pause.</aside>
+</section>
+
+<!-- ---------- 13 ---------- -->
+<section class="slide" data-section="4" data-title="Five house rules">
+  <div class="inner">
+    <h1 class="sowhat">Five house rules.</h1>
+    <ul class="build">
+      <li>Be here. Participation is 10% of your grade, and I notice who speaks.</li>
+      <li>Phones in bags. Laptops open when we are coding, closed when we are not.</li>
+      <li>Read the fpp3 sections before the session, not after.</li>
+      <li>Homework goes to Blackboard before the next class. Not to the repo.</li>
+      <li>Ask the question. Somebody else in this room has the same one.</li>
+    </ul>
+    <p class="small">Grading weights, attendance and the full policy live in <b>COURSE-OUTLINE.md</b> in the repo. Read it this week.</p>
+  </div>
+  <aside class="notes"><span class="clock">0:25 &rarr; 0:35 for this section</span>
+  No build on this slide on purpose. Read it fast, thirty seconds, then slow right down for the next one.</aside>
+</section>
+
+<!-- ---------- 14 ---------- -->
+<section class="slide" data-section="4" data-title="The AI rule">
+  <div class="inner">
+    <p class="kicker">The rule everyone asks about</p>
+    <ul class="build plain">
+      <li class="step"><b>I love generative AI.</b> I use it every day, for work and for my own life.</li>
+      <li class="step"><b>It can do everything this course asks of you.</b> All of it. Better and faster than you can today.</li>
+    </ul>
+    <h1 class="sowhat step" style="margin-top:2.1rem;color:var(--terra)">That is exactly why it is banned here.</h1>
+  </div>
+  <aside class="notes">Deliver the first line warmly and mean it. The rule only works because the enthusiasm is genuine. Pause a full beat before the third line. Expect questions and let them come, but hold them until after the next slide.</aside>
+</section>
+
+<!-- ---------- 15 ---------- -->
+<section class="slide" data-section="4" data-title="The forklift">
+  <div class="inner">
+    <div class="split">
+      <div>
+        <figure style="margin-top:0">
+          <svg viewBox="0 0 760 310" role="img" aria-label="A forklift lifting a barbell off a weight bench">
+            <line x1="20" y1="278" x2="740" y2="278" stroke="#98928a" stroke-width="1.6"/>
+            <g fill="none" stroke="#1F3A4D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="150" y="212" width="215" height="15" rx="7"/>
+              <path d="M172 227 V278 M345 227 V278"/>
+              <circle cx="136" cy="200" r="19"/>
+              <path d="M158 210 H330"/>
+              <path d="M330 214 L352 250 L368 276"/>
+              <path d="M250 206 L242 168 M282 206 L290 168"/>
+            </g>
+            <g stroke="#1F3A4D" stroke-width="3.4" stroke-linecap="round">
+              <line x1="188" y1="160" x2="348" y2="160"/>
+            </g>
+            <g fill="#1F3A4D">
+              <rect x="192" y="136" width="11" height="48" rx="3"/>
+              <rect x="333" y="136" width="11" height="48" rx="3"/>
+            </g>
+            <g fill="none" stroke="#B5471E" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M470 190 H646 a10 10 0 0 1 10 10 V252 H470 Z"/>
+              <path d="M562 130 H648 a8 8 0 0 1 8 8 V190 H562 Z"/>
+              <path d="M442 96 V262 M456 96 V262 M442 96 H456"/>
+              <path d="M449 172 H418 M418 172 V182 M418 176 H196"/>
+              <circle cx="506" cy="264" r="24"/>
+              <circle cx="614" cy="264" r="24"/>
+            </g>
+            <g fill="#B5471E" opacity=".2">
+              <rect x="196" y="170" width="222" height="10" rx="4"/>
+            </g>
+          </svg>
+          <figcaption>The forklift can lift it. That is exactly why it is not allowed in the gym.</figcaption>
+        </figure>
+      </div>
+      <div>
+        <h2 class="sub" style="margin-top:0">You are not here to get answers. You are here to build the judgment to tell a good answer from a bad one.</h2>
+        <div class="callout step"><b>AI-generated content in any assessment is academic misconduct.</b> It can mean failing the assignment or the course.</div>
+        <div class="callout step"><b>Library rule.</b> Use the libraries and syntax taught in class. Substituting a different library for the same model scores zero.</div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">The forklift is the whole argument in one picture. Nobody thinks a forklift in a gym is cheating in a clever way. They think it misses the point of being there. Take questions here.</aside>
+</section>
+
+<!-- ---------- 16 ---------- -->
+<section class="slide" data-section="4" data-title="Disagree with me, out loud">
+  <div class="inner">
+    <h1 class="sowhat">Disagree with me. Out loud.</h1>
+    <ul class="build">
+      <li class="step">I will not judge you for a wrong answer. Nobody else in this room gets to either.</li>
+      <li class="step">A wrong answer said out loud is worth more than a right answer kept quiet. I can only fix what I can hear.</li>
+    </ul>
+    <p class="punch step">I like being challenged. It is how I find out what I have been getting wrong.</p>
+  </div>
+  <aside class="notes">Then prove it within ten minutes by actually inviting a challenge on the R versus Python slide. A promise of safety that is never tested is not believed.</aside>
+</section>
+
+<!-- ---------- 17 ---------- -->
+<section class="slide" data-section="5" data-title="But industry uses Python">
+  <div class="inner">
+    <p class="kicker q">The question I get every single year</p>
+    <h1 class="sowhat">&ldquo;But industry uses Python.&rdquo;</h1>
+    <ul class="build">
+      <li class="step">True. And beside the point here.</li>
+      <li class="step">We optimize for learning the ideas fast, and <code>tsibble</code>, <code>feasts</code> and <code>fable</code> are the cleanest time series stack that exists in any language.</li>
+      <li class="step">Production is mostly not Python either. It is SQL, Rust, Rails, Java, whatever the team already runs.</li>
+    </ul>
+    <p class="punch step">The concepts transfer. The syntax is a weekend.</p>
+  </div>
+  <aside class="notes"><span class="clock">0:35 &rarr; 0:41 for this and the repo slide</span>
+  Good place to make the safe-space promise real. Ask directly whether anyone wants to argue the Python case, and take it seriously if they do.</aside>
+</section>
+
+<!-- ---------- 18 ---------- -->
+<section class="slide" data-section="6" data-title="The repo">
+  <div class="inner">
+    <p class="kicker">Everything lives in one place</p>
+    <p class="url" style="margin-top:0">github.com/aleberriz/tsa-fpp3-2026</p>
+    <ul class="build" style="margin-top:2rem">
+      <li class="step"><b>Download ZIP.</b> Green Code button, then Download ZIP. Re-download every week or so.</li>
+      <li class="step"><b>Or clone once, then <code>git pull</code> before each class.</b> Recommended, not required, and Git is not graded.</li>
+      <li class="step"><b>Open <code>tsa.Rproj</code> first, always.</b> It sets the working directory so the code runs with no edits.</li>
+    </ul>
+    <p class="small">The repo is updated all term. Homework is submitted on Blackboard, not here.</p>
+  </div>
+  <aside class="notes">Write the URL on the board too. It is the single most important string of the session and somebody will be sitting behind a pillar.</aside>
+</section>
+
+<!-- ---------- 19 ---------- -->
+<section class="slide" data-section="7" data-title="Switch to RStudio">
+  <div class="inner">
+    <p class="kicker">Now we run it</p>
+    <h1 class="sowhat">Open <code>session01.R</code></h1>
+    <ul class="build plain" style="margin-top:1.8rem">
+      <li><b>&sect;0</b> &nbsp; Check your setup</li>
+      <li><b>&sect;1</b> &nbsp; What is a time series?</li>
+      <li><b>&sect;2</b> &nbsp; Why bother? Forecasting many series at once</li>
+      <li><b>&sect;3</b> &nbsp; If something went wrong</li>
+      <li><b>&sect;4</b> &nbsp; The finish line</li>
+    </ul>
+    <div class="callout"><b>Run it one section at a time.</b> Select the section, then <code>Ctrl+Enter</code>, or <code>Cmd+Enter</code> on a Mac. Read the output before moving on.</div>
+  </div>
+  <aside class="notes"><span class="clock">0:41 &rarr; 1:05 for the live run</span>
+  Leave this slide up while you switch windows. If anything opens an interactive prompt, the console reads every following line as an answer to it. Type 0 and Enter, or press Esc, to recover.</aside>
+</section>
+
+<!-- ---------- 20 ---------- -->
+<section class="slide" data-section="7" data-title="Section 0, check your setup">
+  <div class="inner">
+    <p class="kicker">session01.R &nbsp;&middot;&nbsp; section 0</p>
+    <h1 class="sowhat">It reports. It does not install.</h1>
+    <div class="console">R version : R version 4.6.1
+Library   : /home/you/R/x86_64-.../4.6
+
+Core toolkit (from install.packages("fpp3")):
+  package     status version
+1 fpp3        <span class="hl">OK</span>     1.0.3
+2 tsibble     <span class="hl">OK</span>     1.2.0
+...
+Course packages (installed separately):
+  package      status  version
+1 tidyverse    <span class="hl">MISSING</span> -
+2 nycflights13 <span class="hl">OK</span>      1.0.2
+4 urca         <span class="hl">OK</span>      1.3.4
+...
+&gt;&gt;&gt; MISSING: tidyverse
+&gt;&gt;&gt; Run:  install.packages(c("tidyverse"))</div>
+    <div class="figrow" style="margin-top:1.5rem">
+      <p class="step"><b>Table one</b>What <code>install.packages("fpp3")</code> gives you in a single line.</p>
+      <p class="step"><b>Table two</b>Nine more that fpp3 does not include. You have to ask for them by name.</p>
+    </div>
+    <p class="punch step">Already have R running? Check both tables now. No R yet? Do nothing. That is what the clinic at the end is for.</p>
+  </div>
+  <aside class="notes">Only walk the room for the students who already have R up. Most will not, and chasing them here burns the live run. They will run this themselves in the clinic. Where you do get a table, glance at the library path: one sitting inside OneDrive or a network share means permission trouble later, even though everything looks fine today.</aside>
+</section>
+
+<!-- ---------- 21 ---------- -->
+<section class="slide" data-section="7" data-title="How to read a tsibble">
+  <div class="inner">
+    <p class="kicker">session01.R &nbsp;&middot;&nbsp; section 1</p>
+    <h1 class="sowhat">How to read a tsibble.</h1>
+    <div class="console"># A tsibble: 15,150 x 9 <span class="hl">[1Y]</span>
+# Key:       <span class="hl">Country [263]</span></div>
+    <div class="figrow" style="margin-top:1.5rem">
+      <p class="step"><b>[1Y]</b>One observation per year. That is the <i>interval</i>.</p>
+      <p class="step"><b>Country [263]</b>263 separate series, stacked in one table.</p>
+    </div>
+    <p class="punch step">The <b>index</b> is the time column. The <b>key</b> is what tells the series apart. A plain data frame has neither.</p>
+  </div>
+  <aside class="notes">Get a student to read the header out loud. Then filter to Spain and have them notice the key change to Country [1] and the row count drop to 58. The header is the teaching object here, not the data.</aside>
+</section>
+
+<!-- ---------- 22 ---------- -->
+<section class="slide" data-section="7" data-title="We never wrote x = Year">
+  <div class="inner">
+    <p class="kicker">session01.R &nbsp;&middot;&nbsp; section 1</p>
+    <h1 class="sowhat">We never wrote <code>x = Year</code>.</h1>
+    <div class="console">spain_economy %&gt;%
+  autoplot(Population)</div>
+    <p class="punch step">The tsibble already knows which column is time. That is what the index buys you, and it is why we do not work in plain data frames.</p>
+  </div>
+  <aside class="notes">This is the first plot of the course. Let it sit on screen for a moment before saying anything. The payoff is the absence of code, so point at what is not there.</aside>
+</section>
+
+<!-- ---------- 23 ---------- -->
+<section class="slide" data-section="7" data-title="A trailer, not a lesson">
+  <div class="inner">
+    <p class="kicker">session01.R &nbsp;&middot;&nbsp; section 2</p>
+    <h1 class="sowhat">This is a trailer, not a lesson.</h1>
+    <ul class="build">
+      <li class="step">You are not expected to follow the modeling. You will spend the term learning what those two lines do.</li>
+      <li class="step">Five countries. Two model families. Four years ahead. One pipeline, no loop.</li>
+    </ul>
+    <div class="console step"># A <span class="hl">mable</span>: 5 x 3          5 series, 2 fitted models each
+  Country ets           arima
+1 Brazil  &lt;ETS(A,A,N)&gt;  &lt;ARIMA(3,2,1)&gt;
+2 Germany &lt;ETS(M,Ad,N)&gt; &lt;ARIMA(1,1,0) w/ drift&gt;
+
+# A <span class="hl">fable</span>: 40 x 5 [1Y]    5 x 2 x 4 = 40 forecasts</div>
+    <div class="callout">ETS is the last block of this course. ARIMA belongs to next term.</div>
+  </div>
+  <aside class="notes">Say the word trailer out loud. Without it a few students will quietly panic that they were meant to be following the modeling, and they will stay panicked for the rest of the hour.</aside>
+</section>
+
+<!-- ---------- 24 ---------- -->
+<section class="slide" data-section="7" data-title="The fable: dist vs mean">
+  <div class="inner">
+    <p class="kicker">Look at the fable. Two columns, side by side.</p>
+    <p class="huge long">N(211, 0.0021)</p>
+    <h2 class="sub" style="margin-top:1.5rem">That is not a number. It is a normal distribution. Brazil, 2018, in millions of people.</h2>
+    <div class="figrow" style="margin-top:1.6rem">
+      <p class="step"><b>Pop &nbsp;&lt;dist&gt;</b>The forecast. A whole distribution, mean and variance.</p>
+      <p class="step"><b>.mean &nbsp;&lt;dbl&gt;</b>211. The number everybody quotes. Only a summary of the column to its left.</p>
+    </div>
+    <p class="punch step" style="margin-top:1.5rem;font-size:var(--fs-sowhat);line-height:1.08;max-width:22ch">A forecast is a random variable.</p>
+  </div>
+  <aside class="notes">The highest-value sixty seconds of the session. Point at the console, not at the slide. fable prints the distribution and its mean in adjacent columns, so the whole argument is visible in one screenshot on day one. Call back to the cone from the opening.</aside>
+</section>
+
+<!-- ---------- 25 ---------- -->
+<section class="slide" data-section="7" data-title="Three ways to show one forecast">
+  <div class="inner">
+    <p class="kicker">session01.R &nbsp;&middot;&nbsp; section 2</p>
+    <h1 class="sowhat wide">Three ways to show the same forecast.</h1>
+    <ul class="build">
+      <li class="step"><b>Point forecast only.</b> Looks confident. Tells you nothing about the risk.</li>
+      <li class="step"><b>With a 95% interval.</b> Now you can see what the model does not know.</li>
+      <li class="step"><b>With the history attached.</b> Now you can judge whether to believe any of it.</li>
+    </ul>
+    <p class="punch step">Always ask for the third one.</p>
+    <p class="small">Then look at Germany around 1990. What should a model do with a jump like that? Hold that thought.</p>
+  </div>
+  <aside class="notes">Ask the Germany question and then move on without answering it. Structural breaks are not today's material, but the question is worth carrying for the rest of the term.</aside>
+</section>
+
+<!-- ---------- 26 ---------- -->
+<section class="slide" data-section="7" data-title="The finish line">
+  <div class="inner">
+    <p class="kicker">session01.R &nbsp;&middot;&nbsp; section 4</p>
+    <h1 class="sowhat">The finish line.</h1>
+    <div class="console terra">library(fpp3)
+
+aus_production %&gt;%
+  autoplot(Beer)</div>
+    <p class="lead step">If that plot appears in the bottom-right pane, your environment works and you are ready for Session 2.</p>
+    <p class="punch step">Run it yourself. Do not watch me run it.</p>
+  </div>
+  <aside class="notes">Wait for hands. The stated outcome of this session is that every student can plot a series on their own machine, and this is the evidence. It is the same check as the last step of setup/SETUP.md.</aside>
+</section>
+
+<!-- ---------- 27 ---------- -->
+<section class="slide" data-section="8" data-title="Homework">
+  <div class="inner">
+    <p class="kicker">Due before Session 2</p>
+    <h1 class="sowhat">Homework.</h1>
+    <ul class="build">
+      <li>Work through <code>self-study/00-r-basics/</code>, in order: <code>00_A_1</code>, <code>00_A_2</code>, <code>00_A_3</code>, <code>00_A_4</code>, then <code>00_B_1</code>.</li>
+      <li>Confirm that <code>library(fpp3)</code> loads on your own machine with no errors.</li>
+      <li>Read fpp3 sections 1.1 to 1.7.</li>
+    </ul>
+    <div class="callout"><b>Submit on Blackboard.</b> Write the code yourself.</div>
+  </div>
+  <aside class="notes"><span class="clock">1:05 &rarr; 1:08</span>
+  The R primer is mandatory and everything after Session 2 assumes it. Say that plainly, because it looks optional sitting in a folder called self-study.</aside>
+</section>
+
+<!-- ---------- 28 ---------- -->
+<section class="slide" data-section="8" data-title="Ask me anything">
+  <div class="inner">
+    <h1 class="sowhat">Ask me anything.</h1>
+    <p class="url">aberrizbeitia@faculty.ie.edu</p>
+    <p class="lead">Any time. Stuck on an install, stuck on an idea, or you think I got something wrong in class. Office hours on request, just email me.</p>
+  </div>
+  <aside class="notes">Say a realistic reply time and then keep to it. A promise to be reachable is only worth what the first unanswered email says about it.</aside>
+</section>
+
+<!-- ---------- 29 ---------- -->
+<section class="slide" data-section="9" data-title="Nobody leaves broken">
+  <div class="inner">
+    <p class="kicker">The rest of the session is yours</p>
+    <h1 class="sowhat">Nobody leaves this room broken.</h1>
+    <div class="cards">
+      <div class="card"><h3>It works</h3><p>Help the person next to you. Explaining it is the fastest way to find out whether you actually understood it.</p></div>
+      <div class="card"><h3>It half works</h3><p>Go to the trap list on the next slide. Most failures are one of six things.</p></div>
+      <div class="card"><h3>Nothing works</h3><p>Come to the front. We install from zero together, and you will not fall behind.</p></div>
+      <div class="card"><h3>Everything works</h3><p>Start the homework. The R primer is longer than it looks.</p></div>
+    </div>
+  </div>
+  <aside class="notes"><span class="clock">1:08 &rarr; 1:20</span>
+  Triage by walking the room rather than by asking for hands. People who are stuck are the least likely to raise one.</aside>
+</section>
+
+<!-- ---------- 30 ---------- -->
+<section class="slide" data-section="9" data-title="The install order">
+  <div class="inner">
+    <p class="kicker">setup/SETUP.md</p>
+    <h1 class="sowhat">The order matters.</h1>
+    <ul class="build">
+      <li><b>R first</b>, from cran.r-project.org. Windows also needs <b>Rtools</b> matching your R version. Mac: arm64 for Apple Silicon, x86_64 for Intel.</li>
+      <li><b>RStudio Desktop second</b>, from posit.co. It is only a front end. It looks for an R that already exists.</li>
+      <li><b>Packages third</b>, in the RStudio console. Both lines, not just the first.</li>
+    </ul>
+    <div class="console terra">install.packages("fpp3")
+
+install.packages(c(
+  "tidyverse", "nycflights13", "babynames",
+  "<span class="hl">urca</span>",
+  "GGally", "fma", "patchwork",
+  "cowplot", "seasonal"
+))</div>
+    <div class="callout"><b>The second line is not optional.</b> None of those nine come with fpp3. <code>tidyverse</code> is needed for your first homework, and <code>urca</code> is needed by <code>ARIMA()</code> today.</div>
+    <p class="small">On Linux, install the development headers listed in setup/SETUP.md <b>before</b> any of this. Quarto needs no separate install: RStudio already ships it.</p>
+  </div>
+  <aside class="notes">The second line is the one that costs an hour if it is missed, because the failure looks nothing like a missing package. R stops and shows a Selection: prompt, then reads the rest of the script as answers to it, and it looks like the script has gone insane.</aside>
+</section>
+
+<!-- ---------- 31 ---------- -->
+<section class="slide" data-section="9" data-title="The six traps">
+  <div class="inner">
+    <h1 class="sowhat">The six traps.</h1>
+    <table class="traps">
+      <tr><td class="os">Windows</td><td>Install fails while building a package</td><td class="fix">Rtools is missing, or its version does not match your R.</td></tr>
+      <tr><td class="os">Windows</td><td>Odd library or path errors</td><td class="fix">An accented letter in your username breaks R's library path. Tell me and we will repoint it.</td></tr>
+      <tr><td class="os">Windows</td><td>An install that silently does nothing</td><td class="fix">A OneDrive-synced home folder. Use a local, non-synced location.</td></tr>
+      <tr><td class="os">macOS</td><td>An &ldquo;architecture&rdquo; error</td><td class="fix">Wrong R build. arm64 for Apple Silicon, x86_64 for Intel.</td></tr>
+      <tr><td class="os">macOS</td><td>RStudio will not open</td><td class="fix">Right-click the app, then Open, then confirm. One time only.</td></tr>
+      <tr><td class="os">Any</td><td>Stuck at <code>Selection:</code></td><td class="fix">Type <code>0</code> and press Enter, or press Esc, to get back to the <code>&gt;</code> prompt.</td></tr>
+    </table>
+    <p class="small">All of this, with the platform-by-platform detail: <b>setup/SETUP.md</b> in the repo.</p>
+  </div>
+  <aside class="notes">Leave this slide up for the rest of the clinic. It answers most questions before they get asked, and it means students helping each other have something to point at.</aside>
+</section>
+
+<!-- lives inside the stage so it is positioned against it, not the viewport,
+     and therefore never covers the rail -->
+<div id="notepane"><h4>Presenter notes</h4><div class="body"></div></div>
+
+</main>
+
+<!-- ============================== CHROME ============================== -->
+<div id="overview">
+  <h3>Jump to a slide</h3>
+  <ul id="ovlist"></ul>
+</div>
+
+<div id="hud">
+  <span id="count">1 / 31</span>
+  <button id="prev" title="Previous">&larr;</button>
+  <button id="next" title="Next">&rarr;</button>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var SECTIONS = [
+    {name:"Why forecasting",   from:1,  to:6},
+    {name:"Who I am",          from:7,  to:8},
+    {name:"The course",        from:9,  to:12},
+    {name:"Rules",             from:13, to:16},
+    {name:"Why R",             from:17, to:17},
+    {name:"The repo",          from:18, to:18},
+    {name:"Live in RStudio",   from:19, to:26},
+    {name:"Homework",          from:27, to:28},
+    {name:"Setup clinic",      from:29, to:31}
+  ];
+
+  var slides = Array.prototype.slice.call(document.querySelectorAll(".slide"));
+  var toc    = document.getElementById("toc");
+  var ovlist = document.getElementById("ovlist");
+  var bar    = document.querySelector("#bar i");
+  var count  = document.getElementById("count");
+  var noteBody = document.querySelector("#notepane .body");
+
+  var si = 0;   // current slide, zero based
+  var sti = 0;  // number of steps revealed on the current slide
+
+  /* ---- build the rail ---- */
+  SECTIONS.forEach(function(sec, i){
+    var li = document.createElement("li");
+    li.innerHTML = '<span class="num">' + (i+1) + '</span><span>' + sec.name + '</span>';
+    li.addEventListener("click", function(){ go(sec.from - 1, 0); });
+    toc.appendChild(li);
+  });
+
+  /* ---- build the jump list ---- */
+  SECTIONS.forEach(function(sec){
+    var head = document.createElement("li");
+    head.className = "head";
+    head.textContent = sec.name;
+    ovlist.appendChild(head);
+    for (var n = sec.from; n <= sec.to; n++){
+      (function(idx){
+        var li = document.createElement("li");
+        li.innerHTML = '<span class="n">' + (idx+1) + '</span><span>' +
+                       (slides[idx].getAttribute("data-title") || "") + '</span>';
+        li.addEventListener("click", function(){
+          document.body.classList.remove("ov-on");
+          go(idx, "all");
+        });
+        ovlist.appendChild(li);
+      })(n - 1);
+    }
+  });
+  var ovItems = Array.prototype.slice.call(ovlist.querySelectorAll("li:not(.head)"));
+
+  function steps(i){
+    return Array.prototype.slice.call(slides[i].querySelectorAll(".step"));
+  }
+
+  function paint(){
+    slides.forEach(function(s, i){ s.classList.toggle("active", i === si); });
+
+    var num = si + 1;
+    var active = 0;
+    SECTIONS.forEach(function(sec, i){
+      if (num >= sec.from && num <= sec.to) active = i;
+    });
+    Array.prototype.slice.call(toc.children).forEach(function(li, i){
+      li.classList.toggle("on", i === active);
+      li.classList.toggle("done", i < active);
+    });
+    ovItems.forEach(function(li, i){ li.classList.toggle("on", i === si); });
+
+    bar.style.width = (num / slides.length * 100) + "%";
+    count.textContent = num + " / " + slides.length;
+
+    var n = slides[si].querySelector(".notes");
+    noteBody.innerHTML = n ? n.innerHTML : "<i>No notes for this slide.</i>";
+
+    if (history.replaceState) history.replaceState(null, "", "#" + num);
+  }
+
+  function go(i, mode){
+    if (i < 0 || i >= slides.length) return;
+    si = i;
+    var st = steps(si);
+    if (mode === "all"){
+      st.forEach(function(e){ e.classList.add("on"); });
+      sti = st.length;
+    } else {
+      st.forEach(function(e){ e.classList.remove("on"); });
+      sti = 0;
+    }
+    paint();
+  }
+
+  function next(){
+    var st = steps(si);
+    if (sti < st.length){ st[sti].classList.add("on"); sti++; }
+    else go(si + 1, 0);
+  }
+
+  function prev(){
+    if (sti > 0){ sti--; steps(si)[sti].classList.remove("on"); }
+    else go(si - 1, "all");
+  }
+
+  document.getElementById("next").addEventListener("click", next);
+  document.getElementById("prev").addEventListener("click", prev);
+
+  document.addEventListener("keydown", function(e){
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var k = e.key;
+
+    if (document.body.classList.contains("ov-on")){
+      if (k === "Escape" || k === "o" || k === "O"){
+        document.body.classList.remove("ov-on"); e.preventDefault();
+      }
+      return;
+    }
+
+    if (k === "ArrowRight" || k === " " || k === "PageDown" || k === "ArrowDown"){ next(); e.preventDefault(); }
+    else if (k === "ArrowLeft" || k === "PageUp" || k === "ArrowUp"){ prev(); e.preventDefault(); }
+    else if (k === "Home"){ go(0, 0); e.preventDefault(); }
+    else if (k === "End"){ go(slides.length - 1, "all"); e.preventDefault(); }
+    else if (k === "n" || k === "N"){ toggleNotes(); e.preventDefault(); }
+    else if (k === "o" || k === "O"){ document.body.classList.add("ov-on"); e.preventDefault(); }
+    else if (k === "[" || k === "]"){ document.body.classList.toggle("rail-hidden"); e.preventDefault(); }
+    else if (k === "f" || k === "F"){
+      if (document.fullscreenElement) document.exitFullscreen();
+      else document.documentElement.requestFullscreen();
+      e.preventDefault();
+    }
+  });
+
+  function toggleNotes(){
+    var on = document.body.classList.toggle("notes-on");
+    document.documentElement.style.setProperty("--notes-h", on ? "212px" : "0px");
+  }
+
+  /* ---- start ---- */
+  var start = parseInt((location.hash || "").replace("#", ""), 10);
+  go(isNaN(start) ? 0 : Math.min(Math.max(start - 1, 0), slides.length - 1),
+     isNaN(start) ? 0 : "all");
+})();
+</script>
+</body>
+</html>
