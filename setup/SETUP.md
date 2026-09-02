@@ -43,12 +43,17 @@ Download from **<https://posit.co/download/rstudio-desktop/>** and install for y
   ```
   sudo dnf install ./rstudio-*.rpm
   ```
-  If you later hit missing-library errors while building packages, install the common dev headers:
+  **Then, before installing any R package, install the development headers:**
   ```
-  sudo dnf install libcurl-devel openssl-devel libxml2-devel \
-    fontconfig-devel freetype-devel harfbuzz-devel fribidi-devel
+  sudo dnf install gcc gcc-c++ make \
+    libcurl-devel openssl-devel libxml2-devel \
+    fontconfig-devel freetype-devel harfbuzz-devel fribidi-devel \
+    libpng-devel libtiff-devel libjpeg-turbo-devel
   ```
-  (Only needed for source compiles — many packages ship as ready-made binaries.)
+  This step is **not optional on Linux.** Windows and macOS download ready-built
+  packages from CRAN, but CRAN publishes no Linux builds, so on Fedora every package is
+  compiled on your machine from source — and compiling needs these headers. Skip it and
+  installs fail with messages like `dependencies 'httr', 'xml2' are not available`.
 
 ## 3. Install the course packages
 
