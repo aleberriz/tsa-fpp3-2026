@@ -1,5 +1,22 @@
 # Session 02 — Time series as a stochastic process + the tsibble
 
-**fpp3:** 2.1 (tsibbles); the stochastic-process framing is course-specific material
+**fpp3:** 2.1 (tsibbles)
 
-**Outcome:** Student can state why forecasts are random variables, and can build a valid tsibble with the right index and key.
+**Also:** Shumway & Stoffer, *Time Series: A Data Analysis Approach Using R* (2019), Ch. 1 — the
+stochastic-process framing. This is the compulsory-text citation for the course; the framing is not in
+fpp3 at all.
+
+**Focus:** A time series as a collection of random variables `{Y_t}` indexed over time; uppercase
+(process) vs lowercase (realization); past values as realized random variables, future values as
+unrealized; why the variables are correlated and therefore not independent, and in general not
+identically distributed, so the IID hypothesis behind the CLT does not apply. Then the mechanics:
+lubridate parsing, `yearmonth`/`yearquarter`/`yearweek`, `tsibble()`, `as_tsibble()`, `index_by()`.
+
+**R:** `ymd()`, `make_date()`, `as_datetime()`, `yearmonth()`, `tsibble()`, `as_tsibble()`,
+`index_by()`, `scale_x_yearmonth()`
+
+**Homework:** `00_RBasics/00_C_basic_tibbles_dplyr_exercises`. No solutions are published for the
+primer — work through it on your own.
+
+**Outcome:** Student can state why forecasts are random variables, and can build a valid tsibble with
+the right index and key.

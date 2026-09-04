@@ -4,6 +4,10 @@ Forecasting & Time Series Analysis for 3rd-year Business & Data students at IE U
 
 This repo holds everything you need for the course: session-by-session materials, notes, data files, and a setup guide. It follows the textbook *Forecasting: Principles and Practice* (3rd ed.) — <https://otexts.com/fpp3/> — the chapters up to and including exponential smoothing, taught in **R**.
 
+**[SYLLABUS.md](SYLLABUS.md) is the course document**: the 20-session program, assessment weights, the generative-AI and library policies, the retake rules and the bibliography. Read it once at the start of term.
+
+The course's method is **build it by hand, then verify against the library** — you will implement classical decomposition, simple exponential smoothing, prediction intervals and the error metrics yourself before calling the function that does them. Doing those by hand is the point; reaching for a library call instead skips the learning.
+
 ---
 
 ## Before the first class
@@ -15,6 +19,10 @@ Please arrive with your environment ready. Full instructions are in **[setup/SET
 3. Get this repo (see below).
 
 If you get stuck, don't worry: **Session 1 is a supported install day.** But the more you set up beforehand, the more class time we spend on forecasting instead of installers.
+
+## The R primer is mandatory
+
+Work through the seven short documents in **[self-study/00-r-basics/](self-study/00-r-basics/)** during the first two weeks of term. Everything after Session 2 assumes them. They are self-study: solutions are not distributed.
 
 ## Getting the materials
 
@@ -29,18 +37,19 @@ Click the green **Code** button at the top of this page → **Download ZIP** →
 
 This repo is **updated throughout the term.** If you cloned it, run `git pull` before each class to get the latest materials. If you downloaded the ZIP, re-download every week or so.
 
-## How the repo is organised
+## How the repo is organized
 
 ```
 tsa-fpp3-2026/
 ├── README.md            ← you are here
+├── SYLLABUS.md          ← the course document: program, assessment, policies
 ├── setup/SETUP.md       ← install guide (start here)
 ├── tsa.Rproj            ← open this in RStudio to work in the project
 ├── self-study/
 │   └── 00-r-basics/     ← mandatory R primer to work through early
 ├── sessions/
 │   ├── 01-intro-setup/
-│   │   ├── README.md    ← what the session covers + the outcome
+│   │   ├── README.md    ← textbook sections, focus, R functions, homework, outcome
 │   │   └── ...          ← the notebooks/materials for that session
 │   └── ...              ← one folder per session, 01–20
 ├── assignments/         ← the two group assignments
