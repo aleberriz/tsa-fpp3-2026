@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Session 2 · Time Series Analysis · Fall 2026</title>
+<style>
+/* ============================================================
+   Session 02 slides. Same self-contained shell as Session 01:
+   no fonts, scripts or images are fetched from the network, so
+   this renders identically on a projector with no internet.
+   ============================================================ */
+
+:root{
+  --paper:#FAF8F5;
+  --ink:#161513;
+  --muted:#6B665E;
+  --faint:#98928a;
+  --hair:#E4DFD5;
+  --slate:#1F3A4D;
+  --terra:#B5471E;
+  --sage:#6B7F5E;
+  --sand:#EFEAE1;
+
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
+  --mono:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+
+  --fs-huge:clamp(3.4rem,9vw,10rem);
+  --fs-sowhat:clamp(2.1rem,4.3vw,4.8rem);
+  --fs-h2:clamp(1.5rem,2.6vw,2.9rem);
+  --fs-lead:clamp(1.05rem,1.62vw,1.95rem);
+  --fs-body:clamp(0.95rem,1.25vw,1.5rem);
+  --fs-small:clamp(0.82rem,0.98vw,1.15rem);
+  --fs-kicker:clamp(0.66rem,0.8vw,0.95rem);
+  --fs-mono:clamp(0.88rem,1.28vw,1.62rem);
+
+  --rail:266px;
+  --notes-h:0px;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  -webkit-font-smoothing:antialiased;
+  display:flex;
+  overflow:hidden;
+}
+
+/* ---------------- left rail ---------------- */
+
+#rail{
+  width:var(--rail);
+  flex:0 0 var(--rail);
+  border-right:1px solid var(--hair);
+  background:var(--sand);
+  display:flex;
+  flex-direction:column;
+  padding:2.1rem 0 1.1rem;
+  transition:margin-left .25s ease;
+  z-index:5;
+}
+body.rail-hidden #rail{margin-left:calc(-1 * var(--rail))}
+
+#rail .brand{padding:0 1.6rem 1.5rem;border-bottom:1px solid var(--hair)}
+#rail .brand b{
+  display:block;font-family:var(--serif);font-size:1.18rem;
+  font-weight:500;line-height:1.15;letter-spacing:.005em;
+}
+#rail .brand span{
+  display:block;margin-top:.42rem;font-size:.7rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--muted);
+}
+
+#toc{list-style:none;margin:0;padding:1rem 0;flex:1;overflow:auto}
+#toc li{
+  display:flex;gap:.72rem;align-items:baseline;
+  padding:.52rem 1.6rem .52rem 1.25rem;
+  font-size:.83rem;line-height:1.3;color:var(--muted);
+  border-left:3px solid transparent;cursor:pointer;
+  transition:color .15s ease,border-color .15s ease;
+}
+#toc li .num{
+  font-variant-numeric:tabular-nums;font-size:.68rem;
+  color:var(--faint);min-width:.9rem;
+}
+#toc li:hover{color:var(--ink)}
+#toc li.on{color:var(--ink);border-left-color:var(--terra);font-weight:600}
+#toc li.on .num{color:var(--terra)}
+#toc li.done{color:var(--faint)}
+/* a dot marks the sections delivered from the RStudio screen */
+#toc li .live{
+  margin-left:auto;width:6px;height:6px;border-radius:50%;
+  background:var(--slate);opacity:.45;flex:0 0 6px;
+}
+#toc li.on .live{opacity:1}
+
+#rail .foot{padding:.9rem 1.6rem 0;border-top:1px solid var(--hair)}
+#bar{height:2px;background:var(--hair);border-radius:2px;overflow:hidden}
+#bar i{display:block;height:100%;width:0;background:var(--terra);transition:width .3s ease}
+#rail .foot .keys{
+  margin-top:.7rem;font-size:.63rem;color:var(--faint);
+  line-height:1.7;letter-spacing:.02em;
+}
+kbd{
+  font-family:var(--mono);font-size:.62rem;background:var(--paper);
+  border:1px solid var(--hair);border-radius:3px;padding:.05em .32em;color:var(--muted);
+}
+
+/* ---------------- stage ---------------- */
+
+#stage{position:relative;flex:1;min-width:0;overflow:hidden}
+
+.slide{
+  position:absolute;inset:0;bottom:var(--notes-h);
+  display:flex;overflow:auto;
+  padding:5vh 5.5vw 5vh 5vw;
+  opacity:0;visibility:hidden;
+  transition:opacity .26s ease;
+}
+.slide.active{opacity:1;visibility:visible}
+.slide > .inner{margin:auto;width:100%;max-width:1240px}
+
+/* ---------------- typography ---------------- */
+
+.kicker{
+  margin:0 0 1.15rem;font-size:var(--fs-kicker);letter-spacing:.19em;
+  text-transform:uppercase;color:var(--terra);font-weight:600;
+}
+.kicker.q{color:var(--muted)}
+
+h1.sowhat{
+  margin:0;font-family:var(--serif);font-weight:500;
+  font-size:var(--fs-sowhat);line-height:1.04;letter-spacing:-.012em;
+  max-width:19ch;
+}
+h1.sowhat.wide{max-width:26ch}
+h2.sub{
+  margin:1.5rem 0 0;font-family:var(--serif);font-weight:500;
+  font-size:var(--fs-h2);line-height:1.15;color:var(--slate);max-width:26ch;
+}
+.lead{font-size:var(--fs-lead);line-height:1.4;color:var(--muted);max-width:44ch;margin:1.3rem 0 0}
+.small{font-size:var(--fs-small);color:var(--faint);line-height:1.55;margin:1.5rem 0 0;max-width:60ch}
+.hr{height:1px;background:var(--hair);border:0;margin:1.9rem 0 0}
+
+/* inline code sits inside serif headlines and sans body alike, so it is
+   sized relative to its parent rather than at a fixed size */
+code{
+  font-family:var(--mono);font-size:.86em;letter-spacing:-.01em;
+  background:#fff;border:1px solid var(--hair);border-radius:3px;
+  padding:.08em .34em;color:var(--slate);white-space:nowrap;
+}
+h1.sowhat code{font-size:.82em;padding:.05em .26em;color:var(--ink)}
+.callout code,ul.build code{background:var(--sand);border-color:#DCD5C8}
+
+.punch{
+  font-family:var(--serif);font-size:var(--fs-h2);line-height:1.16;
+  color:var(--terra);margin:1.7rem 0 0;max-width:24ch;font-weight:500;
+}
+.punch.ink{color:var(--ink)}
+.punch.slate{color:var(--slate)}
+.punch.wide{max-width:34ch}
+
+.huge{
+  font-family:var(--mono);font-size:var(--fs-huge);line-height:1;
+  letter-spacing:-.03em;margin:0;color:var(--ink);
+}
+/* a longer literal needs a smaller ceiling or it runs off the slide */
+.huge.long{font-size:clamp(2.1rem,5.4vw,5.8rem)}
+.url{
+  font-family:var(--mono);font-size:clamp(1.1rem,2.55vw,3rem);
+  line-height:1.2;color:var(--slate);margin:1.3rem 0 0;word-break:break-word;
+}
+
+/* ---------------- builds ---------------- */
+
+ul.build{list-style:none;margin:1.9rem 0 0;padding:0}
+ul.build li{
+  font-size:var(--fs-lead);line-height:1.34;margin:0 0 1.02rem;
+  padding-left:2.1rem;position:relative;max-width:46ch;
+}
+ul.build.wide li{max-width:58ch}
+ul.build li:last-child{margin-bottom:0}
+ul.build li::before{
+  content:counter(step);counter-increment:step;
+  position:absolute;left:0;top:.24em;
+  font-family:var(--mono);font-size:.62em;color:var(--terra);
+  font-weight:700;letter-spacing:.04em;
+}
+ul.build{counter-reset:step}
+ul.build.plain li::before{content:"·";font-size:1em;top:.02em;color:var(--terra)}
+ul.build li b{font-weight:600}
+
+.step{opacity:0;transform:translateY(6px);transition:opacity .3s ease,transform .3s ease}
+.step.on{opacity:1;transform:none}
+
+/* ---------------- blocks ---------------- */
+
+.console{
+  font-family:var(--mono);font-size:var(--fs-mono);line-height:1.62;
+  background:#fff;border:1px solid var(--hair);border-left:3px solid var(--slate);
+  border-radius:3px;padding:1.05rem 1.3rem;margin:1.7rem 0 0;
+  white-space:pre;overflow-x:auto;color:var(--slate);
+}
+.console .hl{color:var(--terra);font-weight:700}
+.console .dim{color:var(--faint)}
+.console.terra{border-left-color:var(--terra)}
+.console.tight{font-size:clamp(0.78rem,1.05vw,1.32rem);padding:.85rem 1.05rem}
+
+.callout{
+  margin:1.7rem 0 0;padding:.95rem 1.25rem;border-radius:3px;
+  background:#fff;border:1px solid var(--hair);border-left:3px solid var(--terra);
+  font-size:var(--fs-body);line-height:1.45;max-width:52ch;
+}
+.callout b{color:var(--terra)}
+.callout.slate{border-left-color:var(--slate)}
+.callout.slate b{color:var(--slate)}
+
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem 1.5rem;margin:1.9rem 0 0}
+.cards.four{grid-template-columns:repeat(4,1fr);gap:1.2rem}
+.card{border-top:2px solid var(--slate);padding:.85rem 0 0}
+.card.terra{border-top-color:var(--terra)}
+.card h3{
+  margin:0 0 .5rem;font-size:var(--fs-small);letter-spacing:.11em;
+  text-transform:uppercase;color:var(--slate);font-weight:700;
+}
+.card.terra h3{color:var(--terra)}
+.card p{margin:0;font-size:var(--fs-body);line-height:1.38;color:var(--muted)}
+
+table.traps{border-collapse:collapse;margin:1.6rem 0 0;width:100%}
+table.traps td{
+  padding:.58rem .9rem .58rem 0;border-bottom:1px solid var(--hair);
+  font-size:var(--fs-body);line-height:1.35;vertical-align:top;
+}
+table.traps td.os{
+  white-space:nowrap;color:var(--slate);font-weight:700;
+  font-size:var(--fs-small);letter-spacing:.05em;text-transform:uppercase;padding-top:.72rem;
+}
+table.traps td.fix{color:var(--muted)}
+table.traps td code{white-space:nowrap}
+
+.chips{display:flex;flex-wrap:wrap;gap:.5rem;margin:1.5rem 0 0}
+.chip{
+  font-size:var(--fs-small);border:1px solid var(--hair);background:#fff;
+  border-radius:100px;padding:.34em .95em;color:var(--slate);letter-spacing:.02em;
+}
+
+figure{margin:1.7rem 0 0}
+figure svg{width:100%;height:auto;max-height:44vh;display:block}
+figcaption{
+  margin-top:1rem;font-size:var(--fs-body);color:var(--muted);
+  line-height:1.4;max-width:56ch;
+}
+.figrow{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem;margin-top:.9rem}
+.figrow.three{grid-template-columns:repeat(3,1fr);gap:1.3rem}
+.figrow p{margin:0;font-size:var(--fs-body);line-height:1.38}
+.figrow p b{display:block;color:var(--slate);letter-spacing:.05em;font-size:.8em;text-transform:uppercase;margin-bottom:.3rem}
+.figrow p.t b{color:var(--terra)}
+
+.split{display:grid;grid-template-columns:1.05fr .95fr;gap:3rem;align-items:center}
+@media (max-width:1080px){.split{grid-template-columns:1fr;gap:1.5rem}.cards.four{grid-template-columns:repeat(2,1fr)}.figrow.three{grid-template-columns:1fr}}
+
+/* two-column notation panel: the process on the left, the outcome on the right */
+.notation{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem;margin:1.8rem 0 0}
+.notation > div{border-top:2px solid var(--hair);padding:.9rem 0 0}
+.notation > div:first-child{border-top-color:var(--slate)}
+.notation > div:last-child{border-top-color:var(--terra)}
+.notation .sym{
+  font-family:var(--mono);font-size:clamp(1.2rem,2.3vw,2.5rem);
+  line-height:1.25;margin:0;color:var(--slate);letter-spacing:-.01em;
+}
+.notation > div:last-child .sym{color:var(--terra)}
+.notation p.d{margin:.7rem 0 0;font-size:var(--fs-body);line-height:1.4;color:var(--muted)}
+.notation p.d b{display:block;color:var(--ink);font-weight:600;margin-bottom:.2rem}
+
+/* ---------------- title slide ---------------- */
+
+.title-slide .inner{max-width:none}
+.title-slide h1{
+  font-family:var(--serif);font-weight:500;margin:0;
+  font-size:clamp(2.6rem,6.4vw,7.2rem);line-height:1;letter-spacing:-.02em;
+}
+.title-slide .rule{width:84px;height:3px;background:var(--terra);margin:2rem 0}
+.title-slide .who{font-size:var(--fs-lead);line-height:1.5;color:var(--muted);margin:0}
+.title-slide .who b{color:var(--ink);font-weight:600}
+
+/* ---------------- HUD ---------------- */
+
+#hud{
+  position:fixed;right:1.1rem;bottom:.85rem;z-index:20;
+  display:flex;align-items:center;gap:.55rem;
+  font-family:var(--mono);font-size:.72rem;color:var(--faint);
+}
+#hud button{
+  font:inherit;border:1px solid var(--hair);background:var(--paper);
+  color:var(--muted);border-radius:3px;width:26px;height:24px;cursor:pointer;line-height:1;
+}
+#hud button:hover{color:var(--ink);border-color:var(--muted)}
+#count{font-variant-numeric:tabular-nums;letter-spacing:.05em}
+
+/* ---------------- notes ---------------- */
+
+.notes{display:none}
+#notepane{
+  position:absolute;left:0;right:0;bottom:0;height:212px;z-index:10;
+  background:#F3EFE7;border-top:1px solid var(--hair);
+  padding:1rem 1.6rem 1.1rem;overflow:auto;display:none;
+}
+body.notes-on #notepane{display:block}
+#notepane h4{
+  margin:0 0 .55rem;font-size:.63rem;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--terra);font-weight:700;
+}
+#notepane .body{font-size:.94rem;line-height:1.58;color:#3d3a35;max-width:96ch}
+#notepane .body em{color:var(--slate);font-style:normal;font-weight:600}
+#notepane .body .clock{
+  font-family:var(--mono);background:var(--paper);border:1px solid var(--hair);
+  border-radius:3px;padding:.05em .4em;font-size:.86em;color:var(--terra);font-weight:700;
+}
+/* screen-switch cue. Loud on purpose: it is the one instruction that costs
+   you the room if you miss it. */
+#notepane .body .switch{
+  display:inline-block;font-family:var(--mono);font-size:.78em;font-weight:700;
+  letter-spacing:.09em;text-transform:uppercase;
+  background:var(--slate);color:var(--paper);border-radius:3px;
+  padding:.18em .62em;margin:0 .5em .2em 0;
+}
+#notepane .body .switch.back{background:var(--terra)}
+
+/* ---------------- overview ---------------- */
+
+#overview{
+  position:fixed;inset:0;z-index:40;background:var(--paper);
+  padding:2.4rem 3vw;overflow:auto;display:none;
+}
+body.ov-on #overview{display:block}
+#overview h3{
+  margin:0 0 1.4rem;font-family:var(--serif);font-weight:500;font-size:1.5rem;
+}
+#ovlist{columns:3;column-gap:2.6rem;list-style:none;margin:0;padding:0}
+@media (max-width:1000px){#ovlist{columns:2}}
+#ovlist li{
+  break-inside:avoid;display:flex;gap:.7rem;padding:.28rem 0;
+  font-size:.86rem;line-height:1.35;color:var(--muted);cursor:pointer;
+}
+#ovlist li:hover{color:var(--ink)}
+#ovlist li.on{color:var(--terra);font-weight:600}
+#ovlist li .n{font-family:var(--mono);font-size:.72rem;color:var(--faint);min-width:1.6rem;text-align:right}
+#ovlist li.head{
+  margin-top:1.1rem;color:var(--slate);font-weight:700;font-size:.68rem;
+  letter-spacing:.16em;text-transform:uppercase;cursor:default;
+}
+#ovlist li.head:first-child{margin-top:0}
+
+/* ---------------- print ---------------- */
+
+@media print{
+  body{display:block;overflow:visible;background:#fff}
+  #rail,#hud,#notepane,#overview{display:none !important}
+  #stage{overflow:visible;position:static}
+  .slide{
+    position:static;visibility:visible;opacity:1;bottom:0;
+    height:auto;min-height:92vh;page-break-after:always;
+    border-bottom:1px solid #ddd;
+  }
+  .step{opacity:1 !important;transform:none !important}
+  figure svg{max-height:32vh}
+}
+</style>
+</head>
+<body>
+
+<!-- ============================== RAIL ============================== -->
+<nav id="rail">
+  <div class="brand">
+    <b>Time Series Analysis</b>
+    <span>Session 2 · Fall 2026</span>
+  </div>
+  <ul id="toc"></ul>
+  <div class="foot">
+    <div id="bar"><i></i></div>
+    <div class="keys">
+      <kbd>&rarr;</kbd> next &nbsp; <kbd>&larr;</kbd> back &nbsp; <kbd>N</kbd> notes<br>
+      <kbd>O</kbd> jump &nbsp; <kbd>F</kbd> full &nbsp; <kbd>[</kbd> hide this pane
+    </div>
+  </div>
+</nav>
+
+<!-- ============================== STAGE ============================== -->
+<main id="stage">
+
+<!-- ---------- 1 ---------- -->
+<section class="slide title-slide" data-section="1" data-title="Title">
+  <div class="inner">
+    <p class="kicker">IE University · Dual Degree BBA &amp; Data and Business Analytics</p>
+    <h1>A time series<br>is a process.</h1>
+    <div class="rule"></div>
+    <p class="who"><b>Session 2.</b> Stochastic processes, and the table that holds one.<br>
+    Alejandro Berrizbeitia · aberrizbeitia@faculty.ie.edu</p>
+  </div>
+  <aside class="notes"><span class="clock">0:00 &rarr; 0:05</span>
+  Roll call runs on this slide. Do not start teaching over it. The hard stop is <em>1:20</em> and the room is handed over immediately after, so the clock markers in these notes assume teaching starts at 0:05.</aside>
+</section>
+
+<!-- ---------- 2 ---------- -->
+<section class="slide" data-section="1" data-title="Where we left off">
+  <div class="inner">
+    <p class="kicker">Session 1, last slide</p>
+    <h1 class="sowhat">Yesterday tells you something about today.</h1>
+    <ul class="build">
+      <li class="step">I left that hanging on purpose. It is the reason this field exists.</li>
+      <li class="step">Today, first, we make it precise: <b>what a time series actually is</b>, mathematically.</li>
+      <li class="step">Then, second, we get a table that can hold one: <b>the tsibble</b>.</li>
+    </ul>
+    <p class="punch step">Theory for forty minutes, then code for thirty. The theory is the part the exam is written from.</p>
+  </div>
+  <aside class="notes"><span class="clock">0:05 &rarr; 0:09</span>
+  Do not re-teach Session 1. Two sentences of callback, no more. Saying the shape of the hour out loud buys you patience for the abstract stretch that follows, because everyone can see the code is coming.</aside>
+</section>
+
+<!-- ---------- 3 ---------- -->
+<section class="slide" data-section="2" data-title="You are looking at one draw">
+  <div class="inner">
+    <p class="kicker">The idea the whole session rests on</p>
+    <h1 class="sowhat">You are looking at one draw.</h1>
+    <figure>
+      <svg viewBox="0 0 760 210" role="img" aria-label="A single series on the left, and the same series among five faint alternative paths on the right">
+        <g stroke="#E4DFD5" stroke-width="1.4" fill="none">
+          <path d="M30 190 H350 M30 190 V26"/><path d="M410 190 H730 M410 190 V26"/>
+        </g>
+        <polyline fill="none" stroke="#1F3A4D" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"
+          points="60,160 96,148 132,152 168,136 204,142 240,120 276,126 312,104 340,96"/>
+        <g fill="none" stroke="#98928a" stroke-width="1.8" stroke-linejoin="round" opacity=".55">
+          <polyline points="440,166 476,140 512,146 548,144 584,130 620,132 656,114 692,116 720,88"/>
+          <polyline points="440,152 476,158 512,140 548,128 584,150 620,112 656,136 692,96 720,106"/>
+          <polyline points="440,172 476,154 512,164 548,148 584,134 620,128 656,118 692,112 720,86"/>
+          <polyline points="440,146 476,142 512,158 548,130 584,152 620,124 656,132 692,100 720,102"/>
+          <polyline points="440,178 476,162 512,150 548,158 584,138 620,140 656,122 692,124 720,110"/>
+        </g>
+        <polyline fill="none" stroke="#1F3A4D" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"
+          points="440,160 476,148 512,152 548,136 584,142 620,120 656,126 692,104 720,96"/>
+      </svg>
+      <div class="figrow">
+        <p class="step"><b>What is on your screen</b>One series. One line. It looks like the truth about the thing you are studying.</p>
+        <p class="step t"><b>What produced it</b>A process that could have produced any of these. You got one of them.</p>
+      </div>
+    </figure>
+    <p class="punch step wide">Your data is a sample of size one from the process you actually care about. That is the whole difficulty of this course.</p>
+  </div>
+  <aside class="notes"><span class="clock">0:09 &rarr; 0:28 for this section</span>
+  Land the last line slowly. Most students arrive believing the line <em>is</em> the series. Everything else today is a consequence of the line being one realization out of many. Useful challenge to throw at the room: if we could re-run 2019, would we get the same sales curve? Nobody says yes.</aside>
+</section>
+
+<!-- ---------- 4 ---------- -->
+<section class="slide" data-section="2" data-title="Uppercase and lowercase">
+  <div class="inner">
+    <p class="kicker">The one piece of notation you have to keep straight</p>
+    <h1 class="sowhat wide">Big Y is what could happen. Small y is what did.</h1>
+    <div class="notation">
+      <div>
+        <p class="sym">{ Y<sub>1</sub>, Y<sub>2</sub>, Y<sub>3</sub>, &hellip;, Y<sub>t</sub> }</p>
+        <p class="d step"><b>The process</b>Random variables, indexed by time. This is the object we build models of. It is never printed in a table.</p>
+      </div>
+      <div>
+        <p class="sym">{ y<sub>1</sub>, y<sub>2</sub>, y<sub>3</sub>, &hellip;, y<sub>t</sub> }</p>
+        <p class="d step"><b>The realization</b>Numbers. One specific outcome of that process. This is your CSV.</p>
+      </div>
+    </div>
+    <p class="punch step wide">Every confusing exam question in this course is really asking which of these two columns you are standing in.</p>
+    <p class="small">Framing from Shumway &amp; Stoffer, <i>Time Series: A Data Analysis Approach Using R</i>, Chapter 1. It is not in fpp3 at all.</p>
+  </div>
+  <aside class="notes">Say plainly that this is the one piece of the course fpp3 does not give them, so they cannot look it up in the usual place. Write both sets on the board and leave them there for the rest of the hour, because you will point at them four more times.</aside>
+</section>
+
+<!-- ---------- 5 ---------- -->
+<section class="slide" data-section="2" data-title="Past is a number, future is a variable">
+  <div class="inner">
+    <h1 class="sowhat wide">The past is a number. The future is still a random variable.</h1>
+    <figure>
+      <svg viewBox="0 0 760 230" role="img" aria-label="Realized points to the left of a now marker, and probability distributions to the right of it">
+        <line x1="30" y1="200" x2="740" y2="200" stroke="#E4DFD5" stroke-width="1.6"/>
+        <polyline fill="none" stroke="#1F3A4D" stroke-width="2.6" stroke-linejoin="round"
+          points="60,170 110,158 160,162 210,148 260,152 310,140 360,134 410,128"/>
+        <g fill="#1F3A4D">
+          <circle cx="60" cy="170" r="5.5"/><circle cx="110" cy="158" r="5.5"/>
+          <circle cx="160" cy="162" r="5.5"/><circle cx="210" cy="148" r="5.5"/>
+          <circle cx="260" cy="152" r="5.5"/><circle cx="310" cy="140" r="5.5"/>
+          <circle cx="360" cy="134" r="5.5"/><circle cx="410" cy="128" r="5.5"/>
+        </g>
+        <line x1="447" y1="26" x2="447" y2="208" stroke="#98928a" stroke-width="1.6" stroke-dasharray="5 6"/>
+        <text x="447" y="18" text-anchor="middle" fill="#6B665E"
+              font-family="SFMono-Regular,Menlo,monospace" font-size="14">now</text>
+        <path d="M410 128 L490 118 L560 108 L630 98 L700 88" fill="none"
+              stroke="#B5471E" stroke-width="2.2" stroke-dasharray="6 5"/>
+        <g fill="#B5471E" fill-opacity=".16" stroke="#B5471E" stroke-width="1.8">
+          <path d="M490 76 C492.4 91 508 100.4 508 118 C508 135.6 492.4 145 490 160 C487.6 145 472 135.6 472 118 C472 100.4 487.6 91 490 76 Z"/>
+          <path d="M560 62 C563 80 582 91.3 582 108 C582 124.7 563 136 560 154 C557 136 538 124.7 538 108 C538 91.3 557 80 560 62 Z"/>
+          <path d="M630 46 C633.6 67 656 79.6 656 98 C656 116.4 633.6 129 630 150 C626.4 129 604 116.4 604 98 C604 79.6 626.4 67 630 46 Z"/>
+          <path d="M700 30 C704.2 54 730 68.2 730 88 C730 107.8 704.2 122 700 146 C695.8 122 670 107.8 670 88 C670 68.2 695.8 54 700 30 Z"/>
+        </g>
+        <g fill="#B5471E">
+          <circle cx="490" cy="118" r="4"/><circle cx="560" cy="108" r="4"/>
+          <circle cx="630" cy="98" r="4"/><circle cx="700" cy="88" r="4"/>
+        </g>
+      </svg>
+      <div class="figrow">
+        <p class="step"><b>Left of now</b>Realized. The randomness has been spent. <code>y3</code> is 47.2 and will be 47.2 forever.</p>
+        <p class="step t"><b>Right of now</b>Not realized. <code>Y3+h</code> still has a whole distribution attached to it.</p>
+      </div>
+    </figure>
+    <p class="punch step wide">Forecasting is describing a random variable that has not happened yet. That is where the interval comes from.</p>
+  </div>
+  <aside class="notes">The bells get wider as they go right. Point at that and say nothing else about it: growing uncertainty with horizon is Session 12, and if you explain it now you will spend ten minutes you do not have. Someone usually asks whether the past was ever random. Yes, before it happened. It stopped being random when it happened.</aside>
+</section>
+
+<!-- ---------- 6 ---------- -->
+<section class="slide" data-section="2" data-title="IID versus a time series">
+  <div class="inner">
+    <h1 class="sowhat wide">Two pictures. Only one of them is a time series.</h1>
+    <figure>
+      <svg viewBox="0 0 760 220" role="img" aria-label="Four identical independent distributions on the left, four drifting correlated distributions on the right">
+        <line x1="24" y1="200" x2="310" y2="200" stroke="#E4DFD5" stroke-width="1.4"/>
+        <line x1="418" y1="200" x2="742" y2="200" stroke="#E4DFD5" stroke-width="1.4"/>
+        <line x1="30" y1="110" x2="300" y2="110" stroke="#98928a" stroke-width="1.4" stroke-dasharray="5 6"/>
+        <g fill="#98928a" fill-opacity=".18" stroke="#98928a" stroke-width="1.6">
+          <path d="M60 70 C63.3 86 82 96 82 110 C82 124 63.3 134 60 150 C56.7 134 38 124 38 110 C38 96 56.7 86 60 70 Z"/>
+          <path d="M130 70 C133.3 86 152 96 152 110 C152 124 133.3 134 130 150 C126.7 134 108 124 108 110 C108 96 126.7 86 130 70 Z"/>
+          <path d="M200 70 C203.3 86 222 96 222 110 C222 124 203.3 134 200 150 C196.7 134 178 124 178 110 C178 96 196.7 86 200 70 Z"/>
+          <path d="M270 70 C273.3 86 292 96 292 110 C292 124 273.3 134 270 150 C266.7 134 248 124 248 110 C248 96 266.7 86 270 70 Z"/>
+        </g>
+        <g fill="#6B665E">
+          <circle cx="60" cy="132" r="5.5"/><circle cx="130" cy="92" r="5.5"/>
+          <circle cx="200" cy="124" r="5.5"/><circle cx="270" cy="101" r="5.5"/>
+        </g>
+        <!-- the drifting mean, through the centre of each distribution. Kept
+             clear of the realized path below so the two read as different things. -->
+        <path d="M450 150 L540 130 L630 105 L720 75" fill="none" stroke="#98928a"
+              stroke-width="1.4" stroke-dasharray="5 6"/>
+        <g fill="#B5471E" fill-opacity=".16" stroke="#B5471E" stroke-width="1.6">
+          <path d="M450 116 C452.7 129.6 468 138.1 468 150 C468 161.9 452.7 170.4 450 184 C447.3 170.4 432 161.9 432 150 C432 138.1 447.3 129.6 450 116 Z"/>
+          <path d="M540 88 C543.6 104.8 564 115.3 564 130 C564 144.7 543.6 155.2 540 172 C536.4 155.2 516 144.7 516 130 C516 115.3 536.4 104.8 540 88 Z"/>
+          <path d="M630 55 C634.5 75 660 87.5 660 105 C660 122.5 634.5 135 630 155 C625.5 135 600 122.5 600 105 C600 87.5 625.5 75 630 55 Z"/>
+          <path d="M720 22 C725.1 44 752 57.4 752 76 C752 94.6 725.1 108 720 130 C714.9 108 688 94.6 688 76 C688 57.4 714.9 44 720 22 Z"/>
+        </g>
+        <polyline fill="none" stroke="#1F3A4D" stroke-width="2.8" stroke-linejoin="round"
+          points="450,158 540,124 630,112 720,68"/>
+        <g fill="#1F3A4D">
+          <circle cx="450" cy="158" r="5.5"/><circle cx="540" cy="124" r="5.5"/>
+          <circle cx="630" cy="112" r="5.5"/><circle cx="720" cy="68" r="5.5"/>
+        </g>
+      </svg>
+      <div class="figrow">
+        <p class="step"><b>Independent and identically distributed</b>Same mean, same variance, no memory. Every method you were taught before this course assumes this picture.</p>
+        <p class="step t"><b>A real time series</b>The mean moves. The spread moves. And each draw remembers the one before it, which is why the dots join up.</p>
+      </div>
+    </figure>
+    <p class="punch step">Not independent. Not identically distributed. The Central Limit Theorem has nothing left to stand on.</p>
+  </div>
+  <aside class="notes">This is the slide the midterm question comes from. Make them say both failures out loud, in order, because students reliably remember &ldquo;not independent&rdquo; and reliably forget &ldquo;not identically distributed.&rdquo; The dashed line through each panel is the mean: flat on the left, drifting on the right.</aside>
+</section>
+
+<!-- ---------- 7 ---------- -->
+<section class="slide" data-section="2" data-title="Why they are correlated">
+  <div class="inner">
+    <p class="kicker">Where the correlation comes from</p>
+    <h1 class="sowhat">Because yesterday causes today.</h1>
+    <ul class="build">
+      <li class="step">Yesterday's closing inventory <b>is</b> this morning's opening stock.</li>
+      <li class="step">Last month's subscribers <b>are</b> most of this month's renewals.</li>
+      <li class="step">This morning's temperature <b>is</b> most of this afternoon's.</li>
+    </ul>
+    <p class="punch step wide">The correlation is not contamination in the data. It is the only reason forecasting works at all.</p>
+  </div>
+  <aside class="notes">Reframe deliberately. Students meet autocorrelation first as a violated assumption and quietly file it under &ldquo;problem.&rdquo; It is the asset. If today were independent of yesterday there would be nothing to forecast and no course. Session 4 gives it a name and a measurement.</aside>
+</section>
+
+<!-- ---------- 8 ---------- -->
+<section class="slide" data-section="2" data-title="The payoff from session 1">
+  <div class="inner">
+    <p class="kicker">Session 1, the fable, the thing I told you to hold</p>
+    <p class="huge long">N(211, 0.0021)</p>
+    <h2 class="sub">Brazil, 2018, millions of people. On day one this was just a strange-looking cell.</h2>
+    <div class="figrow" style="margin-top:1.6rem">
+      <p class="step t"><b>Y<sub>2018</sub></b>The random variable. Not yet realized in 2017, when the model was fitted. This is what fable printed.</p>
+      <p class="step"><b>y<sub>2018</sub></b>The single number history went on to record. One draw from the cell on the left.</p>
+    </div>
+    <p class="punch step wide">fable prints a distribution because the distribution is the forecast. The number everyone quotes is a summary of it.</p>
+  </div>
+  <aside class="notes">Highest-value ninety seconds of the session. It closes the loop opened on day one and it converts an abstract argument into something they have already seen printed on a screen. If the room is quiet, ask which of the two rows a CFO gets shown, and why that is a problem.</aside>
+</section>
+
+<!-- ---------- 9 ---------- -->
+<section class="slide" data-section="3" data-title="What independence was buying you">
+  <div class="inner">
+    <p class="kicker">The bill for the last six slides</p>
+    <h1 class="sowhat wide">Four things you already own, and what they cost now.</h1>
+    <div class="cards four">
+      <div class="card"><h3>Standard errors</h3><p>The familiar <code>&sigma;/&radic;n</code> assumed independent draws. With correlated data it is wrong, usually too small.</p></div>
+      <div class="card"><h3>The CLT</h3><p>Its hypothesis is independent, identically distributed observations. You cannot appeal to it here.</p></div>
+      <div class="card"><h3>k-fold CV</h3><p>Shuffling rows destroys the ordering, which is the thing you are modeling. Session 14 replaces it.</p></div>
+      <div class="card terra"><h3>A forecast</h3><p>Stops being a number. Becomes a distribution, with an interval you have to report.</p></div>
+    </div>
+    <p class="punch step wide">Three losses and one gain. The rest of this course is rebuilding the three, and learning to use the one.</p>
+  </div>
+  <aside class="notes"><span class="clock">0:28 &rarr; 0:38 for this section</span>
+  Naming the sessions that repair each loss stops the panic. Nobody minds a tool being taken away if they can see the date it is handed back. Do not open a discussion on which standard error is correct instead; that is well beyond this course.</aside>
+</section>
+
+<!-- ---------- 10 ---------- -->
+<section class="slide" data-section="3" data-title="Bridge to the container">
+  <div class="inner">
+    <p class="kicker">From the mathematics to the keyboard</p>
+    <h1 class="sowhat wide">A variable indexed by time needs a table that knows about time.</h1>
+    <ul class="build">
+      <li class="step">A data frame has rows. It does not know which column is the clock.</li>
+      <li class="step">It does not know whether two rows are the same series or two different ones.</li>
+      <li class="step">It will let you hold two observations for the same day, for the same series, and say nothing.</li>
+    </ul>
+    <p class="punch step wide">Every time series bug I have had to debug in fifteen years was one of those three. A tsibble makes all three impossible.</p>
+  </div>
+  <aside class="notes">This is the hinge of the session: it converts the theory into a reason to care about the next forty minutes of syntax. Deliver the last line as experience, not as a feature list. Then switch screens on the next slide.</aside>
+</section>
+
+<!-- ---------- 11 ---------- -->
+<section class="slide" data-section="4" data-title="Switch: dates and times">
+  <div class="inner">
+    <p class="kicker">Now we run it</p>
+    <h1 class="sowhat">Open <code>02_A_Dates_Times_R</code></h1>
+    <ul class="build plain" style="margin-top:1.8rem">
+      <li>Three types: <code>&lt;date&gt;</code>, <code>&lt;time&gt;</code>, <code>&lt;dttm&gt;</code></li>
+      <li>From a string: the <code>ymd()</code> family</li>
+      <li>From columns: <code>make_date()</code>, <code>make_datetime()</code></li>
+      <li>From fpp3: <code>yearmonth()</code>, <code>yearquarter()</code>, <code>yearweek()</code></li>
+    </ul>
+    <div class="callout slate"><b>We are skipping three sections today.</b> Parsing formats, <code>locale()</code> and the base R equivalents are in the notebook, and the notebook says plainly that they are not needed to pass. Read them when you meet a file that needs them.</div>
+  </div>
+  <aside class="notes"><span class="clock">0:38 &rarr; 0:55 for this section</span>
+  <span class="switch">Share RStudio now</span> Leave this slide up on the projector while you move the share over, so the room has something to read during the dead ten seconds. Announce the skipped sections out loud: if you do not, somebody will spend the weekend on <em>locale()</em> and arrive at Session 3 having read the wrong thing.</aside>
+</section>
+
+<!-- ---------- 12 ---------- -->
+<section class="slide" data-section="4" data-title="Three types, pick the smallest">
+  <div class="inner">
+    <p class="kicker">02_A &nbsp;&middot;&nbsp; types</p>
+    <h1 class="sowhat">Use the smallest type that does the job.</h1>
+    <div class="console">&lt;date&gt;   2017-01-31             <span class="dim">days since 1970-01-01</span>
+&lt;time&gt;   20:11:59               <span class="dim">seconds since midnight</span>
+&lt;dttm&gt;   2017-01-31 20:11:59    <span class="dim">seconds since 1970-01-01, plus a time zone</span></div>
+    <div class="figrow" style="margin-top:1.5rem">
+      <p class="step"><b>A date</b>One integer. No time zone. Nothing to get wrong.</p>
+      <p class="step t"><b>A date-time</b>Drags a time zone with it, and therefore drags daylight saving with it.</p>
+    </div>
+    <p class="punch step wide">If daily data answers your question, do not store it hourly. Precision you do not need is only a place for bugs to live.</p>
+  </div>
+  <aside class="notes">Worth one real story here: any series that crosses a daylight saving boundary has one 23-hour day and one 25-hour day a year, and half-hourly energy data is exactly where students meet it. <code>vic_elec</code> in Session 3 is stored in Australia/Melbourne for that reason.</aside>
+</section>
+
+<!-- ---------- 13 ---------- -->
+<section class="slide" data-section="4" data-title="ymd: name the order">
+  <div class="inner">
+    <p class="kicker">02_A &nbsp;&middot;&nbsp; from a string</p>
+    <h1 class="sowhat wide">You name the order. lubridate does the parsing.</h1>
+    <div class="console">ymd("2017-01-31")            <span class="dim">&rarr;</span> 2017-01-31
+mdy("January 31st, 2017")    <span class="dim">&rarr;</span> 2017-01-31
+dmy("31-Jan-2017")           <span class="dim">&rarr;</span> 2017-01-31
+ymd(20170131)                <span class="dim">&rarr;</span> 2017-01-31</div>
+    <p class="lead step">Read your source. Write down the order the components appear in. That spelling is the function name.</p>
+    <p class="punch step">Four wildly different strings, one line of code each, no format string anywhere.</p>
+  </div>
+  <aside class="notes">Do this live rather than reading the slide: paste a genuinely ugly string from a real export and let them call the function name before you type it. The whole point is that the rule is mechanical, and they only believe that once they have picked the right function themselves.</aside>
+</section>
+
+<!-- ---------- 14 ---------- -->
+<section class="slide" data-section="4" data-title="The 01/02/15 trap">
+  <div class="inner">
+    <p class="kicker">02_A &nbsp;&middot;&nbsp; the one to remember</p>
+    <h1 class="sowhat">Same eight characters. Three different days.</h1>
+    <div class="console terra">parse_date("01/02/15", format = "%m/%d/%y")   <span class="dim">&rarr;</span> <span class="hl">2015-01-02</span>
+parse_date("01/02/15", format = "%d/%m/%y")   <span class="dim">&rarr;</span> <span class="hl">2015-02-01</span>
+parse_date("01/02/15", format = "%y/%m/%d")   <span class="dim">&rarr;</span> <span class="hl">2001-02-15</span></div>
+    <p class="lead step">R cannot tell which one you meant. Neither can Excel, which is why it silently guesses using the locale of whoever opened the file.</p>
+    <p class="punch step wide">A date column that parsed without an error is not a date column that parsed correctly. Check the first row and the last row against the source, every time.</p>
+  </div>
+  <aside class="notes">This is the single most expensive slide in the session, in euros, over their careers. A Spanish analyst and an American analyst open the same export and build two different series without either of them seeing a warning. If you only have time for one thing from section 4, keep this one.</aside>
+</section>
+
+<!-- ---------- 15 ---------- -->
+<section class="slide" data-section="4" data-title="yearmonth and friends">
+  <div class="inner">
+    <p class="kicker">02_A &nbsp;&middot;&nbsp; types from tsibble</p>
+    <h1 class="sowhat wide">Three types that carry the calendar with them.</h1>
+    <div class="console">yearmonth(ymd("2017-01-31"))    <span class="dim">&rarr;</span> 2017 Jan     <span class="hl">[1M]</span>
+yearquarter(ymd("2017-01-31"))  <span class="dim">&rarr;</span> 2017 Q1      <span class="hl">[1Q]</span>
+yearweek(ymd("2017-01-31"))     <span class="dim">&rarr;</span> 2017 W05     <span class="hl">[1W]</span></div>
+    <div class="figrow" style="margin-top:1.5rem">
+      <p class="step"><b>Not base R</b>These come from <code>tsibble</code>, loaded by <code>fpp3</code>. They will not exist in a plain R session.</p>
+      <p class="step t"><b>Why bother</b>A <code>&lt;date&gt;</code> knows it is the 31st. A <code>&lt;yearmonth&gt;</code> knows it is January, and that January comes round again.</p>
+    </div>
+    <p class="punch step wide">Storing the period, not just the instant, is what makes next session's seasonal plots possible.</p>
+  </div>
+  <aside class="notes">Do the round trip live: build a monthly series with a plain <em>&lt;date&gt;</em> index and show that the tsibble reports <em>[1D]</em> with gaps, then convert to <em>yearmonth</em> and watch it become <em>[1M]</em>. The interval in the header is the visible consequence, and it is what they will actually be reading in every session from here on.</aside>
+</section>
+
+<!-- ---------- 16 ---------- -->
+<section class="slide" data-section="5" data-title="Anatomy of a tsibble">
+  <div class="inner">
+    <p class="kicker">Open <code>02_B_tsibbles</code></p>
+    <h1 class="sowhat">Index, key, and everything else.</h1>
+    <figure>
+      <svg viewBox="0 0 760 200" role="img" aria-label="A plain data frame with four undifferentiated columns beside a tsibble whose first column is the index and second is the key">
+        <g>
+          <rect x="26" y="34" width="72" height="22" fill="#E4DFD5"/>
+          <rect x="104" y="34" width="72" height="22" fill="#E4DFD5"/>
+          <rect x="182" y="34" width="72" height="22" fill="#E4DFD5"/>
+          <rect x="260" y="34" width="72" height="22" fill="#E4DFD5"/>
+          <g fill="#fff" stroke="#E4DFD5" stroke-width="1.4">
+            <rect x="26" y="56" width="72" height="120"/><rect x="104" y="56" width="72" height="120"/>
+            <rect x="182" y="56" width="72" height="120"/><rect x="260" y="56" width="72" height="120"/>
+          </g>
+          <g stroke="#E4DFD5" stroke-width="1">
+            <path d="M26 86 H332 M26 116 H332 M26 146 H332"/>
+          </g>
+          <text x="179" y="194" text-anchor="middle" fill="#6B665E"
+                font-family="SFMono-Regular,Menlo,monospace" font-size="14">data.frame</text>
+        </g>
+        <g>
+          <rect x="428" y="34" width="72" height="22" fill="#B5471E"/>
+          <rect x="506" y="34" width="72" height="22" fill="#1F3A4D"/>
+          <rect x="584" y="34" width="72" height="22" fill="#E4DFD5"/>
+          <rect x="662" y="34" width="72" height="22" fill="#E4DFD5"/>
+          <g fill="#fff" stroke="#E4DFD5" stroke-width="1.4">
+            <rect x="428" y="56" width="72" height="120"/><rect x="506" y="56" width="72" height="120"/>
+            <rect x="584" y="56" width="72" height="120"/><rect x="662" y="56" width="72" height="120"/>
+          </g>
+          <rect x="428" y="56" width="72" height="120" fill="#B5471E" fill-opacity=".07"/>
+          <rect x="506" y="56" width="72" height="120" fill="#1F3A4D" fill-opacity=".07"/>
+          <g stroke="#E4DFD5" stroke-width="1">
+            <path d="M428 86 H734 M428 116 H734 M428 146 H734"/>
+          </g>
+          <text x="464" y="49" text-anchor="middle" fill="#FAF8F5"
+                font-family="SFMono-Regular,Menlo,monospace" font-size="12" letter-spacing="1">INDEX</text>
+          <text x="542" y="49" text-anchor="middle" fill="#FAF8F5"
+                font-family="SFMono-Regular,Menlo,monospace" font-size="12" letter-spacing="1">KEY</text>
+          <text x="581" y="194" text-anchor="middle" fill="#6B665E"
+                font-family="SFMono-Regular,Menlo,monospace" font-size="14">tsibble</text>
+        </g>
+      </svg>
+      <div class="figrow">
+        <p class="step"><b>Same numbers, no structure</b>Four columns. R has no idea which one is the clock or which rows belong together.</p>
+        <p class="step t"><b>Same numbers, declared structure</b>One column is the <b style="display:inline">index</b>. One or more are the <b style="display:inline">key</b>. The rest are measurements.</p>
+      </div>
+    </figure>
+    <p class="punch step wide">You are not adding data. You are telling R something it could never have worked out on its own.</p>
+  </div>
+  <aside class="notes"><span class="clock">0:55 &rarr; 1:14 for this section</span>
+  <span class="switch">Keep sharing RStudio</span> Same screen, new notebook: close 02_A and open 02_B. Emphasize that the key is optional and can be several columns, but the index never is. The three-word summary they should leave with: index, key, measured.</aside>
+</section>
+
+<!-- ---------- 17 ---------- -->
+<section class="slide" data-section="5" data-title="Reading the header">
+  <div class="inner">
+    <p class="kicker">02_B &nbsp;&middot;&nbsp; the two lines you read first</p>
+    <h1 class="sowhat">The header is the whole contract.</h1>
+    <div class="console"># A tsibble: 15,150 x 9 <span class="hl">[1Y]</span>
+# Key:       <span class="hl">Country [263]</span></div>
+    <div class="figrow" style="margin-top:1.5rem">
+      <p class="step t"><b>[1Y]</b>The interval. One observation per year. R worked this out from the type of the index column.</p>
+      <p class="step"><b>Country [263]</b>The key. 263 separate series stacked in one table.</p>
+    </div>
+    <p class="punch step wide">Read these two lines before you read a single row. They tell you what you have and they are almost always where the mistake is.</p>
+  </div>
+  <aside class="notes">Yes, this repeats a Session 1 slide, and repeating it is the point: it was a curiosity then and it is a working habit now. Make somebody read it aloud, then filter to one country live and have the room call out both numbers that change, before you press Enter.</aside>
+</section>
+
+<!-- ---------- 18 ---------- -->
+<section class="slide" data-section="5" data-title="Key plus index must be unique">
+  <div class="inner">
+    <h1 class="sowhat wide">One series, one moment, one row.</h1>
+    <figure>
+      <svg viewBox="0 0 760 200" role="img" aria-label="A grid with exactly one observation per cell beside a grid where one cell holds two observations">
+        <g stroke="#E4DFD5" stroke-width="1.3" fill="none">
+          <path d="M40 40 H330 M40 90 H330 M40 140 H330 M40 40 V140"/>
+          <path d="M98 40 V140 M156 40 V140 M214 40 V140 M272 40 V140 M330 40 V140"/>
+        </g>
+        <g fill="#1F3A4D">
+          <circle cx="69" cy="65" r="6"/><circle cx="127" cy="65" r="6"/><circle cx="185" cy="65" r="6"/>
+          <circle cx="243" cy="65" r="6"/><circle cx="301" cy="65" r="6"/>
+          <circle cx="69" cy="115" r="6"/><circle cx="127" cy="115" r="6"/><circle cx="185" cy="115" r="6"/>
+          <circle cx="243" cy="115" r="6"/><circle cx="301" cy="115" r="6"/>
+        </g>
+        <text x="185" y="176" text-anchor="middle" fill="#1F3A4D"
+              font-family="SFMono-Regular,Menlo,monospace" font-size="14">valid</text>
+        <g stroke="#E4DFD5" stroke-width="1.3" fill="none">
+          <path d="M430 40 H720 M430 90 H720 M430 140 H720 M430 40 V140"/>
+          <path d="M488 40 V140 M546 40 V140 M604 40 V140 M662 40 V140 M720 40 V140"/>
+        </g>
+        <rect x="546" y="40" width="58" height="50" fill="#B5471E" fill-opacity=".1"
+              stroke="#B5471E" stroke-width="2"/>
+        <g fill="#1F3A4D">
+          <circle cx="459" cy="65" r="6"/><circle cx="517" cy="65" r="6"/>
+          <circle cx="633" cy="65" r="6"/><circle cx="691" cy="65" r="6"/>
+          <circle cx="459" cy="115" r="6"/><circle cx="517" cy="115" r="6"/><circle cx="575" cy="115" r="6"/>
+          <circle cx="633" cy="115" r="6"/><circle cx="691" cy="115" r="6"/>
+        </g>
+        <g fill="#B5471E">
+          <circle cx="566" cy="65" r="6"/><circle cx="584" cy="65" r="6"/>
+        </g>
+        <text x="575" y="176" text-anchor="middle" fill="#B5471E"
+              font-family="SFMono-Regular,Menlo,monospace" font-size="14">rejected</text>
+      </svg>
+      <div class="figrow">
+        <p class="step"><b>The rule</b>Every row is identified by the combination of key and index. Two rows may never land in the same cell.</p>
+        <p class="step t"><b>What you get instead</b><code>A valid tsibble must have distinct rows identified by key and index.</code> Then <code>duplicates()</code> shows you which.</p>
+      </div>
+    </figure>
+    <p class="punch step wide">That error is not the tsibble being difficult. It is the tsibble catching a duplicate you were about to average without noticing.</p>
+  </div>
+  <aside class="notes">Trigger the error live, on purpose, using the flights example with only <code>flight</code> as the key. An error message students have deliberately caused is an error message they can read calmly at three in the morning. Then run <code>duplicates()</code> and show that it hands back the offending rows.</aside>
+</section>
+
+<!-- ---------- 19 ---------- -->
+<section class="slide" data-section="5" data-title="When the key needs two columns">
+  <div class="inner">
+    <p class="kicker">02_B &nbsp;&middot;&nbsp; nycflights13</p>
+    <h1 class="sowhat">Sometimes it takes two columns to name one thing.</h1>
+    <div class="console tight">flights %&gt;%
+  mutate(time = make_datetime(year, month, day, hour, minute)) %&gt;%
+  as_tsibble(key = <span class="hl">c(carrier, flight)</span>, index = time)
+
+# A tsibble: 336,776 x 4 [1m] &lt;UTC&gt;
+# Key:       <span class="hl">carrier, flight [5,725]</span></div>
+    <p class="lead step">Flight 2900 exists at more than one airline. The number alone does not identify a series, any more than a first name identifies a person.</p>
+    <p class="punch step wide">Ask what uniquely names one series in your data, then make that the key. Guessing costs you an hour.</p>
+  </div>
+  <aside class="notes">The 5,725 is worth pausing on: that is 5,725 separate time series in one object, and later in the course a single <code>model()</code> call will fit all of them. Do not go there today, just plant that the key is what makes that possible. Business parallel: SKU alone versus SKU plus store.</aside>
+</section>
+
+<!-- ---------- 20 ---------- -->
+<section class="slide" data-section="5" data-title="index_by">
+  <div class="inner">
+    <p class="kicker">02_B &nbsp;&middot;&nbsp; <code>index_by()</code></p>
+    <h1 class="sowhat wide">A tsibble will not quietly throw time away.</h1>
+    <figure>
+      <svg viewBox="0 0 760 170" role="img" aria-label="Many fine-grained observations on the left aggregated into twelve monthly buckets on the right">
+        <line x1="26" y1="130" x2="300" y2="130" stroke="#E4DFD5" stroke-width="1.4"/>
+        <g fill="#98928a">
+          <rect x="30" y="86" width="4" height="44"/><rect x="41" y="72" width="4" height="58"/>
+          <rect x="52" y="94" width="4" height="36"/><rect x="63" y="64" width="4" height="66"/>
+          <rect x="74" y="88" width="4" height="42"/><rect x="85" y="76" width="4" height="54"/>
+          <rect x="96" y="98" width="4" height="32"/><rect x="107" y="68" width="4" height="62"/>
+          <rect x="118" y="82" width="4" height="48"/><rect x="129" y="92" width="4" height="38"/>
+          <rect x="140" y="60" width="4" height="70"/><rect x="151" y="86" width="4" height="44"/>
+          <rect x="162" y="96" width="4" height="34"/><rect x="173" y="70" width="4" height="60"/>
+          <rect x="184" y="84" width="4" height="46"/><rect x="195" y="90" width="4" height="40"/>
+          <rect x="206" y="66" width="4" height="64"/><rect x="217" y="94" width="4" height="36"/>
+          <rect x="228" y="78" width="4" height="52"/><rect x="239" y="88" width="4" height="42"/>
+          <rect x="250" y="62" width="4" height="68"/><rect x="261" y="92" width="4" height="38"/>
+          <rect x="272" y="80" width="4" height="50"/><rect x="283" y="74" width="4" height="56"/>
+        </g>
+        <text x="163" y="158" text-anchor="middle" fill="#6B665E"
+              font-family="SFMono-Regular,Menlo,monospace" font-size="13">336,776 rows [1m]</text>
+        <g stroke="#B5471E" stroke-width="2.4" fill="none">
+          <path d="M324 96 H392"/><path d="M382 88 L392 96 L382 104"/>
+        </g>
+        <text x="358" y="80" text-anchor="middle" fill="#B5471E"
+              font-family="SFMono-Regular,Menlo,monospace" font-size="12">index_by</text>
+        <line x1="420" y1="130" x2="740" y2="130" stroke="#E4DFD5" stroke-width="1.4"/>
+        <g fill="#B5471E" fill-opacity=".85">
+          <rect x="426" y="72" width="20" height="58"/><rect x="452" y="76" width="20" height="54"/>
+          <rect x="478" y="70" width="20" height="60"/><rect x="504" y="62" width="20" height="68"/>
+          <rect x="530" y="60" width="20" height="70"/><rect x="556" y="54" width="20" height="76"/>
+          <rect x="582" y="53" width="20" height="77"/><rect x="608" y="51" width="20" height="79"/>
+          <rect x="634" y="62" width="20" height="68"/><rect x="660" y="63" width="20" height="67"/>
+          <rect x="686" y="58" width="20" height="72"/><rect x="712" y="50" width="20" height="80"/>
+        </g>
+        <text x="579" y="158" text-anchor="middle" fill="#6B665E"
+              font-family="SFMono-Regular,Menlo,monospace" font-size="13">12 rows [1M]</text>
+      </svg>
+      <div class="figrow">
+        <p class="step"><b><code>group_by()</code> here</b>Returns 127,328 rows and a nonsense answer: the mean distance of every flight leaving at 05:15 on 1 January.</p>
+        <p class="step t"><b><code>index_by()</code></b>Returns 12 rows, still a tsibble, index now <code>&lt;yearmonth&gt;</code>. It is <code>group_by()</code> that understands the clock.</p>
+      </div>
+    </figure>
+    <p class="punch step wide">The dangerous one is on the left. It did not error. It answered a question you never asked.</p>
+  </div>
+  <aside class="notes">Run the wrong version first and let the room look at it for a moment before you say anything. A silent wrong answer is the failure mode they need to fear, and this is the cleanest example of it in the whole course. Then <code>index_by()</code>, same pipe, correct result, still a tsibble.</aside>
+</section>
+
+<!-- ---------- 21 ---------- -->
+<section class="slide" data-section="5" data-title="Three verbs">
+  <div class="inner">
+    <p class="kicker">What to reach for</p>
+    <h1 class="sowhat">Three verbs cover almost everything.</h1>
+    <table class="traps">
+      <tr><td class="os">Build</td><td><code>tsibble()</code> from vectors, <code>as_tsibble()</code> from a tibble</td><td class="fix">Always name <code>index =</code>. Name <code>key =</code> if you have more than one series.</td></tr>
+      <tr><td class="os">Subset</td><td><code>filter()</code>, exactly as in dplyr</td><td class="fix">Rows go away, the index and key survive. Nothing special to learn.</td></tr>
+      <tr><td class="os">Aggregate</td><td><code>index_by()</code> then <code>summarise()</code></td><td class="fix">Whenever the result is coarser in time than the input. Never <code>group_by()</code>.</td></tr>
+    </table>
+    <p class="punch step wide">If you ever find yourself casting to a tibble and back, stop. There is an index_by that does it properly.</p>
+  </div>
+  <aside class="notes">Say the last line twice. The notebook walks through the cast-to-tibble-and-back workaround on the way to <code>index_by()</code>, and students copy the workaround because it is the code they saw most recently. It works, and it will silently drop the key on a multi-series table.</aside>
+</section>
+
+<!-- ---------- 22 ---------- -->
+<section class="slide" data-section="6" data-title="Can you do this now">
+  <div class="inner">
+    <p class="kicker">Back to the slides</p>
+    <h1 class="sowhat">Two things you could not do at ten past.</h1>
+    <ul class="build">
+      <li class="step">Say <b>why a forecast is a random variable</b>, and why that means it arrives with an interval attached.</li>
+      <li class="step">Build a <b>valid tsibble</b> from a raw table: right index type, right key, no duplicates.</li>
+    </ul>
+    <p class="punch step wide">If either one is shaky, this is the moment to say so. Session 3 puts both of them straight to work.</p>
+  </div>
+  <aside class="notes"><span class="clock">1:14 &rarr; 1:20</span>
+  <span class="switch back">Back to slides</span> These two lines are the stated outcome of the session, so ask for the shaky hands and mean it. Two minutes of questions here is worth more than two minutes of new material, and you have a hard stop.</aside>
+</section>
+
+<!-- ---------- 23 ---------- -->
+<section class="slide" data-section="6" data-title="Homework">
+  <div class="inner">
+    <p class="kicker">Due before Session 3</p>
+    <h1 class="sowhat">Homework.</h1>
+    <ul class="build">
+      <li>Work through <code>self-study/00-r-basics/00_C_basic_tibbles_dplyr_exercises</code>.</li>
+      <li>Read fpp3 sections 2.2 to 2.6, which is all of next session.</li>
+      <li>Build one tsibble from a table of your own choosing. Any table. Get the index and the key right.</li>
+    </ul>
+    <div class="callout"><b>No solutions are published for the primer.</b> That is deliberate. Work it through yourself, and email me where you get stuck.</div>
+  </div>
+  <aside class="notes">The third item is the one that matters and it takes ten minutes. Every student who has ever struggled in Session 5 struggled because they were still fighting the container instead of thinking about the series. Say that out loud.</aside>
+</section>
+
+<!-- ---------- 24 ---------- -->
+<section class="slide" data-section="6" data-title="Next session">
+  <div class="inner">
+    <p class="kicker">Session 3</p>
+    <h1 class="sowhat">Now we look at them.</h1>
+    <p class="lead">Time plots, seasonal plots, subseries plots and scatterplots. Naming what you see, and being careful about what the correlation coefficient is not telling you.</p>
+    <p class="punch step wide">Bring a laptop with <code>fpp3</code>, <code>GGally</code>, <code>fma</code> and <code>patchwork</code> already installed. We plot from the first ten minutes.</p>
+    <p class="url" style="font-size:clamp(0.95rem,1.7vw,1.9rem)">aberrizbeitia@faculty.ie.edu</p>
+  </div>
+  <aside class="notes">Name the four packages explicitly and put them on the board. They were all in the Session 1 install list, but a third of the room installed only <code>fpp3</code>, and finding that out at the start of Session 3 costs you the first fifteen minutes of a session that has no slack in it.</aside>
+</section>
+
+<!-- lives inside the stage so it is positioned against it, not the viewport,
+     and therefore never covers the rail -->
+<div id="notepane"><h4>Presenter notes</h4><div class="body"></div></div>
+
+</main>
+
+<!-- ============================== CHROME ============================== -->
+<div id="overview">
+  <h3>Jump to a slide</h3>
+  <ul id="ovlist"></ul>
+</div>
+
+<div id="hud">
+  <span id="count">1 / 24</span>
+  <button id="prev" title="Previous">&larr;</button>
+  <button id="next" title="Next">&rarr;</button>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* live:true marks the sections delivered from the RStudio screen rather
+     than from the deck. The rail shows a dot next to them. */
+  var SECTIONS = [
+    {name:"Where we left off",     from:1,  to:2},
+    {name:"Process vs outcome",    from:3,  to:8},
+    {name:"What breaks",           from:9,  to:10},
+    {name:"Dates in R",            from:11, to:15, live:true},
+    {name:"The tsibble",           from:16, to:21, live:true},
+    {name:"Close",                 from:22, to:24}
+  ];
+
+  var slides = Array.prototype.slice.call(document.querySelectorAll(".slide"));
+  var toc    = document.getElementById("toc");
+  var ovlist = document.getElementById("ovlist");
+  var bar    = document.querySelector("#bar i");
+  var count  = document.getElementById("count");
+  var noteBody = document.querySelector("#notepane .body");
+
+  var si = 0;   // current slide, zero based
+  var sti = 0;  // number of steps revealed on the current slide
+
+  /* ---- build the rail ---- */
+  SECTIONS.forEach(function(sec, i){
+    var li = document.createElement("li");
+    li.innerHTML = '<span class="num">' + (i+1) + '</span><span>' + sec.name + '</span>' +
+                   (sec.live ? '<span class="live" title="RStudio screen"></span>' : '');
+    li.addEventListener("click", function(){ go(sec.from - 1, 0); });
+    toc.appendChild(li);
+  });
+
+  /* ---- build the jump list ---- */
+  SECTIONS.forEach(function(sec){
+    var head = document.createElement("li");
+    head.className = "head";
+    head.textContent = sec.name + (sec.live ? " · RStudio" : "");
+    ovlist.appendChild(head);
+    for (var n = sec.from; n <= sec.to; n++){
+      (function(idx){
+        var li = document.createElement("li");
+        li.innerHTML = '<span class="n">' + (idx+1) + '</span><span>' +
+                       (slides[idx].getAttribute("data-title") || "") + '</span>';
+        li.addEventListener("click", function(){
+          document.body.classList.remove("ov-on");
+          go(idx, "all");
+        });
+        ovlist.appendChild(li);
+      })(n - 1);
+    }
+  });
+  var ovItems = Array.prototype.slice.call(ovlist.querySelectorAll("li:not(.head)"));
+
+  function steps(i){
+    return Array.prototype.slice.call(slides[i].querySelectorAll(".step"));
+  }
+
+  function paint(){
+    slides.forEach(function(s, i){ s.classList.toggle("active", i === si); });
+
+    var num = si + 1;
+    var active = 0;
+    SECTIONS.forEach(function(sec, i){
+      if (num >= sec.from && num <= sec.to) active = i;
+    });
+    Array.prototype.slice.call(toc.children).forEach(function(li, i){
+      li.classList.toggle("on", i === active);
+      li.classList.toggle("done", i < active);
+    });
+    ovItems.forEach(function(li, i){ li.classList.toggle("on", i === si); });
+
+    bar.style.width = (num / slides.length * 100) + "%";
+    count.textContent = num + " / " + slides.length;
+
+    var n = slides[si].querySelector(".notes");
+    noteBody.innerHTML = n ? n.innerHTML : "<i>No notes for this slide.</i>";
+
+    if (history.replaceState) history.replaceState(null, "", "#" + num);
+  }
+
+  function go(i, mode){
+    if (i < 0 || i >= slides.length) return;
+    si = i;
+    var st = steps(si);
+    if (mode === "all"){
+      st.forEach(function(e){ e.classList.add("on"); });
+      sti = st.length;
+    } else {
+      st.forEach(function(e){ e.classList.remove("on"); });
+      sti = 0;
+    }
+    paint();
+  }
+
+  function next(){
+    var st = steps(si);
+    if (sti < st.length){ st[sti].classList.add("on"); sti++; }
+    else go(si + 1, 0);
+  }
+
+  function prev(){
+    if (sti > 0){ sti--; steps(si)[sti].classList.remove("on"); }
+    else go(si - 1, "all");
+  }
+
+  document.getElementById("next").addEventListener("click", next);
+  document.getElementById("prev").addEventListener("click", prev);
+
+  document.addEventListener("keydown", function(e){
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var k = e.key;
+
+    if (document.body.classList.contains("ov-on")){
+      if (k === "Escape" || k === "o" || k === "O"){
+        document.body.classList.remove("ov-on"); e.preventDefault();
+      }
+      return;
+    }
+
+    if (k === "ArrowRight" || k === " " || k === "PageDown" || k === "ArrowDown"){ next(); e.preventDefault(); }
+    else if (k === "ArrowLeft" || k === "PageUp" || k === "ArrowUp"){ prev(); e.preventDefault(); }
+    else if (k === "Home"){ go(0, 0); e.preventDefault(); }
+    else if (k === "End"){ go(slides.length - 1, "all"); e.preventDefault(); }
+    else if (k === "n" || k === "N"){ toggleNotes(); e.preventDefault(); }
+    else if (k === "o" || k === "O"){ document.body.classList.add("ov-on"); e.preventDefault(); }
+    else if (k === "[" || k === "]"){ document.body.classList.toggle("rail-hidden"); e.preventDefault(); }
+    else if (k === "f" || k === "F"){
+      if (document.fullscreenElement) document.exitFullscreen();
+      else document.documentElement.requestFullscreen();
+      e.preventDefault();
+    }
+  });
+
+  function toggleNotes(){
+    var on = document.body.classList.toggle("notes-on");
+    document.documentElement.style.setProperty("--notes-h", on ? "212px" : "0px");
+  }
+
+  /* ---- start ---- */
+  var start = parseInt((location.hash || "").replace("#", ""), 10);
+  go(isNaN(start) ? 0 : Math.min(Math.max(start - 1, 0), slides.length - 1),
+     isNaN(start) ? 0 : "all");
+})();
+</script>
+</body>
+</html>
