@@ -397,7 +397,7 @@ body.ov-on #overview{display:block}
 <section class="slide title-slide" data-section="1" data-title="Title">
   <div class="inner">
     <p class="kicker">IE University · Dual Degree BBA &amp; Data and Business Analytics</p>
-    <h1>A time series<br>is a process.</h1>
+    <h1>A time series<br>is a stochastic<br>process.</h1>
     <div class="rule"></div>
     <p class="who"><b>Session 2.</b> Stochastic processes, and the table that holds one.<br>
     Alejandro Berrizbeitia · aberrizbeitia@faculty.ie.edu</p>
@@ -449,7 +449,7 @@ body.ov-on #overview{display:block}
     </figure>
     <p class="punch step wide">Your data is a sample of size one from the process you actually care about. That is the whole difficulty of this course.</p>
   </div>
-  <aside class="notes">This is the hardest idea in the session and it is worth sitting with. The series you were handed is not <i>the</i> behaviour of the thing you are studying. It is one outcome that the underlying mechanism happened to produce. Run the same year again with different weather, different competitors, different luck, and you would be holding a different line.<br><br>That is why a single historical series tells you much less than its length suggests.</aside>
+  <aside class="notes">This is the hardest idea in the session and it is worth sitting with. The series you were handed is not <i>the</i> behaviour of the thing you are studying. It is one outcome that the underlying mechanism happened to produce, and it did not have to come out this way. A different draw of the weather, the competitor who almost launched in March, which customers happened to churn that quarter, and the curve would sit differently on the page, even with everything else about the business held fixed.<br><br>That is why a single historical series tells you much less than its length suggests. Ask yourself: was last year's curve the only one that could have happened?</aside>
 </section>
 
 <!-- ---------- 4 ---------- -->
@@ -470,7 +470,7 @@ body.ov-on #overview{display:block}
     <p class="punch step wide">Every confusing exam question in this course is really asking which of these two columns you are standing in.</p>
     <p class="small">Framing from Shumway &amp; Stoffer, <i>Time Series: A Data Analysis Approach Using R</i>, Chapter 1. It is not in fpp3 at all.</p>
   </div>
-  <aside class="notes">This notation is standard across the time series literature and you will meet it in every textbook, so it is worth getting comfortable with early. The convention is not decorative: uppercase and lowercase refer to genuinely different objects, and mixing them up is the source of a lot of confusion later.<br><br>The framing comes from Shumway &amp; Stoffer, <i>Time Series: A Data Analysis Approach Using R</i>, Chapter 1. It is not covered in fpp3, so the textbook will not help you here.</aside>
+  <aside class="notes">This notation is standard across the time series literature and you will meet it in every textbook, so it is worth getting comfortable with early. The convention is not decorative: uppercase and lowercase refer to genuinely different objects, and mixing them up is the source of a lot of confusion later.<br><br>&ldquo;What did&rdquo; means two things at once, not two different things: <code>y_t</code> is both the realized value and one particular instantiation out of everything <code>Y_t</code> could have been. They coincide because, once a moment has passed, the instantiation that happened <i>is</i> the realization &mdash; the randomness resolved into that one number and stopped being random. The two readings only pull apart in a simulation, where you can draw a value without any time passing at all.<br><br>The framing comes from Shumway &amp; Stoffer, <i>Time Series: A Data Analysis Approach Using R</i>, Chapter 1. It is not covered in fpp3, so the textbook will not help you here.</aside>
 </section>
 
 <!-- ---------- 5 ---------- -->
@@ -505,13 +505,13 @@ body.ov-on #overview{display:block}
         </g>
       </svg>
       <div class="figrow">
-        <p class="step"><b>Left of now</b>Realized. The randomness has been spent. <code>y3</code> is 47.2 and will be 47.2 forever.</p>
-        <p class="step t"><b>Right of now</b>Not realized. <code>Y3+h</code> still has a whole distribution attached to it.</p>
+        <p class="step"><b>Left of now</b>Realized. The randomness has been spent. <code>y_T</code>, the last observed value, is 47.2 and will be 47.2 forever.</p>
+        <p class="step t"><b>Right of now</b>Not realized. <code>Y_T+h</code>, h steps beyond it, still has a whole distribution attached to it.</p>
       </div>
     </figure>
     <p class="punch step wide">Forecasting is describing a random variable that has not happened yet. That is where the interval comes from.</p>
   </div>
-  <aside class="notes">Notice that the distributions get wider the further right they sit. That is not an accident of the drawing: uncertainty grows with the forecast horizon, and quantifying exactly how it grows is the subject of Session 12.<br><br>A question worth asking yourself: was the past ever random? Yes, before it happened. It stopped being random at the moment it was realised, which is precisely what separates the two halves of this picture.</aside>
+  <aside class="notes"><code>T</code> marks the last observed time, and <code>h</code> is the <b>horizon</b>: how many steps beyond it you are forecasting. This is the same <code>h</code> you will type all term in <code>forecast(h = 8)</code>, and it matches fpp3's own notation for a forecast, <code>y&#770;_{T+h|T}</code> &mdash; read as &ldquo;the forecast of y at time T+h, given what we know up to T.&rdquo;<br><br>Notice that the distributions get wider the further right they sit. That is not an accident of the drawing: uncertainty grows with the forecast horizon, and quantifying exactly how it grows is the subject of Session 12.<br><br>A question worth asking yourself: was the past ever random? Yes, before it happened. It stopped being random at the moment it was realised, which is precisely what separates the two halves of this picture.</aside>
 </section>
 
 <!-- ---------- 6 ---------- -->
