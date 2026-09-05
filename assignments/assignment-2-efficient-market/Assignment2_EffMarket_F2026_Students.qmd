@@ -4,9 +4,6 @@ self-contained: true
 self-contained-math: true
 format: html
 editor: source
-params:
-  solutions: false
-  print_sol: false
 toc: true
 toc-location: left
 toc-depth: 6
