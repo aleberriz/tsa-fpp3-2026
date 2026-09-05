@@ -317,5 +317,5 @@ aus_production %>%
 #   2. Confirm that library(fpp3) loads on your own machine without errors.
 #
 # Submit on Blackboard. Write the code yourself: the course policy on
-# generative AI is strict, and it is in COURSE-OUTLINE.md.
+# generative AI is strict, and it is in SYLLABUS.md.
 # -----------------------------------------------------------------------------
