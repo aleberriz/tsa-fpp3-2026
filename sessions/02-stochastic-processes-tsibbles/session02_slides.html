@@ -384,7 +384,7 @@ body.ov-on #overview{display:block}
   <div class="foot">
     <div id="bar"><i></i></div>
     <div class="keys">
-      <kbd>&rarr;</kbd> next &nbsp; <kbd>&larr;</kbd> back &nbsp; <kbd>N</kbd> notes<br>
+      <kbd>&rarr;</kbd> next &nbsp; <kbd>&larr;</kbd> back &nbsp; <kbd>N</kbd> detail<br>
       <kbd>O</kbd> jump &nbsp; <kbd>F</kbd> full &nbsp; <kbd>[</kbd> hide this pane
     </div>
   </div>
@@ -402,8 +402,7 @@ body.ov-on #overview{display:block}
     <p class="who"><b>Session 2.</b> Stochastic processes, and the table that holds one.<br>
     Alejandro Berrizbeitia · aberrizbeitia@faculty.ie.edu</p>
   </div>
-  <aside class="notes"><span class="clock">0:00 &rarr; 0:05</span>
-  Roll call runs on this slide. Do not start teaching over it. The hard stop is <em>1:20</em> and the room is handed over immediately after, so the clock markers in these notes assume teaching starts at 0:05.</aside>
+  <aside class="notes">The deck is self-contained: press <b>N</b> at any time to open or close this panel, and <b>O</b> for a list of every slide.</aside>
 </section>
 
 <!-- ---------- 2 ---------- -->
@@ -418,8 +417,7 @@ body.ov-on #overview{display:block}
     </ul>
     <p class="punch step">Theory for forty minutes, then code for thirty. The theory is the part the exam is written from.</p>
   </div>
-  <aside class="notes"><span class="clock">0:05 &rarr; 0:09</span>
-  Do not re-teach Session 1. Two sentences of callback, no more. Saying the shape of the hour out loud buys you patience for the abstract stretch that follows, because everyone can see the code is coming.</aside>
+  <aside class="notes">Session 1 closed on the observation that neighbouring observations in a time series are related to each other, and left it unresolved on purpose. That is the thread this session picks up.</aside>
 </section>
 
 <!-- ---------- 3 ---------- -->
@@ -451,8 +449,7 @@ body.ov-on #overview{display:block}
     </figure>
     <p class="punch step wide">Your data is a sample of size one from the process you actually care about. That is the whole difficulty of this course.</p>
   </div>
-  <aside class="notes"><span class="clock">0:09 &rarr; 0:28 for this section</span>
-  Land the last line slowly. Most students arrive believing the line <em>is</em> the series. Everything else today is a consequence of the line being one realization out of many. Useful challenge to throw at the room: if we could re-run 2019, would we get the same sales curve? Nobody says yes.</aside>
+  <aside class="notes">This is the hardest idea in the session and it is worth sitting with. The series you were handed is not <i>the</i> behaviour of the thing you are studying. It is one outcome that the underlying mechanism happened to produce. Run the same year again with different weather, different competitors, different luck, and you would be holding a different line.<br><br>That is why a single historical series tells you much less than its length suggests.</aside>
 </section>
 
 <!-- ---------- 4 ---------- -->
@@ -473,7 +470,7 @@ body.ov-on #overview{display:block}
     <p class="punch step wide">Every confusing exam question in this course is really asking which of these two columns you are standing in.</p>
     <p class="small">Framing from Shumway &amp; Stoffer, <i>Time Series: A Data Analysis Approach Using R</i>, Chapter 1. It is not in fpp3 at all.</p>
   </div>
-  <aside class="notes">Say plainly that this is the one piece of the course fpp3 does not give them, so they cannot look it up in the usual place. Write both sets on the board and leave them there for the rest of the hour, because you will point at them four more times.</aside>
+  <aside class="notes">This notation is standard across the time series literature and you will meet it in every textbook, so it is worth getting comfortable with early. The convention is not decorative: uppercase and lowercase refer to genuinely different objects, and mixing them up is the source of a lot of confusion later.<br><br>The framing comes from Shumway &amp; Stoffer, <i>Time Series: A Data Analysis Approach Using R</i>, Chapter 1. It is not covered in fpp3, so the textbook will not help you here.</aside>
 </section>
 
 <!-- ---------- 5 ---------- -->
@@ -514,7 +511,7 @@ body.ov-on #overview{display:block}
     </figure>
     <p class="punch step wide">Forecasting is describing a random variable that has not happened yet. That is where the interval comes from.</p>
   </div>
-  <aside class="notes">The bells get wider as they go right. Point at that and say nothing else about it: growing uncertainty with horizon is Session 12, and if you explain it now you will spend ten minutes you do not have. Someone usually asks whether the past was ever random. Yes, before it happened. It stopped being random when it happened.</aside>
+  <aside class="notes">Notice that the distributions get wider the further right they sit. That is not an accident of the drawing: uncertainty grows with the forecast horizon, and quantifying exactly how it grows is the subject of Session 12.<br><br>A question worth asking yourself: was the past ever random? Yes, before it happened. It stopped being random at the moment it was realised, which is precisely what separates the two halves of this picture.</aside>
 </section>
 
 <!-- ---------- 6 ---------- -->
@@ -560,7 +557,7 @@ body.ov-on #overview{display:block}
     </figure>
     <p class="punch step">Not independent. Not identically distributed. The Central Limit Theorem has nothing left to stand on.</p>
   </div>
-  <aside class="notes">Make them say both failures out loud, in order, because students reliably remember &ldquo;not independent&rdquo; and reliably forget &ldquo;not identically distributed.&rdquo; The dashed line through each panel is the mean: flat on the left, drifting on the right.</aside>
+  <aside class="notes">Two separate assumptions fail here, not one.<br><br><b>Independence</b> fails because each observation carries information about the next. <b>Identical distribution</b> fails because the mean and the variance move over time. Most people remember the first and forget the second, and the second is what makes trends and changing volatility possible at all.<br><br>The dashed line in each panel is the mean: flat on the left, drifting on the right.</aside>
 </section>
 
 <!-- ---------- 7 ---------- -->
@@ -575,7 +572,7 @@ body.ov-on #overview{display:block}
     </ul>
     <p class="punch step wide">The correlation is not contamination in the data. It is the only reason forecasting works at all.</p>
   </div>
-  <aside class="notes">Reframe deliberately. Students meet autocorrelation first as a violated assumption and quietly file it under &ldquo;problem.&rdquo; It is the asset. If today were independent of yesterday there would be nothing to forecast and no course. Session 4 gives it a name and a measurement.</aside>
+  <aside class="notes">It is tempting to file autocorrelation under &ldquo;assumption violation&rdquo; and treat it as damage. It is the opposite. If today carried no information about tomorrow there would be nothing to forecast and no need for this field.<br><br>Session 4 gives this property a name and a way to measure it.</aside>
 </section>
 
 <!-- ---------- 8 ---------- -->
@@ -590,7 +587,7 @@ body.ov-on #overview{display:block}
     </div>
     <p class="punch step wide">fable prints a distribution because the distribution is the forecast. The number everyone quotes is a summary of it.</p>
   </div>
-  <aside class="notes">Highest-value ninety seconds of the session. It closes the loop opened on day one and it converts an abstract argument into something they have already seen printed on a screen. If the room is quiet, ask which of the two rows a CFO gets shown, and why that is a problem.</aside>
+  <aside class="notes">This cell appeared on the first day of the course without explanation. It is a normal distribution with a mean of 211 and a variance of 0.0021, describing Brazil's population in 2018 in millions.<br><br>Worth asking: which of the two columns does a chief financial officer usually get shown, and what does that omission cost?</aside>
 </section>
 
 <!-- ---------- 9 ---------- -->
@@ -606,8 +603,7 @@ body.ov-on #overview{display:block}
     </div>
     <p class="punch step wide">Three losses and one gain. The rest of this course is rebuilding the three, and learning to use the one.</p>
   </div>
-  <aside class="notes"><span class="clock">0:28 &rarr; 0:38 for this section</span>
-  Naming the sessions that repair each loss stops the panic. Nobody minds a tool being taken away if they can see the date it is handed back. Do not open a discussion on which standard error is correct instead; that is well beyond this course.</aside>
+  <aside class="notes">Each of these losses is repaired later in the course, and the session that does it is named on the card. Nothing here is being taken away permanently.<br><br>Why the familiar standard error is wrong under correlation is genuinely beyond this course, so do not chase it. It is enough to know that it is wrong, and usually too small.</aside>
 </section>
 
 <!-- ---------- 10 ---------- -->
@@ -622,7 +618,7 @@ body.ov-on #overview{display:block}
     </ul>
     <p class="punch step wide">Every time series bug I have had to debug in fifteen years was one of those three. A tsibble makes all three impossible.</p>
   </div>
-  <aside class="notes">This is the hinge of the session: it converts the theory into a reason to care about the next forty minutes of syntax. Deliver the last line as experience, not as a feature list. Then switch screens on the next slide.</aside>
+  <aside class="notes">These three failures sound abstract until they cost you a day. A plain data frame will happily let you sort a series into the wrong order, mix two series together, or hold two observations for the same date, and it will report no error in any of those cases.<br><br>The tsibble makes all three impossible by construction, which is the entire reason the course uses it.</aside>
 </section>
 
 <!-- ---------- 11 ---------- -->
@@ -638,8 +634,7 @@ body.ov-on #overview{display:block}
     </ul>
     <div class="callout slate"><b>We are skipping three sections today.</b> Parsing formats, <code>locale()</code> and the base R equivalents are in the notebook, and the notebook says plainly that they are not needed to pass. Read them when you meet a file that needs them.</div>
   </div>
-  <aside class="notes"><span class="clock">0:38 &rarr; 0:55 for this section</span>
-  <span class="switch">Share RStudio now</span> Leave this slide up on the projector while you move the share over, so the room has something to read during the dead ten seconds. Announce the skipped sections out loud: if you do not, somebody will spend the weekend on <em>locale()</em> and arrive at Session 3 having read the wrong thing.</aside>
+  <aside class="notes">Three sections of the notebook are deliberately out of scope: parsing formats, <code>locale()</code>, and the base R equivalents. The notebook says so itself. Read them when you meet a file that needs them, not before.</aside>
 </section>
 
 <!-- ---------- 12 ---------- -->
@@ -656,7 +651,7 @@ body.ov-on #overview{display:block}
     </div>
     <p class="punch step wide">If daily data answers your question, do not store it hourly. Precision you do not need is only a place for bugs to live.</p>
   </div>
-  <aside class="notes">Worth one real story here: any series that crosses a daylight saving boundary has one 23-hour day and one 25-hour day a year, and half-hourly energy data is exactly where students meet it. <code>vic_elec</code> in Session 3 is stored in Australia/Melbourne for that reason.</aside>
+  <aside class="notes">The practical consequence: a date-time carries a time zone, and a time zone carries daylight saving. Any series crossing a daylight-saving boundary has one 23-hour day and one 25-hour day a year, which is a real source of confusion in half-hourly energy data.<br><br><code>vic_elec</code>, which appears in Session 3, is stored in Australia/Melbourne for exactly that reason.</aside>
 </section>
 
 <!-- ---------- 13 ---------- -->
@@ -671,7 +666,7 @@ ymd(20170131)                <span class="dim">&rarr;</span> 2017-01-31</div>
     <p class="lead step">Read your source. Write down the order the components appear in. That spelling is the function name.</p>
     <p class="punch step">Four wildly different strings, one line of code each, no format string anywhere.</p>
   </div>
-  <aside class="notes">Do this live rather than reading the slide: paste a genuinely ugly string from a real export and let them call the function name before you type it. The whole point is that the rule is mechanical, and they only believe that once they have picked the right function themselves.</aside>
+  <aside class="notes">The rule is mechanical. Read your source, write down the order the year, month and day appear in, and that spelling is the function you need. No format strings, no guessing.</aside>
 </section>
 
 <!-- ---------- 14 ---------- -->
@@ -685,7 +680,7 @@ parse_date("01/02/15", format = "%y/%m/%d")   <span class="dim">&rarr;</span> <s
     <p class="lead step">R cannot tell which one you meant. Neither can Excel, which is why it silently guesses using the locale of whoever opened the file.</p>
     <p class="punch step wide">A date column that parsed without an error is not a date column that parsed correctly. Check the first row and the last row against the source, every time.</p>
   </div>
-  <aside class="notes">This is the single most expensive slide in the session, in euros, over their careers. A Spanish analyst and an American analyst open the same export and build two different series without either of them seeing a warning. If you only have time for one thing from section 4, keep this one.</aside>
+  <aside class="notes">This is the most expensive slide in the session measured in careers. A Spanish analyst and an American analyst open the same export and build two different series, and neither of them sees a warning.<br><br>The habit that protects you: after parsing a date column, check the first row and the last row against the source file by eye. Every time.</aside>
 </section>
 
 <!-- ---------- 15 ---------- -->
@@ -702,7 +697,7 @@ yearweek(ymd("2017-01-31"))     <span class="dim">&rarr;</span> 2017 W05     <sp
     </div>
     <p class="punch step wide">Storing the period, not just the instant, is what makes next session's seasonal plots possible.</p>
   </div>
-  <aside class="notes">Do the round trip live: build a monthly series with a plain <em>&lt;date&gt;</em> index and show that the tsibble reports <em>[1D]</em> with gaps, then convert to <em>yearmonth</em> and watch it become <em>[1M]</em>. The interval in the header is the visible consequence, and it is what they will actually be reading in every session from here on.</aside>
+  <aside class="notes">A <code>&lt;date&gt;</code> knows it is the 31st of January. A <code>&lt;yearmonth&gt;</code> knows it is January, and that January comes round again next year. Storing the period rather than just the instant is what makes the seasonal plots of Session 3 possible.<br><br>Try it: build a monthly series with a plain <code>&lt;date&gt;</code> index and watch the tsibble report <code>[1D]</code> with gaps. Convert the index to <code>yearmonth</code> and it becomes <code>[1M]</code>.</aside>
 </section>
 
 <!-- ---------- 16 ---------- -->
@@ -756,8 +751,7 @@ yearweek(ymd("2017-01-31"))     <span class="dim">&rarr;</span> 2017 W05     <sp
     </figure>
     <p class="punch step wide">You are not adding data. You are telling R something it could never have worked out on its own.</p>
   </div>
-  <aside class="notes"><span class="clock">0:55 &rarr; 1:14 for this section</span>
-  <span class="switch">Keep sharing RStudio</span> Same screen, new notebook: close 02_A and open 02_B. Emphasize that the key is optional and can be several columns, but the index never is. The three-word summary they should leave with: index, key, measured.</aside>
+  <aside class="notes">You are not adding information to the table. You are declaring structure that R could never have worked out on its own: which column is the clock, and which columns tell one series from another.<br><br>The key is optional and can be several columns. The index never is.</aside>
 </section>
 
 <!-- ---------- 17 ---------- -->
@@ -773,7 +767,7 @@ yearweek(ymd("2017-01-31"))     <span class="dim">&rarr;</span> 2017 W05     <sp
     </div>
     <p class="punch step wide">Read these two lines before you read a single row. They tell you what you have and they are almost always where the mistake is.</p>
   </div>
-  <aside class="notes">Yes, this repeats a Session 1 slide, and repeating it is the point: it was a curiosity then and it is a working habit now. Make somebody read it aloud, then filter to one country live and have the room call out both numbers that change, before you press Enter.</aside>
+  <aside class="notes">Read these two lines before you read a single row of data. They tell you what you are holding, and they are where a surprising number of mistakes become visible.<br><br>Try filtering to a single country and watch both numbers change.</aside>
 </section>
 
 <!-- ---------- 18 ---------- -->
@@ -819,7 +813,7 @@ yearweek(ymd("2017-01-31"))     <span class="dim">&rarr;</span> 2017 W05     <sp
     </figure>
     <p class="punch step wide">That error is not the tsibble being difficult. It is the tsibble catching a duplicate you were about to average without noticing.</p>
   </div>
-  <aside class="notes">Trigger the error live, on purpose, using the flights example with only <code>flight</code> as the key. An error message students have deliberately caused is an error message they can read calmly at three in the morning. Then run <code>duplicates()</code> and show that it hands back the offending rows.</aside>
+  <aside class="notes">The error is not the tsibble being awkward. It is the tsibble catching a duplicate that you would otherwise have averaged over without ever noticing.<br><br>When you hit it, <code>duplicates()</code> hands you the offending rows directly.</aside>
 </section>
 
 <!-- ---------- 19 ---------- -->
@@ -836,7 +830,7 @@ yearweek(ymd("2017-01-31"))     <span class="dim">&rarr;</span> 2017 W05     <sp
     <p class="lead step">Flight 2900 exists at more than one airline. The number alone does not identify a series, any more than a first name identifies a person.</p>
     <p class="punch step wide">Ask what uniquely names one series in your data, then make that the key. Guessing costs you an hour.</p>
   </div>
-  <aside class="notes">The 5,725 is worth pausing on: that is 5,725 separate time series in one object, and later in the course a single <code>model()</code> call will fit all of them. Do not go there today, just plant that the key is what makes that possible. Business parallel: SKU alone versus SKU plus store.</aside>
+  <aside class="notes">Flight 2900 exists at more than one airline, so the flight number alone does not identify a series, any more than a first name identifies a person.<br><br>The business version of this is the same shape: a product code may not be unique across stores, and a store code may not be unique across countries. Ask what uniquely names one series before you write the <code>key</code>.</aside>
 </section>
 
 <!-- ---------- 20 ---------- -->
@@ -887,7 +881,7 @@ yearweek(ymd("2017-01-31"))     <span class="dim">&rarr;</span> 2017 W05     <sp
     </figure>
     <p class="punch step wide">The dangerous one is on the left. It did not error. It answered a question you never asked.</p>
   </div>
-  <aside class="notes">Run the wrong version first and let the room look at it for a moment before you say anything. A silent wrong answer is the failure mode they need to fear, and this is the cleanest example of it in the whole course. Then <code>index_by()</code>, same pipe, correct result, still a tsibble.</aside>
+  <aside class="notes">The version on the left is the dangerous one, and it is worth understanding why. It did not throw an error. It returned 127,328 rows of a perfectly well-formed answer to a question nobody asked.<br><br>Silent wrong answers are much harder to catch than loud failures. <code>index_by()</code> is <code>group_by()</code> that understands the clock.</aside>
 </section>
 
 <!-- ---------- 21 ---------- -->
@@ -902,7 +896,7 @@ yearweek(ymd("2017-01-31"))     <span class="dim">&rarr;</span> 2017 W05     <sp
     </table>
     <p class="punch step wide">If you ever find yourself casting to a tibble and back, stop. There is an index_by that does it properly.</p>
   </div>
-  <aside class="notes">Say the last line twice. The notebook walks through the cast-to-tibble-and-back workaround on the way to <code>index_by()</code>, and students copy the workaround because it is the code they saw most recently. It works, and it will silently drop the key on a multi-series table.</aside>
+  <aside class="notes">You will find, in the notebook and online, a workaround that casts to a tibble, aggregates, and casts back. It works, and on a table with more than one series it will silently drop the key. Prefer <code>index_by()</code>.</aside>
 </section>
 
 <!-- ---------- 22 ---------- -->
@@ -916,8 +910,7 @@ yearweek(ymd("2017-01-31"))     <span class="dim">&rarr;</span> 2017 W05     <sp
     </ul>
     <p class="punch step wide">If either one is shaky, this is the moment to say so. Session 3 puts both of them straight to work.</p>
   </div>
-  <aside class="notes"><span class="clock">1:14 &rarr; 1:20</span>
-  <span class="switch back">Back to slides</span> These two lines are the stated outcome of the session, so ask for the shaky hands and mean it. Two minutes of questions here is worth more than two minutes of new material, and you have a hard stop.</aside>
+  <aside class="notes">These two are the stated outcome of the session. If either one feels shaky, that is worth raising now rather than discovering it in Session 5.</aside>
 </section>
 
 <!-- ---------- 23 ---------- -->
@@ -932,7 +925,7 @@ yearweek(ymd("2017-01-31"))     <span class="dim">&rarr;</span> 2017 W05     <sp
     </ul>
     <div class="callout"><b>No solutions are published for the primer.</b> That is deliberate. Work it through yourself, and email me where you get stuck.</div>
   </div>
-  <aside class="notes">The third item is the one that matters and it takes ten minutes. Every student who has ever struggled in Session 5 struggled because they were still fighting the container instead of thinking about the series. Say that out loud.</aside>
+  <aside class="notes">The third item takes about ten minutes and is the one that matters most. Students who struggle later in the course are almost always still fighting the container instead of thinking about the series.</aside>
 </section>
 
 <!-- ---------- 24 ---------- -->
@@ -944,12 +937,12 @@ yearweek(ymd("2017-01-31"))     <span class="dim">&rarr;</span> 2017 W05     <sp
     <p class="punch step wide">Bring a laptop with <code>fpp3</code>, <code>GGally</code>, <code>fma</code> and <code>patchwork</code> already installed. We plot from the first ten minutes.</p>
     <p class="url" style="font-size:clamp(0.95rem,1.7vw,1.9rem)">aberrizbeitia@faculty.ie.edu</p>
   </div>
-  <aside class="notes">Name the four packages explicitly and put them on the board. They were all in the Session 1 install list, but a third of the room installed only <code>fpp3</code>, and finding that out at the start of Session 3 costs you the first fifteen minutes of a session that has no slack in it.</aside>
+  <aside class="notes">Four packages are needed next session: <code>fpp3</code>, <code>GGally</code>, <code>fma</code> and <code>patchwork</code>. All four were in the Session 1 install list, but only <code>fpp3</code> gets installed by <code>install.packages("fpp3")</code>. Check before you arrive.</aside>
 </section>
 
 <!-- lives inside the stage so it is positioned against it, not the viewport,
      and therefore never covers the rail -->
-<div id="notepane"><h4>Presenter notes</h4><div class="body"></div></div>
+<div id="notepane"><h4>Going further</h4><div class="body"></div></div>
 
 </main>
 
@@ -1042,7 +1035,7 @@ yearweek(ymd("2017-01-31"))     <span class="dim">&rarr;</span> 2017 W05     <sp
     count.textContent = num + " / " + slides.length;
 
     var n = slides[si].querySelector(".notes");
-    noteBody.innerHTML = n ? n.innerHTML : "<i>No notes for this slide.</i>";
+    noteBody.innerHTML = n ? n.innerHTML : "<i>Nothing further for this slide.</i>";
 
     if (history.replaceState) history.replaceState(null, "", "#" + num);
   }

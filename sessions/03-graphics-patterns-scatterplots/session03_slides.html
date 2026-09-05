@@ -376,7 +376,7 @@ body.ov-on #overview{display:block}
   <div class="foot">
     <div id="bar"><i></i></div>
     <div class="keys">
-      <kbd>&rarr;</kbd> next &nbsp; <kbd>&larr;</kbd> back &nbsp; <kbd>N</kbd> notes<br>
+      <kbd>&rarr;</kbd> next &nbsp; <kbd>&larr;</kbd> back &nbsp; <kbd>N</kbd> detail<br>
       <kbd>O</kbd> jump &nbsp; <kbd>F</kbd> full &nbsp; <kbd>[</kbd> hide this pane
     </div>
   </div>
@@ -394,8 +394,7 @@ body.ov-on #overview{display:block}
     <p class="who"><b>Session 3.</b> Time plots, patterns, seasonal plots and scatterplots.<br>
     Alejandro Berrizbeitia · aberrizbeitia@faculty.ie.edu</p>
   </div>
-  <aside class="notes"><span class="clock">0:00 &rarr; 0:05</span>
-  Roll call runs on this slide. This is the fullest session of the first block and there is no slack: hard stop at <em>1:20</em>, room handed over immediately. If you fall behind, the two slides to drop are 13 (the Bricks exercise, set it as homework instead) and 23 (the scatterplot matrix, which the notebook covers well enough on its own).</aside>
+  <aside class="notes">The deck is self-contained: press <b>N</b> at any time to open or close this panel, and <b>O</b> for a list of every slide.</aside>
 </section>
 
 <!-- ---------- 2 ---------- -->
@@ -410,8 +409,7 @@ body.ov-on #overview{display:block}
     </ul>
     <p class="punch step wide">Each of those is a question a plot answers in four seconds and a model cannot answer at all. So we plot first, always.</p>
   </div>
-  <aside class="notes"><span class="clock">0:05 &rarr; 0:10</span>
-  Name the three sessions those methods belong to. Students treat &ldquo;plot your data&rdquo; as a platitude until they see that a specific later decision depends on it. Then it becomes a step.</aside>
+  <aside class="notes">Each of those three methods assumes a shape in the data before it does anything useful. Decomposition assumes a trend and a season exist to be separated. Seasonal na&iuml;ve assumes the season repeats at a fixed length. Holt&ndash;Winters assumes both and then asks whether the seasonal effect adds or multiplies.<br><br>None of those assumptions can be checked by the method itself. All of them are visible in a plot in a few seconds.</aside>
 </section>
 
 <!-- ---------- 3 ---------- -->
@@ -426,7 +424,7 @@ body.ov-on #overview{display:block}
     </div>
     <p class="punch step wide">Answer them in this order. Question 4 is the one that saves you a weekend.</p>
   </div>
-  <aside class="notes">This card set is the spine of the session and of the homework. Tell them to write it on the inside cover of their notes. Question 4 is not in fpp3 as a separate step and it is the one practitioners actually do first.</aside>
+  <aside class="notes">These four questions are the spine of the session and of the homework. They are worth writing somewhere you will see them again.<br><br>Question 4 does not appear in fpp3 as a separate step, and it is the one practitioners actually do first.</aside>
 </section>
 
 <!-- ---------- 4 ---------- -->
@@ -455,8 +453,7 @@ body.ov-on #overview{display:block}
     </figure>
     <p class="punch step wide">Trend and seasonality are easy. Everything you will get wrong is the difference between the last two.</p>
   </div>
-  <aside class="notes"><span class="clock">0:10 &rarr; 0:30 for this section</span>
-  Say the last line before you show the next slide so the room knows where the difficulty is. A real series usually shows two or three of these at once, which is exactly why decomposition exists in Session 5.</aside>
+  <aside class="notes">A real series usually shows two or three of these at the same time, layered on top of each other. Separating them is exactly what decomposition does, and that starts in Session 5.<br><br>Trend and seasonality are the easy two. Almost every mistake made in this part of the course is a confusion between the last two.</aside>
 </section>
 
 <!-- ---------- 5 ---------- -->
@@ -505,7 +502,7 @@ body.ov-on #overview{display:block}
     </figure>
     <p class="punch step wide">If you can name the period, it is seasonal. If you can only name a range, it is a cycle.</p>
   </div>
-  <aside class="notes">Make them do it: point at a peak on the left panel and ask for the next one before you reveal the arrows. The fpp3 wording (&ldquo;not of fixed frequency&rdquo;) is much easier to remember once they have measured it with their eyes.</aside>
+  <aside class="notes">The test is mechanical: find consecutive peaks and measure the gap between them. Constant gaps mean the calendar is driving the pattern. Varying gaps mean something else is.<br><br>fpp3 phrases this as &ldquo;not of fixed frequency&rdquo;, which is much easier to remember once you have measured the gaps with your own eyes.</aside>
 </section>
 
 <!-- ---------- 6 ---------- -->
@@ -520,7 +517,7 @@ body.ov-on #overview{display:block}
     </table>
     <p class="punch step wide">Length is the one that decides it. The other two are supporting evidence.</p>
   </div>
-  <aside class="notes">Thirty seconds, no build, then move. This table is in the notebook and they can read it there. What they cannot get from the notebook is you saying which row is decisive, so say it and go.</aside>
+  <aside class="notes">Length is the row that decides it. Duration and magnitude are supporting evidence, useful when the length is ambiguous.</aside>
 </section>
 
 <!-- ---------- 7 ---------- -->
@@ -570,7 +567,7 @@ body.ov-on #overview{display:block}
     </figure>
     <p class="punch step wide">Those long waves in the lynx data are cycles, not seasons. Annual data admits trend and cycles, never seasonality.</p>
   </div>
-  <aside class="notes">Expect pushback here, because the lynx series looks so regular. Hold the line: regular-looking is not the same as calendar-driven. Run the lynx plot when you are on the RStudio screen and come back to this claim.</aside>
+  <aside class="notes">This one is worth arguing with until it sticks, because the lynx series looks extremely regular and the instinct is to call it seasonal.<br><br>Seasonality is variation <i>within</i> the calendar year, caused by calendar effects. Sample once per year and you have sampled at the same point on every turn of the calendar, so there is no within-year variation left to observe. Regular-looking is not the same as calendar-driven.</aside>
 </section>
 
 <!-- ---------- 8 ---------- -->
@@ -604,7 +601,7 @@ body.ov-on #overview{display:block}
     </figure>
     <p class="punch step wide">Sub-daily data <i>can</i> carry daily, weekly and yearly seasonality. Whether it does is an empirical question, and the plot is how you ask it.</p>
   </div>
-  <aside class="notes">Both panels are in the notebook: the England and Wales series is Taylor's half-hourly data, the flat one is <code>vic_elec</code> filtered to January 2012. Have both open. The mistake to warn against is deciding a period from theory and then never checking, which is how people put a weekly term in a model that has no weekly pattern.</aside>
+  <aside class="notes">Sub-daily data <i>can</i> carry daily, weekly and yearly seasonality all at once. Whether it actually does is an empirical question about that particular series, and the plot is how you ask it.<br><br>The failure mode to avoid: deciding a period from theory and never checking. That is how a weekly term ends up in a model whose data has no weekly pattern.</aside>
 </section>
 
 <!-- ---------- 9 ---------- -->
@@ -618,7 +615,7 @@ body.ov-on #overview{display:block}
     </ul>
     <p class="punch step wide">How far you can forecast is set by how much of the pattern your window contains. If you have not seen a turn, you cannot forecast one.</p>
   </div>
-  <aside class="notes">This is where you say the honest thing about forecast horizons, and it is worth thirty seconds of a real story: a plan built on a trend fitted to the downslope of a cycle. Deliberately no figure here; the point is about what is <em>not</em> in the picture, and the notebook plot of <code>ustreas</code> makes it better than any drawing would.</aside>
+  <aside class="notes">There is no figure on this slide on purpose. The point is about what the window does <i>not</i> contain.<br><br>The practical rule: how far you can forecast is limited by how much of the pattern your data actually covers. If you have never observed a turning point, you have no basis for predicting one.</aside>
 </section>
 
 <!-- ---------- 10 ---------- -->
@@ -634,8 +631,7 @@ body.ov-on #overview{display:block}
     </ul>
     <div class="callout"><b>Load four libraries before you start.</b> <code>fpp3</code>, <code>GGally</code>, <code>fma</code> and <code>patchwork</code>. They were all in the Session 1 install list. If one is missing, install it now and keep up on the notebook.</div>
   </div>
-  <aside class="notes"><span class="clock">0:30 &rarr; 0:44 for this section</span>
-  <span class="switch">Share RStudio now</span> Leave this slide up while you move the share across. Run the four <code>library()</code> calls on screen so anyone missing a package sees the error at the same moment you do, rather than discovering it in the middle of the scatterplot matrix twenty minutes later.</aside>
+  <aside class="notes">Four libraries are needed for this session: <code>fpp3</code>, <code>GGally</code>, <code>fma</code> and <code>patchwork</code>. All were in the Session 1 install list.</aside>
 </section>
 
 <!-- ---------- 11 ---------- -->
@@ -653,7 +649,7 @@ body.ov-on #overview{display:block}
     </table>
     <p class="punch step wide">Every &ldquo;why is my x-axis unreadable&rdquo; question all term is this table. The data does not decide; the index type does.</p>
   </div>
-  <aside class="notes">Print the tsibble header before every plot so the class watches you read the index type first. That habit is the deliverable, not the six function names. The bottom row is the one that catches people: annual data comes through as a plain number, so it needs the generic continuous scale and an explicit <code>seq()</code>.</aside>
+  <aside class="notes">The data does not decide which helper you need; the <i>type of the index column</i> does. Print the tsibble header and read the index type before you plot.<br><br>The last row is the one that catches people. Annual data arrives as a plain number, so it needs the generic continuous scale and a tick sequence you build yourself with <code>seq()</code>.</aside>
 </section>
 
 <!-- ---------- 12 ---------- -->
@@ -671,7 +667,7 @@ aus_production %&gt;%
     <p class="lead step wide">It reads the index off the tsibble and hands you back an ordinary ggplot object. Which means every layer, scale, theme and label you already know still works.</p>
     <p class="punch step">You are not learning a new plotting system this term. You are learning where ggplot2 gets its x-axis for free.</p>
   </div>
-  <aside class="notes">Worth a full minute. A good number of students quietly assume <code>autoplot</code> is a closed appliance and stop trying to change anything about the figure. Add a <code>labs()</code> and a <code>theme()</code> live on top of an autoplot to prove it.</aside>
+  <aside class="notes"><code>autoplot()</code> reads the index off the tsibble and hands you back an ordinary ggplot object. Every layer, scale, theme and label you already know still works on top of it.<br><br>You are not learning a second plotting system this term.</aside>
 </section>
 
 <!-- ---------- 13 ---------- -->
@@ -686,7 +682,7 @@ aus_production %&gt;%
     </ul>
     <p class="punch step wide">Expect a warning about removed rows. That is question 4 doing its job: this series has missing values.</p>
   </div>
-  <aside class="notes">Three minutes, walk the room, then take answers from two students rather than giving your own. The intended reading is a trend with recessions around 1983 and 1991, a one-year season, and cycles of varying length on top. The missing-value warning is a gift: it is the first time question 4 pays for itself. <em>Cut this slide first if you are behind the clock.</em></aside>
+  <aside class="notes">Expect a warning about removed rows. That is not a bug: this series has missing values, and question 4 has just paid for itself.<br><br>The reading to aim for is a trend with recessions around 1983 and 1991, a one-year season, and cycles of varying length on top of both.</aside>
 </section>
 
 <!-- ---------- 14 ---------- -->
@@ -727,8 +723,7 @@ aus_production %&gt;%
     </figure>
     <p class="punch step wide">Same data, same order, one cut. Now the question &ldquo;is February always the low point?&rdquo; is answered by looking.</p>
   </div>
-  <aside class="notes"><span class="clock">0:44 &rarr; 1:02 for this section</span>
-  <span class="switch">Keep sharing RStudio</span> The word to use is <em>fold</em>, and use it every time. Students who hold the folding image get subseries plots for free ten minutes later; students who memorize two function names do not. Run <code>gg_season(Cost, labels = "both")</code> on <code>a10</code> and let them find the January spike themselves.</aside>
+  <aside class="notes">The word to hold on to is <b>fold</b>. A time plot runs left to right forever; a seasonal plot cuts the axis at one season and lays the years on top of each other.<br><br>If you keep the folding image, subseries plots will make sense immediately.</aside>
 </section>
 
 <!-- ---------- 15 ---------- -->
@@ -742,7 +737,7 @@ aus_production %&gt;%
     </ul>
     <p class="punch step wide">Australian patients stockpile prescriptions before the subsidy year resets. The plot found it. The plot cannot tell you why.</p>
   </div>
-  <aside class="notes">The last line matters more than the two above it. A seasonal plot tells you a pattern exists and gives you its shape; the mechanism comes from somebody who knows the business. Say plainly that you would not have known the subsidy reset without asking an Australian pharmacist, and that this is the normal division of labor.</aside>
+  <aside class="notes">A seasonal plot can tell you that a pattern exists and show you its shape. It cannot tell you why.<br><br>In this case the February collapse is a subsidy-year reset in the Australian prescription scheme, which no plot could have revealed. That explanation came from somebody who knew the domain, and that division of labour is normal.</aside>
 </section>
 
 <!-- ---------- 16 ---------- -->
@@ -787,7 +782,7 @@ aus_production %&gt;%
     </figure>
     <p class="punch step wide">Use the subseries plot when the question is about one season over time. It is the only one of the two that separates growth from seasonal growth.</p>
   </div>
-  <aside class="notes">The mean bar is the feature students miss. It is what lets you say &ldquo;Q4 is not just high, it is pulling away from the others,&rdquo; which is a different claim from &ldquo;sales are growing.&rdquo; That distinction is the whole reason decomposition exists, and Session 5 opens on it.</aside>
+  <aside class="notes">The horizontal bar in each panel is the mean for that season, and it is the feature most people miss.<br><br>It is what lets you say &ldquo;Q4 is not merely high, it is pulling away from the others&rdquo;, which is a different and much more useful claim than &ldquo;sales are growing&rdquo;. That distinction is the reason decomposition exists.</aside>
 </section>
 
 <!-- ---------- 17 ---------- -->
@@ -803,7 +798,7 @@ aus_production %&gt;%
     </ul>
     <p class="punch step wide">Before you call it, say out loud how many panels you are asking for. If you cannot, you are not ready to press Enter.</p>
   </div>
-  <aside class="notes">Genuinely do not run it, on your machine or theirs. Ask the room for the panel count before you reveal it, on <code>a10</code> first (12, easy) and then here. Session 2's <code>index_by()</code> is the fix, which is a good place to point out that last week's syntax is already load-bearing.</aside>
+  <aside class="notes">The rule: the period is the largest calendar unit in the index, and the panels are the smallest unit in the index. Here that is a year split into half-hours.<br><br>Before calling <code>gg_subseries()</code>, say out loud how many panels you are asking for. If you cannot work it out, aggregate with <code>index_by()</code> first or set <code>period =</code> explicitly.</aside>
 </section>
 
 <!-- ---------- 18 ---------- -->
@@ -818,7 +813,7 @@ aus_production %&gt;%
     </ul>
     <p class="punch step wide">A model will treat all three as noise unless you tell it otherwise. Finding them is your job, and this is the plot that does it.</p>
   </div>
-  <aside class="notes">Spend a moment on the 2001 point. It is the first time in the course that a number on a screen is obviously a real event with real people in it, and it changes how the room treats outliers for the rest of the term. Do not moralize; just name it and move on.</aside>
+  <aside class="notes">A model will treat all three of these as noise unless it is told otherwise. Finding them is the analyst's job, and the subseries plot is where they surface.<br><br>The 2001 gap is worth pausing on. It is the first point in this course where a number on a screen is unmistakably a real event with real people in it.</aside>
 </section>
 
 <!-- ---------- 19 ---------- -->
@@ -833,8 +828,7 @@ aus_production %&gt;%
     </ul>
     <p class="punch step wide">The straight line goes up gently. The loess is a deep U. Same points, and only one of them is telling you the truth.</p>
   </div>
-  <aside class="notes"><span class="clock">1:02 &rarr; 1:14 for this section</span>
-  <span class="switch">Keep sharing RStudio</span> Build the figure in that order on screen: two stacked time plots with <code>patchwork</code>, then the scatter, then <code>lm</code>, then <code>loess</code> last. Ask the room what the U means before you say it. Heating at the cold end, air conditioning at the hot end, and minimum demand somewhere in the comfortable middle.</aside>
+  <aside class="notes">Build it in that order and watch what happens. The straight line rises gently and suggests a weak relationship. The loess curve shows a deep U.<br><br>The U has a physical explanation: heating at the cold end of the range, air conditioning at the hot end, and minimum demand somewhere comfortable in between.</aside>
 </section>
 
 <!-- ---------- 20 ---------- -->
@@ -876,7 +870,7 @@ aus_production %&gt;%
     </figure>
     <p class="punch step wide">r = 0 does not mean no relationship. It means no straight line. Those are very different claims.</p>
   </div>
-  <aside class="notes">Keep this one forever. Also run <code>cor(df$x, df$y)</code> live: it returns something like <code>1.49e-16</code>, not <code>0</code>, and that is worth ten seconds on floating point. An exponent of minus sixteen is zero for every purpose you will ever have, and they need to learn to read that on sight.</aside>
+  <aside class="notes">Keep this pair. The left panel is generated from <code>y = x&sup2;</code>, so the relationship is exact, deterministic and perfectly knowable. The right panel is noise. Both report the same correlation.<br><br>Run <code>cor()</code> on the left panel and you will get something like <code>1.49e-16</code> rather than a clean zero. An exponent of minus sixteen is zero for every practical purpose, and recognising that on sight is a useful habit.</aside>
 </section>
 
 <!-- ---------- 21 ---------- -->
@@ -930,7 +924,7 @@ aus_production %&gt;%
     </figure>
     <p class="punch step wide">A correlation coefficient is a summary, and every summary throws something away. Plot it or you are guessing.</p>
   </div>
-  <aside class="notes">Anscombe, 1973, and still the best forty seconds in statistics teaching. The notebook also has the Datasaurus animation, which makes the same point more memorably: show it if you have the time, skip it without regret if you do not. The fourth panel is the one worth naming out loud, because that shape shows up constantly in business data with one giant customer.</aside>
+  <aside class="notes">Anscombe constructed these in 1973 and they have not been improved on. All four share the same correlation, the same regression line, the same means and the same variances.<br><br>The fourth panel is the one to remember: a single point is doing all the work. That shape turns up constantly in business data with one dominant customer.</aside>
 </section>
 
 <!-- ---------- 22 ---------- -->
@@ -945,7 +939,7 @@ aus_production %&gt;%
     <p class="punch step wide">Heating at one end, air conditioning at the other. The two effects pull the straight line in opposite directions and it comes out nearly flat.</p>
     <p class="small">Two bad but popular readings to be ready for: &ldquo;r near zero means the variables are unrelated,&rdquo; and &ldquo;r near zero means they are independent.&rdquo; Both are wrong, and you will meet both online.</p>
   </div>
-  <aside class="notes">This is the slide that converts the abstract warning into money. A screening step that drops every feature with low correlation would have thrown temperature out of an electricity demand model. Ask the room whether they have ever seen a feature-selection step do exactly that.</aside>
+  <aside class="notes">The number said weak. The picture said strong. The straight line is nearly flat because the two physical effects pull it in opposite directions and cancel.<br><br>A feature-selection step that drops everything below some correlation threshold would have thrown temperature out of an electricity demand model.<br><br>Two common misreadings to be ready for: that a correlation near zero means the variables are unrelated, and that it means they are independent. Both are wrong.</aside>
 </section>
 
 <!-- ---------- 23 ---------- -->
@@ -963,7 +957,7 @@ aus_production %&gt;%
     </div>
     <p class="punch step wide">Add the loess line. Without it you have built a very expensive way of reading twenty-eight numbers.</p>
   </div>
-  <aside class="notes">The <code>pivot_wider()</code> step is the part they will get stuck on in the homework: <code>ggpairs</code> needs one column per series, and a keyed tsibble is long. Say that explicitly. <em>Cut this slide second if you are behind; the notebook covers it cleanly and the homework will force them through it.</em></aside>
+  <aside class="notes">Look below the diagonal first. The numbers above it are summaries of the panels opposite them, and a summary read without its picture is how the errors on the previous three slides happen.<br><br>The step that usually causes trouble is <code>pivot_wider()</code>: <code>ggpairs</code> needs one column per series, and a keyed tsibble is long, not wide.</aside>
 </section>
 
 <!-- ---------- 24 ---------- -->
@@ -992,8 +986,7 @@ aus_production %&gt;%
     </figure>
     <p class="punch step wide">In R that is one function: <code>lag(x, k)</code>. Everything difficult about lags is the interpretation, not the code.</p>
   </div>
-  <aside class="notes"><span class="clock">1:14 &rarr; 1:18 for this section</span>
-  <span class="switch back">Back to slides</span> Keep this short and mechanical. The full treatment, including lag plots and the ACF, is Session 4 and starts exactly here. All you owe them today is the shift, the notation, and the loop in the notebook that builds eight lags of SOI in three lines.</aside>
+  <aside class="notes">In R this is a single function, <code>lag(x, k)</code>. Everything difficult about lags is interpretation, not syntax.<br><br>The full treatment, including lag plots and the autocorrelation function, is Session 4 and begins exactly here.</aside>
 </section>
 
 <!-- ---------- 25 ---------- -->
@@ -1008,7 +1001,7 @@ aus_production %&gt;%
     </ul>
     <p class="punch step wide">A driver that moves at the same time as your target is interesting. A driver that moves first is a forecast.</p>
   </div>
-  <aside class="notes">Land the business version: marketing spend in March and sales in June, price changes and churn, hiring and delivered revenue. Then stop. Cross-correlation proper is not in this course, and the honest framing is that Session 4 does this against the series itself, which is autocorrelation.</aside>
+  <aside class="notes">The business version is the same shape: marketing spend in March and sales in June, a price change and the churn that follows it, hiring and the revenue it eventually delivers.<br><br>A driver that moves at the same time as your target is interesting. A driver that moves first is a forecast.</aside>
 </section>
 
 <!-- ---------- 26 ---------- -->
@@ -1023,7 +1016,7 @@ aus_production %&gt;%
     </ul>
     <div class="callout slate"><b>The SOI data is in the repo.</b> The notebook opens a file picker with <code>file.choose()</code>: point it at <code>data/soi_recruitment.csv</code>, or skip the picker and use <code>read_csv("data/soi_recruitment.csv")</code> directly.</div>
   </div>
-  <aside class="notes">Say the data-path correction out loud and put it on the board. It is the one thing in the homework that can stop somebody dead, and half of them will not read the callout. The one-sentence rule on item three is the skill that matters: naming patterns in prose, from a picture.</aside>
+  <aside class="notes">The SOI data is in the repository at <code>data/soi_recruitment.csv</code>. The notebook still says <code>file.choose()</code> and points at a Google Drive folder, which is out of date.<br><br>The one-sentence rule on item three is the skill that matters: naming patterns in prose, from a picture.</aside>
 </section>
 
 <!-- ---------- 27 ---------- -->
@@ -1035,13 +1028,12 @@ aus_production %&gt;%
     <p class="punch step wide">Everything you did by eye today, the ACF does with a number. Bring today's four questions with you.</p>
     <p class="url" style="font-size:clamp(0.95rem,1.7vw,1.9rem)">aberrizbeitia@faculty.ie.edu</p>
   </div>
-  <aside class="notes"><span class="clock">1:18 &rarr; 1:20</span>
-  Two minutes, and finish on time. The room is handed over immediately and running long costs you goodwill with a colleague you will need. If questions are still coming, take them in the corridor rather than at the front.</aside>
+  <aside class="notes">Everything you did by eye today, the autocorrelation function does with a number. Bring the four questions with you.</aside>
 </section>
 
 <!-- lives inside the stage so it is positioned against it, not the viewport,
      and therefore never covers the rail -->
-<div id="notepane"><h4>Presenter notes</h4><div class="body"></div></div>
+<div id="notepane"><h4>Going further</h4><div class="body"></div></div>
 
 </main>
 
@@ -1135,7 +1127,7 @@ aus_production %&gt;%
     count.textContent = num + " / " + slides.length;
 
     var n = slides[si].querySelector(".notes");
-    noteBody.innerHTML = n ? n.innerHTML : "<i>No notes for this slide.</i>";
+    noteBody.innerHTML = n ? n.innerHTML : "<i>Nothing further for this slide.</i>";
 
     if (history.replaceState) history.replaceState(null, "", "#" + num);
   }
