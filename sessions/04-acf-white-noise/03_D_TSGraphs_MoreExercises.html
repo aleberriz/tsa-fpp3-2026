@@ -3090,7 +3090,7 @@ vertical-align: -.125em;
 </div>
 <section id="beijing-pollution" class="level1">
 <h1>1 Beijing pollution</h1>
-<p>The code below imports measurements from a station located in Beijing that measures NO2, CO and SO2 levels, as well as other basic weather-related variables. Run the code and a pop-up window will request you to select a file. Select the file <code>Beijing_Pollution_TSeries.csv</code>, which you must download from the ZZ_Datasets folder located in google drive:</p>
+<p>The code below imports measurements from a station located in Beijing that measures NO2, CO and SO2 levels, as well as other basic weather-related variables. Run the code and a pop-up window will request you to select a file. Select the file <code>Beijing_Pollution_TSeries.csv</code>, which is in the <code>data/</code> folder of the course repository:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>pollution <span class="ot">&lt;-</span> </span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  </span>
@@ -3117,7 +3117,7 @@ vertical-align: -.125em;
 </div>
 <section id="average-weekly-values" class="level2">
 <h2 class="anchored" data-anchor-id="average-weekly-values">1.1 Average weekly values</h2>
-<p>Use <code>index_by()</code> to define a new tsibble <code>NO2_weekly</code> that processes the hourly values contained in the tsibble <code>pollution</code> and computes average weekly values of NO2 levels. For details on how to use <code>index_by()</code> refer to the notebook on tsibbles that we saw in class and you can find in google drive.</p>
+<p>Use <code>index_by()</code> to define a new tsibble <code>NO2_weekly</code> that processes the hourly values contained in the tsibble <code>pollution</code> and computes average weekly values of NO2 levels. For details on how to use <code>index_by()</code> refer to the notebook on tsibbles that we saw in class, <code>sessions/02-stochastic-processes-tsibbles/02_B_tsibbles.html</code>.</p>
 <p>Afterwards create a new column on <code>NO2_weekly</code> that contains the combination of year and month corresponding to each row.</p>
 <p>Following this filter the dataset to contain only values between March 2013 (included) and March 2014 (excluded).</p>
 <div class="cell">
@@ -3243,7 +3243,7 @@ vertical-align: -.125em;
 </section>
 <section id="fuel-prices" class="level1">
 <h1>2. Fuel Prices</h1>
-<p>The code below performs the necessary transformations to turn the data contained in the file <code>Weekly Fuel Prices.xlsx</code> into a tsibbl. You will find this data in the google drive folder, under <code>ZZ_Datasets</code>. Run the code and a pop-up window will request you to select a file. Select <code>Weekly Fuel Prices.xlsx</code>, which you must previously download to your computer:</p>
+<p>The code below performs the necessary transformations to turn the data contained in the file <code>Weekly Fuel Prices.xlsx</code> into a tsibbl. You will find this data in the <code>data/</code> folder of the course repository. Run the code and a pop-up window will request you to select a file. Select <code>Weekly Fuel Prices.xlsx</code> from that folder:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>fuel_prices <span class="ot">&lt;-</span> </span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  </span>

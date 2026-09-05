@@ -3246,7 +3246,7 @@ vertical-align: -.125em;
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Country <span class="sc">==</span> <span class="st">&quot;Algeria&quot;</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Year, Exports)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The code below serves to test that you have correctly implemented the level equation in the function. If you run the code below and select the file <code>yhat_SES_test</code> provided in the folder <code>ZZ_Datasets</code>from google drive, the code should evaluate to <code>TRUE</code>.</p>
+<p>The code below serves to test that you have correctly implemented the level equation in the function. If you run the code below and select the file <code>yhat_SES_test</code> provided in the <code>data/</code> folder of the course repository, the code should evaluate to <code>TRUE</code>.</p>
 <p>Check this with <code>all.equal()</code>, where <code>levels_test</code> is the output of applying your function <code>levels</code> to the data in <code>algerian_exports</code> using the given values for <code>alpha</code> and <code>l_0</code>. Simply run the code below and select the file <code>yhat_SES_test</code> when the pop-up window shows:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> algerian_exports<span class="sc">$</span>Exports</span>
@@ -3256,7 +3256,7 @@ vertical-align: -.125em;
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the leves using the implemented function</span></span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>levels_function <span class="ot">&lt;-</span> <span class="fu">levels</span>(<span class="at">y=</span>y, <span class="at">l_0=</span>l_0, <span class="at">alpha=</span>alpha)</span>
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Read yhat_test object, file `yhat_SES_test` contained in ZZ_Datasets</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Read yhat_test object, file `yhat_SES_test` contained in data/</span></span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co"># A pop-up window will prompt you to select the file.</span></span>
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>levels_test <span class="ot">&lt;-</span> <span class="fu">dget</span>(<span class="fu">file.choose</span>())</span>
 <span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
