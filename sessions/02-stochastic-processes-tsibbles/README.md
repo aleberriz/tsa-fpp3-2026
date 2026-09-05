@@ -15,7 +15,8 @@ lubridate parsing, `yearmonth`/`yearquarter`/`yearweek`, `tsibble()`, `as_tsibbl
 **R:** `ymd()`, `make_date()`, `as_datetime()`, `yearmonth()`, `tsibble()`, `as_tsibble()`,
 `index_by()`, `scale_x_yearmonth()`
 
-**Homework:** `00_RBasics/00_C_basic_tibbles_dplyr_exercises`. No solutions are published for the
+**Homework:** `00_C_basic_tibbles_dplyr_exercises`, in
+[`self-study/00-r-basics/`](../../self-study/00-r-basics/). No solutions are published for the
 primer — work through it on your own.
 
 **Outcome:** Student can state why forecasts are random variables, and can build a valid tsibble with

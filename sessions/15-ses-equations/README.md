@@ -8,7 +8,7 @@ fitting means — finding `ℓ₀` and `α`. Then the R half: specify the model,
 interpret `α` by computing the weight on the three most recent observations, reconstruct the fitted
 values by hand from `α` and `ℓ₀`, and forecast.
 
-**R:** `ETS(y ~ error("A") + trend("N") + season("N"))`, `report()`, `tidy()`, `components()`
+**R:** `ETS(y ~ error("A") + trend("N") + season("N"))`, `tidy()`, `augment()`
 
 **Homework:** `06_1_C_SES_excel_fittedvals_exercise.xlsx` — compute the SES fitted values by hand in
 Excel.
