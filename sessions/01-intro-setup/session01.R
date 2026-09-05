@@ -123,7 +123,7 @@ global_economy
 
 # 263 series in one object is a lot. Start with one country.
 spain_economy <-
-  global_economy %>%
+  global_economy |>
   filter(Country == "Spain")
 
 # Now the header reads "Key: Country [1]" - a single series, 58 yearly
@@ -139,7 +139,7 @@ spain_economy
 major_ticks_seq <- seq(0, max(spain_economy$Year), 10)
 minor_ticks_seq <- seq(0, max(spain_economy$Year), 5)
 
-spain_economy %>%
+spain_economy |>
   autoplot(Population) +
   scale_x_continuous(breaks       = major_ticks_seq,
                      minor_breaks = minor_ticks_seq) +
@@ -167,16 +167,16 @@ spain_economy %>%
 # as_tibble() temporarily drops the time index so that distinct() behaves like
 # ordinary dplyr. A tsibble protects its index, which would otherwise keep
 # every row unique.
-global_economy %>%
-  as_tibble() %>%
-  select(Country) %>%
-  distinct() %>%
+global_economy |>
+  as_tibble() |> # <-- without this line, the result of "nrow()" is wrong. 
+  select(Country) |>
+  distinct() |>
   nrow()
 
 # Population in millions, and nothing else.
 populations <-
-  global_economy %>%
-  mutate(Pop = Population / 1e6) %>%
+  global_economy |>
+  mutate(Pop = Population / 1e6) |>
   select(Country, Year, Pop)
 
 populations
@@ -186,7 +186,7 @@ populations
 demo_countries <- c("Spain", "Germany", "Japan", "Brazil", "Nigeria")
 
 populations_demo <-
-  populations %>%
+  populations |>
   filter(Country %in% demo_countries)
 
 # ETS() is exponential smoothing; ARIMA() is a different family of models.
@@ -199,7 +199,7 @@ populations_demo <-
 # ETS on its own, so this section still works.
 if (requireNamespace("urca", quietly = TRUE)) {
   fit <-
-    populations_demo %>%
+    populations_demo |>
     model(
       ets   = ETS(Pop),
       arima = ARIMA(Pop)
@@ -208,7 +208,7 @@ if (requireNamespace("urca", quietly = TRUE)) {
   message("urca is not installed, so ARIMA() is being skipped. ",
           "Run install.packages(\"urca\") and re-run this section to include it.")
   fit <-
-    populations_demo %>%
+    populations_demo |>
     model(
       ets = ETS(Pop)
     )
@@ -219,7 +219,7 @@ if (requireNamespace("urca", quietly = TRUE)) {
 fit
 
 # Forecast four years ahead - for every series and every model, in one call.
-fc <- fit %>% forecast(h = 4)
+fc <- fit |> forecast(h = 4)
 
 # The result is a FABLE (forecast table). Look closely at the Pop column: the
 # entries are not single numbers, they are DISTRIBUTIONS, written like
@@ -231,22 +231,22 @@ fc <- fit %>% forecast(h = 4)
 fc
 
 # The forecast as a single line per model - the point forecasts only.
-spain_fc   <- fc               %>% filter(Country == "Spain")
-spain_hist <- populations_demo %>% filter(Country == "Spain")
+spain_fc   <- fc               |> filter(Country == "Spain")
+spain_hist <- populations_demo |> filter(Country == "Spain")
 
-spain_fc %>%
+spain_fc |>
   autoplot(level = NULL) +
   labs(title = "Spain - point forecasts only")
 
 # The same forecast, now showing a 95% prediction interval: the range the model
 # thinks the true value will fall in. This is the honest picture, and the one
 # you should always ask to see.
-spain_fc %>%
+spain_fc |>
   autoplot(level = 95, alpha = 0.6) +
   labs(title = "Spain - 95% prediction interval")
 
 # With the history attached, so the forecast sits in context.
-spain_fc %>%
+spain_fc |>
   autoplot(spain_hist, level = 95, alpha = 0.6) +
   labs(title = "Spain - population forecast",
        y     = "Millions of people")
@@ -254,10 +254,10 @@ spain_fc %>%
 # A different country, the same pipeline, no extra code. Look at the shape of
 # Germany's history around 1990 and ask yourself what a model should do with a
 # sudden jump like that.
-germany_fc   <- fc               %>% filter(Country == "Germany")
-germany_hist <- populations_demo %>% filter(Country == "Germany")
+germany_fc   <- fc               |> filter(Country == "Germany")
+germany_hist <- populations_demo |> filter(Country == "Germany")
 
-germany_fc %>%
+germany_fc |>
   autoplot(germany_hist, level = 95, alpha = 0.6) +
   labs(title = "Germany - population forecast",
        y     = "Millions of people")
@@ -295,7 +295,7 @@ germany_fc %>%
 
 library(fpp3)
 
-aus_production %>%
+aus_production |>
   autoplot(Beer) +
   labs(title    = "My first time series plot",
        subtitle = "Australian quarterly beer production",
