@@ -273,6 +273,9 @@ figcaption{
 .figrow{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem;margin-top:.9rem}
 .figrow p{margin:0;font-size:var(--fs-body);line-height:1.38}
 .figrow p b{display:block;color:var(--slate);letter-spacing:.05em;font-size:.8em;text-transform:uppercase;margin-bottom:.3rem}
+/* labels that quote literal code or notation must not be uppercased -
+   .mean and Pop are exact R identifiers, and case is the whole point */
+.figrow p b.lit{text-transform:none}
 
 .split{display:grid;grid-template-columns:1.05fr .95fr;gap:3rem;align-items:center}
 @media (max-width:1080px){.split{grid-template-columns:1fr;gap:1.5rem}.cards.four{grid-template-columns:repeat(2,1fr)}}
@@ -888,8 +891,8 @@ Course packages (installed separately):
     <p class="huge long">N(211, 0.0021)</p>
     <h2 class="sub" style="margin-top:1.5rem">That is not a number. It is a normal distribution. Brazil, 2018, in millions of people.</h2>
     <div class="figrow" style="margin-top:1.6rem">
-      <p class="step"><b>Pop &nbsp;&lt;dist&gt;</b>The forecast. A whole distribution, mean and variance.</p>
-      <p class="step"><b>.mean &nbsp;&lt;dbl&gt;</b>211. The number everybody quotes. Only a summary of the column to its left.</p>
+      <p class="step"><b class="lit">Pop &nbsp;&lt;dist&gt;</b>The forecast. A whole distribution, mean and variance.</p>
+      <p class="step"><b class="lit">.mean &nbsp;&lt;dbl&gt;</b>211. The number everybody quotes. Only a summary of the column to its left.</p>
     </div>
     <p class="punch step" style="margin-top:1.5rem;font-size:var(--fs-sowhat);line-height:1.08;max-width:22ch">A forecast is a random variable.</p>
   </div>

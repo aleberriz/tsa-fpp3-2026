@@ -259,6 +259,9 @@ figcaption{
 .figrow.three{grid-template-columns:repeat(3,1fr);gap:1.3rem}
 .figrow p{margin:0;font-size:var(--fs-body);line-height:1.38}
 .figrow p b{display:block;color:var(--slate);letter-spacing:.05em;font-size:.8em;text-transform:uppercase;margin-bottom:.3rem}
+/* labels that quote notation or literal code must not be uppercased -
+   Y vs y is the whole point of this session's slide 4 */
+.figrow p b.lit{text-transform:none}
 .figrow p.t b{color:var(--terra)}
 
 .split{display:grid;grid-template-columns:1.05fr .95fr;gap:3rem;align-items:center}
@@ -582,8 +585,8 @@ body.ov-on #overview{display:block}
     <p class="huge long">N(211, 0.0021)</p>
     <h2 class="sub">Brazil, 2018, millions of people. On day one this was just a strange-looking cell.</h2>
     <div class="figrow" style="margin-top:1.6rem">
-      <p class="step t"><b>Y<sub>2018</sub></b>The random variable. Not yet realized in 2017, when the model was fitted. This is what fable printed.</p>
-      <p class="step"><b>y<sub>2018</sub></b>The single number history went on to record. One draw from the cell on the left.</p>
+      <p class="step t"><b class="lit">Y<sub>2018</sub></b>The random variable. Not yet realized in 2017, when the model was fitted. This is what fable printed.</p>
+      <p class="step"><b class="lit">y<sub>2018</sub></b>The single number history went on to record. One draw from the cell on the left.</p>
     </div>
     <p class="punch step wide">fable prints a distribution because the distribution is the forecast. The number everyone quotes is a summary of it.</p>
   </div>
