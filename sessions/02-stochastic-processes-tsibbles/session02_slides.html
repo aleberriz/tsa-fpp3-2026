@@ -400,7 +400,7 @@ body.ov-on #overview{display:block}
 <section class="slide title-slide" data-section="1" data-title="Title">
   <div class="inner">
     <p class="kicker">IE University · Dual Degree BBA &amp; Data and Business Analytics</p>
-    <h1>A time series<br>is a stochastic<br>process.</h1>
+    <h1>A time series<br>is a stochastic process<br>whose observations<br>depend on each other.</h1>
     <div class="rule"></div>
     <p class="who"><b>Session 2.</b> Stochastic processes, and the table that holds one.<br>
     Alejandro Berrizbeitia · aberrizbeitia@faculty.ie.edu</p>
@@ -415,7 +415,7 @@ body.ov-on #overview{display:block}
     <h1 class="sowhat">Yesterday tells you something about today.</h1>
     <ul class="build">
       <li class="step">I left that hanging on purpose. It is the reason this field exists.</li>
-      <li class="step">Today, first, we make it precise: <b>what a time series actually is</b>, mathematically.</li>
+      <li class="step">Today, first, we make it precise: <b>what a time series actually is</b>.</li>
       <li class="step">Then, second, we get a table that can hold one: <b>the tsibble</b>.</li>
     </ul>
     <p class="punch step">Theory for forty minutes, then code for thirty. The theory is the part the exam is written from.</p>
@@ -586,11 +586,11 @@ body.ov-on #overview{display:block}
     <h2 class="sub">Brazil, 2018, millions of people. On day one this was just a strange-looking cell.</h2>
     <div class="figrow" style="margin-top:1.6rem">
       <p class="step t"><b class="lit">Y<sub>2018</sub></b>The random variable. Not yet realized in 2017, when the model was fitted. This is what fable printed.</p>
-      <p class="step"><b class="lit">y<sub>2018</sub></b>The single number history went on to record. One draw from the cell on the left.</p>
+      <p class="step"><b class="lit">y<sub>2018</sub></b>The single number history went on to record: <b>210.1</b>. One draw from the cell on the left.</p>
     </div>
     <p class="punch step wide">fable prints a distribution because the distribution is the forecast. The number everyone quotes is a summary of it.</p>
   </div>
-  <aside class="notes">This cell appeared on the first day of the course without explanation. It is a normal distribution with a mean of 211 and a variance of 0.0021, describing Brazil's population in 2018 in millions.<br><br>Worth asking: which of the two columns does a chief financial officer usually get shown, and what does that omission cost?</aside>
+  <aside class="notes">This cell appeared on the first day of the course without explanation. It is a normal distribution with a mean of 211 and a variance of 0.0021, describing Brazil's population in 2018 in millions. The actual figure history went on to record was 210.1 million (World Bank) — close to the forecast mean, but not equal to it. That gap is the whole point: the distribution said 211 was the center, and the truth was one draw from it.<br><br>Worth asking: which of the two columns does a chief financial officer usually get shown, and what does that omission cost?</aside>
 </section>
 
 <!-- ---------- 9 ---------- -->
@@ -612,7 +612,7 @@ body.ov-on #overview{display:block}
 <!-- ---------- 10 ---------- -->
 <section class="slide" data-section="3" data-title="Bridge to the container">
   <div class="inner">
-    <p class="kicker">From the mathematics to the keyboard</p>
+    <p class="kicker">From the concept to the code</p>
     <h1 class="sowhat wide">A variable indexed by time needs a table that knows about time.</h1>
     <ul class="build">
       <li class="step">A data frame has rows. It does not know which column is the clock.</li>
