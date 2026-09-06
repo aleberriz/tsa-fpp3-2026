@@ -3183,11 +3183,11 @@ vertical-align: -.125em;
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nycflights13)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="referenes" class="level1">
-<h1>Referenes</h1>
+<section id="references" class="level1">
+<h1>References</h1>
 <ol type="1">
 <li><p>Wickham, H; Grolemund, G. <em>R for Data science, 2nd ed</em>. 2023 <a href="https://r4ds.hadley.nz/">Link</a></p></li>
-<li><p>D. Peng, R. <em>R Programming for Data Science</em>. 2020. <a href="https://bookdown.org/rdpeng/rprogdatascience/dates-and-times.html">Link</a></p></li>
+<li><p>Peng, R. D. <em>R Programming for Data Science</em>. 2020. <a href="https://bookdown.org/rdpeng/rprogdatascience/dates-and-times.html">Link</a></p></li>
 <li><p><a href="https://cran.r-project.org/web/packages/tsibble/tsibble.pdf">tsibble documentation</a></p></li>
 <li><p>All tidyverse documentation. Start at https://www.tidyverse.org/packages/</p></li>
 </ol>
@@ -3237,7 +3237,7 @@ vertical-align: -.125em;
 <li>Identify the order in which year, month and day appear in your dates.</li>
 <li>Arrange “y”, “m” and “d” in the same order.</li>
 </ol>
-<p>This procedure gives tou the name of the lubridate function that will pase your date:</p>
+<p>This procedure gives you the name of the lubridate function that will parse your date:</p>
 <ul>
 <li><strong>ymd()</strong> examples:</li>
 </ul>
@@ -3295,7 +3295,7 @@ vertical-align: -.125em;
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] &quot;POSIXct&quot; &quot;POSIXt&quot; </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Exqmple 3</span></span>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example 3</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="co"># You can also force the creation of a date-time </span></span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="co"># from a date providing a timezone:</span></span>
 <span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>datetime3 <span class="ot">&lt;-</span> <span class="fu">ymd</span>(<span class="dv">20170131</span>, <span class="at">tz =</span> <span class="st">&quot;UTC&quot;</span>)</span>
@@ -3340,7 +3340,7 @@ vertical-align: -.125em;
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(year, month, day, hour, minute) <span class="sc">%&gt;%</span> </span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">date =</span> <span class="fu">make_date</span>(year, month, day), <span class="co"># Create new date colun</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">date =</span> <span class="fu">make_date</span>(year, month, day), <span class="co"># Create new date column</span></span>
 <span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">datetime =</span> <span class="fu">make_datetime</span>(year, month, day, hour, minute) <span class="co"># Create date-time</span></span>
 <span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -3385,9 +3385,9 @@ vertical-align: -.125em;
 <pre><code>[1] &quot;2024-09-02&quot;</code></pre>
 </div>
 </div>
-<p>Sometimes you’ll get date/time as numeric offsets from the “Unix Epich”, 1970-01-01.</p>
+<p>Sometimes you’ll get date/time as numeric offsets from the “Unix Epoch”, 1970-01-01.</p>
 <ul>
-<li>Dates are processed under the hood as an integer signalling the number of days elapsed since 1970 January 1st:</li>
+<li>Dates are processed under the hood as an integer signaling the number of days elapsed since 1970 January 1st:</li>
 </ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>date1 <span class="ot">&lt;-</span> <span class="fu">ymd</span>(<span class="dv">19700110</span>)</span>
@@ -3398,7 +3398,7 @@ vertical-align: -.125em;
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 9</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of dates elapsed sine &quot;1970-01-01&quot; and &quot;2023-08-30&quot;</span></span>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of days elapsed since &quot;1970-01-01&quot; and &quot;2023-08-30&quot;</span></span>
 <span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">as.integer</span>(date2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 19599</code></pre>
@@ -3422,7 +3422,7 @@ vertical-align: -.125em;
 <p>In addition to the <code>date</code> and <code>datetime</code> types present in baseR, the <code>tsibble</code> library, loaded with <code>fpp3</code>, introduces the <code>yearquarter</code>, <code>yearmonth</code> and <code>yearweek</code> types. Each of these types has an associated function of the same name that transforms a date or datetime into a <code>yearquarter</code>, <code>yearmonth</code> and <code>yearweek</code> object.</p>
 <p><strong>Once more: these types are not part of baseR, but rather part of the tsibble library.</strong> But we will use them extensively in this course.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co">#NOTE: the enclosing parenthesis display the output without an additional line of code</span></span>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co">#NOTE: the enclosing parentheses display the output without an additional line of code</span></span>
 <span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>(ym1 <span class="ot">&lt;-</span> <span class="fu">yearmonth</span>(<span class="fu">ymd</span>(<span class="st">&quot;2017-01-31&quot;</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;yearmonth[1]&gt;
@@ -3444,7 +3444,7 @@ vertical-align: -.125em;
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co">#NOTE: the enclosing parenthesis display the output without an additional line of code</span></span>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co">#NOTE: the enclosing parentheses display the output without an additional line of code</span></span>
 <span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>(yq1 <span class="ot">&lt;-</span> <span class="fu">yearquarter</span>(<span class="fu">ymd</span>(<span class="st">&quot;2017-01-31&quot;</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;yearquarter[1]&gt;
@@ -3457,7 +3457,7 @@ vertical-align: -.125em;
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co">#NOTE: the enclosing parenthesis display the output without an additional line of code</span></span>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co">#NOTE: the enclosing parentheses display the output without an additional line of code</span></span>
 <span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>(yw1 <span class="ot">&lt;-</span> <span class="fu">yearweek</span>(<span class="fu">ymd</span>(<span class="st">&quot;2017-01-31&quot;</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;yearweek[1]&gt;
@@ -3476,7 +3476,7 @@ vertical-align: -.125em;
 </section>
 <section id="creating-a-custom-sequence-of-time-objects" class="level2">
 <h2 class="anchored" data-anchor-id="creating-a-custom-sequence-of-time-objects">Creating a custom sequence of time objects</h2>
-<p>Sometimes it will be useful to define our own sequence of time objects, particularly to have more control over the time axis printoutt when using ggplot or other visualization libraries. We will see the applications on the time series graphs session, but for now let us look at the generation of these sequences.</p>
+<p>Sometimes it will be useful to define our own sequence of time objects, particularly to have more control over the time axis printout when using ggplot or other visualization libraries. We will see the applications on the time series graphs session, but for now let us look at the generation of these sequences.</p>
 <p>If you remember your R lessons, the basic use of the function sequence is as follows:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">60</span>, <span class="at">by =</span> <span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -3486,7 +3486,7 @@ vertical-align: -.125em;
 </div>
 <p>These sequences can be combined with a given year, yearmonth, yearquarter or yearweek object as follows to generate sequences:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sequence of 6 months steps starting in Januart 2012 and advancing </span></span>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sequence of 6 months steps starting in January 2012 and advancing </span></span>
 <span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="co"># for 60 months (5 years) in steps of six months</span></span>
 <span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>seq_months <span class="ot">&lt;-</span> <span class="fu">yearmonth</span>(<span class="st">&quot;2012-01-01&quot;</span>) <span class="sc">+</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">60</span>, <span class="at">by =</span> <span class="dv">6</span>)</span>
 <span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a>seq_months</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -3526,12 +3526,12 @@ vertical-align: -.125em;
 </section>
 <section id="parsing-functions-1" class="level2">
 <h2 class="anchored" data-anchor-id="parsing-functions-1">Parsing functions</h2>
-<p><strong>Parsing functions are not necessary to pass the course, but they are an essential tool to work with time series and hence are included here for completion</strong>.</p>
-<p>We present now at the end the parsing functions that were left out before when explaining how to create dates and datetimes from a string</p>
+<p><strong>Parsing functions are not necessary to pass the course, but they are an essential tool to work with time series and hence are included here for completeness</strong>.</p>
+<p>We now present the parsing functions that were left out earlier, when explaining how to create dates and datetimes from a string</p>
 <p>Three parsers to choose from depending on whether you want a <strong>date</strong>, a <strong>date-time</strong> or a <strong>time</strong>.</p>
 <p>Default calls without any additional arguments:</p>
 <ul>
-<li><code>parse_datetime()</code>: expects a string in format ISO8601. This is an international standard that organises dates from biggest to smallest component: year, monh, day, hour, minute, second.</li>
+<li><code>parse_datetime()</code>: expects a string in format ISO8601. This is an international standard that organizes dates from biggest to smallest component: year, month, day, hour, minute, second.</li>
 </ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">parse_datetime</span>(<span class="st">&quot;2010-10-01T2010&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -3591,7 +3591,7 @@ vertical-align: -.125em;
 <li><code>%M</code> minutes.</li>
 <li><code>%S</code> integer seconds.</li>
 <li><code>%OS</code> real seconds.</li>
-<li><code>%Z</code> Time zone (as name, e.g. America/Chicago). Beware of abbreviations: if you’re American, note that “EST” is a Canadian time zone that does not have daylight savings time. It is not Eastern Standard Time! We’ll come back to this time zones.</li>
+<li><code>%Z</code> Time zone (as name, e.g. America/Chicago). Beware of abbreviations: if you’re American, note that “EST” is a Canadian time zone that does not have daylight savings time. It is not Eastern Standard Time! We’ll come back to these time zones.</li>
 <li><code>%z</code> (as offset from UTC, e.g. +0800).</li>
 </ul>
 <p><strong>Non-digits</strong></p>
@@ -3744,7 +3744,7 @@ NA</code></pre>
 <p>There are some topics we have not covered:</p>
 <ul>
 <li>Working in detail with date-time components (getting components, rounding components).</li>
-<li>The arithmetics of date objects (substraction, addition, intervals…).</li>
+<li>The arithmetic of date objects (subtraction, addition, intervals…).</li>
 <li>Time zones.</li>
 </ul>
 <p>For this, refer to <strong>reference 1</strong>, chapter 16, sections 16.3 onwards.</p>

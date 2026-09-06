@@ -3308,9 +3308,9 @@ border: 0;
 </div>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nycflights13)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>A <em>tsibble</em> is a time series object much easier to work with than <code>ts</code>, <code>xts</code> and other alternatives available in R. It <strong>extends the concept of tibble</strong>, adding additional properties that make it particularly fit for time series data.</p>
-<p><strong>Time series</strong>: sequential <strong>registers of measurements</strong> (for one or several variables) <strong>over time</strong> for <strong>one or several observational units</strong></p>
-<p>A tsibble object structures data in the following manner;</p>
+<p>A <em>tsibble</em> is a time series object that is much easier to work with than <code>ts</code>, <code>xts</code>, and other alternatives available in R. It <strong>extends the concept of a tibble</strong>, adding properties that make it particularly suited for time series data.</p>
+<p><strong>Time series</strong>: sequential <strong>records of measurements</strong> (for one or several variables) <strong>over time</strong> for <strong>one or several observational units</strong></p>
+<p>A tsibble structures data as follows:</p>
 <ol type="1">
 <li><strong>An index</strong>, which is a <strong>variable with inherent ordering from past to present</strong> (time-related)</li>
 <li><strong>A key</strong>, which is a <strong>variable or set of variables</strong> that <strong>identifies observational units</strong> unambiguously (optional).</li>
@@ -3342,9 +3342,9 @@ border: 0;
 <p>The output gives some important information:</p>
 <ul>
 <li>The <strong>[1Y]</strong> indicates the frequency of the data sampling (yearly)</li>
-<li>The <strong>Key</strong> indicates us that the column country uniquely identifies the observational units. Remember that the combination of <strong>key</strong> and <strong>index</strong> (in this case year) must be unique. Otherwise we would have more than one observation at a specific point in time for an observational unit, making our data inconsistent.</li>
+<li>The <strong>key</strong> indicates that the column <strong>Country</strong> uniquely identifies the observational units. Remember that the combination of <strong>key</strong> and <strong>index</strong> (in this case year) must be unique. Otherwise we would have more than one observation at a specific point in time for an observational unit, making our data inconsistent.</li>
 </ul>
-<p>Importantly <strong>sometimes the Key will consist of more than one column</strong>. Identifying the observational units might require more than one column. For example, you may need both name and surname to identify a specific person).</p>
+<p>Sometimes <strong>the key will consist of more than one column</strong>. Identifying the observational units might require more than one column. For example, you may need both name and surname to identify a specific person.</p>
 </section>
 <section id="creating-a-tsibble" class="level1">
 <h1>Creating a tsibble</h1>
@@ -3368,7 +3368,7 @@ border: 0;
 5  2016   110</code></pre>
 </div>
 </div>
-<p>Note the line <code>A tsibble 5 x 2 [1Y]</code> The <strong>[1Y]</strong> indicates the frequency of the data sampling and helps us identify we are in fact dealing with a tsibble.</p>
+<p>Note the line <code>A tsibble 5 x 2 [1Y]</code>. The <strong>[1Y]</strong> indicates the frequency of the data sampling and helps us confirm we are dealing with a tsibble.</p>
 </section>
 <section id="as_tsibble" class="level3">
 <h3 class="anchored" data-anchor-id="as_tsibble">as_tsibble():</h3>
@@ -3457,8 +3457,8 @@ border: 0;
 <li>an <strong>index variable that signals time and acts as an index</strong>.</li>
 <li>a <strong>key</strong> that uniquely identifies the observational units.</li>
 </ol>
-<p>The <code>flights</code> dataset, from the <code>nycflights13</code> library provides the datetime of departure and arrival for every flight in nyc airports during 2013.</p>
-<p>In this case the <strong>observational units</strong> are the flights. To uniquely identify a flight we need both the <strong>carrier code</strong> and the <strong>flight number</strong>. That is, our key will now consist in two columns rather than one:</p>
+<p>The <code>flights</code> dataset from the <code>nycflights13</code> library provides the datetime of departure and arrival for every flight in NYC airports during 2013.</p>
+<p>In this case the <strong>observational units</strong> are the flights. To uniquely identify a flight we need both the <strong>carrier code</strong> and the <strong>flight number</strong>. That is, our key will now consist of two columns rather than one:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>flights_ts <span class="ot">&lt;-</span> </span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  flights <span class="sc">%&gt;%</span></span>
@@ -3496,7 +3496,7 @@ border: 0;
 # ℹ 336,766 more rows</code></pre>
 </div>
 </div>
-<p><code>flights_ts</code> is a tsibble, while <code>flights</code>is a tibble.</p>
+<p><code>flights_ts</code> is a tsibble, while <code>flights</code> is a tibble.</p>
 <p>Note that, if we only included <code>flight</code> as the key, we would get an error signaling the lack of uniqueness:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>flights_ts <span class="ot">&lt;-</span></span>
@@ -3527,9 +3527,9 @@ border: 0;
 <p>When working with a <code>tsibble</code>, any operation that does away with the time information will not be performed. A <code>tsibble</code> is designed to consistently store time series data and therefore refuses to either:</p>
 <ol type="1">
 <li>Drop the time information (the index column).</li>
-<li>Reduce the resolution of the time information. That is any <code>group_by</code> operation that aggregates the data to a time frequency higher than that of the index will not be performed, or will not be performed as expected.</li>
+<li>Reduce the resolution of the time information. That is, any <code>group_by</code> operation that aggregates the data to a time frequency higher than that of the index will not be performed, or will not be performed as expected.</li>
 </ol>
-<p>In the newly created <code>flights_ts</code> tsibble, the index column (time information) is <code>time</code>. If we try to select a subset of the tsibble that does not contain the column `time``, we will not succeed. The tsibble refuses to drop the time information. All the columns that make up the key will also be implicitly selected, since it is the combination if key and index that uniquely identifies each observation.</p>
+<p>In the newly created <code>flights_ts</code> tsibble, the index column (time information) is <code>time</code>. If we try to select a subset of the tsibble that does not contain the column <code>time</code>, we will not succeed. The tsibble refuses to drop the time information. All the columns that make up the key will also be implicitly selected, since it is the combination of key and index that uniquely identifies each observation.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Refuses to drop time information. Column time is selected implicitly</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Column carrier also selected implicitly, since it is part of the key</span></span>
@@ -3595,7 +3595,7 @@ border: 0;
 12 2013 Dec     1065.</code></pre>
 </div>
 </div>
-<p>If we try using <code>group_by</code> on the tsibble in the usual manner, the operation will not be performed because the resolution of the time index is reduced (we have information down to the minute of every flight and the resulting operation would only contain monthy information):</p>
+<p>If we try using <code>group_by</code> on the tsibble in the usual manner, the operation will not be performed because the resolution of the time index is reduced (we have information down to the minute of every flight and the resulting operation would only contain monthly information):</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>flights_ts <span class="sc">%&gt;%</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(<span class="at">month =</span> <span class="fu">yearmonth</span>(time)) <span class="sc">%&gt;%</span> <span class="co"># group by month</span></span>
@@ -3618,9 +3618,9 @@ border: 0;
 # ℹ 127,318 more rows</code></pre>
 </div>
 </div>
-<p>The result of this operation is weird, not what we expected. To understand it, let us look at the first row: it gives us the mean distance of all the flights that took off on January the 1st at 05:15:00. But this is not what we wanted! We want the average distance flown by every flight taking off in January 2013.</p>
+<p>The result of this operation is not what we expected. To understand it, let us look at the first row: it gives us the mean distance of all the flights that took off on January 1st at 05:15:00. But this is not what we wanted! We want the average distance across all flights taking off in January 2013.</p>
 <p>What is happening?</p>
-<p>Because the desired operation reduces the resolution of the time index and flights_ts is a tsibble, the operation is not performed. One potential solution is to cast flight_ts to a tibble using <code>as_tibble()</code> prior to performing the aggregation.</p>
+<p>Because the desired operation reduces the resolution of the time index and flights_ts is a tsibble, the operation is not performed. One potential solution is to cast flights_ts to a tibble using <code>as_tibble()</code> prior to performing the aggregation.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>flights_ts <span class="sc">%&gt;%</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> <span class="co"># cast to tibble</span></span>
@@ -3644,7 +3644,7 @@ border: 0;
 12 2013 Dec     1065.</code></pre>
 </div>
 </div>
-<p>While this works, there is a problem: the output, as you can see, is a tibble and not a tsibble. And the libraries we will be working with require us to use tsibbles. A solution to this could be to use <code>as_tsibble()</code> to cast the result back to a tsibble.</p>
+<p>While this works, there is a problem: the output, as you can see, is a tibble and not a tsibble. The libraries we will be working with require us to use tsibbles. The solution is to use <code>as_tsibble()</code> to cast the result back to a tsibble.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>flights_ts <span class="sc">%&gt;%</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> <span class="co"># cast to tibble</span></span>
@@ -3669,8 +3669,8 @@ border: 0;
 12 2013 Dec     1065.</code></pre>
 </div>
 </div>
-<p>Now the reult is a tsibble, as desired.</p>
-<p>The function <code>index_by()</code>, from the fpp3 library, performs all this casting implicitly for us. We can use it just like group_by() for aggregations that imply reducing the resolution of the time index of a tsibble.</p>
+<p>Now the result is a tsibble, as desired.</p>
+<p>The function <code>index_by()</code>, from the fpp3 library, performs all this casting implicitly for us. We can use it just like <code>group_by()</code> for aggregations that involve reducing the resolution of the time index of a tsibble.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>flights_ts <span class="sc">%&gt;%</span></span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">index_by</span>(<span class="at">month =</span> <span class="fu">yearmonth</span>(time)) <span class="sc">%&gt;%</span></span>
@@ -3693,7 +3693,7 @@ border: 0;
 12 2013 Dec     1065.</code></pre>
 </div>
 </div>
-<p>Note that <strong>the output is still directly tsibble!</strong>. Only the <strong>time index is now a yearmonth column</strong> instead of a datetime column. We can therefore use `index_by()`` to perform aggregations that involve reducing the time resolution of a tsibble.</p>
+<p>Note that <strong>the output is still a tsibble</strong>. Only the <strong>time index is now a yearmonth column</strong> instead of a datetime column. We can therefore use <code>index_by()</code> to perform aggregations that involve reducing the time resolution of a tsibble.</p>
 </section>
 
 </main>
