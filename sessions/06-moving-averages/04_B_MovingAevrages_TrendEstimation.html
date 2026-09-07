@@ -2510,9 +2510,9 @@ m-MA \text{ }_t =\frac{1}{m}\sum_{j=-k}^{j=+k}{y_{t+j}}
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>aus_exports <span class="ot">&lt;-</span> </span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  global_economy <span class="sc">%&gt;%</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  global_economy <span class="sc">|&gt;</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Country <span class="sc">==</span> <span class="st">&quot;Australia&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Country <span class="sc">==</span> <span class="st">&quot;Australia&quot;</span>) <span class="sc">|&gt;</span></span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Generate the moving average</span></span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
@@ -2526,7 +2526,7 @@ m-MA \text{ }_t =\frac{1}{m}\sum_{j=-k}^{j=+k}{y_{t+j}}
 <span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>                <span class="co"># This means that the MA will not be computed for the first</span></span>
 <span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>                <span class="co"># and last three points of the time series</span></span>
 <span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>                <span class="at">.before =</span> <span class="dv">3</span>, <span class="at">.after =</span> <span class="dv">3</span>, <span class="at">.complete =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
 <span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Country, Code, Year, Exports, <span class="st">`</span><span class="at">7-MA</span><span class="st">`</span>)</span>
 <span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
@@ -2558,7 +2558,7 @@ m-MA \text{ }_t =\frac{1}{m}\sum_{j=-k}^{j=+k}{y_{t+j}}
 </div>
 <p>Now let us depict the moving average along with the original series:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>aus_exports <span class="sc">%&gt;%</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>aus_exports <span class="sc">|&gt;</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(Exports) <span class="sc">+</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="st">`</span><span class="at">7-MA</span><span class="st">`</span>), <span class="at">colour =</span> <span class="st">&quot;#D55E00&quot;</span>) <span class="sc">+</span></span>
@@ -2583,7 +2583,7 @@ m-MA \text{ }_t =\frac{1}{m}\sum_{j=-k}^{j=+k}{y_{t+j}}
 <h3 class="anchored" data-anchor-id="effect-of-window-size-on-the-moving-average">Effect of window size on the moving average</h3>
 <p>Let us now proceed to create different centered moving averages for this time series. For each moving average, we will use a different number of points. <strong>Note that we are using always odd numbers</strong> to <strong>ensure that there is the same amount of points to the left than to the right</strong>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>aus_exports <span class="ot">&lt;-</span> global_economy <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Country<span class="sc">==</span><span class="st">&#39;Australia&#39;</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>aus_exports <span class="ot">&lt;-</span> global_economy <span class="sc">|&gt;</span> <span class="fu">filter</span>(Country<span class="sc">==</span><span class="st">&#39;Australia&#39;</span>)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the different Moving Averages of order i.</span></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Note that i is always uneven</span></span>
@@ -2600,7 +2600,7 @@ m-MA \text{ }_t =\frac{1}{m}\sum_{j=-k}^{j=+k}{y_{t+j}}
 <span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>aus_exports <span class="ot">&lt;-</span> aus_exports <span class="sc">%&gt;%</span> </span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>aus_exports <span class="ot">&lt;-</span> aus_exports <span class="sc">|&gt;</span> </span>
 <span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">select</span>(Exports, <span class="st">`</span><span class="at">3-MA</span><span class="st">`</span>, <span class="st">`</span><span class="at">5-MA</span><span class="st">`</span>, <span class="st">`</span><span class="at">7-MA</span><span class="st">`</span>, <span class="st">`</span><span class="at">9-MA</span><span class="st">`</span>, <span class="st">`</span><span class="at">11-MA</span><span class="st">`</span>, <span class="st">`</span><span class="at">13-MA</span><span class="st">`</span>)</span>
 <span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>aus_exports</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -2712,12 +2712,12 @@ m-MA \text{ }_t =\frac{1}{m}\sum_{j=-k}^{j=+k}{y_{t+j}}
 <p>Let us apply this procedure to the quarterly production of beer in australia beyond 1992:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter dataset</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>beer <span class="ot">&lt;-</span> aus_production <span class="sc">%&gt;%</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">year</span>(Quarter) <span class="sc">&gt;=</span> <span class="dv">1992</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>beer <span class="ot">&lt;-</span> aus_production <span class="sc">|&gt;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">year</span>(Quarter) <span class="sc">&gt;=</span> <span class="dv">1992</span>) <span class="sc">|&gt;</span></span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Quarter, Beer)</span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>beer <span class="ot">&lt;-</span> </span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  beer <span class="sc">%&gt;%</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  beer <span class="sc">|&gt;</span></span>
 <span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
 <span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Imbalanced window for the first 4-MA: 1 point to the left, two</span></span>
 <span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># points to the right</span></span>
@@ -2733,7 +2733,7 @@ m-MA \text{ }_t =\frac{1}{m}\sum_{j=-k}^{j=+k}{y_{t+j}}
 <span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">2x4-MA</span><span class="st">`</span> <span class="ot">=</span> <span class="fl">0.5</span> <span class="sc">*</span> (<span class="st">`</span><span class="at">4-MA_R</span><span class="st">`</span> <span class="sc">+</span> <span class="st">`</span><span class="at">4-MA_L</span><span class="st">`</span>)</span>
 <span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>beer <span class="sc">%&gt;%</span> <span class="fu">select</span>(Quarter, Beer, <span class="st">`</span><span class="at">4-MA_R</span><span class="st">`</span>, <span class="st">`</span><span class="at">4-MA_L</span><span class="st">`</span>, <span class="st">`</span><span class="at">2x4-MA</span><span class="st">`</span>) <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>beer <span class="sc">|&gt;</span> <span class="fu">select</span>(Quarter, Beer, <span class="st">`</span><span class="at">4-MA_R</span><span class="st">`</span>, <span class="st">`</span><span class="at">4-MA_L</span><span class="st">`</span>, <span class="st">`</span><span class="at">2x4-MA</span><span class="st">`</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tsibble: 5 x 5 [1Q]
   Quarter  Beer `4-MA_R` `4-MA_L` `2x4-MA`
@@ -2744,7 +2744,7 @@ m-MA \text{ }_t =\frac{1}{m}\sum_{j=-k}^{j=+k}{y_{t+j}}
 4 1992 Q4   532     452.     449.     450.
 5 1993 Q1   433     449      452.     450.</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>beer <span class="sc">%&gt;%</span> <span class="fu">select</span>(Quarter, Beer, <span class="st">`</span><span class="at">4-MA_R</span><span class="st">`</span>, <span class="st">`</span><span class="at">4-MA_L</span><span class="st">`</span>, <span class="st">`</span><span class="at">2x4-MA</span><span class="st">`</span>) <span class="sc">%&gt;%</span> <span class="fu">tail</span>(<span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>beer <span class="sc">|&gt;</span> <span class="fu">select</span>(Quarter, Beer, <span class="st">`</span><span class="at">4-MA_R</span><span class="st">`</span>, <span class="st">`</span><span class="at">4-MA_L</span><span class="st">`</span>, <span class="st">`</span><span class="at">2x4-MA</span><span class="st">`</span>) <span class="sc">|&gt;</span> <span class="fu">tail</span>(<span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tsibble: 5 x 5 [1Q]
   Quarter  Beer `4-MA_R` `4-MA_L` `2x4-MA`
@@ -2758,7 +2758,7 @@ m-MA \text{ }_t =\frac{1}{m}\sum_{j=-k}^{j=+k}{y_{t+j}}
 </div>
 <p>Now let us depict the moving average along with the original series:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>beer <span class="sc">%&gt;%</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>beer <span class="sc">|&gt;</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(Beer) <span class="sc">+</span></span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  </span>
@@ -2806,8 +2806,8 @@ m-MA \text{ }_t =\frac{1}{m}\sum_{j=-k}^{j=+k}{y_{t+j}}
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter the series and select relevant columns</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>us_retail_employment <span class="ot">&lt;-</span> </span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  us_employment <span class="sc">%&gt;%</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">year</span>(Month) <span class="sc">&gt;=</span> <span class="dv">1990</span>, Title <span class="sc">==</span> <span class="st">&quot;Retail Trade&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  us_employment <span class="sc">|&gt;</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">year</span>(Month) <span class="sc">&gt;=</span> <span class="dv">1990</span>, Title <span class="sc">==</span> <span class="st">&quot;Retail Trade&quot;</span>) <span class="sc">|&gt;</span></span>
 <span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>Series_ID)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Compute the 2x12 Moving Average of the time series <code>Employed</code> contained in <code>us_retail_employment</code>.</p>

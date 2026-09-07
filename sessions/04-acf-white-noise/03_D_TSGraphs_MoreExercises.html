@@ -2271,18 +2271,18 @@ vertical-align: -.125em;
 </div>
 <section id="beijing-pollution" class="level1">
 <h1>1 Beijing pollution</h1>
-<p>The code below imports measurements from a station located in Beijing that measures NO2, CO and SO2 levels, as well as other basic weather-related variables. Run the code and a pop-up window will request you to select a file. Select the file <code>Beijing_Pollution_TSeries.csv</code>, which you must download from the ZZ_Datasets folder located in google drive:</p>
+<p>The code below imports measurements from a station located in Beijing that measures NO2, CO and SO2 levels, as well as other basic weather-related variables. The file <code>Beijing_Pollution_TSeries.csv</code> is in the <code>data/</code> folder at the repository root:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>pollution <span class="ot">&lt;-</span> </span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Read the file</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_csv</span>(<span class="fu">file.choose</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_csv</span>(<span class="st">&quot;data/Beijing_Pollution_TSeries.csv&quot;</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Step 1: create the time_stamp</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">time_stamp =</span> <span class="fu">make_datetime</span>(year, month, day, hour)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">time_stamp =</span> <span class="fu">make_datetime</span>(year, month, day, hour)) <span class="sc">|&gt;</span></span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Step 2: reorder columns and drop timestamp components (keep only the newly created     timestamp)</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(time_stamp, <span class="fu">everything</span>(), <span class="sc">-</span><span class="fu">c</span>(No, year, month, day, hour))  <span class="sc">%&gt;%</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(time_stamp, <span class="fu">everything</span>(), <span class="sc">-</span><span class="fu">c</span>(No, year, month, day, hour))  <span class="sc">|&gt;</span></span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Step 3: convert to tsibble</span></span>
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tsibble</span>(<span class="at">index =</span> time_stamp)</span>
@@ -2302,7 +2302,7 @@ vertical-align: -.125em;
 </div>
 <section id="average-weekly-values" class="level2">
 <h2 class="anchored" data-anchor-id="average-weekly-values">1.1 Average weekly values</h2>
-<p>Use <code>index_by()</code> to define a new tsibble <code>NO2_weekly</code> that processes the hourly values contained in the tsibble <code>pollution</code> and computes average weekly values of NO2 levels. For details on how to use <code>index_by()</code> refer to the notebook on tsibbles that we saw in class and you can find in google drive.</p>
+<p>Use <code>index_by()</code> to define a new tsibble <code>NO2_weekly</code> that processes the hourly values contained in the tsibble <code>pollution</code> and computes average weekly values of NO2 levels. For details on how to use <code>index_by()</code>, refer to the notebook on tsibbles from the earlier session.</p>
 <p>Afterwards create a new column on <code>NO2_weekly</code> that contains the combination of year and month corresponding to each row.</p>
 <p>Following this filter the dataset to contain only values between March 2013 (included) and March 2014 (excluded).</p>
 </section>
@@ -2334,20 +2334,20 @@ vertical-align: -.125em;
 </section>
 <section id="fuel-prices" class="level1">
 <h1>2. Fuel Prices</h1>
-<p>The code below performs the necessary transformations to turn the data contained in the file <code>Weekly Fuel Prices.xlsx</code> into a tsibbl. You will find this data in the google drive folder, under <code>ZZ_Datasets</code>. Run the code and a pop-up window will request you to select a file. Select <code>Weekly Fuel Prices.xlsx</code>, which you must previously download to your computer:</p>
+<p>The code below performs the necessary transformations to turn the data in the file <code>Weekly Fuel Prices.xlsx</code> into a tsibble. The file is in the <code>data/</code> folder at the repository root:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>fuel_prices <span class="ot">&lt;-</span> </span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Read excel file</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_xlsx</span>(<span class="fu">file.choose</span>(),</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">col_types =</span> <span class="fu">c</span> (<span class="st">&quot;date&quot;</span>, <span class="st">&quot;numeric&quot;</span>, <span class="st">&quot;numeric&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_xlsx</span>(<span class="st">&quot;data/Weekly Fuel Prices.xlsx&quot;</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">col_types =</span> <span class="fu">c</span> (<span class="st">&quot;date&quot;</span>, <span class="st">&quot;numeric&quot;</span>, <span class="st">&quot;numeric&quot;</span>)) <span class="sc">|&gt;</span> </span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Date)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Date)) <span class="sc">|&gt;</span></span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(<span class="st">&quot;Petrol (USD)&quot;</span>, <span class="st">&quot;Diesel (USD)&quot;</span>),</span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">&quot;fuel_type&quot;</span>,</span>
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">&quot;price_USD&quot;</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>               ) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>               ) <span class="sc">|&gt;</span> </span>
 <span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tsibble</span>(<span class="at">key =</span>  fuel_type, <span class="at">regular =</span> <span class="cn">FALSE</span>, <span class="at">index =</span> Date)</span>
 <span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
@@ -2361,19 +2361,19 @@ vertical-align: -.125em;
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>fuel_quarterly <span class="ot">&lt;-</span> </span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  fuel_prices <span class="sc">%&gt;%</span> </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  fuel_prices <span class="sc">|&gt;</span> </span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Use group_by so that the subsequeny index_by is applied</span></span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># group-wise.</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(fuel_type) <span class="sc">%&gt;%</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(fuel_type) <span class="sc">|&gt;</span></span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Index by yearquarter </span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">index_by</span>(<span class="at">yq =</span> <span class="fu">yearquarter</span>(Date)) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">index_by</span>(<span class="at">yq =</span> <span class="fu">yearquarter</span>(Date)) <span class="sc">|&gt;</span> </span>
 <span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Summarise</span></span>
 <span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
 <span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">petrol_mean_USD =</span> <span class="fu">mean</span>(price_USD, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
 <span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>

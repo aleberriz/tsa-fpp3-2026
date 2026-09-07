@@ -2876,15 +2876,15 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="computing-prediction-intervals-with-the-fable-package">Computing prediction intervals with the fable() package</h3>
 <p>Let us go through a practical example to illustrate how we can handle the prediction intervals returned by <code>fable()</code></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>google_stock <span class="ot">&lt;-</span> gafa_stock <span class="sc">%&gt;%</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Symbol <span class="sc">==</span> <span class="st">&quot;GOOG&quot;</span>, <span class="fu">year</span>(Date) <span class="sc">&gt;=</span> <span class="dv">2015</span>) <span class="sc">%&gt;%</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>google_stock <span class="ot">&lt;-</span> gafa_stock <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Symbol <span class="sc">==</span> <span class="st">&quot;GOOG&quot;</span>, <span class="fu">year</span>(Date) <span class="sc">&gt;=</span> <span class="dv">2015</span>) <span class="sc">|&gt;</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Create regularly spaced time index `day`</span></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># since trading days are not evenly distributed.</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">day =</span> <span class="fu">row_number</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">day =</span> <span class="fu">row_number</span>()) <span class="sc">|&gt;</span></span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">update_tsibble</span>(<span class="at">index =</span> day, <span class="at">regular =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>google_2015 <span class="ot">&lt;-</span> google_stock <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">year</span>(Date) <span class="sc">==</span> <span class="dv">2015</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>google_2015 <span class="ot">&lt;-</span> google_stock <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="fu">year</span>(Date) <span class="sc">==</span> <span class="dv">2015</span>) <span class="sc">|&gt;</span></span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">select</span>(Symbol, Date, day, Close)</span>
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(google_2015)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -2907,20 +2907,20 @@ window.Quarto = {
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>horiz <span class="ot">=</span> <span class="dv">5</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>google_stock <span class="ot">&lt;-</span> gafa_stock <span class="sc">%&gt;%</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Symbol <span class="sc">==</span> <span class="st">&quot;GOOG&quot;</span>, <span class="fu">year</span>(Date) <span class="sc">&gt;=</span> <span class="dv">2015</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">day =</span> <span class="fu">row_number</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>google_stock <span class="ot">&lt;-</span> gafa_stock <span class="sc">|&gt;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Symbol <span class="sc">==</span> <span class="st">&quot;GOOG&quot;</span>, <span class="fu">year</span>(Date) <span class="sc">&gt;=</span> <span class="dv">2015</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">day =</span> <span class="fu">row_number</span>()) <span class="sc">|&gt;</span></span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">update_tsibble</span>(<span class="at">index =</span> day, <span class="at">regular =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>google_2015 <span class="ot">&lt;-</span> google_stock <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">year</span>(Date) <span class="sc">==</span> <span class="dv">2015</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>google_2015 <span class="ot">&lt;-</span> google_stock <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="fu">year</span>(Date) <span class="sc">==</span> <span class="dv">2015</span>)</span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> google_2015 <span class="sc">%&gt;%</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> google_2015 <span class="sc">|&gt;</span></span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        <span class="fu">model</span>(<span class="fu">NAIVE</span>(Close))</span>
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>fc <span class="ot">&lt;-</span> fit <span class="sc">%&gt;%</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>fc <span class="ot">&lt;-</span> fit <span class="sc">|&gt;</span></span>
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        <span class="fu">forecast</span>(<span class="at">h =</span> horiz)</span>
 <span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>fc_hilo <span class="ot">&lt;-</span> fc <span class="sc">%&gt;%</span> <span class="fu">hilo</span>()</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>fc_hilo <span class="ot">&lt;-</span> fc <span class="sc">|&gt;</span> <span class="fu">hilo</span>()</span>
 <span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>fc_hilo</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tsibble: 5 x 7 [1]
@@ -2944,7 +2944,7 @@ window.Quarto = {
 </ol>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Vector of 80% conf intervals</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>pints_80 <span class="ot">&lt;-</span> fc_hilo <span class="sc">%&gt;%</span> <span class="fu">pull</span>(<span class="st">`</span><span class="at">80%</span><span class="st">`</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>pints_80 <span class="ot">&lt;-</span> fc_hilo <span class="sc">|&gt;</span> <span class="fu">pull</span>(<span class="st">`</span><span class="at">80%</span><span class="st">`</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>pints_80[<span class="dv">1</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;hilo[1]&gt;
@@ -2970,10 +2970,10 @@ window.Quarto = {
 <li>Use the function <code>unpack_hilo()</code> to create new columns with the limits of the confidence intervals. In this case new columns <code>*_lower</code> and <code>*_upper</code> will be created to detail the limits of the confidence intervals we are unpacking. Remember that the column <code>.mean()</code> in the forecasts table is the mean of our forecast distribution, that is,</li>
 </ol>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>fc_hilo <span class="ot">&lt;-</span> fc_hilo <span class="sc">%&gt;%</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>fc_hilo <span class="ot">&lt;-</span> fc_hilo <span class="sc">|&gt;</span> </span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unpack_hilo</span>(<span class="fu">c</span>(<span class="st">`</span><span class="at">80%</span><span class="st">`</span>, <span class="st">`</span><span class="at">95%</span><span class="st">`</span>))</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>fc_hilo <span class="sc">%&gt;%</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>fc_hilo <span class="sc">|&gt;</span></span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(day, .mean, <span class="st">`</span><span class="at">80%_upper</span><span class="st">`</span>, <span class="st">`</span><span class="at">80%_lower</span><span class="st">`</span>, <span class="st">`</span><span class="at">95%_lower</span><span class="st">`</span>, <span class="st">`</span><span class="at">95%_upper</span><span class="st">`</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tsibble: 5 x 6 [1]
@@ -2992,8 +2992,8 @@ window.Quarto = {
 <p>Importantly, <strong>if the forecast distribution is symmetric</strong>, the mean and the median will coincide. And remember that the point forecast is computed as the mean of the forecast distribution (column <code>.mean</code> of the fable):</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute midpoints of confidence intervals</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>midpoints <span class="ot">&lt;-</span> fc_hilo <span class="sc">%&gt;%</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">midpoints =</span> (<span class="st">`</span><span class="at">95%_lower</span><span class="st">`</span> <span class="sc">+</span> <span class="st">`</span><span class="at">95%_upper</span><span class="st">`</span>)<span class="sc">*</span><span class="fl">0.5</span>) <span class="sc">%&gt;%</span> <span class="co"># Compute the midpoints of the 95% conf intervals</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>midpoints <span class="ot">&lt;-</span> fc_hilo <span class="sc">|&gt;</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">midpoints =</span> (<span class="st">`</span><span class="at">95%_lower</span><span class="st">`</span> <span class="sc">+</span> <span class="st">`</span><span class="at">95%_upper</span><span class="st">`</span>)<span class="sc">*</span><span class="fl">0.5</span>) <span class="sc">|&gt;</span> <span class="co"># Compute the midpoints of the 95% conf intervals</span></span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(midpoints)</span>
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Check that the column .mean is the midpoint of the confidence intervals</span></span>
@@ -3007,7 +3007,7 @@ window.Quarto = {
 <h4 class="anchored" data-anchor-id="plotting-confidence-intervals">Plotting confidence intervals</h4>
 <p>When plotting the forecasts, the <code>fable</code> package prints prediction intervals by default unless the argument <code>level</code> is set to <code>FALSE</code>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>fc <span class="sc">%&gt;%</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>fc <span class="sc">|&gt;</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(google_2015) <span class="sc">+</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">&quot;Google daily closing stock price&quot;</span>, <span class="at">y=</span><span class="st">&quot;$US&quot;</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -3033,7 +3033,7 @@ window.Quarto = {
 <h4 class="anchored" data-anchor-id="extracting-parameters-from-forecast-distributions">Extracting parameters from forecast distributions</h4>
 <p>By now you should have noticed that, when generating forecasts, there is a column of type <code>&lt;S3 Distribution&gt;</code>. This column contains the information about the forecast distributions at each forecast horizon. The column always has the name of the response variable (the y variable) of the time series, in this case <code>Close</code></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>fc <span class="sc">%&gt;%</span> <span class="fu">select</span>(day, Close)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>fc <span class="sc">|&gt;</span> <span class="fu">select</span>(day, Close)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A fable: 5 x 2 [1]
     day       Close
@@ -3047,7 +3047,7 @@ window.Quarto = {
 </div>
 <p>We can compute the parameters of our distribution using the function <code>parameters</code> within the package <code>distributional</code>. You may need to install that package. Here, in order to avoid loading the package, we will make an explicit reference to the package when calling the function (you may still need to install it though).</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>fc <span class="sc">%&gt;%</span> <span class="fu">pull</span>(Close) <span class="sc">%&gt;%</span> distributional<span class="sc">::</span><span class="fu">parameters</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>fc <span class="sc">|&gt;</span> <span class="fu">pull</span>(Close) <span class="sc">|&gt;</span> distributional<span class="sc">::</span><span class="fu">parameters</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      mu    sigma
 1 758.88 11.18958
@@ -3072,7 +3072,7 @@ window.Quarto = {
 <p>Using the formula above:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract the residuals</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> fit <span class="sc">%&gt;%</span> <span class="fu">augment</span>() <span class="sc">%&gt;%</span> <span class="fu">pull</span>(.innov)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> fit <span class="sc">|&gt;</span> <span class="fu">augment</span>() <span class="sc">|&gt;</span> <span class="fu">pull</span>(.innov)</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove missing values before computing the length</span></span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> res[<span class="sc">!</span><span class="fu">is.na</span>(res)]</span>
 <span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
@@ -3205,7 +3205,7 @@ window.Quarto = {
 </ol>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a new column to hold the transformed variable</span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>prices <span class="ot">&lt;-</span> prices <span class="sc">%&gt;%</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>prices <span class="ot">&lt;-</span> prices <span class="sc">|&gt;</span></span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">log_eggs =</span> <span class="fu">log</span>(eggs))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell" data-warnings="false">
@@ -3213,34 +3213,34 @@ window.Quarto = {
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>horiz <span class="ot">=</span> <span class="dv">50</span></span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Model 1: fitted to the variable already transformed</span></span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> prices <span class="sc">%&gt;%</span></span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(eggs)) <span class="sc">%&gt;%</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> prices <span class="sc">|&gt;</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(eggs)) <span class="sc">|&gt;</span></span>
 <span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">model</span>(<span class="at">drift =</span> <span class="fu">RW</span>(log_eggs <span class="sc">~</span> <span class="fu">drift</span>()))</span>
 <span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a><span class="co"># fc1: forecasts generated with model 1</span></span>
-<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>fc1 <span class="ot">&lt;-</span> fit1 <span class="sc">%&gt;%</span></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>fc1 <span class="ot">&lt;-</span> fit1 <span class="sc">|&gt;</span></span>
 <span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">forecast</span>(<span class="at">h =</span> horiz)</span>
 <span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Model 2: fitted to the original variable specifying the transformation upon model definition</span></span>
-<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> prices <span class="sc">%&gt;%</span></span>
-<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(eggs)) <span class="sc">%&gt;%</span> <span class="co"># This line simply selects values that are not NAs from the time series</span></span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> prices <span class="sc">|&gt;</span></span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(eggs)) <span class="sc">|&gt;</span> <span class="co"># This line simply selects values that are not NAs from the time series</span></span>
 <span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">model</span>(<span class="fu">RW</span>(<span class="fu">log</span>(eggs) <span class="sc">~</span> <span class="fu">drift</span>()))</span>
 <span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a> </span>
 <span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a><span class="co"># fc2: forecasts generated with model 2</span></span>
-<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a>fc2 <span class="ot">&lt;-</span> fit2 <span class="sc">%&gt;%</span></span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a>fc2 <span class="ot">&lt;-</span> fit2 <span class="sc">|&gt;</span></span>
 <span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">forecast</span>(<span class="at">h =</span> horiz)</span>
 <span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a><span class="co"># figures for each model</span></span>
-<span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a>fig1 <span class="ot">&lt;-</span> fc1 <span class="sc">%&gt;%</span></span>
-<span id="cb33-24"><a href="#cb33-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(prices <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(eggs)),</span>
+<span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a>fig1 <span class="ot">&lt;-</span> fc1 <span class="sc">|&gt;</span></span>
+<span id="cb33-24"><a href="#cb33-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(prices <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(eggs)),</span>
 <span id="cb33-25"><a href="#cb33-25" aria-hidden="true" tabindex="-1"></a>           <span class="at">level =</span> <span class="dv">80</span>, <span class="at">point_forecast =</span> <span class="fu">lst</span>(mean, median) <span class="co"># Depict both mean and median in the back transformed forecasts</span></span>
 <span id="cb33-26"><a href="#cb33-26" aria-hidden="true" tabindex="-1"></a>           ) <span class="sc">+</span></span>
 <span id="cb33-27"><a href="#cb33-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;log(Annual egg prices)&quot;</span>,</span>
 <span id="cb33-28"><a href="#cb33-28" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;log($US cents infl. adj)&quot;</span>) <span class="sc">+</span></span>
 <span id="cb33-29"><a href="#cb33-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">&quot;none&quot;</span>) <span class="co"># Remove legend for mean and median to have more space for the plots</span></span>
 <span id="cb33-30"><a href="#cb33-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-31"><a href="#cb33-31" aria-hidden="true" tabindex="-1"></a>fig2 <span class="ot">&lt;-</span> fc2 <span class="sc">%&gt;%</span></span>
-<span id="cb33-32"><a href="#cb33-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(prices <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(eggs)),</span>
+<span id="cb33-31"><a href="#cb33-31" aria-hidden="true" tabindex="-1"></a>fig2 <span class="ot">&lt;-</span> fc2 <span class="sc">|&gt;</span></span>
+<span id="cb33-32"><a href="#cb33-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(prices <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(eggs)),</span>
 <span id="cb33-33"><a href="#cb33-33" aria-hidden="true" tabindex="-1"></a>           <span class="at">level =</span> <span class="dv">80</span>, <span class="at">point_forecast =</span> <span class="fu">lst</span>(mean, median) <span class="co"># Depict both mean and median in the back transformed forecasts</span></span>
 <span id="cb33-34"><a href="#cb33-34" aria-hidden="true" tabindex="-1"></a>           ) <span class="sc">+</span></span>
 <span id="cb33-35"><a href="#cb33-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Annual egg prices&quot;</span>,</span>
@@ -3282,8 +3282,8 @@ window.Quarto = {
 </ul>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Model 1: fitted to the variable already transformed</span></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> prices <span class="sc">%&gt;%</span></span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(eggs)) <span class="sc">%&gt;%</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> prices <span class="sc">|&gt;</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(eggs)) <span class="sc">|&gt;</span></span>
 <span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">model</span>(<span class="at">drift =</span> <span class="fu">RW</span>(log_eggs <span class="sc">~</span> <span class="fu">drift</span>()))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ul>
@@ -3291,8 +3291,8 @@ window.Quarto = {
 </ul>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Model 2: fitted to the original variable specifying the transformation upon model definition</span></span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> prices <span class="sc">%&gt;%</span></span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(eggs)) <span class="sc">%&gt;%</span> <span class="co"># This line simply selects values that are not NAs from the time series</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> prices <span class="sc">|&gt;</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(eggs)) <span class="sc">|&gt;</span> <span class="co"># This line simply selects values that are not NAs from the time series</span></span>
 <span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">model</span>(<span class="fu">RW</span>(<span class="fu">log</span>(eggs) <span class="sc">~</span> <span class="fu">drift</span>()))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>See the code snippets above for further details. With those models we generated two forecast objects:</p>
@@ -3338,15 +3338,15 @@ window.Quarto = {
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Comopute lower and upper bounds of 80% and 95% confidence intervals</span></span>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="co"># in the transformed domain</span></span>
 <span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>fc1_intervals <span class="ot">&lt;-</span> </span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  fc1 <span class="sc">%&gt;%</span> </span>
-<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">hilo</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  fc1 <span class="sc">|&gt;</span> </span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">hilo</span>() <span class="sc">|&gt;</span> </span>
 <span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">unpack_hilo</span>(<span class="fu">c</span>(<span class="st">`</span><span class="at">80%</span><span class="st">`</span>, <span class="st">`</span><span class="at">95%</span><span class="st">`</span>)) </span>
 <span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Comopute lower and upper bounds of 80% and 95% confidence intervals</span></span>
 <span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a><span class="co"># in the original domain</span></span>
 <span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>fc2_intervals <span class="ot">&lt;-</span> </span>
-<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>  fc2 <span class="sc">%&gt;%</span> </span>
-<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">hilo</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>  fc2 <span class="sc">|&gt;</span> </span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">hilo</span>() <span class="sc">|&gt;</span> </span>
 <span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">unpack_hilo</span>(<span class="fu">c</span>(<span class="st">`</span><span class="at">80%</span><span class="st">`</span>, <span class="st">`</span><span class="at">95%</span><span class="st">`</span>))</span>
 <span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Backtransform 95% lowerbound</span></span>
@@ -3425,7 +3425,7 @@ window.Quarto = {
 <p>Use <code>decomposition_model()</code> in combination with an STL decomposition and a log transformation to generate a 36 step-forecast of the retail_series used in exercise 1 of notebook 6_1. Back transform the result to the original variables depicting both the mean and median point forecasts.</p>
 <p>As in notebook 6_1, use a drift model to fit the seasonally adjusted data and a seasonal naive model to fit the seasonal component.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>retail_series <span class="ot">&lt;-</span> aus_retail <span class="sc">%&gt;%</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>retail_series <span class="ot">&lt;-</span> aus_retail <span class="sc">|&gt;</span></span>
 <span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">Series ID</span><span class="st">`</span> <span class="sc">==</span> <span class="st">&quot;A3349767W&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>

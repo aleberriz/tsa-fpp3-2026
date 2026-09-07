@@ -2554,12 +2554,12 @@ window.Quarto = {
 <p>After you have written your function, we are going to test it with an example time series.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Lod Time series to test the method</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>algerian_exports <span class="ot">&lt;-</span> global_economy <span class="sc">%&gt;%</span> </span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Country <span class="sc">==</span> <span class="st">&quot;Algeria&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>algerian_exports <span class="ot">&lt;-</span> global_economy <span class="sc">|&gt;</span> </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Country <span class="sc">==</span> <span class="st">&quot;Algeria&quot;</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Year, Exports)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>The code below serves to test that you have correctly implemented the level equation in the function. If you run the code below and select the file <code>yhat_SES_test</code> provided in the folder <code>ZZ_Datasets</code>from google drive, the code should evaluate to <code>TRUE</code>.</p>
-<p>Check this with <code>all.equal()</code>, where <code>levels_test</code> is the output of applying your function <code>levels</code> to the data in <code>algerian_exports</code> using the given values for <code>alpha</code> and <code>l_0</code>. Simply run the code below and select the file <code>yhat_SES_test</code> when the pop-up window shows:</p>
+<p>The code below tests that you have correctly implemented the level equation in the function. The file <code>yhat_SES_test</code> is in the <code>data/</code> folder at the repository root. If you run the code below, it should evaluate to <code>TRUE</code>.</p>
+<p>Check this with <code>all.equal()</code>, where <code>levels_test</code> is the output of applying your function <code>levels</code> to the data in <code>algerian_exports</code> using the given values for <code>alpha</code> and <code>l_0</code>:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> algerian_exports<span class="sc">$</span>Exports</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.8399875</span> <span class="co"># Initial estimates for the test</span></span>
@@ -2568,13 +2568,12 @@ window.Quarto = {
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the leves using the implemented function</span></span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>levels_function <span class="ot">&lt;-</span> <span class="fu">levels</span>(<span class="at">y=</span>y, <span class="at">l_0=</span>l_0, <span class="at">alpha=</span>alpha)</span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Read yhat_test object, file `yhat_SES_test` contained in ZZ_Datasets</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># A pop-up window will prompt you to select the file.</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>levels_test <span class="ot">&lt;-</span> <span class="fu">dget</span>(<span class="fu">file.choose</span>())</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Tests for equality</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co"># This should evaluate to TRUE</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(levels_function, levels_test)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Read yhat_SES_test from the data/ folder</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>levels_test <span class="ot">&lt;-</span> <span class="fu">dget</span>(<span class="st">&quot;data/yhat_SES_test&quot;</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Tests for equality</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co"># This should evaluate to TRUE</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(levels_function, levels_test)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 </section>
@@ -2763,10 +2762,10 @@ NULL</code></pre>
 </div>
 <p>For comparison purposes, let us fit a simple exponential smoothing method to the same data using the <code>fable</code> library:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> algerian_exports <span class="sc">%&gt;%</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> algerian_exports <span class="sc">|&gt;</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">model</span>(<span class="fu">ETS</span>(Exports <span class="sc">~</span> <span class="fu">error</span>(<span class="st">&quot;A&quot;</span>) <span class="sc">+</span> <span class="fu">trend</span>(<span class="st">&quot;N&quot;</span>) <span class="sc">+</span> <span class="fu">season</span>(<span class="st">&quot;N&quot;</span>)))</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>optimal_params_fable <span class="ot">&lt;-</span> <span class="fu">tidy</span>(fit) <span class="sc">%&gt;%</span> <span class="fu">pull</span>(estimate)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>optimal_params_fable <span class="ot">&lt;-</span> <span class="fu">tidy</span>(fit) <span class="sc">|&gt;</span> <span class="fu">pull</span>(estimate)</span>
 <span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>optimal_params_fable</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -2795,11 +2794,11 @@ NULL</code></pre>
 <h2 class="anchored" data-anchor-id="use-the-functions-you-have-written-in-combination-with-optim-to-find-the-values-of-alpha-and-l_0-that-result-in-a-best-fit-for-an-ses-model-applied-to-argentinian-exports">5. Use the functions you have written in combination with <code>optim()</code> to find the values of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(l_0\)</span> that result in a best fit for an SES model applied to Argentinian exports:</h2>
 <p>Note that, due to the overall lack of trend on the time series, an SES model is sensible in this case.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>arg_exports <span class="ot">&lt;-</span> global_economy <span class="sc">%&gt;%</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">filter</span>(Country <span class="sc">==</span> <span class="st">&quot;Argentina&quot;</span>) <span class="sc">%&gt;%</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>arg_exports <span class="ot">&lt;-</span> global_economy <span class="sc">|&gt;</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">filter</span>(Country <span class="sc">==</span> <span class="st">&quot;Argentina&quot;</span>) <span class="sc">|&gt;</span></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">select</span>(Year, Exports)</span>
 <span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>arg_exports <span class="sc">%&gt;%</span> <span class="fu">autoplot</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>arg_exports <span class="sc">|&gt;</span> <span class="fu">autoplot</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Plot variable not specified, automatically selected `.vars = Exports`</code></pre>
 </div>
