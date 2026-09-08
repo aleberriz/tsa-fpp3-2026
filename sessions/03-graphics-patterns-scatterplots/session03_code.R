@@ -95,7 +95,7 @@ lynx <- pelt |> select(Year, Lynx)
 lynx |> head(5)
 
 # ---- cell 17 ----
-hsales_tsibble <- hsales |> as_tsibble()
+hsales_ts <- hsales |> as_tsibble()
 
 # ---- cell 18 ----
 class(taylor)
@@ -116,7 +116,7 @@ start_time <- as.POSIXct("2000-06-05 00:00:00", tz = "UTC")
 datetime_seq <- start_time + seq(from = 0, by = 1800, length.out = length(taylor))
 
 # Convert the time series to a tsibble
-taylor_tsibble <- 
+taylor_ts <- 
   tibble(
     index = datetime_seq,
     value = as.numeric(taylor)
@@ -124,34 +124,34 @@ taylor_tsibble <-
   as_tsibble(index = index)
 
 # Check the resulting tsibble
-taylor_tsibble
+taylor_ts
 
 # ---- cell 21 ----
-autoplot(taylor_tsibble)
+autoplot(taylor_ts)
 
 # ---- cell 22 ----
 # Create an auxiliary column with the yearweek corresponding to
 # each point in the time series.
-taylor_tsibble <- 
-  taylor_tsibble |> 
+taylor_ts <- 
+  taylor_ts |> 
   mutate(
     week = yearweek(index)
   )
 
 # Extract first week and compute 4th week
-week1 <-  taylor_tsibble$week[1]
+week1 <- taylor_ts$week[1]
 week4 <- week1 + 3
 
 # Filter for first four weeks and store in new object
-taylor_tsibble_4w <- 
-  taylor_tsibble |> 
+taylor_ts_4w <- 
+  taylor_ts |> 
     filter(
       week >= week1, 
       week <= week4
     )
 
 # Show the result
-taylor_tsibble_4w |> 
+taylor_ts_4w |> 
   
   autoplot() + 
   
@@ -186,7 +186,8 @@ PBS |>
   select(Month, Concession, Type, Cost) |>
   summarise(TotalC = sum(Cost)) |>
   
-  # Comment on this assignment operator
+  # Remove zeroes to the right if we don't need that resolution
+  # Notice the -> operator works as well as <-
   mutate(Cost = TotalC / 1e6) -> a10
 
 # ---- cell 27 ----
@@ -250,7 +251,6 @@ df |>
   geom_smooth(method = "lm", se = FALSE)
 
 # ---- cell 33 ----
-# **Question:** why is it not exactly 0?
 cor(df$x, df$y)
 
 # ---- cell 34 ----
@@ -286,7 +286,7 @@ visitors |>
 
 # ---- cell 40 ----
 soi_recruitment <- 
-   read_csv("data/soi_recruitment.csv") |> 
+   read_csv("../../data/soi_recruitment.csv") |> 
    mutate(ym = yearmonth(index)) |> 
    select(ym, SOI, recruitment) |> 
    as_tsibble(index = ym)
