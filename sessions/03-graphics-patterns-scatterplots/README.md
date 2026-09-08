@@ -13,7 +13,8 @@ scatterplot matrix, and the lagged-variable exercise.
 `scale_x_yearquarter()/continuous()/datetime()/date()`
 
 **Homework:** The in-notebook exercises of `03_A` (Examples 2, 4, 5, 7, 8 and the
-scatterplot-matrix/lagged-variable exercise).
+scatterplot-matrix/lagged-variable exercise). For each exercise, submit the code, the plot,
+and one sentence naming the patterns you see.
 
 **Outcome:** Given a plot, student names the patterns and justifies seasonal-vs-cyclic; reads a
 scatterplot matrix.
