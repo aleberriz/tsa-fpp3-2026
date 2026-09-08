@@ -59,79 +59,52 @@ aus_production |>
   autoplot(Bricks)
 
 # ---- cell 8 ----
-autoplot(aus_production, Bricks) +
-  
-  scale_x_yearquarter(date_breaks = "4 year",
-                      minor_breaks = "1 year") +
-  # Flip x-labels by 90 degrees
-  theme(axis.text.x = element_text(angle = 90))
-
-# Trended with recessions in 1983 and 1991
-
-# ---- cell 9 ----
 ustreas
 
-# ---- cell 10 ----
+# ---- cell 9 ----
 ustreas_tsibble <- as_tsibble(ustreas)
 ustreas_tsibble
 
-# ---- cell 11 ----
+# ---- cell 10 ----
 autoplot(ustreas_tsibble)
 
-# ---- cell 12 ----
+# ---- cell 11 ----
 ustreas_tsibble |> head(5)
 
-# ---- cell 13 ----
+# ---- cell 12 ----
 # Sequence for major ticks, from 0 to the maximum index in the data
 major_ticks_seq = seq(0, max(ustreas_tsibble$index), 10)
 major_ticks_seq
 
-# ---- cell 14 ----
+# ---- cell 13 ----
 # Sequence for minor ticks, from 0 to the maximum index in the data
 minor_ticks_seq = seq(0, max(ustreas_tsibble$index), 5)
 minor_ticks_seq
 
-# ---- cell 15 ----
+# ---- cell 14 ----
 ustreas_tsibble |>
   autoplot() +
   scale_x_continuous(breaks = major_ticks_seq,
                      minor_breaks = minor_ticks_seq)
 
-# ---- cell 16 ----
+# ---- cell 15 ----
 pelt |> head(5)
 
-# ---- cell 17 ----
+# ---- cell 16 ----
 lynx <- pelt |> select(Year, Lynx)
 lynx |> head(5)
 
-# ---- cell 18 ----
-major_ticks_seq = seq(0, max(lynx$Year), 10)
-minor_ticks_seq = seq(0, max(lynx$Year), 5)
-
-lynx |>
-  autoplot() + 
-    scale_x_continuous(breaks = major_ticks_seq,
-                       minor_breaks = minor_ticks_seq) +
-    xlab("Year") + 
-    ylab("Number of lynx trapped")
-
-# ---- cell 19 ----
+# ---- cell 17 ----
 hsales_tsibble <- hsales |> as_tsibble()
 
-# ---- cell 20 ----
-hsales_tsibble |> 
-  autoplot() + 
-  scale_x_yearmonth(date_breaks = "5 year",
-                    minor_breaks = "1 year")
-
-# ---- cell 21 ----
+# ---- cell 18 ----
 class(taylor)
 
-# ---- cell 22 ----
+# ---- cell 19 ----
 # Column index represented as a double! This is not what we want.
 taylor |> as_tsibble()
 
-# ---- cell 23 ----
+# ---- cell 20 ----
 # Define the start time based on information about the Taylor series
 # Assume UTC time.
 start_time <- as.POSIXct("2000-06-05 00:00:00", tz = "UTC")
@@ -153,10 +126,10 @@ taylor_tsibble <-
 # Check the resulting tsibble
 taylor_tsibble
 
-# ---- cell 24 ----
+# ---- cell 21 ----
 autoplot(taylor_tsibble)
 
-# ---- cell 25 ----
+# ---- cell 22 ----
 # Create an auxiliary column with the yearweek corresponding to
 # each point in the time series.
 taylor_tsibble <- 
@@ -188,21 +161,15 @@ taylor_tsibble_4w |>
     minor_breaks = "1 day"
   )
 
-# ---- cell 26 ----
+# ---- cell 23 ----
 vic_elec |> head(5)
 
-# ---- cell 27 ----
+# ---- cell 24 ----
 elec_jan <- vic_elec |>
               mutate(month = yearmonth(Time)) |>
               filter(month == yearmonth("2012 Jan"))
 
-# ---- cell 28 ----
-elec_jan |> 
-  autoplot() +
-  scale_x_datetime(breaks = "1 week",
-                   minor_breaks = "1 day")
-
-# ---- cell 29 ----
+# ---- cell 25 ----
 elec_jan_daily <- 
   elec_jan |> 
     index_by(date = as_date(Time)) |> 
@@ -213,13 +180,7 @@ elec_jan_daily <-
 # Inspect result
 elec_jan_daily
 
-# ---- cell 30 ----
-elec_jan_daily |> 
-  autoplot() +
-  scale_x_date(breaks = "1 week",
-               minor_breaks = "1 day")
-
-# ---- cell 31 ----
+# ---- cell 26 ----
 PBS |>
   filter(ATC2 == "A10") |>
   select(Month, Concession, Type, Cost) |>
@@ -228,20 +189,20 @@ PBS |>
   # Comment on this assignment operator
   mutate(Cost = TotalC / 1e6) -> a10
 
-# ---- cell 32 ----
+# ---- cell 27 ----
 a10 |> head(5)
 
-# ---- cell 33 ----
+# ---- cell 28 ----
 autoplot(a10, Cost) +
   labs(y = "$ (millions)",
        title = "Australian antidiabetic drug sales") +
   scale_x_yearmonth(breaks = "1 year") +
   theme(axis.text.x = element_text(angle = 90))
 
-# ---- cell 34 ----
+# ---- cell 29 ----
 vic_elec
 
-# ---- cell 35 ----
+# ---- cell 30 ----
 p1 <- vic_elec |>
   filter(year(Time) == 2014) |>
   autoplot(Demand) +
@@ -260,7 +221,7 @@ p2 <- vic_elec |>
 # matching of the x-axis.
 p1 / p2
 
-# ---- cell 36 ----
+# ---- cell 31 ----
 vic_elec |>
   filter(year(Time) == 2014) |>
   ggplot(aes(x = Temperature, y = Demand)) +
@@ -277,7 +238,7 @@ vic_elec |>
   labs(x = "Temperature (degrees Celsius)",
        y = "Electricity demand (GW)")
 
-# ---- cell 37 ----
+# ---- cell 32 ----
 df <- tibble(
               x = seq(-4, 4, 0.05),
               y = x^2
@@ -288,42 +249,42 @@ df |>
   geom_point() +
   geom_smooth(method = "lm", se = FALSE)
 
-# ---- cell 38 ----
+# ---- cell 33 ----
 # **Question:** why is it not exactly 0?
 cor(df$x, df$y)
 
-# ---- cell 39 ----
+# ---- cell 34 ----
 # Compute correlation coefficient
 round(cor(vic_elec$Temperature, vic_elec$Demand), 2)
 
-# ---- cell 40 ----
+# ---- cell 35 ----
 visitors <- tourism |>
   group_by(State) |>
   summarise(Trips = sum(Trips))
 
 visitors
 
-# ---- cell 41 ----
+# ---- cell 36 ----
 # Check the distinct values of the State column
 distinct(visitors, State)
 
-# ---- cell 42 ----
+# ---- cell 37 ----
 visitors |>
   pivot_wider(values_from=Trips, names_from=State)
 
-# ---- cell 43 ----
+# ---- cell 38 ----
 visitors |>
   pivot_wider(values_from=Trips, names_from=State) |>
   GGally::ggpairs(columns = 2:9) + 
   theme(axis.text.x = element_text(angle = 90))
 
-# ---- cell 44 ----
+# ---- cell 39 ----
 visitors |>
   pivot_wider(values_from=Trips, names_from=State) |>
   GGally::ggpairs(columns = 2:9, lower = list(continuous = wrap("smooth_loess", color="lightblue"))) + 
   theme(axis.text.x = element_text(angle = 90))
 
-# ---- cell 45 ----
+# ---- cell 40 ----
 soi_recruitment <- 
    read_csv("data/soi_recruitment.csv") |> 
    mutate(ym = yearmonth(index)) |> 
@@ -341,7 +302,7 @@ soi_recruitment <-
   soi_recruitment |> 
   select(ym, recruitment, everything())
 
-# ---- cell 46 ----
+# ---- cell 41 ----
 # Compute desired lags
 for (i in seq(1, 8)) {
   lag_name <- paste0("SOI_l", i)
@@ -356,7 +317,7 @@ soi_recruitment <-
 # Inspect result.
 soi_recruitment
 
-# ---- cell 47 ----
+# ---- cell 42 ----
 # Count number of columns
 ncols <- length(names(soi_recruitment))
 
@@ -365,7 +326,7 @@ soi_recruitment |>
   GGally::ggpairs(columns = 2:ncols, lower = list(continuous = wrap("smooth_loess", color="lightblue", se=TRUE))) + 
   theme(axis.text.x = element_text(angle = 90))
 
-# ---- cell 48 ----
+# ---- cell 43 ----
 PBS |>
   filter(ATC2 == "A10") |>
   select(Month, Concession, Type, Cost) |>
@@ -376,7 +337,7 @@ PBS |>
 
 a10
 
-# ---- cell 49 ----
+# ---- cell 44 ----
 # Recall the time plot
 autoplot(a10, Cost) +
   labs(y = "$ (millions)",
@@ -384,46 +345,37 @@ autoplot(a10, Cost) +
   scale_x_yearmonth(breaks = "1 year") +
   theme(axis.text.x = element_text(angle = 90))
 
-# ---- cell 50 ----
+# ---- cell 45 ----
 a10 |>
   gg_season(Cost, labels = "both") + # Labels -> "both", "right", "left"
   labs(y = "$ (millions)",
        title = "Seasonal plot: Antidiabetic drug sales")
 
-# ---- cell 51 ----
+# ---- cell 46 ----
 head(vic_elec)
 tail(vic_elec)
 
-# ---- cell 52 ----
+# ---- cell 47 ----
 vic_elec |> gg_season(Demand, period = "day") +
   theme(legend.position = "none") +
   labs(y="MWh", title="Electricity demand: Victoria")
 
-# ---- cell 53 ----
+# ---- cell 48 ----
 vic_elec |> gg_season(Demand, period = "week") +
   theme(legend.position = "none") +
   labs(y="MWh", title="Electricity demand: Victoria")
 
-# ---- cell 54 ----
+# ---- cell 49 ----
 vic_elec |> gg_season(Demand, period = "year") +
   labs(y="MWh", title="Electricity demand: Victoria")
 
-# ---- cell 55 ----
+# ---- cell 50 ----
 aus_arrivals
 
-# ---- cell 56 ----
-aus_arrivals |> autoplot(Arrivals)
-
-# ---- cell 57 ----
-aus_arrivals |> gg_season(Arrivals, labels = "both")
-
-# ---- cell 58 ----
-aus_arrivals |> gg_subseries(Arrivals)
-
-# ---- cell 59 ----
+# ---- cell 51 ----
 a10
 
-# ---- cell 60 ----
+# ---- cell 52 ----
 a10 |>
   gg_subseries(Cost) +
   labs(
@@ -431,7 +383,7 @@ a10 |>
     title = "Australian antidiabetic drug sales",
   )
 
-# ---- cell 61 ----
+# ---- cell 53 ----
 a10 |>
   gg_subseries(Cost, period = "year") +
   labs(
@@ -439,49 +391,6 @@ a10 |>
     title = "Australian antidiabetic drug sales",
   )
 
-# ---- cell 62 ----
-a10 |>
-  gg_subseries(Cost, period = "month") +
-  labs(
-    y = "$ (millions)",
-    title = "Australian antidiabetic drug sales",
-  )
-
-# ---- cell 63 ----
-a10 |>
-  gg_subseries(Cost, period = "day") +
-  labs(
-    y = "$ (millions)",
-    title = "Australian antidiabetic drug sales",
-  )
-
-# ---- cell 64 ----
+# ---- cell 54 ----
 head(vic_elec)
 tail(vic_elec)
-
-# ---- cell 65 ----
-vic_elec_d <- vic_elec |>
-  
-  # STEP 1: aggregate by date:
-  index_by(day = as_date(Time)) |>
-  
-  # STEP 2: obtain average values
-  summarise(
-    avg_demand = mean(Demand)
-  )
-
-# STEP 3: Inspect result
-vic_elec_d
-
-# ---- cell 66 ----
-# Filter values for 2012
-filter(vic_elec_d, year(day) == 2012) |>
-  
-  # Generate
-  gg_subseries(avg_demand, period = "month") + 
-  labs(
-    y = "[MW]",
-    title = "Total electricity demand for Victoria, Australia"
-  )
-
-ggsave("subseasonal_demand_daily_PeriodMonth.svg", width = 40, height = 5)

@@ -3783,10 +3783,7 @@ Y = \beta_0 + \cancel{r_{X,Y} \cdot \frac{\sigma_Y}{\sigma_X} \ \ X}
 </ol>
 <p>Solutions to be provided after class:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="fl">1.</span> Each line represents the demand <span class="cf">in</span> a specific day.</span>
-<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a><span class="fl">2.</span> <span class="dv">365</span> <span class="sc">*</span> <span class="dv">24</span> <span class="sc">*</span> <span class="dv">2</span> <span class="sc">*</span> <span class="dv">3</span> <span class="ot">=</span> <span class="dv">52560</span> <span class="co"># 3 years and 2 * 24 because the data is half-hourly</span></span>
-<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a><span class="fl">3.</span> <span class="dv">365</span> <span class="sc">*</span> <span class="dv">3</span> <span class="ot">=</span> <span class="dv">1095</span></span>
-<span id="cb85-4"><a href="#cb85-4" aria-hidden="true" tabindex="-1"></a><span class="fl">4.</span> <span class="dv">52560</span> <span class="sc">/</span> <span class="dv">1095</span> <span class="ot">=</span> <span class="dv">48</span> (<span class="dv">48</span> half hours <span class="cf">in</span> a day)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
 </div>
 </section>
 <section id="weekly-period-example" class="level3">
@@ -3810,10 +3807,7 @@ Y = \beta_0 + \cancel{r_{X,Y} \cdot \frac{\sigma_Y}{\sigma_X} \ \ X}
 <li><strong>Question:</strong> how many data points does each line have?</li>
 </ol>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fl">1.</span> Electricity consumption over a specific week</span>
-<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a><span class="fl">2.</span> <span class="fl">365.25</span> <span class="sc">/</span> <span class="dv">7</span> <span class="ot">=</span> <span class="fl">52.18</span> on <span class="fu">average</span> (one leap year every <span class="dv">4</span> years, approximately)</span>
-<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a><span class="fl">3.</span> Approximately <span class="dv">52</span> <span class="sc">*</span> <span class="dv">3</span></span>
-<span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a><span class="fl">4.</span> <span class="dv">7</span> <span class="sc">*</span> <span class="dv">24</span> <span class="sc">*</span> <span class="dv">2</span> <span class="ot">=</span> <span class="dv">336</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
 </div>
 </section>
 <section id="yearly-period-example" class="level3">
@@ -3835,9 +3829,7 @@ Y = \beta_0 + \cancel{r_{X,Y} \cdot \frac{\sigma_Y}{\sigma_X} \ \ X}
 <li><strong>Question:</strong> propose an alternative, less noisy way to represent the data:</li>
 </ol>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="sc">*</span> Each line represents the electricity consumption <span class="cf">for</span> a specific year</span>
-<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a><span class="sc">*</span> <span class="dv">365</span> <span class="sc">*</span> <span class="dv">24</span> <span class="sc">*</span> <span class="dv">2</span> <span class="ot">=</span> <span class="dv">17520</span></span>
-<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a><span class="sc">*</span> For example<span class="sc">:</span> aggregate by month using <span class="st">`</span><span class="at">index_by</span><span class="st">`</span>, with a maximum, minimum and average value.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
 </div>
 </section>
 </section>
@@ -3953,7 +3945,7 @@ Y = \beta_0 + \cancel{r_{X,Y} \cdot \frac{\sigma_Y}{\sigma_X} \ \ X}
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a>It gives the same output as a time plot, because we set the smallest time unit <span class="cf">in</span> the <span class="fu">index</span> (month) as the period. Since the data is monthly, a month cannot be split further.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
 </div>
 <p><strong>Question:</strong> what is the output of this code?</p>
 <div class="cell">
@@ -3972,8 +3964,7 @@ Y = \beta_0 + \cancel{r_{X,Y} \cdot \frac{\sigma_Y}{\sigma_X} \ \ X}
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a>Same output as before. The smallest time unit <span class="cf">in</span> the index is <span class="st">&quot;month&quot;</span>,</span>
-<span id="cb99-2"><a href="#cb99-2" aria-hidden="true" tabindex="-1"></a>which is greater than <span class="st">&quot;day&quot;</span>, so it is pointless to set day as the period.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
 </div>
 </section>
 <section id="example-with-sub-daily-data" class="level2">
@@ -4030,11 +4021,7 @@ Y = \beta_0 + \cancel{r_{X,Y} \cdot \frac{\sigma_Y}{\sigma_X} \ \ X}
 <span id="cb105-9"><a href="#cb105-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;subseasonal_demand_hourly_PeriodDay.svg&quot;</span>, <span class="at">width =</span> <span class="dv">30</span>, <span class="at">height =</span> <span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb106"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="dv">48</span> graphs. The period <span class="ot">=</span> <span class="st">&quot;day&quot;</span> divided by the smallest time <span class="fu">unit</span> (<span class="dv">30</span> mins)</span>
-<span id="cb106-2"><a href="#cb106-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb106-3"><a href="#cb106-3" aria-hidden="true" tabindex="-1"></a>See the output <span class="cf">in</span> the separate file <span class="st">&quot;subseasonal_demand_hourly_PeriodDay.svg&quot;</span>.</span>
-<span id="cb106-4"><a href="#cb106-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb106-5"><a href="#cb106-5" aria-hidden="true" tabindex="-1"></a>Another option is to aggregate by <span class="fu">month</span> (see the <span class="cf">next</span> code snippet).</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
 </div>
 <p><strong>Question:</strong> what is the output of this code?</p>
 <div class="cell">
