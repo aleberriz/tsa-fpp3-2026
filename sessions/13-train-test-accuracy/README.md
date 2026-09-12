@@ -1,5 +1,7 @@
 # Session 13 — Train/test splits and point forecast accuracy
 
+**Date:** Monday, 26 October 2026, 9:00–10:20 — IE Tower, room T-05.02
+
 **fpp3:** 5.8
 
 **Focus:** Subsetting a series with `filter()` and `slice()` (including the negative-index idiom and

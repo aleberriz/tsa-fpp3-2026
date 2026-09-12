@@ -1,5 +1,7 @@
 # Session 15 — Simple exponential smoothing: the equations
 
+**Date:** Wednesday, 11 November 2026, 9:00–10:20 — IE Tower, room T-05.02
+
 **fpp3:** 8.1
 
 **Focus:** Naïve vs mean vs SES as three ways of weighting the past; the derivation from a geometric
