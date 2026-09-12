@@ -1,5 +1,7 @@
 # Session 16 — Fitting SES from scratch
 
+**Date:** Monday, 16 November 2026, 9:00–10:20 — IE Tower, room T-05.02
+
 **fpp3:** 8.1 (estimation)
 
 **Data:** `yhat_SES_test`

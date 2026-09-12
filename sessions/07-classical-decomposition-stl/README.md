@@ -1,5 +1,7 @@
 # Session 07 — Classical decomposition, from scratch and by algorithm; STL
 
+**Date:** Monday, 28 September 2026, 9:00–10:20 — IE Tower, room T-05.02
+
 **fpp3:** 3.4, 3.6
 
 **Focus:** The four steps of classical decomposition (trend by MA → detrend → seasonal component →
