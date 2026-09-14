@@ -2,7 +2,7 @@
 
 **Date:** Monday, 21 September 2026, 9:00–10:20 — IE Tower, room T-05.02
 
-**fpp3:** 3.2, 3.4
+**fpp3:** 3.2
 
 **Focus:** The additive and multiplicative schemes; how square-root / cube-root / log / inverse
 transformations differ in strength and what that tells you about the scheme; automating the

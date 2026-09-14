@@ -182,7 +182,7 @@ for the stochastic-process framing.
 - Detrended and seasonally adjusted series, computed manually and verified
 - Mixed schemes
 
-**Reading:** fpp3 3.2, 3.4
+**Reading:** fpp3 3.2
 
 ### Session 6 — Time series decomposition (2/3): moving averages for trend estimation
 
