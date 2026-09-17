@@ -303,6 +303,8 @@ us_retail_employment |>
 # EXERCISES
 #
 # From here the script sets each exercise up and stops.
+#
+# ASSIGNED: exercise 1, exercise 2, and exercise 3 item 2.1.
 # ============================================================
 
 # ---- exercise 1 (07_D): gas, and an outlier ----
@@ -369,9 +371,12 @@ dcmp_1 |> ACF(remainder) |> autoplot()
 #   2.1 What is wrong with this decomposition? Use both criteria
 #       from section 2: the relative variances, read off the
 #       grey bars, and the remainder's ACF.
-#   2.2 Tune both windows to improve it as far as you can. Plot
-#       the components and the remainder's ACF again, and say
-#       what improved and what did not.
 #
-# You will not reach white noise on this series. Say so, and say
-# which criterion you traded away.
+# This is a diagnosis, not a tuning task. You are not asked to
+# fix it, and on this series it cannot be fully fixed: no window
+# setting gets the remainder to white noise. Saying that, with
+# the evidence, is the complete answer.
+#
+# The notebook continues with a tuning item (2.2) on this
+# series. NOT ASSIGNED - exercise 2 above already covers the
+# tuning mechanics.

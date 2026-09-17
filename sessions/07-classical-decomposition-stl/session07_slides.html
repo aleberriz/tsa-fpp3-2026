@@ -772,14 +772,15 @@ S_i  =  S_unadj_i  <span class="hl">/</span>  mean(S_unadj)          <span class
 <!-- ---------- 16 ---------- -->
 <section class="slide" data-section="6" data-title="Group Assignment 1">
   <div class="inner">
-    <p class="kicker">Launches today</p>
+    <p class="kicker">Launches today &nbsp;&middot;&nbsp; due Sunday 25 October, 23:59</p>
     <h1 class="sowhat">Classical decomposition, from scratch, on a series you choose.</h1>
     <ul class="build">
       <li class="step"><b>It is this morning's four steps</b>, on data nobody has walked you through, with every step checked against <code>classical_decomposition()</code>.</li>
       <li class="step"><b>The marks are in the explanation</b>, not in the code. Every component has to be interpreted, and every choice defended: the scheme, the value of <code>m</code>, the reading of the remainder.</li>
       <li class="step"><b>It gets detailed written feedback</b>, unlike the weekly homework. It is one of only two pieces of work in the course that does.</li>
     </ul>
-    <div class="callout"><b>The brief is in <code>assignments/</code> in the course repo.</b> Read it this week, not the night before. Choosing a series with a clean, stable season is half the battle, and that choice is yours.</div>
+    <div class="callout"><b>Four weeks, and the deadline is after the midterm.</b> That is deliberate: revising for the exam and building a decomposition from scratch are different activities and should not compete for the same week.</div>
+    <div class="callout slate"><b>The brief is in <code>assignments/</code> in the course repo.</b> Read it this week, not the night before. Choosing a series with a clean, stable season is half the battle, and that choice is yours.</div>
   </div>
   <aside class="notes">A word on choosing a series, since it is the decision that most affects how hard the rest becomes. You want enough history to cover several complete seasons, a seasonal period you can justify from the sampling frequency, and ideally a scheme that is clearly additive or clearly multiplicative rather than ambiguous. Session 5's eye test is how you check the last one before committing.<br><br>You will hit the limitations from slide 8 on real data, and that is expected rather than a sign you chose badly. Naming a limitation you ran into, and showing what it did to your components, reads far better than a report that pretends the method worked perfectly.</aside>
 </section>
@@ -792,12 +793,12 @@ S_i  =  S_unadj_i  <span class="hl">/</span>  mean(S_unadj)          <span class
     <ul class="build">
       <li><b><code>07_D</code> Exercise 1.</b> Gas, multiplicative, seasonally adjusted, then the outlier in the middle and at the end. Explain every component that moved.</li>
       <li><b><code>07_E</code> STL Example 3, items 1.1 and 1.2.</b> The <code>labour</code> series: default decomposition, then the 1991&ndash;92 crisis and the window tuning.</li>
-      <li><b><code>07_E</code> Exercise 2, items 2.1 and 2.2.</b> Daily electricity demand: what is wrong with the default decomposition, then tune it as far as it goes.</li>
-      <li>For every tuning task, report what you <i>tried</i>, not only what you kept. Two rejected settings and why is worth more than one accepted setting on its own.</li>
+      <li><b><code>07_E</code> Exercise 2, item 2.1 only.</b> Daily electricity demand: what is wrong with the default decomposition. A diagnosis, not a tuning task &mdash; item 2.2 is not assigned.</li>
+      <li>For the tuning task, report what you <i>tried</i>, not only what you kept. Two rejected settings and why is worth more than one accepted setting on its own.</li>
     </ul>
     <div class="callout slate"><b><code>07_E</code> needs the <code>fma</code> package</b> for the <code>labour</code> series. Install it before Sunday, not on Sunday.</div>
   </div>
-  <aside class="notes">Graded on completion and genuine effort. On the tuning tasks that is the whole point: there is no window setting that earns full marks and none that loses them. What earns marks is showing the search and judging it against the two criteria rather than against the look of the plot.<br><br>Submit on Blackboard, under Assignments, as many files as you need. These exercises produce a lot of plots, so a single rendered document that keeps each plot next to the sentence about it is easier to read than a folder of images.</aside>
+  <aside class="notes">Graded on completion and genuine effort. On the tuning task that is the whole point: there is no window setting that earns full marks and none that loses them. What earns marks is showing the search and judging it against the two criteria rather than against the look of the plot.<br><br>Item 2.2 on the electricity series is deliberately not assigned. The tuning mechanics are already exercised on <code>labour</code>, and on the electricity series no setting reaches white noise anyway, so the diagnosis in 2.1 already reaches the conclusion the tuning would.<br><br>Submit on Blackboard, under Assignments, as many files as you need. These exercises produce a lot of plots, so a single rendered document that keeps each plot next to the sentence about it is easier to read than a folder of images.</aside>
 </section>
 
 <!-- ---------- 18 ---------- -->

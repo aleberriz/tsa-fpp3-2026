@@ -244,6 +244,9 @@ aus_exports_sided |>
 # EXERCISES
 #
 # From here the script sets each exercise up and stops.
+#
+# ASSIGNED this week: exercises 1, 3 and 4.
+# Exercise 2 is optional practice - see the note on it below.
 # ============================================================
 
 # ---- exercise 1: 2x12-MA of US retail employment ----
@@ -263,16 +266,16 @@ us_retail_employment
 #   why that number.
 
 # ---- exercise 2: 2x4-MA of quarterly electricity demand ----
+#
+# NOT ASSIGNED this term. It is here as optional practice if you
+# want a second 2xm-MA to work through. Exercise 1 already
+# covers the skill, and the aggregation step was Session 4's.
+#
 # vic_elec is half-hourly demand for Victoria, Australia.
-vic_elec
-
-# YOUR TURN:
 #   1. index_by() + summarise() to get the mean half-hourly
 #      demand per quarter.
 #   2. Compute a centered 2x4-MA of that quarterly series.
 #   3. Plot it over the series.
-# The aggregation step is Session 4's skill; the moving average
-# is this session's.
 
 # ---- exercise 3: derive the 3x7-MA ----
 # No code. On paper, work out the formula for a 3x7-MA: compute

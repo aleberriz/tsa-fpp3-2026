@@ -805,7 +805,7 @@ right m-MA_t  =  (1/m) * sum of y_{t+j}  <span class="dim">for</span> j = 0 .. (
     <ul class="build">
       <li class="step"><b>Exercise 3, the <code>3&times;7-MA</code>.</b> Take a 7-MA, then average three neighboring 7-MA windows centered at <code>t-1</code>, <code>t</code> and <code>t+1</code>. Collect the coefficient on each <code>y</code>.</li>
       <li class="step"><b>Exercise 4, the <code>2&times;8-MA</code>.</b> Same job, following the <code>2&times;4-MA</code> derivation exactly.</li>
-      <li class="step"><b>Check both answers against the two properties.</b> Symmetric, and summing to 1. If either fails, the arithmetic slipped.</li>
+      <li class="step"><b>Check both against the two properties</b> &mdash; symmetric, summing to 1 &mdash; and then against the <code>2&times;m</code> rule from slide 12. One of the two obeys it and one does not. Working out which, and why, is the point of doing both.</li>
     </ul>
     <div class="callout"><b>There is a blank figure at the end of the notebook.</b> Print it or draw on screen. Sketching the overlapping windows is faster than manipulating the sums, and it is how the 2&times;4 result was found on slide 12.</div>
   </div>
@@ -819,13 +819,13 @@ right m-MA_t  =  (1/m) * sum of y_{t+j}  <span class="dim">for</span> j = 0 .. (
     <h1 class="sowhat">Homework.</h1>
     <ul class="build">
       <li><b>Exercise 1.</b> The <code>2&times;12-MA</code> of <code>us_retail_employment</code>. Work out <code>.before</code> and <code>.after</code> for both windows before typing, then plot it over the series.</li>
-      <li><b>Exercise 2.</b> Aggregate <code>vic_elec</code> to mean quarterly demand, then compute a centered <code>2&times;4-MA</code> of it.</li>
-      <li><b>Exercises 3 and 4.</b> The two derivations from the previous slide, on paper. A photograph of clear handwriting is a perfectly good submission.</li>
       <li>One sentence on Exercise 1: how many values are missing at each end, and why that number.</li>
+      <li><b>Exercises 3 and 4.</b> The two derivations from the previous slide, on paper. A photograph of clear handwriting is a perfectly good submission. Between them they are half the marks.</li>
+      <li><b>Exercise 2 is not assigned.</b> It is in the notebook as optional practice if you want a second <code>2&times;m-MA</code> to work through.</li>
     </ul>
-    <div class="callout slate"><b>No data files.</b> Both series ship inside <code>fpp3</code>. Exercise 2's aggregation step is Session 4's <code>index_by()</code> skill, reused.</div>
+    <div class="callout slate"><b>No data files.</b> The series ships inside <code>fpp3</code>. Same deadline as Session 5's homework &mdash; both fall in this teaching week.</div>
   </div>
-  <aside class="notes">Graded on completion and genuine effort, not correctness. For exercises 3 and 4 that matters more than usual: a derivation that goes wrong in an interesting place and says so is worth full marks. An answer copied from somewhere with no working shown is worth less, and is easy to spot.<br><br>Submit on Blackboard, under Assignments. Multiple files are fine, so a script plus a photograph of the paper work is the natural shape for this one.</aside>
+  <aside class="notes">Graded on completion and genuine effort, not correctness. For exercises 3 and 4 that matters more than usual: a derivation that goes wrong in an interesting place and says so is worth full marks. An answer copied from somewhere with no working shown is worth less, and is easy to spot.<br><br>The two derivations carry 2.5 marks each, against 5 for the coded exercise. That is deliberate. They are the part that tells you whether the 2&times;m construction is understood or memorized, and they take a fraction of the time the code does.<br><br>Submit on Blackboard, under Assignments. Multiple files are fine, so a script plus a photograph of the paper work is the natural shape for this one.</aside>
 </section>
 
 <!-- ---------- 19 ---------- -->
