@@ -15,5 +15,9 @@ with `all.equal()`.
 **Outcome:** Student picks the right scheme for a series and can produce detrended and seasonally
 adjusted versions.
 
+> **Part 1 of 3.** Sessions 5, 6 and 7 are one topic, time series decomposition, taught in
+> three parts: the scheme here, trend estimation by moving average in Session 6, the whole
+> algorithm plus STL in Session 7. Read the three sets of notes together.
+
 > Box–Cox (fpp3 3.1) is not covered here. It comes in Session 11, next to forecasting with
 > transformations in Session 12, because the two belong together.
