@@ -95,9 +95,15 @@ materials in advance will allow you to get the most out of each lecture. During 
 the examples but do not try to solve them. Every session in the program below names the textbook
 sections to read beforehand.
 
-Homework is provided after each class and is due before the next session. Detailed solutions are
-published after each due date. Homework must show effort but need not be perfect; it is not
-individually corrected. The two group assignments do receive detailed written feedback.
+Homework is provided after each class and is due by 23:59 on the Sunday of the teaching week in which
+it was assigned; the exact date for every assignment is posted on Blackboard. Homework must show a
+genuine individual attempt but need not be correct — it is graded on completion and effort, not on
+results. Most exercises are self-verifying: the manual computation is checked against R's own
+implementation with `all.equal()`, so students confirm their own work as they go. After each due date
+the professor publishes a common-errors note to the whole cohort on Blackboard and reviews the main
+difficulties at the start of the following session. A rotating sample of submissions receives
+individual written comments on Blackboard, so that every student is commented on individually several
+times over the course. The two group assignments receive detailed written feedback.
 
 Optional online preparation tutorials are offered before the midterm and before the final exam.
 
@@ -353,8 +359,11 @@ for the stochastic-process framing.
 released in Session 7, and the Efficient Market Hypothesis, released in Session 17. Both receive
 detailed written feedback. See [`assignments/`](assignments/).
 
-**Individual work** is the per-session homework, assigned after each class and due before the next.
-Detailed solutions are published after each due date.
+**Individual work** is the per-session homework, assigned after each class and due by 23:59 on the
+Sunday of the teaching week in which it was assigned. It is graded on completion and genuine
+individual effort, not on correctness. Feedback is given as a cohort-wide common-errors note after
+each due date, as a review at the start of the following session, and as individual written comments
+on a rotating sample of submissions.
 
 **Class Participation** is assessed on attendance and on engagement during in-class exercises and
 discussions.

@@ -76,7 +76,7 @@ If you cloned the repo these are already on your machine; if you downloaded the 
 
 ## Homework
 
-Homework is submitted on **Blackboard**, not here. This repo is read-only course material — you don't push anything to it. Solutions are published (on Blackboard) after each due date.
+Homework is submitted on **Blackboard**, not here. This repo is read-only course material — you don't push anything to it. Homework is due by 23:59 on the Sunday of the teaching week in which it was assigned, and is graded on completion and effort rather than on correctness. After each due date a common-errors note goes up on Blackboard and the main difficulties are reviewed at the start of the following session; a rotating sample of submissions also receives individual written comments.
 
 If you'd like to keep your *own* work under version control, create your own separate repo. It's good practice and entirely optional — your use of Git is not graded.
 
