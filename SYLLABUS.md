@@ -105,6 +105,10 @@ difficulties at the start of the following session. A rotating sample of submiss
 individual written comments on Blackboard, so that every student is commented on individually several
 times over the course. The two group assignments receive detailed written feedback.
 
+Plan for roughly 1.5 hours per session outside class, covering the pre-session reading and the
+homework. The decomposition block (Sessions 5 to 7) and the weeks around each group assignment run
+heavier than that.
+
 Optional online preparation tutorials are offered before the midterm and before the final exam.
 
 | Learning Activity | Weighting | Estimated hours |
