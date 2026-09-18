@@ -15,6 +15,10 @@ with `all.equal()`.
 **Outcome:** Student picks the right scheme for a series and can produce detrended and seasonally
 adjusted versions.
 
+> **Course admin update.** Open [`admin_announcement.html`](admin_announcement.html) at the start
+> of this session: the midterm now covers Sessions 1–8, homework deadlines move to the Sunday of
+> each teaching week, and Group Assignment 1 is due after the exam.
+
 > **Part 1 of 3.** Sessions 5, 6 and 7 are one topic, time series decomposition, taught in
 > three parts: the scheme here, trend estimation by moving average in Session 6, the whole
 > algorithm plus STL in Session 7. Read the three sets of notes together.
