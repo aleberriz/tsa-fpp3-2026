@@ -380,6 +380,20 @@ questions with four options each.
 
 Homework and assignments are submitted on **Blackboard**, not in this repository.
 
+### Verification of individual understanding
+
+As part of the normal assessment of this course, the professor may ask any student for a short
+individual conversation about their submitted work or about the material covered in class. The
+student is asked to explain their reasoning, the choices behind an analysis, and the concepts the
+work relies on. No separate preparation is expected: if the work reflects the student's own
+understanding, the conversation is straightforward.
+
+These conversations are a routine part of assessment. They may be requested of any student at any
+point in the term, and a request is not in itself an indication of any concern about that student's
+work. Where the conversation does not support that a piece of work reflects the student's own
+understanding, the professor may take that into account in assessing the work concerned and, where
+appropriate, refer the matter under the University's Academic Integrity Policy.
+
 ### Midterm retake policy
 
 The date for the midterm is the date of session 10, as specified in this syllabus.
