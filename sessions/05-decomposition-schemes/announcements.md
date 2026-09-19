@@ -1,11 +1,10 @@
-# Course admin update — Session 05
+# Course admin update: Session 05
 
 **Monday 21 September 2026**
 
-A few adjustments to the calendar, the midterm scope, and the homework deadlines, with the
-reasoning behind them. The syllabus ([`../../SYLLABUS.md`](../../SYLLABUS.md)) is the authority;
-this note explains why it reads the way it does. The visual version of this update is
-[`admin_announcement.html`](admin_announcement.html), shown at the start of this session.
+Three adjustments to the calendar, the midterm scope, and the homework deadlines, and the
+reasoning behind each. The syllabus ([`../../SYLLABUS.md`](../../SYLLABUS.md)) is the authority;
+this note explains why it reads the way it does.
 
 ---
 
@@ -37,9 +36,9 @@ deadline: there is no spare Monday later to spread them onto.
 | 04 | Mon 14 Sep | lag plots, autocorrelation, white noise |
 | 05 | Mon 21 Sep | decomposition schemes |
 | 06 | Wed 23 Sep | moving averages |
-| 07 | Mon 28 Sep | classical decomposition and STL — Group Assignment 1 released |
+| 07 | Mon 28 Sep | classical decomposition and STL (Group Assignment 1 released) |
 | 08 | Wed 30 Sep | benchmark methods, fitted values |
-| 09 | Mon 5 Oct | residual diagnostics — also midterm revision |
+| 09 | Mon 5 Oct | residual diagnostics (also midterm revision) |
 | 10 | Wed 14 Oct | **midterm** (Mon 12 Oct is a holiday) |
 | 11 | Mon 19 Oct | transformations, Box–Cox |
 | 12 | Wed 21 Oct | prediction intervals |
@@ -47,10 +46,10 @@ deadline: there is no spare Monday later to spread them onto.
 | 14 | Wed 4 Nov | cross-validation (Mon 2 Nov is a holiday) |
 | 15 | Wed 11 Nov | simple exponential smoothing: the equations |
 | 16 | Mon 16 Nov | fitting SES from scratch |
-| 17 | Mon 23 Nov | Holt, damped trend — Group Assignment 2 released |
+| 17 | Mon 23 Nov | Holt, damped trend (Group Assignment 2 released) |
 | 18 | Wed 25 Nov | Holt–Winters |
 | 19 | Mon 30 Nov | ETS taxonomy, model selection |
-| — | Mon 7 / Tue 8 Dec | **no session** — Constitution Day and Inmaculada Concepción |
+| — | Mon 7 / Tue 8 Dec | **no session** (Constitution Day and Inmaculada Concepción) |
 | 20 | Mon 14 Dec | **final exam** |
 
 ---
@@ -59,9 +58,10 @@ deadline: there is no spare Monday later to spread them onto.
 
 ### 1. The midterm covers Sessions 1–8
 
-Was Sessions 1–9. Session 9 (residual diagnostics) moves to the final exam, where it sits with
-train/test accuracy (Session 13) and cross-validation (Session 14). The three sessions that answer
-"is this model believable?" are now examined together rather than split across two exams.
+Was Sessions 1–9. The exam is 20 multiple-choice questions, four options each, on Wednesday 14
+October. Session 9 (residual diagnostics) moves to the final exam, where it sits with train/test
+accuracy (Session 13) and cross-validation (Session 14). The three sessions that answer "is this
+model believable?" are now examined together rather than split across two exams.
 
 Session 9 still matters. It is the most-used skill in the second half of the course, and Group
 Assignment 2 depends on it. It is deferred, not dropped. It also becomes a revision session for the
@@ -76,7 +76,7 @@ Blackboard disagrees with anything here, Blackboard is the authority.
 
 Two September weeks have a Monday and a Wednesday session sharing one Sunday deadline:
 
-| Assigned | Session | Due — 23:59 |
+| Assigned | Session | Due (23:59) |
 |---|---|---|
 | Mon 21 Sep | 05 · decomposition schemes | Sun 27 Sep |
 | Wed 23 Sep | 06 · moving averages | Sun 27 Sep |

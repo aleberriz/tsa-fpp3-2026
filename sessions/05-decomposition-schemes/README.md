@@ -15,7 +15,7 @@ with `all.equal()`.
 **Outcome:** Student picks the right scheme for a series and can produce detrended and seasonally
 adjusted versions.
 
-> **Course admin update.** Open [`admin_announcement.html`](admin_announcement.html) at the start
+> **Course admin update.** Open [`announcements.md`](announcements.md) at the start
 > of this session: the midterm now covers Sessions 1–8, homework deadlines move to the Sunday of
 > each teaching week, and Group Assignment 1 is due after the exam.
 
