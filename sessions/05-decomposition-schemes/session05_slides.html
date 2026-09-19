@@ -410,7 +410,7 @@ body.ov-on #overview{display:block}
     </ul>
     <p class="punch step wide">Three sessions, one idea. Treat them as one topic delivered in three parts, and read your notes from all three together before the midterm.</p>
   </div>
-  <aside class="notes">The three-session shape is worth holding on to, because each part is hard to justify on its own. Today's material looks like bookkeeping until you see what Session 7 does with it; Session 6's moving averages look like arithmetic drill until you see them become the trend estimate.<br><br>The bridge from Session 4 is slide 17 of that deck: the <code>a10</code> series, whose seasonality was obvious in a seasonal plot and invisible in the correlogram. The ACF reported the loudest component and hid the rest. Decomposition is the answer to that problem, and today is its first half.</aside>
+  <aside class="notes">The three-session shape is worth holding on to, because each part is hard to justify on its own. Today's material looks like bookkeeping until you see what Session 7 does with it. Session 6's moving averages look like arithmetic drill until you see them become the trend estimate.<br><br>The bridge from Session 4 is slide 17 of that deck: the <code>a10</code> series, whose seasonality was obvious in a seasonal plot and invisible in the correlogram. The ACF reported the loudest component and hid the rest. Decomposition is the answer to that problem, and today is its first half.</aside>
 </section>
 
 <!-- ---------- 3 ---------- -->
@@ -457,14 +457,14 @@ body.ov-on #overview{display:block}
         </g>
       </svg>
       <div class="figrow three">
-        <p class="step"><b>Session 5 &mdash; today</b>Which scheme the series obeys, and what you can build once you hold S&#8348;, T&#8348; and R&#8348;.</p>
+        <p class="step"><b>Session 5 &middot; today</b>Which scheme the series obeys, and what you can build once you hold S&#8348;, T&#8348; and R&#8348;.</p>
         <p class="step g"><b>Session 6</b>Where T&#8348; comes from in the first place: an average over a sliding window.</p>
         <p class="step t"><b>Session 7</b>All four steps by hand, then <code>classical_decomposition()</code> and STL.</p>
       </div>
     </figure>
     <p class="punch step wide">Group Assignment 1 is the third panel, done on your own data. It launches at Session 7, so everything from today onward is preparation for it.</p>
   </div>
-  <aside class="notes">Nothing you meet today is provisional. The schemes, the derived series and the verification habit all survive into Session 7 unchanged; what changes is that the box stops being a box.<br><br>One consequence worth planning around: the notebook today calls three decomposition functions and explains none of them. <code>STL()</code>, <code>X_13ARIMA_SEATS()</code> and <code>classical_decomposition()</code> all appear as machines that take a series and return components. Resist the urge to look inside. Two of the three get opened later in this block, and the third, X-11, is not part of this course at all.</aside>
+  <aside class="notes">Nothing you meet today is provisional. The schemes, the derived series and the verification habit all survive into Session 7 unchanged. What changes is that the box stops being a box.<br><br>One consequence to plan around: the notebook today calls three decomposition functions and explains none of them. <code>STL()</code>, <code>X_13ARIMA_SEATS()</code> and <code>classical_decomposition()</code> all appear as machines that take a series and return components. Resist the urge to look inside. Two of the three get opened later in this block, and the third, X-11, is not part of this course at all.</aside>
 </section>
 
 <!-- ---------- 4 ---------- -->
@@ -477,7 +477,7 @@ body.ov-on #overview{display:block}
         <g stroke="#E4DFD5" stroke-width="1.2" fill="none"><path d="M40 92 H360"/></g>
         <polyline fill="none" stroke="#161513" stroke-width="2.4" stroke-linejoin="round"
           points="48,80 76,48 104,70 132,36 160,58 188,30 216,52 244,22 272,44 300,16 328,38 352,10"/>
-        <text x="40" y="112" fill="#6B665E" font-family="SFMono-Regular,Menlo,monospace" font-size="12">y&#8348; &mdash; what you observe</text>
+        <text x="40" y="112" fill="#6B665E" font-family="SFMono-Regular,Menlo,monospace" font-size="12">y&#8348;: what you observe</text>
         <g stroke="#B5471E" stroke-width="2.2" fill="none">
           <path d="M200 124 V150"/><path d="M193 143 L200 151 L207 143"/>
         </g>
@@ -527,7 +527,7 @@ y_t  =  S_t  <span class="hl">&times;</span>  T_t  <span class="hl">&times;</spa
     </ul>
     <p class="punch step wide">One symbol between plus and times, and everything downstream depends on it. That is why an entire session sits here.</p>
   </div>
-  <aside class="notes">The word &ldquo;scheme&rdquo; is doing real work. It is not a property of the data you can look up, it is a modelling decision you make about the data, and reasonable analysts sometimes disagree about the same series.<br><br>Notice what multiplicative does to the units. In an additive scheme every component is in the units of the series, so <code>S&#8348;</code> for retail employment is a number of people. In a multiplicative scheme <code>S&#8348;</code> and <code>R&#8348;</code> are dimensionless factors that hover around 1, and only <code>T&#8348;</code> keeps the original units. A seasonal factor of 1.12 means December runs 12 percent above trend. If you find a multiplicative seasonal component printing values near zero, you have almost certainly fitted the wrong scheme.</aside>
+  <aside class="notes">The word &ldquo;scheme&rdquo; is doing real work. It is not a property of the data you can look up. It is a modelling decision you make about the data, and reasonable analysts sometimes disagree about the same series.<br><br>Notice what multiplicative does to the units. In an additive scheme every component is in the units of the series, so <code>S&#8348;</code> for retail employment is a number of people. In a multiplicative scheme <code>S&#8348;</code> and <code>R&#8348;</code> are dimensionless factors that hover around 1, and only <code>T&#8348;</code> keeps the original units. A seasonal factor of 1.12 means December runs 12 percent above trend. If you find a multiplicative seasonal component printing values near zero, you have almost certainly fitted the wrong scheme.</aside>
 </section>
 
 <!-- ---------- 6 ---------- -->
@@ -548,7 +548,7 @@ y_t  =  S_t  <span class="hl">&times;</span>  T_t  <span class="hl">&times;</spa
           <path d="M320 89 V43 M314 89 H326 M314 43 H326"/>
         </g>
         <text x="191" y="212" text-anchor="middle" fill="#1F3A4D"
-              font-family="SFMono-Regular,Menlo,monospace" font-size="12.5">ADDITIVE &mdash; same width</text>
+              font-family="SFMono-Regular,Menlo,monospace" font-size="12.5">ADDITIVE &middot; same width</text>
         <!-- multiplicative -->
         <g stroke="#E4DFD5" stroke-width="1.2" fill="none"><path d="M408 186 H730 M408 186 V26"/></g>
         <polyline fill="none" stroke="#1F3A4D" stroke-width="2.2" stroke-linejoin="round"
@@ -560,7 +560,7 @@ y_t  =  S_t  <span class="hl">&times;</span>  T_t  <span class="hl">&times;</spa
           <path d="M698 129 V49 M692 129 H704 M692 49 H704"/>
         </g>
         <text x="569" y="212" text-anchor="middle" fill="#B5471E"
-              font-family="SFMono-Regular,Menlo,monospace" font-size="12.5">MULTIPLICATIVE &mdash; band fans out</text>
+              font-family="SFMono-Regular,Menlo,monospace" font-size="12.5">MULTIPLICATIVE &middot; band fans out</text>
       </svg>
       <div class="figrow">
         <p class="step"><b>What to measure</b>Peak to trough within one seasonal cycle, near the start of the series and again near the end. Two numbers, not an impression.</p>
@@ -569,7 +569,7 @@ y_t  =  S_t  <span class="hl">&times;</span>  T_t  <span class="hl">&times;</spa
     </figure>
     <p class="punch step wide">The test is about the band, not the line. Cover the trend with your hand and ask only whether the gap between the two dashed envelopes is opening.</p>
   </div>
-  <aside class="notes">Two honest cautions about the eye test.<br><br>First, a series can be short enough that the level barely moves, in which case the two schemes are indistinguishable and either will do. That is not a failure, it is the correct conclusion; say so rather than inventing a preference.<br><br>Second, the test needs the level to move for a reason other than the season. If the only thing changing is the seasonal amplitude, with a flat trend underneath, you are looking at a series whose seasonality is changing over time. Neither classical scheme handles that well, and it is one of the arguments for STL in Session 7.</aside>
+  <aside class="notes">Two honest cautions about the eye test.<br><br>First, a series can be short enough that the level barely moves, in which case the two schemes are indistinguishable and either will do. That is not a failure. It is the correct conclusion. Say so rather than inventing a preference.<br><br>Second, the test needs the level to move for a reason other than the season. If the only thing changing is the seasonal amplitude, with a flat trend underneath, you are looking at a series whose seasonality is changing over time. Neither classical scheme handles that well, and it is one of the arguments for STL in Session 7.</aside>
 </section>
 
 <!-- ---------- 7 ---------- -->
@@ -579,14 +579,14 @@ y_t  =  S_t  <span class="hl">&times;</span>  T_t  <span class="hl">&times;</spa
     <h1 class="sowhat">Open <code>05_A</code></h1>
     <ul class="build plain" style="margin-top:1.8rem">
       <li>Filter <code>us_employment</code> to Retail Trade from 1990 &rarr; <code>us_retail_employment</code></li>
-      <li>Time plot &mdash; apply the eye test before anyone says the word &ldquo;additive&rdquo;</li>
+      <li>Time plot. Apply the eye test before anyone says the word &ldquo;additive&rdquo;</li>
       <li><code>model(stl = STL(Employed)) |&gt; components()</code>, then the trend overlay</li>
       <li><code>components |&gt; autoplot()</code> for all three panels at once</li>
     </ul>
-    <div class="callout"><b>One library today.</b> <code>fpp3</code> and nothing else. No data files either &mdash; every series today ships inside the package.</div>
+    <div class="callout"><b>One library today.</b> <code>fpp3</code> and nothing else. No data files either. Every series today ships inside the package.</div>
     <div class="callout slate"><b><code>STL()</code> is Session 7's material.</b> Today it is a machine that takes a series and returns three components. Read the call, not the method.</div>
   </div>
-  <aside class="notes">The grey bars down the left of the <code>autoplot()</code> panel are worth a moment when they appear. Each one covers the same range in data units, so a tall bar marks a component whose swing is small compared with the original series. On US retail employment the remainder bar is tall and the trend bar is short, which says in one glance that the trend accounts for most of the variation and the remainder for very little.<br><br>The series runs from 1990 to 2019 and carries the 2008 recession in plain view. That dip is a cycle, not a season and not a remainder, and it is a good reminder of why trend and cycle arrive as one component.</aside>
+  <aside class="notes">The grey bars down the left of the <code>autoplot()</code> panel are worth a moment when they appear. Each one covers the same range in data units, so a tall bar marks a component whose swing is small compared with the original series. On US retail employment the remainder bar is tall and the trend bar is short, which says in one glance that the trend accounts for most of the variation and the remainder for almost none of it.<br><br>The series runs from 1990 to 2019 and carries the 2008 recession in plain view. That dip is a cycle, not a season and not a remainder, and it is a good reminder of why trend and cycle arrive as one component.</aside>
 </section>
 
 <!-- ---------- 8 ---------- -->
@@ -613,7 +613,7 @@ y_t  =  S_t  <span class="hl">&times;</span>  T_t  <span class="hl">&times;</spa
     <ul class="build">
       <li class="step"><b>This is one line of school algebra</b>, and it is the whole reason transformations appear in a decomposition chapter.</li>
       <li class="step"><b>It does not hide the multiplicative structure.</b> It converts it into a structure that the additive machinery can handle without modification.</li>
-      <li class="step"><b>You pay for it on the way back.</b> Components come out in log units, and interpreting them means undoing the log &mdash; which is Session 12's problem, not today's.</li>
+      <li class="step"><b>You pay for it on the way back.</b> Components come out in log units, and interpreting them means undoing the log. That is Session 12's problem, not today's.</li>
     </ul>
     <p class="punch step wide">Every multiplicative series is an additive series wearing a disguise. The log is how you take the disguise off.</p>
   </div>
@@ -655,7 +655,7 @@ y_t  =  S_t  <span class="hl">&times;</span>  T_t  <span class="hl">&times;</spa
     </ul>
     <p class="punch step wide">Choosing a rung by eye is guesswork with a good track record. Session 11 replaces the guess with a number.</p>
   </div>
-  <aside class="notes">The inverse transformation is written <code>-1/x</code> rather than <code>1/x</code> so that it keeps the order of the data: without the minus sign, large values become small ones and the series turns upside down. Every rung on this ladder preserves order, which is what makes them comparable.<br><br>These four are the visible rungs of a continuous family. The parameter that slides between them, and the method for choosing it from the data rather than by eye, is Session 11. Naming it now would not help; you would be choosing a number before you have seen what breaks without one.</aside>
+  <aside class="notes">The inverse transformation is written <code>-1/x</code> rather than <code>1/x</code> so that it keeps the order of the data: without the minus sign, large values become small ones and the series turns upside down. Every rung on this ladder preserves order, which is what makes them comparable.<br><br>These four are the visible rungs of a continuous family. The parameter that slides between them, and the method for choosing it from the data rather than by eye, is Session 11. Naming it now would not help. You would be choosing a number before you have seen what breaks without one.</aside>
 </section>
 
 <!-- ---------- 11 ---------- -->
@@ -674,9 +674,9 @@ y_t  =  S_t  <span class="hl">&times;</span>  T_t  <span class="hl">&times;</spa
       <li class="step"><b>Judge each plot with the eye test from slide 6.</b> Is the band still fanning out, is it flat, or has it started fanning the other way?</li>
     </ul>
     <p class="punch step wide">The strongest transformation is not the best one. You are looking for the rung that flattens the band, and then you stop.</p>
-    <div class="callout slate"><b>The notebook writes the four blocks out and apologizes for the copy-paste.</b> <code>session05_code.R</code> says the same thing once, in a loop. Both are correct; only one survives a code review.</div>
+    <div class="callout slate"><b>The notebook writes the four blocks out and apologizes for the copy-paste.</b> <code>session05_code.R</code> says the same thing once, in a loop. Both are correct. Only one survives a code review.</div>
   </div>
-  <aside class="notes">The loop in the script uses <code>STL(!!sym(col))</code>, where <code>col</code> holds a column name as a string. <code>sym()</code> turns the string into a name and <code>!!</code> drops it into the call. It is the same problem Session 4 met with <code>aes_string()</code>, solved the modern way, and it is worth reading the four lines even if you never write them yourself.<br><br>What you should see: the square root barely changes the picture, the cube root improves it, the log flattens the band about as well as anything here, and the inverse overshoots &mdash; the early years open up further than the late ones. That is the overshoot the previous slide warned about, visible in one plot.</aside>
+  <aside class="notes">The loop in the script uses <code>STL(!!sym(col))</code>, where <code>col</code> holds a column name as a string. <code>sym()</code> turns the string into a name and <code>!!</code> drops it into the call. It is the same problem Session 4 met with <code>aes_string()</code>, solved the modern way, and the four lines repay reading even if you never write them yourself.<br><br>What you should see: the square root barely changes the picture, the cube root improves it, the log flattens the band about as well as anything here, and the inverse overshoots. The early years open up further than the late ones. That is the overshoot the previous slide warned about, visible in one plot.</aside>
 </section>
 
 <!-- ---------- 12 ---------- -->
@@ -731,8 +731,8 @@ y_t  =  S_t  <span class="hl">&times;</span>  T_t  <span class="hl">&times;</spa
         <text x="336" y="176" text-anchor="middle" fill="#1F3A4D"
               font-family="SFMono-Regular,Menlo,monospace" font-size="11.5">a turn that is not there</text>
         <g font-family="SFMono-Regular,Menlo,monospace" font-size="12">
-          <text x="48" y="200" fill="#98928a">seasonally adjusted &mdash; T&#8348; + R&#8348;</text>
-          <text x="440" y="200" fill="#B5471E">trend-cycle &mdash; T&#8348;</text>
+          <text x="48" y="200" fill="#98928a">seasonally adjusted &middot; T&#8348; + R&#8348;</text>
+          <text x="440" y="200" fill="#B5471E">trend-cycle &middot; T&#8348;</text>
         </g>
       </svg>
       <div class="figrow">
@@ -751,14 +751,14 @@ y_t  =  S_t  <span class="hl">&times;</span>  T_t  <span class="hl">&times;</spa
     <p class="kicker">Now we compute &nbsp;&middot;&nbsp; 05_A Example 1</p>
     <h1 class="sowhat"><code>classical_decomposition(Employed, type = "additive")</code></h1>
     <ul class="build plain" style="margin-top:1.8rem">
-      <li>Fit, then <code>components()</code> &mdash; read the column names off the printout</li>
+      <li>Fit, then <code>components()</code>. Read the column names off the printout</li>
       <li><code>detrended = Employed - trend</code>, then plot it</li>
       <li><code>season_adjust_manual = Employed - seasonal</code>, plotted over the original</li>
-      <li>The trend, plotted over the original the same way &mdash; compare the two pictures</li>
+      <li>The trend, plotted over the original the same way. Compare the two pictures</li>
     </ul>
-    <div class="callout"><b>Four columns to know.</b> <code>trend</code>, <code>seasonal</code>, <code>random</code> (the remainder), and <code>season_adjust</code> &mdash; the one R computed, which your own column has to match.</div>
+    <div class="callout"><b>Four columns to know.</b> <code>trend</code>, <code>seasonal</code>, <code>random</code> (the remainder), and <code>season_adjust</code>, the one R computed, which your own column has to match.</div>
   </div>
-  <aside class="notes">Note the vocabulary mismatch while it is on screen: the column is called <code>random</code>, and everything else in this course calls that component the remainder. They are the same thing. <code>classical_decomposition()</code> inherits the older name; STL in Session 7 calls it <code>remainder</code>.<br><br>The <code>trend</code> column starts and ends with missing values, and the plot will have gaps at both ends because of it. That is not a bug and it is not worth explaining away today. It is a direct consequence of how the trend is estimated, and Session 6 is where the gaps get their explanation.</aside>
+  <aside class="notes">Note the vocabulary mismatch while it is on screen: the column is called <code>random</code>, and everything else in this course calls that component the remainder. They are the same thing. <code>classical_decomposition()</code> inherits the older name. STL in Session 7 calls it <code>remainder</code>.<br><br>The <code>trend</code> column starts and ends with missing values, and the plot will have gaps at both ends because of it. That is not a bug and it is not worth explaining away today. It is a direct consequence of how the trend is estimated, and Session 6 is where the gaps get their explanation.</aside>
 </section>
 
 <!-- ---------- 16 ---------- -->
@@ -788,7 +788,7 @@ y_t  =  S_t  <span class="hl">&times;</span>  T_t  <span class="hl">&times;</spa
     </ul>
     <p class="punch step wide">The check is not a formality. It is the only thing standing between a wrong pipeline and a confident wrong conclusion.</p>
   </div>
-  <aside class="notes">This is the point of building things by hand in a course that has a function for everything. You are not being asked to distrust <code>classical_decomposition()</code>; you are being taught a method for the day you write something that has no reference implementation to check against.<br><br>The tool for the check is the subject of the next three slides. It is one function, it behaves in a way that surprises almost everybody the first time, and it is worth ten minutes now rather than a silent wrong answer in Session 7.</aside>
+  <aside class="notes">This is the point of building things by hand in a course that has a function for everything. You are not being asked to distrust <code>classical_decomposition()</code>. You are being taught a method for the day you write something that has no reference implementation to check against.<br><br>The tool for the check is the subject of the next three slides. It is one function, it behaves in a way that surprises almost everybody the first time, and ten minutes well spent now beats a silent wrong answer in Session 7.</aside>
 </section>
 
 <!-- ---------- 18 ---------- -->
@@ -803,7 +803,7 @@ y_t  =  S_t  <span class="hl">&times;</span>  T_t  <span class="hl">&times;</spa
 [1] 0.3000000000000000<span class="hl">4441</span></div>
     <ul class="build">
       <li class="step"><b>None of those three numbers exists exactly in binary.</b> Each is stored as the nearest representable value, and the errors do not cancel.</li>
-      <li class="step"><b><code>==</code> asks for exact equality, element by element</b>, and returns a vector of <code>TRUE</code> and <code>FALSE</code>. On decimals it reports differences that are not really there.</li>
+      <li class="step"><b><code>==</code> asks for exact equality, element by element</b>, and returns a vector of <code>TRUE</code> and <code>FALSE</code>. On decimals it reports differences that are not there.</li>
       <li class="step"><b>Your two columns will differ like this.</b> R computed <code>season_adjust</code> by a different route from yours, so the last few digits will not match.</li>
     </ul>
     <p class="punch step wide">The comparison you want is not &ldquo;identical&rdquo;. It is &ldquo;the same to a tolerance you can defend&rdquo;.</p>
@@ -812,7 +812,7 @@ y_t  =  S_t  <span class="hl">&times;</span>  T_t  <span class="hl">&times;</spa
 </section>
 
 <!-- ---------- 19 ---------- -->
-<section class="slide" data-section="5" data-title="What all.equal really returns">
+<section class="slide" data-section="5" data-title="What all.equal actually returns">
   <div class="inner">
     <p class="kicker">The one function to get right today</p>
     <h1 class="sowhat wide"><code>all.equal()</code> returns <code>TRUE</code>, or a sentence. It never returns <code>FALSE</code>.</h1>
@@ -832,9 +832,9 @@ y_t  =  S_t  <span class="hl">&times;</span>  T_t  <span class="hl">&times;</spa
           <path d="M252 122 C300 122 300 170 344 170"/>
         </g>
         <text x="354" y="58" fill="#6B7F5E" font-family="SFMono-Regular,Menlo,monospace" font-size="15">TRUE</text>
-        <text x="354" y="78" fill="#98928a" font-family="SFMono-Regular,Menlo,monospace" font-size="11">logical &mdash; they agree within the tolerance</text>
+        <text x="354" y="78" fill="#98928a" font-family="SFMono-Regular,Menlo,monospace" font-size="11">logical &middot; agree within tolerance</text>
         <text x="354" y="118" fill="#B5471E" font-family="SFMono-Regular,Menlo,monospace" font-size="14">"Mean relative difference: 0.1"</text>
-        <text x="354" y="138" fill="#98928a" font-family="SFMono-Regular,Menlo,monospace" font-size="11">character &mdash; a description of the gap</text>
+        <text x="354" y="138" fill="#98928a" font-family="SFMono-Regular,Menlo,monospace" font-size="11">character &middot; describes the gap</text>
         <text x="354" y="176" fill="#98928a" font-family="SFMono-Regular,Menlo,monospace" font-size="15" opacity=".5">FALSE</text>
         <path d="M348 170 H412" stroke="#B5471E" stroke-width="2.4" fill="none"/>
         <text x="424" y="176" fill="#B5471E" font-family="SFMono-Regular,Menlo,monospace" font-size="11.5">this branch does not exist</text>
@@ -870,7 +870,7 @@ y_t  =  S_t  <span class="hl">&times;</span>  T_t  <span class="hl">&times;</spa
     </ul>
     <p class="punch step wide">Write it once by hand tonight and it stays written. You will use it in every remaining session of this block.</p>
   </div>
-  <aside class="notes">Four tools, four jobs, worth keeping straight. <code>==</code> compares element by element and gives you a vector, which is what you want for filtering rows. <code>identical()</code> asks whether two objects are the same in every respect including type. <code>all.equal()</code> asks whether two numeric objects agree within a tolerance, and explains itself when they do not. <code>isTRUE(all.equal(...))</code> is that same question with an answer you can put in an <code>if</code>.<br><br>The error message is a fair warning rather than a silent failure, which is the one merciful thing about this trap. Where it does bite silently is inside a larger expression &mdash; a filter, a vectorized condition, anything that coerces rather than checks &mdash; so make the <code>isTRUE()</code> wrapper a habit rather than something you add when an error appears.</aside>
+  <aside class="notes">Four tools, four jobs, worth keeping straight. <code>==</code> compares element by element and gives you a vector, which is what you want for filtering rows. <code>identical()</code> asks whether two objects are the same in every respect including type. <code>all.equal()</code> asks whether two numeric objects agree within a tolerance, and explains itself when they do not. <code>isTRUE(all.equal(...))</code> is that same question with an answer you can put in an <code>if</code>.<br><br>The error message is a fair warning rather than a silent failure, which is the one merciful thing about this trap. Where it does bite silently is inside a larger expression: a filter, a vectorized condition, anything that coerces rather than checks. So make the <code>isTRUE()</code> wrapper a habit rather than something you add when an error appears.</aside>
 </section>
 
 <!-- ---------- 21 ---------- -->
@@ -900,9 +900,9 @@ y_t  =  S_t  <span class="hl">&times;</span>  T_t  <span class="hl">&times;</spa
       <li>Verify both manual columns with <code>all.equal()</code> and again with <code>isTRUE(all.equal(...))</code>. Report what each one returned.</li>
       <li>One sentence per example naming what is left in the series you built, and one closing sentence on what the additive arithmetic would have done to the multiplicative series.</li>
     </ul>
-    <div class="callout slate"><b>No data files this week.</b> Both series ship inside <code>fpp3</code>. Type the code rather than copying it from the notebook; the point of the exercise is in your hands, not on the page.</div>
+    <div class="callout slate"><b>No data files this week.</b> Both series ship inside <code>fpp3</code>. Type the code rather than copying it from the notebook. The point of the exercise is in your hands, not on the page.</div>
   </div>
-  <aside class="notes">Graded on completion and genuine effort, not on getting every line right. An honest attempt that runs into trouble and says where is worth full marks; a silent gap is not.<br><br>Submit on Blackboard, under Assignments. You can upload more than one file, so an <code>.R</code> script plus exported plots is fine, and so is a single rendered document. Whatever the format, the code, the plots and the sentences all need to be there and in order.</aside>
+  <aside class="notes">Graded on completion and genuine effort, not on getting every line right. An honest attempt that runs into trouble and says where earns full marks. A silent gap is not.<br><br>Submit on Blackboard, under Assignments. You can upload more than one file, so an <code>.R</code> script plus exported plots is fine, and so is a single rendered document. Whatever the format, the code, the plots and the sentences all need to be there and in order.</aside>
 </section>
 
 <!-- ---------- 23 ---------- -->
