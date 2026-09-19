@@ -7,7 +7,7 @@
 **Focus:** What a moving average is; neighboring windows at t and t+1; the limitation of centered
 windows; odd-order windows; the effect of window size; even-order windows and the 2×m case.
 
-**Homework:** `06_B` Exercises 1–4.
+**Homework:** `06_B` Exercises 1, 3 and 4. Exercise 2 is optional practice, not assigned.
 
 **Outcome:** Student explains what an MA of order m does and computes centered MAs for odd and even m.
 

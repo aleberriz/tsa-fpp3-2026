@@ -2,7 +2,7 @@
 # Session 06 - Moving averages and trend estimation
 #
 # Runnable companion to the notebook in this folder:
-#   06_B_MovingAevrages_TrendEstimation
+#   06_B_MovingAverages_TrendEstimation
 # The notebook carries the explanations and the figures. This
 # script carries the code, and stops where the exercises begin:
 # the answers are yours to write.
