@@ -410,7 +410,7 @@ body.ov-on #overview{display:block}
     </ul>
     <p class="punch step wide">Three sessions, one idea. Treat them as one topic delivered in three parts, and read your notes from all three together before the midterm.</p>
   </div>
-  <aside class="notes">The three-session shape is worth holding on to, because each part is hard to justify on its own. Today's material looks like bookkeeping until you see what Session 7 does with it. Session 6's moving averages look like arithmetic drill until you see them become the trend estimate.<br><br>The bridge from Session 4 is slide 17 of that deck: the <code>a10</code> series, whose seasonality was obvious in a seasonal plot and invisible in the correlogram. The ACF reported the loudest component and hid the rest. Decomposition is the answer to that problem, and today is its first half.</aside>
+  <aside class="notes">The three-session shape is worth keeping in mind, because each part is hard to justify on its own. Today's material looks like bookkeeping until you see what Session 7 does with it. Session 6's moving averages look like arithmetic drill until you see them become the trend estimate.<br><br>The bridge from Session 4 is slide 17 of that deck: the <code>a10</code> series, whose seasonality was obvious in a seasonal plot and invisible in the correlogram. The ACF reported the loudest component and hid the rest. Decomposition is the answer to that problem, and today is its first half.</aside>
 </section>
 
 <!-- ---------- 3 ---------- -->
@@ -464,7 +464,7 @@ body.ov-on #overview{display:block}
     </figure>
     <p class="punch step wide">Group Assignment 1 is the third panel, done on your own data. It launches at Session 7, so everything from today onward is preparation for it.</p>
   </div>
-  <aside class="notes">Nothing you meet today is provisional. The schemes, the derived series and the verification habit all survive into Session 7 unchanged. What changes is that the box stops being a box.<br><br>One consequence to plan around: the notebook today calls three decomposition functions and explains none of them. <code>STL()</code>, <code>X_13ARIMA_SEATS()</code> and <code>classical_decomposition()</code> all appear as machines that take a series and return components. Resist the urge to look inside. Two of the three get opened later in this block, and the third, X-11, is not part of this course at all.</aside>
+  <aside class="notes">Nothing you meet today is provisional. The schemes, the derived series and the verification habit all survive into Session 7 unchanged. What changes is that the box stops being a box.<br><br>One consequence to plan around: the notebook today calls three decomposition functions and explains none of them. <code>STL()</code>, <code>X_13ARIMA_SEATS()</code> and <code>classical_decomposition()</code> all appear as machines that take a series and return components. Do not look inside. Two of the three get opened later in this block, and the third, X-11, is not part of this course at all.</aside>
 </section>
 
 <!-- ---------- 4 ---------- -->
@@ -504,7 +504,7 @@ body.ov-on #overview{display:block}
         <p class="step"><b>R&#8348; remainder</b>Everything left over. Session 9 asks whether it is white noise, which is Session 4's test.</p>
       </div>
     </figure>
-    <p class="punch step wide">Some books split trend from cycle. We do not, and the reason is honest: no algorithm in this course can separate them, so pretending otherwise would be naming something we cannot compute.</p>
+    <p class="punch step wide">Some books split trend from cycle. We do not, for a reason: no algorithm in this course can separate them, so pretending otherwise would be naming something we cannot compute.</p>
   </div>
   <aside class="notes">The cycle is the component Session 3 made you promise not to call seasonality. Seasonality has a fixed, known period tied to the calendar. A cycle has neither: business cycles run somewhere between two and ten years and no two are the same length. Averaging over a fixed window cannot isolate a pattern with no fixed length, which is exactly why the two arrive joined.<br><br>Keep the notation. <code>y&#8348;</code>, <code>S&#8348;</code>, <code>T&#8348;</code> and <code>R&#8348;</code> are used unchanged in Sessions 6, 7 and 9, in fpp3 chapter 3, and in Group Assignment 1.</aside>
 </section>
@@ -525,9 +525,9 @@ y_t  =  S_t  <span class="hl">&times;</span>  T_t  <span class="hl">&times;</spa
       <li class="step"><b>Multiplicative</b> means the swing scales with the level. December adds 12%, so it is worth more in absolute terms when the series is high.</li>
       <li class="step"><b>The choice is yours to make</b>, and every function you meet in this block asks for it. Get it wrong and the components are wrong, silently.</li>
     </ul>
-    <p class="punch step wide">One symbol between plus and times, and everything downstream depends on it. That is why an entire session sits here.</p>
+    <p class="punch step wide">One symbol between plus and times, and everything downstream depends on it. That is what this session is for.</p>
   </div>
-  <aside class="notes">The word &ldquo;scheme&rdquo; is doing real work. It is not a property of the data you can look up. It is a modelling decision you make about the data, and reasonable analysts sometimes disagree about the same series.<br><br>Notice what multiplicative does to the units. In an additive scheme every component is in the units of the series, so <code>S&#8348;</code> for retail employment is a number of people. In a multiplicative scheme <code>S&#8348;</code> and <code>R&#8348;</code> are dimensionless factors that hover around 1, and only <code>T&#8348;</code> keeps the original units. A seasonal factor of 1.12 means December runs 12 percent above trend. If you find a multiplicative seasonal component printing values near zero, you have almost certainly fitted the wrong scheme.</aside>
+  <aside class="notes">The word &ldquo;scheme&rdquo; is not a property of the data you can look up. It is a modelling decision you make about the data, and reasonable analysts sometimes disagree about the same series.<br><br>Notice what multiplicative does to the units. In an additive scheme every component is in the units of the series, so <code>S&#8348;</code> for retail employment is a number of people. In a multiplicative scheme <code>S&#8348;</code> and <code>R&#8348;</code> are dimensionless factors that hover around 1, and only <code>T&#8348;</code> keeps the original units. A seasonal factor of 1.12 means December runs 12 percent above trend. If you find a multiplicative seasonal component printing values near zero, you have almost certainly fitted the wrong scheme.</aside>
 </section>
 
 <!-- ---------- 6 ---------- -->
@@ -586,7 +586,7 @@ y_t  =  S_t  <span class="hl">&times;</span>  T_t  <span class="hl">&times;</spa
     <div class="callout"><b>One library today.</b> <code>fpp3</code> and nothing else. No data files either. Every series today ships inside the package.</div>
     <div class="callout slate"><b><code>STL()</code> is Session 7's material.</b> Today it is a machine that takes a series and returns three components. Read the call, not the method.</div>
   </div>
-  <aside class="notes">The grey bars down the left of the <code>autoplot()</code> panel are worth a moment when they appear. Each one covers the same range in data units, so a tall bar marks a component whose swing is small compared with the original series. On US retail employment the remainder bar is tall and the trend bar is short, which says in one glance that the trend accounts for most of the variation and the remainder for almost none of it.<br><br>The series runs from 1990 to 2019 and carries the 2008 recession in plain view. That dip is a cycle, not a season and not a remainder, and it is a good reminder of why trend and cycle arrive as one component.</aside>
+  <aside class="notes">The grey bars down the left of the <code>autoplot()</code> panel are worth a moment when they appear. Each one covers the same range in data units, so a tall bar marks a component whose swing is small compared with the original series. On US retail employment the remainder bar is tall and the trend bar is short, which tells you at a glance that the trend accounts for most of the variation and the remainder for almost none of it.<br><br>The series runs from 1990 to 2019 and the 2008 recession is right there in the plot. That dip is a cycle, not a season and not a remainder, and it shows why trend and cycle arrive as one component.</aside>
 </section>
 
 <!-- ---------- 8 ---------- -->
@@ -611,11 +611,11 @@ y_t  =  S_t  <span class="hl">&times;</span>  T_t  <span class="hl">&times;</spa
     <h1 class="sowhat">Take logs and the multiplication becomes addition.</h1>
     <div class="console">log( S_t <span class="hl">&times;</span> T_t <span class="hl">&times;</span> R_t )  =  log S_t  <span class="hl">+</span>  log T_t  <span class="hl">+</span>  log R_t</div>
     <ul class="build">
-      <li class="step"><b>This is one line of school algebra</b>, and it is the whole reason transformations appear in a decomposition chapter.</li>
+      <li class="step"><b>This is one line of school algebra</b>, and it is the reason transformations appear in a decomposition chapter at all.</li>
       <li class="step"><b>It does not hide the multiplicative structure.</b> It converts it into a structure that the additive machinery can handle without modification.</li>
       <li class="step"><b>You pay for it on the way back.</b> Components come out in log units, and interpreting them means undoing the log. That is Session 12's problem, not today's.</li>
     </ul>
-    <p class="punch step wide">Every multiplicative series is an additive series wearing a disguise. The log is how you take the disguise off.</p>
+    <p class="punch step wide">Take logs, and a multiplicative series behaves like an additive one.</p>
   </div>
   <aside class="notes">The same identity explains why a multiplicative seasonal factor of 1.12 and an additive seasonal effect of <code>log(1.12) = 0.113</code> are the same statement. On a log scale, a constant percentage becomes a constant amount, which is exactly the flat band the eye test is looking for.<br><br>One restriction to remember: <code>log()</code> is undefined at zero and below. A series with zeros or negative values cannot be logged, which rules out the transformation for anything that can go negative, such as profits or temperature in Celsius. The inverse transformation on the next slide has the same problem, and worse behaviour near zero.</aside>
 </section>
@@ -742,7 +742,7 @@ y_t  =  S_t  <span class="hl">&times;</span>  T_t  <span class="hl">&times;</spa
     </figure>
     <p class="punch step wide">To read direction, use the trend-cycle component. Use the seasonally adjusted series when the seasonal pattern is what is in your way, not when smoothness is what you want.</p>
   </div>
-  <aside class="notes">This is why unemployment figures are published seasonally adjusted rather than raw: a January rise should read as a change in the economy, not as the end of the Christmas hiring season. The adjustment answers the question &ldquo;is this more than the usual January?&rdquo;<br><br>And it is also why commentary on those figures so often goes wrong. A one-month move in a seasonally adjusted series is mostly remainder, and reading a recession into it is the exact error this slide is drawing. The honest version is to wait for the trend estimate, which has the cost you would expect: the trend at the most recent month is the hardest part of a decomposition to pin down, and Sessions 6 and 7 will show you why the ends of a trend estimate are missing altogether.</aside>
+  <aside class="notes">This is why unemployment figures are published seasonally adjusted rather than raw: a January rise should read as a change in the economy, not as the end of the Christmas hiring season. The adjustment answers the question &ldquo;is this more than the usual January?&rdquo;<br><br>And it is also why commentary on those figures so often goes wrong. A one-month move in a seasonally adjusted series is mostly remainder, and reading a recession into it is the mistake this slide is about. Wait for the trend estimate instead, which has the cost you would expect: the trend at the most recent month is the hardest part of a decomposition to pin down, and Sessions 6 and 7 will show you why the ends of a trend estimate are missing altogether.</aside>
 </section>
 
 <!-- ---------- 15 ---------- -->
@@ -773,7 +773,7 @@ y_t  =  S_t  <span class="hl">&times;</span>  T_t  <span class="hl">&times;</spa
     </ul>
     <p class="punch step wide">Two worked examples, one rule between them. If you can state why the slash replaced the minus, you have understood the session.</p>
   </div>
-  <aside class="notes">Worth trying once, in your own time, precisely because it fails quietly: run the multiplicative series through the additive arithmetic. <code>Cost - seasonal</code> on a series whose seasonal factors hover around 1 produces a plot that looks almost like the original, shifted down by roughly one unit. No error, no warning, and a completely meaningless series. That is the failure mode this session is trying to inoculate you against.<br><br>The measured column is <code>Cost</code>, not <code>Employed</code>. Copying Example 1's lines without changing the column name is the single most common way this homework goes wrong.</aside>
+  <aside class="notes">Worth trying once, in your own time, because it fails quietly: run the multiplicative series through the additive arithmetic. <code>Cost - seasonal</code> on a series whose seasonal factors hover around 1 produces a plot that looks almost like the original, shifted down by roughly one unit. No error, no warning, and a completely meaningless series. That is the mistake this session is meant to prevent.<br><br>The measured column is <code>Cost</code>, not <code>Employed</code>. Copying Example 1's lines without changing the column name is the single most common way this homework goes wrong.</aside>
 </section>
 
 <!-- ---------- 17 ---------- -->
@@ -786,7 +786,7 @@ y_t  =  S_t  <span class="hl">&times;</span>  T_t  <span class="hl">&times;</spa
       <li class="step"><b>Session 7 it is a whole decomposition.</b> Four steps built by hand, each one checked against <code>classical_decomposition()</code>.</li>
       <li class="step"><b>Group Assignment 1 is the same method on your own data</b>, where nobody is standing next to you saying whether the answer is right.</li>
     </ul>
-    <p class="punch step wide">The check is not a formality. It is the only thing standing between a wrong pipeline and a confident wrong conclusion.</p>
+    <p class="punch step wide">The check is not a formality. Without it, a wrong pipeline leads to a confident wrong conclusion.</p>
   </div>
   <aside class="notes">This is the point of building things by hand in a course that has a function for everything. You are not being asked to distrust <code>classical_decomposition()</code>. You are being taught a method for the day you write something that has no reference implementation to check against.<br><br>The tool for the check is the subject of the next three slides. It is one function, it behaves in a way that surprises almost everybody the first time, and ten minutes well spent now beats a silent wrong answer in Session 7.</aside>
 </section>
@@ -842,7 +842,7 @@ y_t  =  S_t  <span class="hl">&times;</span>  T_t  <span class="hl">&times;</spa
     </figure>
     <ul class="build">
       <li class="step"><b>It does not compare element by element.</b> That is what <code>==</code> does. <code>all.equal()</code> collapses the whole comparison into one verdict.</li>
-      <li class="step"><b>It allows a tolerance</b>, about <code>1.5e-8</code> by default, which is precisely wide enough to swallow floating-point noise and narrow enough to catch a real mistake.</li>
+      <li class="step"><b>It allows a tolerance</b>, about <code>1.5e-8</code> by default: wide enough to swallow floating-point noise, narrow enough to catch a real mistake.</li>
       <li class="step"><b>So a failed check does not look like a failed check.</b> It looks like a line of text, and R is perfectly happy to print it and move on.</li>
     </ul>
     <p class="punch step wide">Two possible return types from one function. That is unusual, it is deliberate, and it is where the next slide's bug comes from.</p>
@@ -870,7 +870,7 @@ y_t  =  S_t  <span class="hl">&times;</span>  T_t  <span class="hl">&times;</spa
     </ul>
     <p class="punch step wide">Write it once by hand tonight and it stays written. You will use it in every remaining session of this block.</p>
   </div>
-  <aside class="notes">Four tools, four jobs, worth keeping straight. <code>==</code> compares element by element and gives you a vector, which is what you want for filtering rows. <code>identical()</code> asks whether two objects are the same in every respect including type. <code>all.equal()</code> asks whether two numeric objects agree within a tolerance, and explains itself when they do not. <code>isTRUE(all.equal(...))</code> is that same question with an answer you can put in an <code>if</code>.<br><br>The error message is a fair warning rather than a silent failure, which is the one merciful thing about this trap. Where it does bite silently is inside a larger expression: a filter, a vectorized condition, anything that coerces rather than checks. So make the <code>isTRUE()</code> wrapper a habit rather than something you add when an error appears.</aside>
+  <aside class="notes">Four tools, four jobs, worth keeping straight. <code>==</code> compares element by element and gives you a vector, which is what you want for filtering rows. <code>identical()</code> asks whether two objects are the same in every respect including type. <code>all.equal()</code> asks whether two numeric objects agree within a tolerance, and explains itself when they do not. <code>isTRUE(all.equal(...))</code> is that same question with an answer you can put in an <code>if</code>.<br><br>The error message is a fair warning rather than a silent failure, which is the one break this trap gives you. Where it does bite silently is inside a larger expression: a filter, a vectorized condition, anything that coerces rather than checks. So make the <code>isTRUE()</code> wrapper a habit rather than something you add when an error appears.</aside>
 </section>
 
 <!-- ---------- 21 ---------- -->
@@ -900,7 +900,7 @@ y_t  =  S_t  <span class="hl">&times;</span>  T_t  <span class="hl">&times;</spa
       <li>Verify both manual columns with <code>all.equal()</code> and again with <code>isTRUE(all.equal(...))</code>. Report what each one returned.</li>
       <li>One sentence per example naming what is left in the series you built, and one closing sentence on what the additive arithmetic would have done to the multiplicative series.</li>
     </ul>
-    <div class="callout slate"><b>No data files this week.</b> Both series ship inside <code>fpp3</code>. Type the code rather than copying it from the notebook. The point of the exercise is in your hands, not on the page.</div>
+    <div class="callout slate"><b>No data files this week.</b> Both series ship inside <code>fpp3</code>. Type the code rather than copying it from the notebook. The point is to type it yourself.</div>
   </div>
   <aside class="notes">Graded on completion and genuine effort, not on getting every line right. An honest attempt that runs into trouble and says where earns full marks. A silent gap is not.<br><br>Submit on Blackboard, under Assignments. You can upload more than one file, so an <code>.R</code> script plus exported plots is fine, and so is a single rendered document. Whatever the format, the code, the plots and the sentences all need to be there and in order.</aside>
 </section>

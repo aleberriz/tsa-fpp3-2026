@@ -504,7 +504,7 @@ body.ov-on #overview{display:block}
     <ul class="build">
       <li class="step"><b><code>k</code> points on each side, plus the point itself.</b> That is where <code>2k + 1</code> comes from, and why it can never be even.</li>
       <li class="step"><b>In R this is <code>slider::slide_dbl()</code></b>, with <code>.before = k</code> and <code>.after = k</code>. The argument names are the notation.</li>
-      <li class="step"><b><code>.complete = TRUE</code> is the honest setting.</b> It refuses to compute an average on a partial window and returns <code>NA</code> instead.</li>
+      <li class="step"><b><code>.complete = TRUE</code> is the right setting.</b> It refuses to compute an average on a partial window and returns <code>NA</code> instead.</li>
     </ul>
     <p class="punch step wide">Hold on to the word <i>odd</i>. In ten minutes it becomes a problem, because the seasons we care about are twelve and four.</p>
   </div>
@@ -578,7 +578,7 @@ all.equal(mean(aus_exports$Exports[1:7]), aus_exports$`7-MA`[[4]])
     </figure>
     <p class="punch step wide">There is no free smoothing. Every point you add to the window is a point you lose from each end of the answer.</p>
   </div>
-  <aside class="notes">The script prints <code>colSums(is.na(...))</code> across all six moving averages so you can read the cost straight off: 2, 4, 6, 8, 10, 12 missing values in total, which is <code>(m-1)/2</code> at each end. Check one of them by hand against the rule.<br><br>This is a genuine trade-off rather than a setting with a right answer, and it is worth being suspicious of anyone who smooths a series without saying how much. A long enough moving average will make any series look like it has a clean trend, including one that is pure noise. Session 4's correlogram is the instrument that keeps you honest about whether there was anything there to smooth.</aside>
+  <aside class="notes">The script prints <code>colSums(is.na(...))</code> across all six moving averages so you can read the cost straight off: 2, 4, 6, 8, 10, 12 missing values in total, which is <code>(m-1)/2</code> at each end. Check one of them by hand against the rule.<br><br>This is a genuine trade-off rather than a setting with a right answer, and it is worth being suspicious of anyone who smooths a series without saying how much. A long enough moving average will make any series look like it has a clean trend, including one that is pure noise. Session 4's correlogram is the check on whether there was anything there to smooth.</aside>
 </section>
 
 <!-- ---------- 9 ---------- -->
@@ -612,7 +612,7 @@ all.equal(mean(aus_exports$Exports[1:7]), aus_exports$`7-MA`[[4]])
     </ul>
     <p class="punch step wide">This is why Session 7 can estimate the trend first and the season second. The window does the separating.</p>
   </div>
-  <aside class="notes">The cancellation is exact only if the seasonal pattern is the same in every cycle, which is precisely the assumption classical decomposition makes and precisely where it is weakest. Session 7 names that limitation and STL is the method that relaxes it.<br><br>This also explains a detail from Session 5 that may have looked arbitrary. The trend column from <code>classical_decomposition()</code> on monthly data was missing six values at each end, not five or seven, because the window it used spans thirteen points. The next two slides are where that thirteen comes from.</aside>
+  <aside class="notes">The cancellation is exact only if the seasonal pattern is the same in every cycle, which is the assumption classical decomposition makes and where it is weakest. Session 7 names that limitation and STL is the method that relaxes it.<br><br>This also explains a detail from Session 5 that may have looked arbitrary. The trend column from <code>classical_decomposition()</code> on monthly data was missing six values at each end, not five or seven, because the window it used spans thirteen points. The next two slides are where that thirteen comes from.</aside>
 </section>
 
 <!-- ---------- 10 ---------- -->
@@ -763,7 +763,7 @@ right m-MA_t  =  (1/m) * sum of y_{t+j}  <span class="dim">for</span> j = 0 .. (
     </ul>
     <p class="punch step wide">Run the two lines in the script once and watch the orange line lag and the blue line lead. It is the clearest possible argument for centering.</p>
   </div>
-  <aside class="notes">The fifty-day moving average quoted on financial charts is a left moving average, and the lag is not a flaw in that setting: the whole point is that it uses no information from the future, because in trading there is none to be had. Different job, different window.<br><br>Some implementations shift gradually to a one-sided window as they approach the ends, so that the trend estimate reaches the last observation. That buys you a number where you had a gap, at the cost of a value computed by a different rule from all the others. <code>classical_decomposition()</code> does not do this, and the gaps it leaves are the honest version.</aside>
+  <aside class="notes">The fifty-day moving average quoted on financial charts is a left moving average, and the lag is not a flaw in that setting: the whole point is that it uses no information from the future, because in trading there is none to be had. Different job, different window.<br><br>Some implementations shift gradually to a one-sided window as they approach the ends, so that the trend estimate reaches the last observation. That buys you a number where you had a gap, at the cost of a value computed by a different rule from all the others. <code>classical_decomposition()</code> does not do this, and leaves the gaps instead.</aside>
 </section>
 
 <!-- ---------- 16 ---------- -->
@@ -794,7 +794,7 @@ right m-MA_t  =  (1/m) * sum of y_{t+j}  <span class="dim">for</span> j = 0 .. (
     </ul>
     <p class="punch step wide">Decomposition is a tool for understanding what a series has done, not for calling what it is doing right now. Forecasting, from Session 8, is the tool for the second question.</p>
   </div>
-  <aside class="notes">The same shape recurs throughout the course. Anything estimated from a symmetric window of neighbours is weakest where the neighbours run out, and the end of a series is always where the decisions are being made. It is worth stating out loud when you present any decomposition to somebody who will act on it.<br><br>This is also the honest answer to a question that comes up in Group Assignment 1: no, you cannot fix it by using a shorter window at the ends, or at least not without changing what the number means. What you can do is say clearly that the last few points carry no trend estimate, and let the reader draw their own conclusion about the most recent months.</aside>
+  <aside class="notes">The same shape recurs throughout the course. Anything estimated from a symmetric window of neighbours is weakest where the neighbours run out, and the end of a series is always where the decisions are being made. It is worth stating out loud when you present any decomposition to somebody who will act on it.<br><br>This is also the answer to a question that comes up in Group Assignment 1: no, you cannot fix it by using a shorter window at the ends, or at least not without changing what the number means. What you can do is say clearly that the last few points carry no trend estimate, and let the reader draw their own conclusion about the most recent months.</aside>
 </section>
 
 <!-- ---------- 17 ---------- -->

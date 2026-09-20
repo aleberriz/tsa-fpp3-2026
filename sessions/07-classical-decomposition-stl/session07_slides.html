@@ -622,11 +622,11 @@ S_i  =  S_unadj_i  <span class="hl">/</span>  mean(S_unadj)          <span class
     </figure>
     <ul class="build">
       <li class="step"><b>The chain runs in one direction.</b> The outlier reaches the seasonal component only by passing through the trend and the detrended series first.</li>
-      <li class="step"><b>Cut the chain at the first link and nothing propagates.</b> Which is exactly what the missing trend values at the ends do.</li>
+      <li class="step"><b>Cut the chain at the first link and nothing propagates.</b> That is what the missing trend values at the ends do.</li>
     </ul>
     <p class="punch step wide">The outlier case has a twist worth predicting before you run it: where in the series the outlier sits changes the answer completely.</p>
   </div>
-  <aside class="notes">The twist, in case you want to reason it out rather than discover it: the trend is a <code>2&times;4-MA</code>, and Session 6 established that a moving average cannot be computed near the ends of a series. An outlier in the middle lands in the region the moving average can reach, so it is absorbed into the trend, passed into the detrended series, and then averaged into the seasonal component. An outlier at the very end lands where no trend value exists, so it never enters the chain at all.<br><br>That is a strange kind of robustness. The decomposition is undamaged precisely because it had already given up on that part of the series.</aside>
+  <aside class="notes">The twist, in case you want to reason it out rather than discover it: the trend is a <code>2&times;4-MA</code>, and Session 6 established that a moving average cannot be computed near the ends of a series. An outlier in the middle lands in the region the moving average can reach, so it is absorbed into the trend, passed into the detrended series, and then averaged into the seasonal component. An outlier at the very end lands where no trend value exists, so it never enters the chain at all.<br><br>That is a strange kind of robustness. The decomposition is undamaged because it had already given up on that part of the series.</aside>
 </section>
 
 <!-- ---------- 9 ---------- -->
@@ -641,7 +641,7 @@ S_i  =  S_unadj_i  <span class="hl">/</span>  mean(S_unadj)          <span class
     </ul>
     <div class="callout"><b>Answer the "why" for every component</b>, not just the plot. Trend, detrended, seasonal: the outlier reaches them in that order, or it reaches none of them.</div>
   </div>
-  <aside class="notes">This is the one exercise in the block designed around breaking something rather than building it, and it teaches a habit worth more than the specific finding: when you want to know what a method is sensitive to, perturb the input and watch.<br><br>A detail you may notice and should not be alarmed by: with only twenty observations, the <code>2&times;4-MA</code> gives up two points at each end, so a fifth of this series has no trend estimate at all. Short series make every limitation in this session more visible, which is exactly why this one was chosen.</aside>
+  <aside class="notes">This is the one exercise in the block designed around breaking something rather than building it, and it teaches a habit worth more than the specific finding: when you want to know what a method is sensitive to, perturb the input and watch.<br><br>A detail you may notice and should not be alarmed by: with only twenty observations, the <code>2&times;4-MA</code> gives up two points at each end, so a fifth of this series has no trend estimate at all. Short series make every limitation in this session more visible, which is why this one was chosen.</aside>
 </section>
 
 <!-- ---------- 10 ---------- -->
@@ -739,7 +739,7 @@ S_i  =  S_unadj_i  <span class="hl">/</span>  mean(S_unadj)          <span class
 <!-- ---------- 14 ---------- -->
 <section class="slide" data-section="5" data-title="When tuning is not enough">
   <div class="inner">
-    <p class="kicker">07_E &nbsp;&middot;&nbsp; the honest outcome</p>
+    <p class="kicker">07_E &nbsp;&middot;&nbsp; the outcome to report</p>
     <h1 class="sowhat wide">Sometimes there is no setting that works, and saying so is the answer.</h1>
     <ul class="build">
       <li class="step"><b>The <code>labour</code> series has a crisis in 1991 to 1992</b> that no pair of windows fully absorbs. Narrow them and the remainder improves a little, then stops.</li>
@@ -761,7 +761,7 @@ S_i  =  S_unadj_i  <span class="hl">/</span>  mean(S_unadj)          <span class
       <div class="card terra"><h3>STL</h3><p>Almost everywhere else. When the season drifts, when there are outliers, when the period is unusual, or when there is more than one period at once.</p></div>
     </div>
     <ul class="build">
-      <li class="step"><b>The honest summary:</b> classical decomposition is what you build to understand decomposition. STL is what you run when you need an answer.</li>
+      <li class="step"><b>In short:</b> classical decomposition is what you build to understand decomposition. STL is what you run when you need an answer.</li>
       <li class="step"><b>Both are judged the same way</b>, by the two criteria on slide 7. The criteria do not care which algorithm produced the remainder.</li>
     </ul>
     <p class="punch step wide">Group Assignment 1 asks for the first one, built by hand. That is a deliberate choice about what is being assessed.</p>
