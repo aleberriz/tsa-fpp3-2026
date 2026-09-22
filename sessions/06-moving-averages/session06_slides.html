@@ -421,8 +421,8 @@ body.ov-on #overview{display:block}
     <figure>
       <svg viewBox="0 0 760 214" role="img" aria-label="A jagged series of points. A shaded window covers seven of them, and an arrow leads from the window down to a single smooth point on a second line below, marking the average of those seven">
         <g stroke="#E4DFD5" stroke-width="1.2" fill="none"><path d="M30 118 H734"/></g>
-        <rect x="248" y="22" width="188" height="96" fill="#B5471E" opacity=".12"/>
-        <rect x="248" y="22" width="188" height="96" fill="none" stroke="#B5471E" stroke-width="1.8"/>
+        <rect x="214" y="22" width="219" height="96" fill="#B5471E" opacity=".12"/>
+        <rect x="214" y="22" width="219" height="96" fill="none" stroke="#B5471E" stroke-width="1.8"/>
         <polyline fill="none" stroke="#1F3A4D" stroke-width="2" stroke-linejoin="round"
           points="44,86 75,52 106,96 137,44 168,90 199,38 230,84 261,46 292,92 323,40 354,88 385,50 416,94 447,42 478,86 509,54 540,90 571,44 602,82 633,52 664,88 695,48 726,80"/>
         <g fill="#1F3A4D">
@@ -430,16 +430,16 @@ body.ov-on #overview{display:block}
           <circle cx="354" cy="88" r="4"/><circle cx="385" cy="50" r="4"/><circle cx="416" cy="94" r="4"/>
           <circle cx="230" cy="84" r="4"/>
         </g>
-        <text x="342" y="16" text-anchor="middle" fill="#B5471E"
+        <text x="323" y="16" text-anchor="middle" fill="#B5471E"
               font-family="SFMono-Regular,Menlo,monospace" font-size="12">7 points</text>
         <g stroke="#B5471E" stroke-width="2.2" fill="none">
-          <path d="M342 124 V152"/><path d="M335 145 L342 153 L349 145"/>
+          <path d="M323 124 V152"/><path d="M316 145 L323 153 L330 145"/>
         </g>
-        <text x="360" y="146" fill="#B5471E" font-family="SFMono-Regular,Menlo,monospace" font-size="12">mean</text>
+        <text x="341" y="146" fill="#B5471E" font-family="SFMono-Regular,Menlo,monospace" font-size="12">mean</text>
         <g stroke="#E4DFD5" stroke-width="1.2" fill="none"><path d="M30 196 H734"/></g>
         <polyline fill="none" stroke="#D55E00" stroke-width="2.6" stroke-linejoin="round"
           points="199,180 230,178 261,176 292,174 323,172 354,171 385,170 416,169 447,168 478,168 509,167 540,167 571,166"/>
-        <circle cx="342" cy="171.5" r="5" fill="#D55E00"/>
+        <circle cx="323" cy="172" r="5" fill="#D55E00"/>
         <text x="30" y="212" fill="#98928a" font-family="SFMono-Regular,Menlo,monospace" font-size="11.5">the moving average: one point per window position</text>
       </svg>
       <div class="figrow">
@@ -449,7 +449,7 @@ body.ov-on #overview{display:block}
     </figure>
     <p class="punch step wide">The jagged line is the data. The smooth line underneath is what a sliding average leaves behind. That smooth line is the trend estimate.</p>
   </div>
-  <aside class="notes">Notation, so that the rest of the session is short. A moving average over <i>m</i> points is written <code>m-MA</code>, so the window drawn here gives the <code>7-MA</code> of the series.<br><br>The window drawn here is <b>centered</b>: it leaves three points to the left of the point being averaged and three to the right. That is not the only choice, and slide 16 shows the alternatives, but it is the one this course uses and the one classical decomposition is built on.</aside>
+  <aside class="notes">Notation, so that the rest of the session is short. A moving average over <i>m</i> points is written <code>m-MA</code>, so the window drawn here gives the <code>7-MA</code> of the series.<br><br>The window drawn here is <b>centered</b>: it leaves three points to the left of the point being averaged and three to the right. That is not the only choice, and slide 15 shows the alternatives, but it is the one this course uses and the one classical decomposition is built on.</aside>
 </section>
 
 <!-- ---------- 4 ---------- -->
@@ -485,9 +485,9 @@ body.ov-on #overview{display:block}
         <p class="step t"><b>Why the ends are empty</b>Near the start there is nothing to the left to put in the window. A 7-MA loses its first three and last three values.</p>
       </div>
     </figure>
-    <p class="punch step wide">Both of Monday's loose ends, answered by the same picture. Hold on to it: the second half of this session is nothing but this diagram with the window widths changed.</p>
+    <p class="punch step wide">Both of Monday's loose ends, answered by the same picture. Keep the diagram: the second half of this session is nothing but it with the window widths changed.</p>
   </div>
-  <aside class="notes">The count generalizes: an <code>m-MA</code> loses <code>(m-1)/2</code> values at each end, so a 13-MA gives up six at each end and a 2&times;12-MA gives up six as well. The script prints these counts for every window it builds, and it is worth checking the arithmetic against the output once.<br><br>Missing values at the ends are not a defect to be fixed. They are an honest statement that the estimate needs neighbours on both sides and does not have them there. Slide 17 comes back to what that costs you, because it is the single most consequential limitation in this whole block.</aside>
+  <aside class="notes">The count generalizes: an <code>m-MA</code> loses <code>(m-1)/2</code> values at each end, so a 13-MA gives up six at each end and a 2&times;12-MA gives up six as well. The script prints these counts for every window it builds, and it is worth checking the arithmetic against the output once.<br><br>Missing values at the ends are not a defect to be fixed. They are an honest statement that the estimate needs neighbours on both sides and does not have them there. Slide 16 comes back to what that costs you, because it is the most consequential limitation in this block.</aside>
 </section>
 
 <!-- ---------- 5 ---------- -->
@@ -504,11 +504,11 @@ body.ov-on #overview{display:block}
     <ul class="build">
       <li class="step"><b><code>k</code> points on each side, plus the point itself.</b> That is where <code>2k + 1</code> comes from, and why it can never be even.</li>
       <li class="step"><b>In R this is <code>slider::slide_dbl()</code></b>, with <code>.before = k</code> and <code>.after = k</code>. The argument names are the notation.</li>
-      <li class="step"><b><code>.complete = TRUE</code> is the right setting.</b> It refuses to compute an average on a partial window and returns <code>NA</code> instead.</li>
+      <li class="step"><b><code>.complete = TRUE</code> is the right setting.</b> It computes no average on a partial window and returns <code>NA</code> instead.</li>
     </ul>
     <p class="punch step wide">Hold on to the word <i>odd</i>. In ten minutes it becomes a problem, because the seasons we care about are twelve and four.</p>
   </div>
-  <aside class="notes">Do not skip past <code>.complete = TRUE</code>. Set it to <code>FALSE</code> and R will happily average whatever part of the window exists, so the first value of a 7-MA would be the mean of four points rather than seven. You get a series with no gaps and a quietly different definition at each end, which is worse than a gap because nothing tells you it happened.<br><br>The word for an odd-numbered window in some other languages translates as &ldquo;uneven&rdquo;, and you will see that word in older course material. In English <i>uneven</i> means not level. The word here is <b>odd</b>.</aside>
+  <aside class="notes">Do not skip past <code>.complete = TRUE</code>. Set it to <code>FALSE</code> and R averages whatever part of the window exists, so the first value of a 7-MA would be the mean of four points rather than seven. You get a series with no gaps and a quietly different definition at each end, which is worse than a gap because nothing tells you it happened.<br><br>The word for an odd-numbered window in some other languages translates as &ldquo;uneven&rdquo;, and you will see that word in older course material. In English <i>uneven</i> means not level. The word here is <b>odd</b>.</aside>
 </section>
 
 <!-- ---------- 6 ---------- -->
@@ -519,7 +519,7 @@ body.ov-on #overview{display:block}
     <ul class="build plain" style="margin-top:1.8rem">
       <li>Filter <code>global_economy</code> to Australia &rarr; <code>aus_exports</code></li>
       <li><code>slide_dbl(Exports, mean, .before = 3, .after = 3, .complete = TRUE)</code></li>
-      <li>Print it &mdash; count the <code>NA</code>s at the top before plotting anything</li>
+      <li>Print it and count the <code>NA</code>s at the top before plotting anything</li>
       <li>Plot the 7-MA over the series</li>
     </ul>
     <div class="callout"><b>One library again.</b> <code>fpp3</code>, plus <code>slider</code>, which comes with it. No data files.</div>
@@ -646,7 +646,7 @@ all.equal(mean(aus_exports$Exports[1:7]), aus_exports$`7-MA`[[4]])
       <li class="step"><b>Weekly data is fine.</b> A seven-day season gives an odd window, three days each side, and everything above applies unchanged.</li>
       <li class="step"><b>Quarterly and monthly are not.</b> Four and twelve are even, so any window of that width has one more point on one side than the other.</li>
     </ul>
-    <p class="punch step wide">Two requirements that will not both hold: the window must span one season, and the window must be centered. The next slide refuses to choose.</p>
+    <p class="punch step wide">Two requirements that will not both hold: the window must span one season, and the window must be centered. The next slide keeps both.</p>
   </div>
   <aside class="notes">You could simply accept the imbalance and use a window with one extra point on the right. The result is a trend estimate shifted half a step in time, and half a step of bias in every value of a component you are about to subtract from the data. Small, systematic, and avoidable, which is the worst kind of error to leave in.<br><br>Note which cases are affected. Daily data with a weekly season is odd and needs nothing. Monthly, quarterly, and half-hourly data with a daily season are all even. In practice the even case is the common one, which is why this is a section of the course rather than a footnote.</aside>
 </section>
@@ -657,8 +657,8 @@ all.equal(mean(aus_exports$Exports[1:7]), aus_exports$`7-MA`[[4]])
     <p class="kicker">The fix, in three steps</p>
     <h1 class="sowhat wide">Lean left. Lean right. Average the two, and you are centered again.</h1>
     <ul class="build">
-      <li class="step"><b>Compute an <code>m</code>-MA leaning one way</b> &mdash; one point to the left, two to the right for <code>m = 4</code>. Call it <code>4-MA R</code>.</li>
-      <li class="step"><b>Compute an <code>m</code>-MA leaning the other way</b> &mdash; two to the left, one to the right. Call it <code>4-MA L</code>.</li>
+      <li class="step"><b>Compute an <code>m</code>-MA leaning one way</b>: one point to the left, two to the right for <code>m = 4</code>. Call it <code>4-MA R</code>.</li>
+      <li class="step"><b>Compute an <code>m</code>-MA leaning the other way</b>: two to the left, one to the right. Call it <code>4-MA L</code>.</li>
       <li class="step"><b>Average those two series.</b> One leans forward by half a step, the other leans back by half a step, and the two errors cancel exactly.</li>
     </ul>
     <div class="callout"><b>Written <code>2 &times; m-MA</code>.</b> The 2 counts how many moving averages were averaged, not how many points are in the window. <code>2&times;4-MA</code> and <code>2&times;12-MA</code> are the two you will use.</div>
@@ -702,7 +702,7 @@ all.equal(mean(aus_exports$Exports[1:7]), aus_exports$`7-MA`[[4]])
     </ul>
     <p class="punch step wide">The ends carry half weight because each of them appeared in only one of the two windows. Nothing was chosen; it fell out of the arithmetic.</p>
   </div>
-  <aside class="notes">For monthly data the same rule gives a 2&times;12-MA spanning thirteen points, with weights of 1/12 in the middle and 1/24 at each end. Thirteen points, six on each side, which is exactly the six missing values you counted at each end of Session 5's trend column.<br><br>Half weight at the ends has a pleasing interpretation for monthly data. January appears twice in a thirteen-month window centered on July, once at each end, and giving each appearance half weight counts it exactly once overall. The season is still cancelled, and the window is still centered.</aside>
+  <aside class="notes">For monthly data the same rule gives a 2&times;12-MA spanning thirteen points, with weights of 1/12 in the middle and 1/24 at each end. Thirteen points, six on each side, which is exactly the six missing values you counted at each end of Session 5's trend column.<br><br>Half weight at the ends makes sense for monthly data. January appears twice in a thirteen-month window centered on July, once at each end, and giving each appearance half weight counts it exactly once overall. The season is still cancelled, and the window is still centered.</aside>
 </section>
 
 <!-- ---------- 13 ---------- -->
@@ -739,7 +739,7 @@ all.equal(mean(aus_exports$Exports[1:7]), aus_exports$`7-MA`[[4]])
     <ul class="build">
       <li class="step"><b>This is the slide 12 algebra, run as code.</b> Two independent routes to the same column, and no reason beyond the derivation to expect them to match.</li>
       <li class="step"><b><code>lag()</code> and <code>lead()</code> are Session 4's tools.</b> <code>lag(Beer, 2)</code> is <code>y_{t-2}</code>, and if you find the direction confusing you are in good company.</li>
-      <li class="step"><b>It returns <code>TRUE</code>.</b> Which is the point: derivations you have checked are derivations you can use in an exam without anxiety.</li>
+      <li class="step"><b>It returns <code>TRUE</code>.</b> That is the point: derivations you have checked are derivations you can use in an exam without anxiety.</li>
     </ul>
     <p class="punch step wide">This is the whole method of the block in miniature. Derive on paper, implement twice, compare. Session 7 does it four times over.</p>
   </div>
@@ -761,7 +761,7 @@ right m-MA_t  =  (1/m) * sum of y_{t+j}  <span class="dim">for</span> j = 0 .. (
       <li class="step"><b>It sits behind the data.</b> Its value at time <code>t</code> describes a window whose center was half a window ago, so it turns late at every turning point.</li>
       <li class="step"><b>This course uses centered windows only.</b> Classical decomposition needs the season cancelled without a time shift, and only a centered window does that.</li>
     </ul>
-    <p class="punch step wide">Run the two lines in the script once and watch the orange line lag and the blue line lead. It is the clearest possible argument for centering.</p>
+    <p class="punch step wide">Run the two lines in the script once and watch the orange line lag and the blue line lead. Nothing on this slide makes the case as well.</p>
   </div>
   <aside class="notes">The fifty-day moving average quoted on financial charts is a left moving average, and the lag is not a flaw in that setting: the whole point is that it uses no information from the future, because in trading there is none to be had. Different job, different window.<br><br>Some implementations shift gradually to a one-sided window as they approach the ends, so that the trend estimate reaches the last observation. That buys you a number where you had a gap, at the cost of a value computed by a different rule from all the others. <code>classical_decomposition()</code> does not do this, and leaves the gaps instead.</aside>
 </section>
@@ -805,7 +805,7 @@ right m-MA_t  =  (1/m) * sum of y_{t+j}  <span class="dim">for</span> j = 0 .. (
     <ul class="build">
       <li class="step"><b>Exercise 3, the <code>3&times;7-MA</code>.</b> Take a 7-MA, then average three neighboring 7-MA windows centered at <code>t-1</code>, <code>t</code> and <code>t+1</code>. Collect the coefficient on each <code>y</code>.</li>
       <li class="step"><b>Exercise 4, the <code>2&times;8-MA</code>.</b> Same job, following the <code>2&times;4-MA</code> derivation exactly.</li>
-      <li class="step"><b>Check both against the two properties</b> &mdash; symmetric, summing to 1 &mdash; and then against the <code>2&times;m</code> rule from slide 12. One of the two obeys it and one does not. Working out which, and why, is the point of doing both.</li>
+      <li class="step"><b>Check both against the two properties</b>, symmetric and summing to 1, and then against the <code>2&times;m</code> rule from slide 12. One of the two obeys it and one does not. Working out which, and why, is the point of doing both.</li>
     </ul>
     <div class="callout"><b>There is a blank figure at the end of the notebook.</b> Print it or draw on screen. Sketching the overlapping windows is faster than manipulating the sums, and it is how the 2&times;4 result was found on slide 12.</div>
   </div>
@@ -823,7 +823,7 @@ right m-MA_t  =  (1/m) * sum of y_{t+j}  <span class="dim">for</span> j = 0 .. (
       <li><b>Exercises 3 and 4.</b> The two derivations from the previous slide, on paper. A photograph of clear handwriting is a perfectly good submission. Between them they are half the marks.</li>
       <li><b>Exercise 2 is not assigned.</b> It is in the notebook as optional practice if you want a second <code>2&times;m-MA</code> to work through.</li>
     </ul>
-    <div class="callout slate"><b>No data files.</b> The series ships inside <code>fpp3</code>. Same deadline as Session 5's homework &mdash; both fall in this teaching week.</div>
+    <div class="callout slate"><b>No data files.</b> The series ships inside <code>fpp3</code>. Same deadline as Session 5's homework; both fall in this teaching week.</div>
   </div>
   <aside class="notes">Graded on completion and genuine effort, not correctness. For exercises 3 and 4 that matters more than usual: a derivation that goes wrong in an interesting place and says so is worth full marks. An answer copied from somewhere with no working shown is worth less, and is easy to spot.<br><br>The two derivations carry 2.5 marks each, against 5 for the coded exercise. That is deliberate. They are the part that tells you whether the 2&times;m construction is understood or memorized, and they take a fraction of the time the code does.<br><br>Submit on Blackboard, under Assignments. Multiple files are fine, so a script plus a photograph of the paper work is the natural shape for this one.</aside>
 </section>
