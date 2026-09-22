@@ -506,7 +506,7 @@ body.ov-on #overview{display:block}
       <li class="step"><b>In R this is <code>slider::slide_dbl()</code></b>, with <code>.before = k</code> and <code>.after = k</code>. The argument names are the notation.</li>
       <li class="step"><b><code>.complete = TRUE</code> is the right setting.</b> It computes no average on a partial window and returns <code>NA</code> instead.</li>
     </ul>
-    <p class="punch step wide">Hold on to the word <i>odd</i>. In ten minutes it becomes a problem, because the seasons we care about are twelve and four.</p>
+    <p class="punch step wide">Hold on to the word <i>odd</i>. In ten minutes it becomes a problem, because the seasonal periods we care about are twelve and four.</p>
   </div>
   <aside class="notes">Do not skip past <code>.complete = TRUE</code>. Set it to <code>FALSE</code> and R averages whatever part of the window exists, so the first value of a 7-MA would be the mean of four points rather than seven. You get a series with no gaps and a quietly different definition at each end, which is worse than a gap because nothing tells you it happened.<br><br>The word for an odd-numbered window in some other languages translates as &ldquo;uneven&rdquo;, and you will see that word in older course material. In English <i>uneven</i> means not level. The word here is <b>odd</b>.</aside>
 </section>
@@ -585,43 +585,43 @@ all.equal(mean(aus_exports$Exports[1:7]), aus_exports$`7-MA`[[4]])
 <section class="slide" data-section="3" data-title="Why the season sets the width">
   <div class="inner">
     <p class="kicker">The reason this session is not just about smoothing</p>
-    <h1 class="sowhat wide">Average over exactly one season and the season cancels itself out.</h1>
+    <h1 class="sowhat wide">Average over exactly one seasonal period and the season cancels itself out.</h1>
     <figure>
-      <svg viewBox="0 0 760 208" role="img" aria-label="A seasonal wave. A window spanning exactly one full cycle is shaded, and the area above the centre line inside it is marked as equal to the area below it. An arrow shows the average landing on the centre line">
+      <svg viewBox="0 0 760 208" role="img" aria-label="A seasonal wave. A window spanning exactly one full seasonal period is shaded, and the area above the center line inside it is marked as equal to the area below it. The average is marked as a dot on the center line">
         <g stroke="#E4DFD5" stroke-width="1.2" fill="none"><path d="M30 178 H734"/></g>
         <path d="M40 108 H730" stroke="#6B665E" stroke-width="1.4" stroke-dasharray="5 4" fill="none"/>
-        <rect x="214" y="34" width="248" height="148" fill="#B5471E" opacity=".10"/>
-        <rect x="214" y="34" width="248" height="148" fill="none" stroke="#B5471E" stroke-width="1.8"/>
-        <path d="M214 108 C245 48 276 48 307 108 C338 168 369 168 400 108 C420 68 445 48 462 52"
+        <rect x="214" y="34" width="186" height="148" fill="#B5471E" opacity=".10"/>
+        <rect x="214" y="34" width="186" height="148" fill="none" stroke="#B5471E" stroke-width="1.8"/>
+        <path d="M214 108 C245 48 276 48 307 108 C338 168 369 168 400 108"
               fill="none" stroke="#1F3A4D" stroke-width="2.6"/>
         <path d="M40 108 C71 48 102 48 133 108 C164 168 195 168 214 108" fill="none" stroke="#1F3A4D" stroke-width="2.6" opacity=".35"/>
-        <path d="M462 52 C493 48 524 168 555 108 C586 48 617 48 648 108 C679 168 710 168 730 120" fill="none" stroke="#1F3A4D" stroke-width="2.6" opacity=".35"/>
+        <path d="M400 108 C420 68 445 48 462 52 C493 48 524 168 555 108 C586 48 617 48 648 108 C679 168 710 168 730 120" fill="none" stroke="#1F3A4D" stroke-width="2.6" opacity=".35"/>
         <path d="M214 108 C245 48 276 48 307 108 Z" fill="#6B7F5E" opacity=".28"/>
         <path d="M307 108 C338 168 369 168 400 108 Z" fill="#B5471E" opacity=".28"/>
         <text x="260" y="86" fill="#6B7F5E" font-family="SFMono-Regular,Menlo,monospace" font-size="12.5">above</text>
         <text x="352" y="142" fill="#B5471E" font-family="SFMono-Regular,Menlo,monospace" font-size="12.5">below</text>
-        <text x="338" y="26" text-anchor="middle" fill="#B5471E"
-              font-family="SFMono-Regular,Menlo,monospace" font-size="12">window of exactly m points = one whole season</text>
-        <circle cx="338" cy="108" r="6" fill="#D55E00"/>
+        <text x="307" y="26" text-anchor="middle" fill="#B5471E"
+              font-family="SFMono-Regular,Menlo,monospace" font-size="12">window of exactly m points = one full seasonal period</text>
+        <circle cx="307" cy="108" r="6" fill="#D55E00"/>
         <text x="600" y="100" fill="#D55E00" font-family="SFMono-Regular,Menlo,monospace" font-size="12">the average lands here</text>
       </svg>
     </figure>
     <ul class="build">
-      <li class="step"><b>One full season contains every phase once.</b> Every high month and every low month, exactly once each, so they offset.</li>
+      <li class="step"><b>One full seasonal period contains every phase once.</b> Every high month and every low month, exactly once each, so they offset.</li>
       <li class="step"><b>So the width is not a free choice.</b> Pick <code>m</code> equal to the seasonal period and the moving average returns the trend with the season removed.</li>
     </ul>
     <p class="punch step wide">This is why Session 7 can estimate the trend first and the season second. The window does the separating.</p>
   </div>
-  <aside class="notes">The cancellation is exact only if the seasonal pattern is the same in every cycle, which is the assumption classical decomposition makes and where it is weakest. Session 7 names that limitation and STL is the method that relaxes it.<br><br>This also explains a detail from Session 5 that may have looked arbitrary. The trend column from <code>classical_decomposition()</code> on monthly data was missing six values at each end, not five or seven, because the window it used spans thirteen points. The next two slides are where that thirteen comes from.</aside>
+  <aside class="notes">The cancellation is exact only if the seasonal pattern repeats identically from one period to the next, for monthly data from year to year, which is the assumption classical decomposition makes and where it is weakest. Session 7 names that limitation and STL is the method that relaxes it.<br><br>This also explains a detail from Session 5 that may have looked arbitrary. The trend column from <code>classical_decomposition()</code> on monthly data was missing six values at each end, not five or seven, because the window it used spans thirteen points. The next two slides are where that thirteen comes from.</aside>
 </section>
 
 <!-- ---------- 10 ---------- -->
 <section class="slide" data-section="3" data-title="The awkward arithmetic">
   <div class="inner">
     <p class="kicker">The problem this session exists to solve</p>
-    <h1 class="sowhat">The seasons that matter are even. Even windows have no middle.</h1>
+    <h1 class="sowhat">The seasonal periods that matter are even. Even windows have no middle.</h1>
     <figure>
-      <svg viewBox="0 0 760 176" role="img" aria-label="Two rows of points. In the top row a window of seven points has a clearly marked centre point with three on each side. In the bottom row a window of four points has no centre: the marker falls between two points, and the window is shown twice, once leaning left and once leaning right">
+      <svg viewBox="0 0 760 176" role="img" aria-label="Two rows of points. In the top row a window of seven points has a clearly marked center point with three on each side. In the bottom row a window of four points has no center: the marker falls between two points, and the window is shown twice, once leaning left and once leaning right">
         <g fill="#98928a">
           <circle cx="72" cy="56" r="5"/><circle cx="118" cy="56" r="5"/><circle cx="164" cy="56" r="5"/>
           <circle cx="210" cy="56" r="5"/><circle cx="256" cy="56" r="5"/><circle cx="302" cy="56" r="5"/>
@@ -643,12 +643,12 @@ all.equal(mean(aus_exports$Exports[1:7]), aus_exports$`7-MA`[[4]])
       </svg>
     </figure>
     <ul class="build">
-      <li class="step"><b>Weekly data is fine.</b> A seven-day season gives an odd window, three days each side, and everything above applies unchanged.</li>
+      <li class="step"><b>Weekly data is fine.</b> A seven-day seasonal period gives an odd window, three days each side, and everything above applies unchanged.</li>
       <li class="step"><b>Quarterly and monthly are not.</b> Four and twelve are even, so any window of that width has one more point on one side than the other.</li>
     </ul>
-    <p class="punch step wide">Two requirements that will not both hold: the window must span one season, and the window must be centered. The next slide keeps both.</p>
+    <p class="punch step wide">Two requirements that will not both hold: the window must span one seasonal period, and the window must be centered. The next slide keeps both.</p>
   </div>
-  <aside class="notes">You could simply accept the imbalance and use a window with one extra point on the right. The result is a trend estimate shifted half a step in time, and half a step of bias in every value of a component you are about to subtract from the data. Small, systematic, and avoidable, which is the worst kind of error to leave in.<br><br>Note which cases are affected. Daily data with a weekly season is odd and needs nothing. Monthly, quarterly, and half-hourly data with a daily season are all even. In practice the even case is the common one, which is why this is a section of the course rather than a footnote.</aside>
+  <aside class="notes">You could simply accept the imbalance and use a window with one extra point on the right. The result is a trend estimate shifted half a step in time, and half a step of bias in every value of a component you are about to subtract from the data. Small, systematic, and avoidable, which is the worst kind of error to leave in.<br><br>Note which cases are affected. Daily data with weekly seasonality is odd and needs nothing. Monthly, quarterly, and half-hourly data with daily seasonality are all even. In practice the even case is the common one, which is why this is a section of the course rather than a footnote.</aside>
 </section>
 
 <!-- ---------- 11 ---------- -->
