@@ -16,4 +16,5 @@ residuals of Holt vs damped Holt, qq-plot and boxplot).
 
 **Outcome:** Student fits Holt and damped Holt and reads `α`, `β*` and `φ`.
 
-**→ Group Assignment 2 launches** — see [`assignments/`](../../assignments/).
+**→ Group Assignment 2 launches** — due **Sunday 6 December 2026, 23:59**. See
+[`assignments/`](../../assignments/).
