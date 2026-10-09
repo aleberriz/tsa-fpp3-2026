@@ -25,6 +25,9 @@ the whole course, Sessions 1 to 19.
 and office hours. How the exam works, what is on it, and a one-line check of each session: what to
 explain and what to compute by hand.
 
+**Homework review, for self-study:** the most useful lessons from HW07 and HW08, written to be
+read on your own. See [`homework-review-hw07-hw08.md`](homework-review-hw07-hw08.md).
+
 **Exam rules:** [`session10_exam_rules.html`](session10_exam_rules.html) is on screen for the whole exam.
 No questions are answered during the exam, and you may not leave the room and come back, not even
 to go to the bathroom.
