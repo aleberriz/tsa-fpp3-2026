@@ -1,4 +1,4 @@
-# Licence
+# License
 
 **Copyright (c) 2026 Juan Garbayo and Alejandro Berrizbeitia.**
 
@@ -17,7 +17,7 @@ workbooks (`.xlsx`), Quarto sources (`.qmd`), and the written documentation
 (`README.md`, `SYLLABUS.md`, `setup/SETUP.md`, the per-session `README.md`
 files) — are licensed under the
 
-**Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Licence
+**Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
 (CC BY-NC-SA 4.0)**
 
 Full legal text: <https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode>
@@ -27,15 +27,15 @@ You are free to share and adapt these materials, provided you:
 
 - **give appropriate credit** to the authors and indicate if changes were made;
 - **do not use them for commercial purposes**;
-- **distribute any adaptation under this same licence**.
+- **distribute any adaptation under this same license**.
 
 ## 2. R code — MIT
 
 The R source files (`*.R`) and any code snippets written for this course are licensed
-under the MIT Licence:
+under the MIT License:
 
 ```
-MIT Licence
+MIT License
 
 Copyright (c) 2026 Juan Garbayo and Alejandro Berrizbeitia
 
@@ -61,7 +61,7 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 # NOTICE — third-party and inherited content
 
-**The licences above apply only to material whose rights the authors hold.** Parts of this
+**The licenses above apply only to material whose rights the authors hold.** Parts of this
 repository are not theirs to license, and nothing here grants you rights in them:
 
 - **Textbook-derived content.** Several notebooks work through examples, datasets and
@@ -77,7 +77,7 @@ repository are not theirs to license, and nothing here grants you rights in them
   with IE University and are reproduced here for students' convenience only. The official
   syllabus governs.
 
-If you want to reuse any part of this repository beyond what the licences above allow,
+If you want to reuse any part of this repository beyond what the licenses above allow,
 please ask first:
 
 - Alejandro Berrizbeitia — aberrizbeitia@faculty.ie.edu
