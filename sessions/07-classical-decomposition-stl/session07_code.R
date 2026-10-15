@@ -187,43 +187,12 @@ stl_trend <- function(w) {
     components()
 }
 
-trend_windows <- c(21, 13, 9, 5)
+# Fill this in for w = 21, 13, 9, 5.
+stl_trend(21) |> ACF(remainder) |> autoplot()
 
-ci <- 1.96 / sqrt(nrow(us_retail_employment))
-
-# Two numbers per setting: how big the remainder is, and how many of
-# its first 24 autocorrelations fall outside the white noise bounds.
-bind_rows(lapply(trend_windows, function(w) {
-  cp <- stl_trend(w)
-  tibble(
-    trend_window  = w,
-    var_remainder = round(var(cp$remainder)),
-    acf_bars_out  = sum(abs(ACF(cp, remainder, lag_max = 24)$acf) > ci)
-  )
-}))
-
-# The four correlograms on one plot.
-window_label <- function(w) {
-  factor(paste0("trend(window = ", w, ")"),
-         levels = paste0("trend(window = ", trend_windows, ")"))
-}
-
-remainder_acfs <- bind_rows(lapply(trend_windows, function(w) {
-  stl_trend(w) |>
-    ACF(remainder, lag_max = 24) |>
-    as_tibble() |>
-    mutate(lag = as.numeric(lag), window = window_label(w))
-}))
-
-remainder_acfs |>
-  ggplot(aes(x = lag, y = acf)) +
-  geom_hline(yintercept = c(-ci, ci), linetype = "dashed", color = "steelblue") +
-  geom_segment(aes(xend = lag, yend = 0)) +
-  facet_wrap(~ window) +
-  labs(title = "Remainder correlogram at four trend windows", y = "ACF")
-
-# Read the table and the plot together, and come to the session with
-# a window chosen and a reason for it.
+# Before you run anything, write down which window you expect to give
+# the smallest remainder variance. Then come to the session with a
+# window chosen and a reason for it.
 
 
 # ---- tuning, step B: the seasonal window ----
@@ -233,31 +202,10 @@ remainder_acfs |>
 # Replace this with the trend window you settled on in step A.
 chosen_trend <- 21
 
-stl_season <- function(s) {
-  us_retail_employment |>
-    model(STL(Employed ~ trend(window = chosen_trend) + season(window = s))) |>
-    components()
-}
-
-december_factors <- bind_rows(lapply(list(5, 11, "periodic"), function(s) {
-  stl_season(s) |>
-    as_tibble() |>
-    filter(month(Month) == 12) |>
-    transmute(
-      Year          = year(Month),
-      season_window = factor(as.character(s), levels = c("5", "11", "periodic")),
-      December      = season_year
-    )
-}))
-
-december_factors |>
-  ggplot(aes(x = Year, y = December, color = season_window)) +
-  geom_line(linewidth = 0.8) +
-  labs(title = "The December seasonal factor under three seasonal windows",
-       y = "December seasonal component")
-
-# Three lines, three claims about Christmas hiring in US retail.
-# Decide which of the three you believe, and why.
+# Hold trend(window = ) at chosen_trend, then compare
+# season(window = 5), season(window = 11) and season(window = "periodic").
+# Plot the December seasonal factor year by year for each of the three,
+# and decide which of the three you believe, and why.
 
 
 # ---- an aside on robust = TRUE ----
