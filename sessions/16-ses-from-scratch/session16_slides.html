@@ -467,9 +467,9 @@ body.ov-on #overview{display:block}
     </figure>
     <div class="console tight">ses_levels &lt;- function(y, alpha, l_0) {
   levels &lt;- numeric(length(y) + 1)              <span class="dim"># T + 1 slots, from t = 0 to t = T</span>
-  levels[1] &lt;- l_0                              <span class="dim"># TODO in the template</span>
+  levels[1] &lt;- # TODO                           <span class="dim"># the level at t = 0</span>
   for (i in 2:length(levels)) {
-    levels[i] &lt;- alpha * y[i-1] + (1 - alpha) * levels[i-1]   <span class="dim"># TODO: the smoothing equation</span>
+    levels[i] &lt;- # TODO                         <span class="dim"># the smoothing equation</span>
   }
   levels
 }</div>
@@ -511,8 +511,9 @@ all.equal(levels_function, levels_test)                 <span class="hl"># TRUE<
     <p class="kicker">Now we code &nbsp;&middot;&nbsp; function 2 of 3</p>
     <h1 class="sowhat wide">One number says how badly a given &alpha; and &#8467;<sub>0</sub> fit.</h1>
     <div class="console tight">SSE_func &lt;- function(y, yhat) {
-  residuals &lt;- y - yhat                     <span class="dim"># TODO</span>
-  sum(residuals^2, na.rm = TRUE)            <span class="dim"># TODO</span>
+  residuals &lt;- # TODO                       <span class="dim"># observed minus fitted</span>
+  SSE &lt;- # TODO                             <span class="dim"># squared and added up</span>
+  SSE
 }
 
 yhat_fvals &lt;- ses_levels(y, alpha, l_0)[1:length(y)]   <span class="dim"># drop the last element: it is the forecast</span>
@@ -535,10 +536,11 @@ all.equal(1995.285, round(SSE_func(y, yhat_fvals), 3)) <span class="hl"># TRUE</
     <div class="console tight">my_ses_sse &lt;- function(par, y) {
   alpha &lt;- par[1]                                   <span class="dim"># unwrap the parameter vector</span>
   l_0   &lt;- par[2]
-  T     &lt;- length(y)                                <span class="dim"># TODO</span>
-  levels_values &lt;- ses_levels(y, alpha, l_0)        <span class="dim"># TODO</span>
-  yhat_fvals    &lt;- levels_values[1:T]               <span class="dim"># TODO</span>
-  SSE_func(y, yhat_fvals)                           <span class="dim"># TODO</span>
+  T     &lt;- # TODO                                   <span class="dim"># the length of the series</span>
+  levels_values &lt;- # TODO                           <span class="dim"># the levels, given y, alpha and l_0</span>
+  yhat_fvals    &lt;- # TODO                           <span class="dim"># the fitted values, from the levels</span>
+  SSE           &lt;- # TODO                           <span class="dim"># the SSE, given y and yhat_fvals</span>
+  SSE
 }
 all.equal(1995.285, round(my_ses_sse(c(alpha, l_0), y), 3))   <span class="hl"># TRUE</span></div>
     <ul class="build">
