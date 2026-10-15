@@ -107,7 +107,7 @@ summary_test
 
 # Manual computation of MAE and RMSE ----
 
-## We'll discuss potential solutions during the live session. ----
+## A worked answer ----
 # 1. Extract the residuals produced by the drift model from beer_fit using
 # select(), augment() and pull()
 resid <- beer_fit |>
@@ -127,7 +127,7 @@ RMSE_fable <- summary_tr |> filter(.model == "Drift") |> pull(RMSE)
 all.equal(MAE_manual, MAE_fable)
 all.equal(RMSE_manual, RMSE_fable)
 
-## We'll discuss potential solutions during the live session. ----
+## A worked answer ----
 # 1. Extract the forecasts produced by the drift model from beer_fc
 # using filter() and pull()
 fc <- beer_fc |> filter(.model == "Drift") |> pull(.mean) |> na.omit()
