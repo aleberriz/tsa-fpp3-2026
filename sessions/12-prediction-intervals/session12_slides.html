@@ -610,11 +610,12 @@ fc2 |&gt; autoplot(prices, level = 80, point_forecast = lst(mean, median))</div>
   <div class="inner">
     <a class="nb" href="12_PredictionIntervals_Transformations.html#exercise-1" target="_blank" rel="noopener" title="Open the notebook at this section">12 &rsaquo; Exercise 1</a>
     <p class="kicker">Due date in this session&#39;s announcements</p>
-    <h1 class="sowhat">Homework: the retail model with the log inside, and two sentences.</h1>
+    <h1 class="sowhat">Homework: the retail model with the log inside, two sentences, and one interval by hand.</h1>
     <ul class="build">
       <li><b><code>12</code> Exercise 1.</b> The retail series from <code>08_A</code>: STL on <code>log(Turnover)</code>, drift on the seasonally adjusted part, seasonal naive on the season, inside <code>decomposition_model()</code>. Forecast 36 months. Plot with the mean and the median point forecasts, 80% interval.</li>
       <li>With <code>hilo()</code> and <code>unpack_hilo()</code>, extract the 80% interval at <code>h = 1</code> and at <code>h = 36</code>.</li>
       <li><b>Two sentences:</b> why the interval at 36 is so much wider, and why the mean sits above the median with a gap that grows with <code>h</code>. Both answers are on today&#39;s slides.</li>
+      <li><b>The interval at <code>h = 5</code>, by hand.</b> Extend the notebook&#39;s manual check for Google 2015 from one step to five: &sigma;&#770;<sub>5</sub> = &sigma;&#770; &radic;5, the 95% interval, <code>all.equal()</code> against <code>hilo()</code>, and the same calculation written once as a calculator line.</li>
     </ul>
     <p class="small">Short on purpose: Group Assignment 1 and the Session 11 homework are due the same week.</p>
   </div>

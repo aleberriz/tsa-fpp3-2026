@@ -21,7 +21,8 @@ that turns the median into the mean.
 **R:** `hilo()`, `unpack_hilo()`, `distributional::parameters()`, `forecast(point_forecast = lst(mean, median))`
 
 **Homework:** `12` Exercise 1 (the retail series with a log inside `decomposition_model()`, mean and
-median point forecasts, the 80% interval at two horizons) plus two sentences. Due date in the
+median point forecasts, the 80% interval at two horizons), two sentences, and the notebook's manual
+interval check for Google 2015 carried from one step to five (`sigma * sqrt(h)`). Due date in the
 announcements.
 
 **Outcome:** Student produces and interprets prediction intervals, and handles them correctly under a
