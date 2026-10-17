@@ -21,13 +21,13 @@ the whole course, Sessions 1 to 19.
 - Answers go on the answer sheet at the back of the booklet: fill in one circle per question with a
   black or dark blue pen. Wrong answers cost nothing.
 
-**How to prepare:** every question on the exams practices something you have done in the homework.
-Some ask you to apply it to a case you have not seen: different numbers, or a combination of steps
-you have practiced separately. That is deliberate. The exam checks that you understand the method
-well enough to use it on a new case, not that you remember a particular exercise. This is why there
-is no question bank. Practicing on near-copies of the exam questions would train you to recognize a
-template, which is not the skill being tested. Redo the homework calculations by hand, check them
-against R, and you are prepared.
+**How to prepare:** every question on the exams practices something you have done in the homework or
+the notebooks. Some ask you to apply it to a case you have not seen: different numbers, or a
+combination of steps you have practiced separately. That is deliberate. The exam checks that you
+understand the method well enough to use it on a new case, not that you remember a particular
+exercise. This is why there is no question bank. Practicing on near-copies of the exam questions
+would train you to recognize a template, which is not the skill being tested. Redo the homework and
+notebook calculations by hand, check them against R, and you are prepared.
 
 **Slides:** [`session10_slides.html`](session10_slides.html): midterm revision for your own study
 and office hours. How the exam works, what is on it, and a one-line check of each session: what to
