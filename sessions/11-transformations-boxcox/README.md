@@ -20,7 +20,8 @@ its caveat; four worked examples (US GDP, Victorian bulls, tobacco, retail).
 **R:** `box_cox()`, `features(y, guerrero)`, `log1p()`
 
 **Homework:** `11_A` Exercises 1 and 2, in the notebook's Homework section (Australian imports from
-Japan; US private housing starts). Due date in the announcements.
+Japan; US private housing starts), plus two calculations by hand on the last two months of the
+imports: the log change as a percentage, and one Box–Cox value. Due date in the announcements.
 
 **Outcome:** Student picks and justifies a transformation, and recognizes a spread that grows with
 the level of the series.
