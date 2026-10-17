@@ -25,7 +25,8 @@ model, with point forecasts and prediction intervals (fpp3 8.7).
 
 **R:** `ETS(y)`, `report()`, `glance()`, `tidy()`, `components()`, `augment()`, `forecast()`, `hilo()`
 
-**Homework:** `19_B` Exercises 1 to 3. Due date in the announcements. It is the last homework.
+**Homework:** `19_B` Exercises 1 to 3, with one AIC by hand in Exercise 3. Due date in the
+announcements. It is the last homework.
 
 **Outcome:** Student lets `ETS()` choose a model, explains the chosen letters and why the
 criterion picked them, and produces forecasts with intervals from the chosen model.

@@ -20,7 +20,8 @@ examples on training and test sets, and the manual recomputation of MAE and RMSE
 **R:** `filter()`, `slice()`, `n()`, `accuracy()`
 
 **Homework:** `13_Train_Test` Exercises 1 to 3; the `13_A` manual computation of MAE and RMSE for
-the seasonal naive model on both sets; `13_A` Exercise 1. Due date in the announcements.
+the seasonal naive model on both sets, then two percentage errors by hand and its test MAPE and
+MASE; `13_A` Exercise 1. Due date in the announcements.
 
 **Outcome:** Student sets up an honest train/test split and reads all the metrics `accuracy()`
 returns, knowing which are scale-dependent and which are not.

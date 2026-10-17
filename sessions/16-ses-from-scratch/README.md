@@ -23,7 +23,7 @@ they differ from `fable`'s in the third decimal.
 
 **Homework:** `16_E` in full: time plot, fit, parameters and the weight on the three most recent
 observations, residual standard deviation by hand, a 95% interval by hand, and the comparison with
-`fable`. Due date in the announcements.
+`fable`, then two sentences on why `optim()` and `fable` can differ. Due date in the announcements.
 
 **Outcome:** Student can explain what `ETS()` is doing numerically, because they have done it.
 

@@ -23,7 +23,7 @@ with `components()` and the fitted values rebuilt from them.
 
 **Homework:** the `17_B` workbook (Holt by hand for Australian population), plus `17_A` Exercise 1
 (internet usage: SES, Holt and damped Holt, the residuals compared, the forecasts plotted) and one
-sentence on the damping. Due date in the announcements.
+sentence on the damping, then one damped forecast at h = 2 by hand. Due date in the announcements.
 
 **Outcome:** Student fits Holt and damped Holt and reads alpha, beta* and phi.
 

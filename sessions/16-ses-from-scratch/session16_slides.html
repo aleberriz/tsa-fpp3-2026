@@ -622,9 +622,9 @@ all.equal(tidy(fit) |&gt; pull(estimate), opt$par)    <span class="dim"># a smal
     <p class="kicker">Due date in this session&#39;s announcements</p>
     <h1 class="sowhat">Homework: one series, the whole SES workflow, Sessions 12 and 15 together.</h1>
     <ul class="build">
-      <li><b><code>16_E</code>, parts 1 to 6, on Argentinian exports.</b> Time plot with ten-year ticks and a sentence on whether SES suits the series; the <code>ETS(A,N,N)</code> fit with forecasts and fitted values plotted; the two parameters, &alpha; interpreted, and the weight on the three most recent observations.</li>
-      <li><b>Then Session 12 by hand:</b> the residual standard deviation with the T &minus; K formula, checked against <code>parameters()</code>; the 95% interval for h = 1 as the forecast &plusmn; 1.96 &sigma;&#770;; and the comparison with what <code>hilo()</code> returns, rounded to two decimals.</li>
-      <li><b>K is 2:</b> &alpha; and &#8467;<sub>0</sub> are both estimated. The interval is for h = 1 only.</li>
+      <li><b><code>16_E</code>, parts 1 to 6, on Argentinian exports.</b> Time plot and whether SES suits it; the <code>ETS(A,N,N)</code> fit with forecasts and fitted values; &alpha; interpreted, and the weight on the three most recent observations.</li>
+      <li><b>Then Session 12 by hand:</b> &sigma;&#770; with T &minus; K, checked against <code>parameters()</code>; the 95% interval for h = 1, compared with <code>hilo()</code> to two decimals.</li>
+      <li><b>K is 2</b> (&alpha; and &#8467;<sub>0</sub>), and the interval is for h = 1 only. <b>Part 7:</b> two sentences on why <code>optim()</code> and <code>fable</code> differ.</li>
     </ul>
     <p class="small">Every step was done in class, in Session 12 on Google and in Session 15 on Algeria. The exercise is to do them in one piece, alone.</p>
   </div>
