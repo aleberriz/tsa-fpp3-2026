@@ -13,7 +13,7 @@ algerian_exports <- global_economy |>
 
 ## 2. Function `SSE_func` ----
 
-### We'll discuss potential solutions during the live session. ----
+### We'll go over what to bear in mind for this exercise in the live session. ----
 # Test
 y <- algerian_exports$Exports
 alpha <- 0.8399875 # Initial estimates for the test
