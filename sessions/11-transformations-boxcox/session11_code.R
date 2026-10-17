@@ -125,3 +125,28 @@ retail_series |>
     title = retail_series$Industry[1],
     subtitle = retail_series$State[1]
   )
+
+# Homework ----
+
+## Exercise 1 - Australian imports from Japan ----
+aus_import_japan <-
+  readr::read_csv("../../data/australian_imports_japan.csv") |> 
+  mutate(index=yearmonth(index)) |> 
+  as_tsibble()
+
+aus_import_japan |> 
+  autoplot() +
+  labs(x = "year-month",
+       y = "Australian imports from Japan (thousands $)")
+
+## Exercise 2 - Private housing units started, USA ----
+private_housing_Us <-
+  readr::read_csv("../../data/private_housing_US.csv") |>
+  mutate(index=yearmonth(index)) |>
+  as_tsibble()
+
+p1 <- autoplot(private_housing_Us) +
+labs(x = "year-month",
+     y = "Private housing units started, USA: monthly")  
+
+p1
