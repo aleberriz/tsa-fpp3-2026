@@ -1,7 +1,7 @@
 # Homework review: what to take from HW05 and HW06
 
-Compiled from HW05 (additive and multiplicative schemes) and HW06 (moving averages). There is
-no class time for this one, so it is written to be read on your own: about fifteen minutes.
+Compiled from HW05 (additive and multiplicative schemes) and HW06 (moving averages). It is
+written to be read on your own: about fifteen minutes.
 Sessions 5 and 6 are on the midterm, so it is also revision.
 
 As before, none of this is about getting it wrong. These are the points where the most useful

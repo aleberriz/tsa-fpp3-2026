@@ -99,17 +99,11 @@ week it is released: choosing your series is half the work.
 Worked solutions are not posted. After each due date:
 
 - a cohort-wide common-errors note goes up on Blackboard, built from what the class actually got wrong;
-- the first ten minutes of the next session review it live;
 - individual written comments go to a different slice of the class each week, so everyone is commented
   on individually several times over the term.
 
 Most exercises are self-verifying by design: you compute by hand and check against R's own answer with
 `isTRUE(all.equal(x, y))`. That check is the feedback, and it arrives while you are still working.
-
-One exception: Session 09's homework is reviewed at Session 11, not at the next session, because the
-next session is the midterm. That week splits in two. The written note goes up on Blackboard on
-Monday 12 Oct, two days before the exam, and the live review happens at the start of Session 11 on
-Monday 19 Oct.
 
 ### 5. Workload and the AI policy
 
@@ -137,4 +131,4 @@ concern, and no separate preparation is expected if the work reflects your own u
 - **From Session 05 on, homework is due 23:59 on the Sunday of its teaching week.** Two September
   weeks share one deadline. Sessions 01–04 keep the dates already posted.
 - **Group Assignment 1 is due Sunday 25 October**, after the midterm.
-- **No solutions are published.** Cohort note, live review, rotating individual comments.
+- **No solutions are published.** Cohort note and rotating individual comments.

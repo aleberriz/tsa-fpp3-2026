@@ -1,7 +1,7 @@
 # Homework review: what to take from HW07 and HW08
 
-Compiled from HW07 (classical decomposition and STL) and HW08 (benchmark forecasts). There is no
-class time for this one, so it is written to be read on your own: about fifteen minutes.
+Compiled from HW07 (classical decomposition and STL) and HW08 (benchmark forecasts). It is written
+to be read on your own: about fifteen minutes.
 Sessions 7 and 8 are on the midterm, so it is also revision.
 
 As before, none of this is about getting it wrong. These are the points where the most useful

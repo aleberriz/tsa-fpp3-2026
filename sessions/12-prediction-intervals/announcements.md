@@ -3,8 +3,8 @@
 - **Homework due Sunday 25 October 2026, 23:59.** Short on purpose: Group Assignment 1 and the
   Session 11 homework are due the same day.
 - **Group Assignment 1 is due Sunday 25 October 2026, 23:59.**
-- **The review of this homework** happens at the start of Session 13, Monday 26 October, together
-  with the Session 11 homework.
+- **The common-errors note on this homework** goes up on Blackboard on Monday 26 October, together
+  with the Session 11 homework's.
 - **Session 13** is Monday 26 October. There is no session on Wednesday 28 October.
 - **Office hours** for concrete questions: times on Blackboard.
 

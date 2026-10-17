@@ -2,7 +2,7 @@
 
 - **Homework due Sunday 1 November 2026, 23:59.** Three parts; there is no session on Wednesday,
   so this is the week's work.
-- **The review of this homework** happens at the start of Session 14, Wednesday 4 November.
+- **The common-errors note on this homework** goes up on Blackboard on Monday 2 November.
 - **Session 14** is Wednesday 4 November. Monday 2 November is a holiday, and there is no session
   on Wednesday 28 October.
 - **Group Assignment 1** feedback will be returned on Blackboard; date to be announced there.

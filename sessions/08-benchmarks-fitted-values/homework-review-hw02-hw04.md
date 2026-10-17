@@ -1,7 +1,7 @@
 # Homework review: the three things that cost you the most time
 
-Compiled from HW02, HW03 and HW04. From now on, the first minutes of a session go over the
-difficulties that came up most often in the homework just handed in. Nothing here is about
+Compiled from HW02, HW03 and HW04: the difficulties that came up most often, written to be read
+on your own. Nothing here is about
 getting it wrong. These are the points where the course materials were not clear enough, and
 they are fixed in five minutes each.
 

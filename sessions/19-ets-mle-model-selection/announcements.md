@@ -6,8 +6,7 @@
 - **There is no session on Monday 7 or Tuesday 8 December** (Constitution Day and Inmaculada
   Concepción).
 - **The final exam, Session 20, is Monday 14 December 2026, 9:00–10:20.** It covers the whole
-  course. The common-errors note on this homework goes up on Blackboard on Monday 7 December and
-  replaces the live review.
+  course. The common-errors note on this homework goes up on Blackboard on Monday 7 December.
 - **Office hours** for concrete questions before the final: times on Blackboard.
 
 If a date here disagrees with Blackboard, Blackboard is the authority.

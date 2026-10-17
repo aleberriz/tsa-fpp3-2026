@@ -6,7 +6,8 @@
   [`homework-review-hw07-hw08.md`](homework-review-hw07-hw08.md) on your own; it is also midterm
   revision.
 - **Session 9 homework due Sunday 18 October 2026, 23:59.**
-- **Session 11** is Monday 19 October. It opens with the Session 9 homework review.
+- **Session 11** is Monday 19 October. The common-errors note on the Session 9 homework goes up on
+  Blackboard the same day.
 - **Group Assignment 1 is due Sunday 25 October 2026, 23:59.**
 
 If a date here disagrees with Blackboard, Blackboard is the authority.
