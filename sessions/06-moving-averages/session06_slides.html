@@ -664,7 +664,7 @@ all.equal(mean(aus_exports$Exports[1:7]), aus_exports$`7-MA`[[4]])
     <div class="callout"><b>Written <code>2 &times; m-MA</code>.</b> The 2 counts how many moving averages were averaged, not how many points are in the window. <code>2&times;4-MA</code> and <code>2&times;12-MA</code> are the two you will use.</div>
     <p class="punch step wide">Nothing subtle is happening here. It is the same trick as taking the mean of two estimates that are wrong in opposite directions.</p>
   </div>
-  <aside class="notes">The naming trips people up every year, so read it carefully: in <code>2&times;4-MA</code> the 4 is the window width and the 2 is the number of passes. It is not a window of eight points. The next slide shows that it actually spans five.<br><br>The same construction generalizes: a <code>p&times;m-MA</code> means take an <code>m</code>-MA and then a <code>p</code>-MA of that, and the result spans <code>p + m - 1</code> points. Exercises 3 and 4 are two instances of exactly this, which is why they can be done on paper.</aside>
+  <aside class="notes">The naming trips people up every year, so read it carefully: in <code>2&times;4-MA</code> the 4 is the width of the first moving average and the 2 is the width of the second, taken over the first one's values. It is not a window of eight points. The next slide shows that it actually spans five.<br><br>The same construction generalizes: a <code>p&times;m-MA</code> means take an <code>m</code>-MA and then a <code>p</code>-MA of that, and the result spans <code>p + m - 1</code> points. Exercises 3 and 4 are two instances of exactly this, which is why they can be done on paper.</aside>
 </section>
 
 <!-- ---------- 12 ---------- -->
