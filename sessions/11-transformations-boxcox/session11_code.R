@@ -52,7 +52,7 @@ canadian_gas |>
 retail_series <- aus_retail |>
   filter(`Series ID` == "A3349767W")
 
-### Example 1. United States GDP from global economy ----
+### Example 1. United States GDP from global_economy ----
 us_economy <- global_economy |>
   filter(Country == "United States")
 us_economy |>

@@ -2371,7 +2371,7 @@ window.Quarto = {
   </ul></li>
   <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a>
   <ul>
-  <li><a href="#example-1-us-gdp" id="toc-example-1-us-gdp" class="nav-link" data-scroll-target="#example-1-us-gdp">Example 1. United States GDP from global economy</a>
+  <li><a href="#example-1-us-gdp" id="toc-example-1-us-gdp" class="nav-link" data-scroll-target="#example-1-us-gdp">Example 1. United States GDP from global_economy</a>
   <ul>
   <li><a href="#a-worked-answer" id="toc-a-worked-answer" class="nav-link" data-scroll-target="#a-worked-answer">A worked answer</a></li>
   </ul></li>
@@ -2686,7 +2686,7 @@ window.Quarto = {
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">Series ID</span><span class="st">`</span> <span class="sc">==</span> <span class="st">&quot;A3349767W&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="example-1-us-gdp" class="level3">
-<h3 class="anchored" data-anchor-id="example-1-us-gdp">Example 1. United States GDP from global economy</h3>
+<h3 class="anchored" data-anchor-id="example-1-us-gdp">Example 1. United States GDP from global_economy</h3>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>us_economy <span class="ot">&lt;-</span> global_economy <span class="sc">|&gt;</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Country <span class="sc">==</span> <span class="st">&quot;United States&quot;</span>)</span>
@@ -2700,7 +2700,8 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>In the graph above, the slope of the curve grows with the level of the series. This is another way in which variation grows with the level: a non-linear, multiplicative trend. The Box-Cox transformation helps here too.</p>
+<p>In the graph above, the slope of the curve grows with the level of the series. This is another way in which variation grows with the level, where the variation is the size of the year-to-year changes. When a series grows by a steady percentage, each year’s increase is a fixed share of the level, so the increases get larger as the level rises, just as the seasonal swings of a multiplicative series do. The result is a non-linear, multiplicative trend, and the Box-Cox transformation helps here too.</p>
+<p>Note that <code>GDP</code> in <code>global_economy</code> is in current US dollars, so its growth includes inflation as well as real growth.</p>
 <section id="a-worked-answer" class="level4">
 <h4 class="anchored" data-anchor-id="a-worked-answer">A worked answer</h4>
 <div class="cell">
