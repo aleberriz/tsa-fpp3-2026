@@ -679,7 +679,7 @@ S_i  =  S_unadj_i  <span class="hl">/</span>  mean(S_unadj)          <span class
     </ul>
     <p class="punch step wide">STL applies that idea repeatedly to pull the components apart. The size of the neighborhood is the one thing you control, and that is all the tuning there is.</p>
   </div>
-  <aside class="notes">Classical decomposition's trend is a moving average, which is a local <i>mean</i>. LOESS fits a local <i>line</i> instead. That one change is why STL follows a bend better than a moving average of comparable width, and why it can produce a trend estimate closer to the ends.<br><br>The full algorithm iterates between estimating the season and estimating the trend, refining each with the other held fixed, and it is more involved than anything you will be asked to reproduce. You are expected to know what the windows do and how to judge the result, not to implement it.</aside>
+  <aside class="notes">Classical decomposition's trend is a moving average, which is a local <i>mean</i>. LOESS fits a local <i>line</i> instead. That one change is why STL follows a bend better than a moving average of comparable width. A local line can also be fitted with neighbors on one side only, so STL gives a trend estimate at every point, the ends included.<br><br>The full algorithm iterates between estimating the season and estimating the trend, refining each with the other held fixed, and it is more involved than anything you will be asked to reproduce. You are expected to know what the windows do and how to judge the result, not to implement it.</aside>
 </section>
 
 <!-- ---------- 11 ---------- -->
