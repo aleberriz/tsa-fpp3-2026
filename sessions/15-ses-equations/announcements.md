@@ -2,7 +2,7 @@
 
 - **Homework due Sunday 15 November 2026, 23:59.** The Excel workbook `15_C`, filled in, plus the
   R check and two sentences.
-- **The common-errors note on this homework** goes up on Blackboard on Monday 16 November.
+- **The common-errors note on this homework** goes up on Blackboard after the due date.
 - **Session 16** is Monday 16 November.
 - **Office hours** for concrete questions: times on Blackboard.
 
