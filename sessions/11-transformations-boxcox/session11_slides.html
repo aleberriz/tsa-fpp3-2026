@@ -571,7 +571,7 @@ w<sub>t</sub> = (sign(y<sub>t</sub>) |y<sub>t</sub>|<sup>&lambda;</sup> &minus; 
 <section class="slide" data-section="3" data-title="Switch: four examples">
   <div class="inner">
     <a class="nb" href="11_A_TS_BoxCox_Transformation.html#examples" target="_blank" rel="noopener" title="Open the notebook at this section">11_A &rsaquo; Examples</a>
-    <p class="kicker">Now we compute</p>
+    <p class="kicker">Four worked examples &nbsp;&middot;&nbsp; in the notebook</p>
     <h1 class="sowhat wide">The same workflow gives a different answer for each of four series.</h1>
     <table class="traps compact">
       <tr><td class="os">US GDP</td><td>Exponential trend, slope grows with the level</td><td class="fix">&lambda; &asymp; 0.28: Box&ndash;Cox straightens the trend; a log is too strong</td></tr>
@@ -584,7 +584,7 @@ w<sub>t</sub> = (sign(y<sub>t</sub>) |y<sub>t</sub>|<sup>&lambda;</sup> &minus; 
       <li class="step"><b>Only one of the four is a textbook success.</b> That is typical of real data, and it is why the plot comes both before and after the number.</li>
       <li class="step"><b>The retail series comes back in Session 12</b> with a log in the model, and again in Session 13 with a test set.</li>
     </ul>
-    <p class="punch step wide">The notebook's answer sections for these four are open. Work through them in RStudio now; the homework is the two series that are not.</p>
+    <p class="punch step wide">The notebook works through all four, with code and plots. The homework applies the same four steps to two new series: imports from Japan and US housing starts.</p>
   </div>
   <aside class="notes">Which series need which code: GDP is <code>global_economy</code> filtered to the United States; the bulls are <code>aus_livestock</code> filtered to Victoria; tobacco is a column of <code>aus_production</code>; the retail series is <code>aus_retail</code> filtered on series ID <code>A3349767W</code>, the same series the decomposition homework used.<br><br>On GDP, a transformation addresses a different symptom from the funnel: a trend whose slope grows with the level. On the log scale a constant-percentage growth is a straight line, which the drift model of Session 8 can then follow.<br><br>Why 0.28 rather than a log for GDP: the notebook shows that the log over-corrects, bending the trend the other way. Box&ndash;Cox at 0.28 is the one place in the examples where the middle of the dial earns its keep.</aside>
 </section>
