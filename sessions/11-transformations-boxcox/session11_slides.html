@@ -525,11 +525,11 @@ w<sub>t</sub> = (sign(y<sub>t</sub>) |y<sub>t</sub>|<sup>&lambda;</sup> &minus; 
     <ul class="build">
       <li class="step"><b>The idea.</b> Cut the series into years, one seasonal period each, measure the level and the spread of each one, and choose the lambda for which the spread is as unrelated to the level as possible.</li>
       <li class="step"><b>Treat the output as a suggestion and check it against the plot.</b> For Australian gas it says 0.11: close to zero, so a plain log does almost the same job and keeps the units readable.</li>
-      <li class="step"><b>Always plot the result.</b> The number tells you the swings ought to be even now, and only the plot shows whether they actually are.</li>
+      <li class="step"><b>Always plot the result.</b> The number says the swings ought to be even now. The plot is a first check: it can show that the transformation failed, but it cannot prove that it worked. The residuals of the model you fit next, and its accuracy, are the later checks.</li>
     </ul>
     <p class="punch step wide">Guerrero's lambda is a helpful number, but it should not be trusted on its own.</p>
   </div>
-  <aside class="notes">The method is from Guerrero (1993). It splits the series into blocks of one seasonal period, computes the mean and the standard deviation of each block, and chooses the lambda that makes the ratio of standard deviation to mean, raised to a power that depends on lambda, as constant as possible across blocks. The picture on the slide is the intuition; the formula is not examined.<br><br><code>features()</code> is the same carrier as <code>ljung_box</code> in Session 9: one function, many features, each returning a row of numbers. <code>pull()</code> takes the one column you want out of that row.</aside>
+  <aside class="notes">The method is from V&iacute;ctor M. Guerrero, &ldquo;Time-series analysis supported by power transformations&rdquo;, <i>Journal of Forecasting</i>, 1993. It splits the series into blocks of one seasonal period, computes the mean and the standard deviation of each block, and chooses the lambda that makes the ratio of standard deviation to mean, raised to a power that depends on lambda, as constant as possible across blocks. The picture on the slide is the intuition; the formula is not examined.<br><br><code>features()</code> is the function you used in Session 9 for the Ljung&ndash;Box test, <code>features(.innov, ljung_box, lag = 8)</code>. You give it a column and a feature function, and it returns one row per series with the result. Today the feature function is <code>guerrero</code> instead of <code>ljung_box</code>. <code>pull()</code> takes the one column you want out of that row.</aside>
 </section>
 
 <section class="slide" data-section="2" data-title="The workflow">
@@ -543,11 +543,11 @@ w<sub>t</sub> = (sign(y<sub>t</sub>) |y<sub>t</sub>|<sup>&lambda;</sup> &minus; 
     <ul class="build">
       <li class="step"><b>A lambda near 1 means the transformation is not worth it.</b> The series would barely change and you would lose the ability to read the numbers.</li>
       <li class="step"><b>A lambda near 0 means you should take the log instead.</b> It gives nearly the same picture, and a log can be explained to anyone because changes become percentages.</li>
-      <li class="step"><b>In between, use the dial.</b> In all three cases, the final decision rests on the plot.</li>
+      <li class="step"><b>In between, use the dial.</b> In all three cases, plot the result before you go on.</li>
     </ul>
     <p class="punch step wide">When two transformations do about equally well, prefer the one you can explain.</p>
   </div>
-  <aside class="notes">"Close to" is a judgment, not a threshold. In the worked examples, 0.93 counts as close to 1 and both 0.08 and minus 0.04 count as close to 0, while 0.28 and 0.61 are in between. The final judge, as the notebook says, is the performance of the model fitted afterwards, which Sessions 13 and 14 measure.<br><br>The last box matters more than it looks. A transformation chosen by a number and never plotted is the most common way this goes wrong in homework, and the second example in the homework is built to catch it.</aside>
+  <aside class="notes">"Close to" is a judgment, not a threshold, because lambda is an estimate and moves with the data. For Australian gas, Guerrero gives 0.11 on the whole series, 0.03 on the data from 1970 and 0.31 on the data from 1983: its second digit is noise. Rounding to a value you can explain, such as 0 or 1, gives up very little. In the worked examples, 0.93 counts as close to 1 and both 0.08 and minus 0.04 count as close to 0, while 0.28 and 0.61 are in between. The final judge, as the notebook says, is the performance of the model fitted afterwards, which Sessions 13 and 14 measure.<br><br>The last box matters more than it looks. A transformation chosen by a number and never plotted is the most common way this goes wrong in homework, and the second example in the homework is built to catch it.</aside>
 </section>
 
 <section class="slide" data-section="2" data-title="When it cannot help">
