@@ -9,7 +9,7 @@
    Session 18 slides. Same self-contained shell as Sessions 01
    to 10: no fonts, scripts or images are fetched from the
    network, so this renders identically on a projector with no
-   internet. Sessions 11 to 19 add the "Part 2" skin at the end
+   internet. Sessions 11 to 19 add the dark-rail skin at the end
    of this stylesheet: the navigation rail goes dark, nothing
    else changes.
    ============================================================ */
@@ -373,7 +373,7 @@ body.ov-on #overview{display:block}
   .step{opacity:1 !important;transform:none !important}
   figure svg{max-height:32vh}
 }
-/* ---------------- Part 2 skin (Sessions 11 to 19) ----------------
+/* ---------------- Dark-rail skin (Sessions 11 to 19) ----------------
    After the midterm the rail inverts: dark slate instead of sand.
    Every slide, type size and color on the stage is unchanged, so the
    decks still read as one course; the rail says which half you are in. */
@@ -402,7 +402,7 @@ body.ov-on #overview{display:block}
 <nav id="rail">
   <div class="brand">
     <b>Time Series Analysis</b>
-    <span>Session 18 &middot; Part 2</span>
+    <span>Session 18</span>
   </div>
   <ul id="toc"></ul>
   <div class="foot">
@@ -439,7 +439,7 @@ body.ov-on #overview{display:block}
       <li class="step"><b>Holt&ndash;Winters keeps the same three pieces</b> but updates them one observation at a time, so it can forecast: a level, a slope, and an index for every quarter or month of the year.</li>
       <li class="step"><b>Three dials:</b> &alpha; for the level, &beta;* for the slope, and a new one, &gamma;, for the seasonal indices.</li>
     </ul>
-    <p class="punch step wide">Holt&ndash;Winters turns Part 1&#39;s decomposition into a forecasting machine.</p>
+    <p class="punch step wide">Holt&ndash;Winters turns Session 7&#39;s decomposition into a forecasting machine.</p>
   </div>
   <aside class="notes">m is the length of the season: 4 for quarterly data with a yearly pattern, 12 for monthly, 7 for daily data with a weekly pattern. Every seasonal term in today&#39;s equations looks back m steps.</aside>
 </section>
@@ -457,7 +457,7 @@ body.ov-on #overview{display:block}
       <li class="step"><b>Multiplicative:</b> the season scales the level, "Q1 is 16% above the level". The indices add up to about m over a year, 4 for quarterly data.</li>
       <li class="step"><b>The eye test is Session 5&#39;s:</b> if the envelope opens like a funnel, multiply. Alternatively, log the series first, as in Session 11, and add.</li>
     </ul>
-    <p class="punch step wide">It is the same choice as in Part 1, except that now the forecasts depend on it.</p>
+    <p class="punch step wide">It is the same choice as in Session 5, except that now the forecasts depend on it.</p>
   </div>
   <aside class="notes">Why the sums: an additive seasonal component is a deviation from the level, so over a full year the deviations cancel; a multiplicative one is a ratio to the level, so over a year the ratios average to one. Session 7&#39;s centering step enforces the same thing in a classical decomposition.</aside>
 </section>

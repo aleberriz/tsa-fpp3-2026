@@ -9,7 +9,7 @@
    Session 11 slides. Same self-contained shell as Sessions 01
    to 10: no fonts, scripts or images are fetched from the
    network, so this renders identically on a projector with no
-   internet. Sessions 11 to 19 add the "Part 2" skin at the end
+   internet. Sessions 11 to 19 add the dark-rail skin at the end
    of this stylesheet: the navigation rail goes dark, nothing
    else changes.
    ============================================================ */
@@ -373,7 +373,7 @@ body.ov-on #overview{display:block}
   .step{opacity:1 !important;transform:none !important}
   figure svg{max-height:32vh}
 }
-/* ---------------- Part 2 skin (Sessions 11 to 19) ----------------
+/* ---------------- Dark-rail skin (Sessions 11 to 19) ----------------
    After the midterm the rail inverts: dark slate instead of sand.
    Every slide, type size and color on the stage is unchanged, so the
    decks still read as one course; the rail says which half you are in. */
@@ -402,7 +402,7 @@ body.ov-on #overview{display:block}
 <nav id="rail">
   <div class="brand">
     <b>Time Series Analysis</b>
-    <span>Session 11 &middot; Part 2</span>
+    <span>Session 11</span>
   </div>
   <ul id="toc"></ul>
   <div class="foot">
@@ -429,7 +429,7 @@ body.ov-on #overview{display:block}
 <section class="slide" data-section="1" data-title="Where we are">
   <div class="inner">
     <p class="kicker">Where we are &nbsp;&middot;&nbsp; the second half of the course</p>
-    <h1 class="sowhat wide">Part 1 described a series and made first forecasts. Part 2 makes them trustworthy.</h1>
+    <h1 class="sowhat wide">Sessions 1 to 9 described a series and made first forecasts. Sessions 11 to 19 make them trustworthy.</h1>
     <figure>
       <svg viewBox="0 0 760 160" role="img" aria-label="A roadmap of Sessions 11 to 19 in three groups. Sessions 11 and 12 fix the spread and quote honest ranges. Sessions 13 and 14 measure the error. Sessions 15 to 19 build one model family end to end: simple exponential smoothing, its fitting from scratch, Holt and damped trend, Holt-Winters, and the ETS taxonomy with model selection. Session 11, today, is highlighted"><g font-family="SFMono-Regular,Menlo,monospace"><rect x="11" y="30" width="159" height="96" rx="6" fill="#B5471E" opacity=".07"/><rect x="11" y="30" width="159" height="96" rx="6" fill="none" stroke="#B5471E" stroke-width="1.6"/><text x="90.5" y="22" text-anchor="middle" fill="#B5471E" font-size="9.5" font-weight="700" >FIX THE SPREAD</text><rect x="179" y="30" width="159" height="96" rx="6" fill="#1F3A4D" opacity=".07"/><rect x="179" y="30" width="159" height="96" rx="6" fill="none" stroke="#1F3A4D" stroke-width="1.6"/><text x="258.5" y="22" text-anchor="middle" fill="#1F3A4D" font-size="9.5" font-weight="700" >MEASURE THE ERROR</text><rect x="347" y="30" width="393" height="96" rx="6" fill="#6B7F5E" opacity=".07"/><rect x="347" y="30" width="393" height="96" rx="6" fill="none" stroke="#6B7F5E" stroke-width="1.6"/><text x="543.5" y="22" text-anchor="middle" fill="#6B7F5E" font-size="9.5" font-weight="700" >BUILD ONE MODEL FAMILY, END TO END</text><rect x="16" y="44" width="71" height="66" rx="4" fill="#B5471E" stroke="#B5471E" stroke-width="2"/><text x="51.5" y="66" text-anchor="middle" fill="#FAF8F5" font-size="13" font-weight="700" >S11</text><text x="51.5" y="84" text-anchor="middle" fill="#FAF8F5" font-size="9" >Box&ndash;Cox</text><text x="51.5" y="97" text-anchor="middle" fill="#FAF8F5" font-size="9" ></text><rect x="94" y="44" width="71" height="66" rx="4" fill="#FAF8F5" stroke="#B5471E" stroke-width="1.2"/><text x="129.5" y="66" text-anchor="middle" fill="#B5471E" font-size="13" font-weight="700" >S12</text><text x="129.5" y="84" text-anchor="middle" fill="#161513" font-size="9" >Prediction</text><text x="129.5" y="97" text-anchor="middle" fill="#161513" font-size="9" >intervals</text><rect x="184" y="44" width="71" height="66" rx="4" fill="#FAF8F5" stroke="#1F3A4D" stroke-width="1.2"/><text x="219.5" y="66" text-anchor="middle" fill="#1F3A4D" font-size="13" font-weight="700" >S13</text><text x="219.5" y="84" text-anchor="middle" fill="#161513" font-size="9" >Train/test</text><text x="219.5" y="97" text-anchor="middle" fill="#161513" font-size="9" >accuracy</text><rect x="262" y="44" width="71" height="66" rx="4" fill="#FAF8F5" stroke="#1F3A4D" stroke-width="1.2"/><text x="297.5" y="66" text-anchor="middle" fill="#1F3A4D" font-size="13" font-weight="700" >S14</text><text x="297.5" y="84" text-anchor="middle" fill="#161513" font-size="9" >Cross-</text><text x="297.5" y="97" text-anchor="middle" fill="#161513" font-size="9" >validation</text><rect x="352" y="44" width="71" height="66" rx="4" fill="#FAF8F5" stroke="#6B7F5E" stroke-width="1.2"/><text x="387.5" y="66" text-anchor="middle" fill="#6B7F5E" font-size="13" font-weight="700" >S15</text><text x="387.5" y="84" text-anchor="middle" fill="#161513" font-size="9" >SES:</text><text x="387.5" y="97" text-anchor="middle" fill="#161513" font-size="9" >equations</text><rect x="430" y="44" width="71" height="66" rx="4" fill="#FAF8F5" stroke="#6B7F5E" stroke-width="1.2"/><text x="465.5" y="66" text-anchor="middle" fill="#6B7F5E" font-size="13" font-weight="700" >S16</text><text x="465.5" y="84" text-anchor="middle" fill="#161513" font-size="9" >SES</text><text x="465.5" y="97" text-anchor="middle" fill="#161513" font-size="9" >from scratch</text><rect x="508" y="44" width="71" height="66" rx="4" fill="#FAF8F5" stroke="#6B7F5E" stroke-width="1.2"/><text x="543.5" y="66" text-anchor="middle" fill="#6B7F5E" font-size="13" font-weight="700" >S17</text><text x="543.5" y="84" text-anchor="middle" fill="#161513" font-size="9" >Holt,</text><text x="543.5" y="97" text-anchor="middle" fill="#161513" font-size="9" >damped</text><rect x="586" y="44" width="71" height="66" rx="4" fill="#FAF8F5" stroke="#6B7F5E" stroke-width="1.2"/><text x="621.5" y="66" text-anchor="middle" fill="#6B7F5E" font-size="13" font-weight="700" >S18</text><text x="621.5" y="84" text-anchor="middle" fill="#161513" font-size="9" >Holt&ndash;</text><text x="621.5" y="97" text-anchor="middle" fill="#161513" font-size="9" >Winters</text><rect x="664" y="44" width="71" height="66" rx="4" fill="#FAF8F5" stroke="#6B7F5E" stroke-width="1.2"/><text x="699.5" y="66" text-anchor="middle" fill="#6B7F5E" font-size="13" font-weight="700" >S19</text><text x="699.5" y="84" text-anchor="middle" fill="#161513" font-size="9" >ETS,</text><text x="699.5" y="97" text-anchor="middle" fill="#161513" font-size="9" >selection</text><text x="380" y="148" text-anchor="middle" fill="#98928a" font-size="11" >every session from here is examined in the final</text></g></svg>
     </figure>
@@ -438,7 +438,7 @@ body.ov-on #overview{display:block}
       <li class="step"><b>Sessions 13 and 14 measure the error</b> on data the model has not seen, once and then many times.</li>
       <li class="step"><b>Sessions 15 to 19 build one model family end to end:</b> exponential smoothing, by hand first, then with <code>ETS()</code>.</li>
     </ul>
-    <p class="punch step wide">Part 2 builds on Part 1: every tool from Sessions 1 to 9 comes back, now applied to a fitted model rather than to the raw series.</p>
+    <p class="punch step wide">Every tool from Sessions 1 to 9 comes back, now applied to a fitted model rather than to the raw series.</p>
   </div>
   <aside class="notes">The three groups are also the three questions the final asks about any model: is the series on the right scale, how wide an interval is honest, and how large are the errors. The exponential smoothing block answers all three for one concrete family of models.<br><br>Group Assignment 2, released in Session 17, uses everything in this roadmap: residual diagnostics, accuracy metrics, cross-validation and the smoothing models.</aside>
 </section>
