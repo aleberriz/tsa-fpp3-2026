@@ -6,7 +6,7 @@
   Sunday 25 October.
 - **The common-errors note on this homework** goes up on Blackboard after the due date.
 - **Session 12** is Wednesday 21 October.
-- **Office hours** for concrete questions: times on Blackboard.
+- **Office hours** on request, for concrete questions: email aberrizbeitia@faculty.ie.edu.
 
 ## The midterm
 

@@ -7,6 +7,6 @@
   Concepción).
 - **The final exam, Session 20, is Monday 14 December 2026, 9:00–10:20.** It covers the whole
   course. The common-errors note on this homework goes up on Blackboard after the due date.
-- **Office hours** for concrete questions before the final: times on Blackboard.
+- **Office hours** on request before the final, for concrete questions: email aberrizbeitia@faculty.ie.edu.
 
 If a date here disagrees with Blackboard, Blackboard is the authority.

@@ -108,7 +108,7 @@ Plan for roughly 1.5 hours per session outside class, covering the pre-session r
 homework. The decomposition block (Sessions 5 to 7) and the weeks around each group assignment run
 heavier than that.
 
-Office hours are available to students who bring concrete questions; times are posted on Blackboard.
+Office hours are available on request to students who bring concrete questions; write to the address above.
 
 | Learning Activity | Weighting | Estimated hours |
 |---|---|---|

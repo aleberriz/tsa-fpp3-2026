@@ -15,7 +15,7 @@ is no question bank. Practicing on near-copies of the exam questions would train
 template, which is not the skill being tested. Redo the homework calculations by hand, check them
 against R, and you are prepared.
 
-Office hours are open to anyone who brings a concrete question; times on Blackboard.
+Office hours are open to anyone who brings a concrete question; email to arrange a time.
 
 > Students scoring below 3.5 / 10 on the final go to the retake, regardless of performance elsewhere.
 > See [`SYLLABUS.md`](../../SYLLABUS.md).

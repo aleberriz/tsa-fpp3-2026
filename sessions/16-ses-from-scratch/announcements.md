@@ -4,6 +4,6 @@
 - **The common-errors note on this homework** goes up on Blackboard after the due date.
 - **Session 17** is Monday 23 November. Group Assignment 2 is released that day; its file and data
   appear in the `assignments/` folder of the repo.
-- **Office hours** for concrete questions: times on Blackboard.
+- **Office hours** on request, for concrete questions: email aberrizbeitia@faculty.ie.edu.
 
 If a date here disagrees with Blackboard, Blackboard is the authority.

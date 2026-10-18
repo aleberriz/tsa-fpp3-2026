@@ -7,6 +7,6 @@
   short because Group Assignment 2 is open.
 - **The common-errors note on this homework** goes up on Blackboard after the due date.
 - **Session 18** is Wednesday 25 November.
-- **Office hours** for concrete questions: times on Blackboard.
+- **Office hours** on request, for concrete questions: email aberrizbeitia@faculty.ie.edu.
 
 If a date here disagrees with Blackboard, Blackboard is the authority.

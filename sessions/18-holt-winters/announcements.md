@@ -5,6 +5,6 @@
 - **The common-errors note on this homework** goes up on Blackboard after the due date.
 - **Before Session 19, read** `19_A_MLE_Informal_Intro.pdf` in the Session 19 folder. It is the
   estimation part of that session, and there is not time to cover it in full in class.
-- **Office hours** for concrete questions: times on Blackboard.
+- **Office hours** on request, for concrete questions: email aberrizbeitia@faculty.ie.edu.
 
 If a date here disagrees with Blackboard, Blackboard is the authority.

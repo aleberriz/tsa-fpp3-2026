@@ -6,6 +6,6 @@
   Sunday 25 October.
 - **The common-errors note on this homework** goes up on Blackboard after the due date.
 - **Session 13** is Monday 26 October. There is no session on Wednesday 28 October.
-- **Office hours** for concrete questions: times on Blackboard.
+- **Office hours** on request, for concrete questions: email aberrizbeitia@faculty.ie.edu.
 
 If a date here disagrees with Blackboard, Blackboard is the authority.
