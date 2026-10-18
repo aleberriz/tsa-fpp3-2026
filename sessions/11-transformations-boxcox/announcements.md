@@ -1,10 +1,10 @@
 # Session 11 announcements
 
 - **Homework due Sunday 25 October 2026, 23:59.** Short on purpose: Group Assignment 1 is due
-  the same day.
-- **Group Assignment 1 is due Sunday 25 October 2026, 23:59.**
-- **The common-errors note on this homework** goes up on Blackboard on Monday 26 October, together
-  with the Session 12 homework's.
+  five days later.
+- **Group Assignment 1 is now due Friday 30 October 2026, 23:59.** The deadline has moved from
+  Sunday 25 October.
+- **The common-errors note on this homework** goes up on Blackboard after the due date.
 - **Session 12** is Wednesday 21 October.
 - **Office hours** for concrete questions: times on Blackboard.
 
@@ -30,6 +30,5 @@
 - **We rework the algorithm on a new table at the start of Session 11,** with
   [`session11_midterm_recap.html`](session11_midterm_recap.html). It is the same algorithm as
   Group Assignment 1, and the final covers the whole course, Part 1 included.
-- **A two-minute anonymous poll on Menti** follows the recap: how the course is going so far.
 
 If a date here disagrees with Blackboard, Blackboard is the authority.
