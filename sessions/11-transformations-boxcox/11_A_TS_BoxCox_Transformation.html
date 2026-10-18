@@ -2390,14 +2390,8 @@ window.Quarto = {
   </ul></li>
   <li><a href="#homework" id="toc-homework" class="nav-link" data-scroll-target="#homework">Homework</a>
   <ul>
-  <li><a href="#exercise-1" id="toc-exercise-1" class="nav-link" data-scroll-target="#exercise-1">Exercise 1 - Australian imports from Japan</a>
-  <ul>
-  <li><a href="#well-go-over-what-to-bear-in-mind-for-this-exercise-in-the-live-session." id="toc-well-go-over-what-to-bear-in-mind-for-this-exercise-in-the-live-session." class="nav-link" data-scroll-target="#well-go-over-what-to-bear-in-mind-for-this-exercise-in-the-live-session.">We’ll go over what to bear in mind for this exercise in the live session.</a></li>
-  </ul></li>
-  <li><a href="#exercise-2" id="toc-exercise-2" class="nav-link" data-scroll-target="#exercise-2">Exercise 2 - Private housing units started, USA</a>
-  <ul>
-  <li><a href="#well-go-over-what-to-bear-in-mind-for-this-exercise-in-the-live-session.-1" id="toc-well-go-over-what-to-bear-in-mind-for-this-exercise-in-the-live-session.-1" class="nav-link" data-scroll-target="#well-go-over-what-to-bear-in-mind-for-this-exercise-in-the-live-session.-1">We’ll go over what to bear in mind for this exercise in the live session.</a></li>
-  </ul></li>
+  <li><a href="#exercise-1" id="toc-exercise-1" class="nav-link" data-scroll-target="#exercise-1">Exercise 1 - Australian imports from Japan</a></li>
+  <li><a href="#exercise-2" id="toc-exercise-2" class="nav-link" data-scroll-target="#exercise-2">Exercise 2 - Private housing units started, USA</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -2436,6 +2430,7 @@ window.Quarto = {
 <h1>References</h1>
 <ol type="1">
 <li>Hyndman, R.J., &amp; Athanasopoulos, G., 2021. Forecasting: principles and practice. 3rd edition.</li>
+<li>Guerrero, V.M., 1993. Time-series analysis supported by power transformations. Journal of Forecasting, 12(1).</li>
 </ol>
 </section>
 <section id="note" class="level1">
@@ -2447,7 +2442,7 @@ window.Quarto = {
 <p>Transformations are useful in two situations:</p>
 <ol type="1">
 <li>When the <strong>spread of the series grows or shrinks with its level</strong>. That is, when the series is multiplicative to some degree.</li>
-<li>When the series follows an exponential trend. A transformation can make the trend linear, at the cost of interpretability.</li>
+<li>When the series follows an exponential trend. A transformation can make the trend linear. Unless the transformation is a log, this costs some interpretability.</li>
 </ol>
 <p>Notation:</p>
 <ul>
@@ -2547,7 +2542,7 @@ window.Quarto = {
 <li><span class="math inline">\(\lambda = 0\)</span>: transformation equivalent to a natural logarithm.</li>
 <li><span class="math inline">\(\lambda = 1/2\)</span>: Square root + scaling transformation</li>
 <li><span class="math inline">\(\lambda = 1/3\)</span>: Cubic root + scaling transformation</li>
-<li><span class="math inline">\(\lambda = -1\)</span>: Inverse transformation (+ 1)</li>
+<li><span class="math inline">\(\lambda = -1\)</span>: Inverse transformation, with the sign flipped so that the order of the values is kept (<span class="math inline">\(w_t = 1 - 1/y_t\)</span>)</li>
 </ul></li>
 <li><strong>Considerations when using this transformation</strong>:
 <ul>
@@ -2560,7 +2555,7 @@ window.Quarto = {
 </ul>
 <section id="guerrero" class="level3">
 <h3 class="anchored" data-anchor-id="guerrero">Guerrero feature to pick a value for the parameter lambda</h3>
-<p>The Guerrero feature suggests the value of lambda whose Box-Cox transformation best makes the scheme of the series additive. It does not work every time, but in most cases it gives a good value for making the scheme additive.</p>
+<p>The Guerrero feature (reference 2) suggests the value of lambda whose Box-Cox transformation best makes the scheme of the series additive. It does not work every time, but in most cases it gives a good value for making the scheme additive.</p>
 <p>Let us look at the gas production in Australia:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>aus_production <span class="sc">|&gt;</span> </span>
@@ -2627,12 +2622,12 @@ window.Quarto = {
 <li>If the value of lambda is very close to 0, apply a <span class="math inline">\(log()\)</span> transformation instead, since its effect will be very similar and it preserves interpretability.</li>
 <li>If the value of lambda is neither close to 0 nor close to 1, apply the Box-Cox transformation.</li>
 </ol>
-<p>In the end, always check the result by plotting the data. A quantitative check such as a moving standard deviation (not covered in this course) can also help you judge whether the spread still grows with the level after the transformation.</p>
+<p>In the end, always check the result by plotting the data. The plot can show that a transformation failed, but it cannot prove that it worked: the residuals of the model fitted afterwards (Session 9) and its accuracy (Sessions 13 and 14) are the later checks. A quantitative check such as a moving standard deviation (not covered in this course) can also help you judge whether the spread still grows with the level after the transformation.</p>
 <p>The examples and homework at the end of the notebook will bring clarity to this process.</p>
 </section>
 <section id="caveat" class="level3">
 <h3 class="anchored" data-anchor-id="caveat">Caveat of Box-Cox-like transformations</h3>
-<p>Power transformations, Box-Cox included, require the spread of the series to change in proportion to its level.</p>
+<p>Power transformations, Box-Cox included, require the size of the swings to depend on the level of the series, and on nothing else. The log fits swings that grow in proportion to the level; a lambda below 0 fits swings that grow faster than the level, and a lambda between 0 and 1 fits swings that grow more slowly.</p>
 <p>Let us look at data about the production of gas in Canada:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>canadian_gas <span class="sc">|&gt;</span></span>
@@ -2650,13 +2645,14 @@ window.Quarto = {
 </div>
 </div>
 <ul>
-<li>The variation of the series is not proportional to the amount of gas produced in Canada.
+<li>The size of the swings does not follow the amount of gas produced in Canada.
 <ul>
 <li><strong>For small and large production levels:</strong> small variations in the seasonal pattern.</li>
 <li><strong>For moderate production levels</strong> (between 1975 and 1990): the variation in the seasonal pattern is large.</li>
 </ul></li>
 </ul>
 <p>In this case the Box-Cox transformation would not do much to make the spread of the seasonal swings independent of the level of the series.</p>
+<p>What helps with a series like this is a model whose seasonal component can change size over time. This course has two: STL with a short season window (Session 7), followed by <code>decomposition_model()</code> to forecast (Session 8), and the Holt-Winters and ETS models of Sessions 18 and 19, whose seasonal indices are updated every period.</p>
 </section>
 </section>
 <section id="advanced" class="level2">
@@ -2680,9 +2676,8 @@ window.Quarto = {
 <h1>Examples</h1>
 <p>For each of the following series, plot the data. If a transformation seems appropriate, apply it and describe the effect.</p>
 <ul>
-<li>United states GDP from <code>global economy</code></li>
+<li>United States GDP from <code>global_economy</code></li>
 <li>Slaughter of Victorian “Bulls, bullocks and steers” in <code>aus_livestock</code></li>
-<li>Victorian Electricity Demand from <code>vic_elec</code></li>
 <li>Tobacco from aus_production</li>
 <li>The following retail series:</li>
 </ul>
@@ -2983,8 +2978,19 @@ Removed 24 rows containing missing values or values outside the scale range
 <section id="homework" class="level1">
 <h1>Homework</h1>
 <p><strong>NOTE:</strong> These exercises need two datasets, <code>australian_imports_japan.csv</code> and <code>private_housing_US.csv</code>. Both are in the <code>data/</code> folder at the root of the course repo, and the paths below reach them from this session’s folder. You also need <code>readr</code>, for <code>read_csv()</code>.</p>
-<p>For each series, judge whether one of the transformations covered in class makes sense.</p>
-<p>If so, say which transformation you chose and justify the choice.</p>
+<p>For each series:</p>
+<ol type="1">
+<li>Plot the series and say, in one sentence, whether the spread grows with the level.</li>
+<li>Compute the Guerrero lambda.</li>
+<li>Decide: no transformation, a log, or Box-Cox with the suggested lambda. Say which you chose and why, in two or three sentences. “No transformation”, with a reason, is a complete answer.</li>
+<li>Plot the transformed series next to the original, and say whether the transformation did what you wanted.</li>
+</ol>
+<p>Then, for Exercise 1 only, work by hand with a calculator on the last two months of the series (1993 Sep and 1993 Oct). Write each calculation out, then check it in R:</p>
+<ul>
+<li>The natural log of each value, and 100 times their difference. Compare it with the actual percentage change. In one sentence: why are the two close but not equal?</li>
+<li>The Box-Cox value of the October observation with <span class="math inline">\(\lambda = 0.05\)</span>. Check it with <code>box_cox(value, 0.05)</code>.</li>
+</ul>
+<p>The two series behave differently. Judge the plot before you trust the lambda.</p>
 <section id="exercise-1" class="level2">
 <h2 class="anchored" data-anchor-id="exercise-1">Exercise 1 - Australian imports from Japan</h2>
 <p>The code below imports the data from the file <em>australian_imports_japan.csv</em>, which is in the <code>data/</code> folder at the repository root.</p>
@@ -3007,13 +3013,10 @@ Removed 24 rows containing missing values or values outside the scale range
 </div>
 </div>
 </div>
-<section id="well-go-over-what-to-bear-in-mind-for-this-exercise-in-the-live-session." class="level3">
-<h3 class="anchored" data-anchor-id="well-go-over-what-to-bear-in-mind-for-this-exercise-in-the-live-session.">We’ll go over what to bear in mind for this exercise in the live session.</h3>
-</section>
 </section>
 <section id="exercise-2" class="level2">
 <h2 class="anchored" data-anchor-id="exercise-2">Exercise 2 - Private housing units started, USA</h2>
-<p>Note: this series has an irregular seasonal pattern. Judge the transformation first; the seasonality is discussed in class.</p>
+<p>Note: this series has an irregular seasonal pattern. The question is only about the transformation; the seasonal pattern is not part of the homework.</p>
 <p>The code below imports the data from the file <em>private_housing_US.csv</em>, which is in the <code>data/</code> folder at the repository root.</p>
 <p>The following is a plot of the data.</p>
 <div class="cell">
@@ -3035,9 +3038,6 @@ Removed 24 rows containing missing values or values outside the scale range
 </div>
 </div>
 </div>
-<section id="well-go-over-what-to-bear-in-mind-for-this-exercise-in-the-live-session.-1" class="level3">
-<h3 class="anchored" data-anchor-id="well-go-over-what-to-bear-in-mind-for-this-exercise-in-the-live-session.-1">We’ll go over what to bear in mind for this exercise in the live session.</h3>
-</section>
 </section>
 </section>
 
