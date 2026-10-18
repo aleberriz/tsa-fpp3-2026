@@ -436,7 +436,7 @@ body.ov-on #overview{display:block}
     <ul class="build wide">
       <li class="step"><b>You have seen this diagram.</b> Session 7 drew the same four steps from top to bottom, and Session 5 introduced the seasonally adjusted series.</li>
       <li class="step"><b>The trend and the detrending went well on the midterm.</b> Most of the lost points were in the averaging, the centering and the seasonally adjusted series, the boxes in orange.</li>
-      <li class="step"><b>In Session 7, R did the arithmetic.</b> Today we do it on paper, with a calculator, as the exam did.</li>
+      <li class="step"><b>Session 7 showed these steps as formulas, and R ran them on real data.</b> Today we work the numbers by hand on a small table, as the exam did.</li>
     </ul>
   </div>
   <aside class="notes">This is the additive scheme. The multiplicative scheme follows the same four steps with division in place of subtraction, and its seasonal values are scaled to average 1 instead of summing to zero. Notebook <code>07_D</code> covers both.</aside>
@@ -445,12 +445,12 @@ body.ov-on #overview{display:block}
 <section class="slide" data-section="2" data-title="Trend and detrend">
   <div class="inner">
     <p class="kicker">Trend, then detrend</p>
-    <h1 class="sowhat wide">Subtract the trend wherever there is one.</h1>
+    <h1 class="sowhat wide">Compute the trend, then subtract it from y.</h1>
     <div class="split" style="align-items:start">
       <table class="traps compact" style="text-align:right;margin-top:1.2rem"><tr><td class="fix" style="text-align:left">quarter</td><td class="fix">t</td><td class="fix">y<sub>t</sub></td><td class="fix">T<sub>t</sub></td><td class="fix">D<sub>t</sub> = y<sub>t</sub> &minus; T<sub>t</sub></td></tr><tr><td class="os" style="text-transform:none;text-align:left">2019 Q1</td><td>1</td><td>30</td><td><span style="color:var(--faint)">&middot;</span></td><td><span style="color:var(--faint)">&middot;</span></td></tr><tr><td class="os" style="text-transform:none;text-align:left">2019 Q2</td><td>2</td><td>24</td><td><span style="color:var(--faint)">&middot;</span></td><td><span style="color:var(--faint)">&middot;</span></td></tr><tr><td class="os" style="text-transform:none;text-align:left">2019 Q3</td><td>3</td><td>19</td><td>28</td><td>&minus;9</td></tr><tr><td class="os" style="text-transform:none;text-align:left">2019 Q4</td><td>4</td><td>35</td><td>29.5</td><td>5.5</td></tr><tr><td class="os" style="text-transform:none;text-align:left">2020 Q1</td><td style="color:var(--terra);font-weight:700">5</td><td style="color:var(--terra);font-weight:700">38</td><td style="color:var(--terra);font-weight:700">30.5</td><td style="color:var(--terra);font-weight:700">7.5</td></tr><tr><td class="os" style="text-transform:none;text-align:left">2020 Q2</td><td>6</td><td>28</td><td>32</td><td>&minus;4</td></tr><tr><td class="os" style="text-transform:none;text-align:left">2020 Q3</td><td>7</td><td>23</td><td>34</td><td>&minus;11</td></tr><tr><td class="os" style="text-transform:none;text-align:left">2020 Q4</td><td>8</td><td>43</td><td>36.5</td><td>6.5</td></tr><tr><td class="os" style="text-transform:none;text-align:left">2021 Q1</td><td>9</td><td>46</td><td>39</td><td>7</td></tr><tr><td class="os" style="text-transform:none;text-align:left">2021 Q2</td><td>10</td><td>40</td><td>40.5</td><td>&minus;0.5</td></tr><tr><td class="os" style="text-transform:none;text-align:left">2021 Q3</td><td>11</td><td>31</td><td><span style="color:var(--faint)">&middot;</span></td><td><span style="color:var(--faint)">&middot;</span></td></tr><tr><td class="os" style="text-transform:none;text-align:left">2021 Q4</td><td>12</td><td>47</td><td><span style="color:var(--faint)">&middot;</span></td><td><span style="color:var(--faint)">&middot;</span></td></tr></table>
       <ul class="build">
         <li class="step"><b>The trend T is a 2&#215;4-MA.</b> A 4-MA is centered between two quarters, so we average two neighboring 4-MAs to center the trend on a quarter. Each trend value uses two quarters on each side of t, so the first two and the last two quarters have none.</li>
-        <li class="step"><b>Detrend wherever T exists.</b> At t = 5, D = 38 &minus; 30.5 = 7.5. That leaves eight detrended values, two for each quarter.</li>
+        <li class="step"><b>Detrend: D = y &minus; T.</b> At t = 5, D = 38 &minus; 30.5 = 7.5. The quarters with no trend have no D either, which leaves eight values, two for each quarter.</li>
         <li class="step"><b>One detrended value is not the seasonal component.</b> It holds one year&#39;s seasonal effect plus that year&#39;s noise. Averaging by quarter removes most of the noise.</li>
       </ul>
     </div>
