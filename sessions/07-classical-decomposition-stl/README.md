@@ -20,7 +20,7 @@ this term).
 **Outcome:** Student decomposes a series both ways, interprets every component, and knows when to
 prefer STL.
 
-**→ Group Assignment 1 launches** — due **Sunday 25 October 2026, 23:59**. See
+**→ Group Assignment 1 launches** — due **Friday 30 October 2026, 23:59** (moved from Sunday 25 October). See
 [`assignments/`](../../assignments/).
 
 > **Part 3 of 3.** Sessions 5, 6 and 7 are one topic, time series decomposition. Session 5 chose

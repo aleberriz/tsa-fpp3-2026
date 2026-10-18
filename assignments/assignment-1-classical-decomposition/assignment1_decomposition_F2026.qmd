@@ -5,9 +5,9 @@ editor: source
 ---
 
 **Released:** Session 7, Monday 28 September 2026.
-**Due:** Sunday 25 October 2026, 23:59, on Blackboard.
+**Due:** Friday 30 October 2026, 23:59, on Blackboard (moved from Sunday 25 October).
 
-Four weeks. The deadline falls after the midterm on purpose: revising for the exam and building a
+Just over four weeks. The deadline falls after the midterm on purpose: revising for the exam and building a
 decomposition from scratch are different kinds of work, and they should not compete for the same week.
 
 This is group work. It receives detailed written feedback, unlike the weekly homework.
