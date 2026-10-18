@@ -514,7 +514,7 @@ body.ov-on #overview{display:block}
     <h1 class="sowhat wide">If the trend is missing at the ends, it is classical. STL has no gaps.</h1>
     <div class="cards">
       <div class="card"><h3>Classical</h3><p>The trend is a moving average, which needs neighbors on both sides, so it is missing at the start and the end of the series. The seasonal pattern is the same every year. An outlier enters every moving average whose window covers it, so it spreads into several trend values.</p></div>
-      <div class="card terra"><h3>STL</h3><p>The trend comes from LOESS, so every point has one, the ends included. The seasonal pattern can change slowly from year to year, and a robust option keeps outliers in the remainder. In exchange, you choose two windows by hand.</p></div>
+      <div class="card terra"><h3>STL</h3><p>The trend comes from LOESS, so every point has one, the ends included. The seasonal pattern can change from year to year, and the season window controls how fast: the smaller the window, the faster it changes. A robust option keeps outliers in the remainder. In exchange, you choose the trend and season windows by hand.</p></div>
     </div>
     <ul class="build wide">
       <li class="step"><b>Both methods split y into trend, season and remainder, but they estimate the parts differently.</b> The midterm asked which property belongs to which method.</li>
