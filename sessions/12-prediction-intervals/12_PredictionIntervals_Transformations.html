@@ -2882,12 +2882,19 @@ window.Quarto = {
 <li>in other words, <span class="math inline">\(k\)</span> is the number of complete seasonal periods in the forecast prior to time <span class="math inline">\(T+h\)</span></li>
 </ul></li>
 </ul>
+<p>The mean method is the exception: its formula has no <span class="math inline">\(h\)</span> in it, so its interval has the same width at every horizon, slightly wider than the one-step <span class="math inline">\(\hat\sigma\)</span>.</p>
 <p>For other models, the formulas become more complex.</p>
 </section>
 <section id="bootstrap" class="level4">
 <h4 class="anchored" data-anchor-id="bootstrap">A more general approach: bootstrapped residuals</h4>
-<p>The prediction intervals returned by the <code>fable</code> package can be trusted as long as the residuals are uncorrelated and normal, with constant variance.</p>
-<p>When normality is not a reasonable assumption, we may resort to <a href="https://otexts.com/fpp3/prediction-intervals.html#prediction-intervals-from-bootstrapped-residuals"><strong>bootstrapping</strong></a>. It simulates many possible futures by adding residuals drawn at random from the model’s own past residuals, and reads the interval off the percentiles of the simulated values. This assumes <strong>uncorrelated residuals with constant variance</strong>, but not normal ones.</p>
+<p>The prediction intervals returned by the <code>fable</code> package can be trusted when the residuals pass the four checks of residual diagnostics (Session 9). Each failure does something different to the interval:</p>
+<ol type="1">
+<li><strong>No autocorrelation.</strong> If it fails, the model has left predictable structure behind, and the interval understates how wrong the forecast will be.</li>
+<li><strong>Zero mean.</strong> If it fails, the forecasts are biased and the interval is centered in the wrong place. Adding the mean of the residuals to every forecast fixes both.</li>
+<li><strong>Constant variance.</strong> If it fails, a single <span class="math inline">\(\hat\sigma\)</span> is too wide in calm stretches of the series and too narrow in volatile ones.</li>
+<li><strong>Normality.</strong> If it fails, the multiplier <span class="math inline">\(c\)</span> from the normal table is wrong, and a 95% interval no longer covers 95%.</li>
+</ol>
+<p>When normality (property 4) is not a reasonable assumption, we may resort to <a href="https://otexts.com/fpp3/prediction-intervals.html#prediction-intervals-from-bootstrapped-residuals"><strong>bootstrapping</strong></a>. It simulates many possible futures by adding residuals drawn at random from the model’s own past residuals, and reads the interval off the percentiles of the simulated values. This assumes <strong>uncorrelated residuals with constant variance</strong>, but not normal ones.</p>
 </section>
 </section>
 <section id="with-fable" class="level3">
@@ -2932,20 +2939,21 @@ window.Quarto = {
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">forecast</span>(<span class="at">h =</span> horiz)</span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>fc_hilo <span class="ot">&lt;-</span> fc <span class="sc">|&gt;</span> <span class="fu">hilo</span>()</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>fc_hilo</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Show the columns that matter here: the horizon, the point forecast and the two intervals</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>fc_hilo <span class="sc">|&gt;</span> <span class="fu">select</span>(day, .mean, <span class="st">`</span><span class="at">80%</span><span class="st">`</span>, <span class="st">`</span><span class="at">95%</span><span class="st">`</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tsibble: 5 x 7 [1]
-# Key:       Symbol, .model [1]
-  Symbol .model         day
-  &lt;chr&gt;  &lt;chr&gt;        &lt;dbl&gt;
-1 GOOG   NAIVE(Close)   253
-2 GOOG   NAIVE(Close)   254
-3 GOOG   NAIVE(Close)   255
-4 GOOG   NAIVE(Close)   256
-5 GOOG   NAIVE(Close)   257
-# ℹ 4 more variables: Close &lt;dist&gt;, .mean &lt;dbl&gt;, `80%` &lt;hilo&gt;, `95%` &lt;hilo&gt;</code></pre>
+<pre><code># A tsibble: 5 x 4 [1]
+    day .mean                  `80%`                  `95%`
+  &lt;dbl&gt; &lt;dbl&gt;                 &lt;hilo&gt;                 &lt;hilo&gt;
+1   253  759. [744.5400, 773.2200]80 [736.9488, 780.8112]95
+2   254  759. [738.6001, 779.1599]80 [727.8646, 789.8954]95
+3   255  759. [734.0423, 783.7177]80 [720.8941, 796.8659]95
+4   256  759. [730.1999, 787.5601]80 [715.0176, 802.7424]95
+5   257  759. [726.8147, 790.9453]80 [709.8404, 807.9196]95</code></pre>
 </div>
 </div>
+<p><code>fc_hilo</code> has seven columns: the keys <code>Symbol</code> and <code>.model</code>, the index <code>day</code>, the forecast distribution <code>Close</code>, its mean <code>.mean</code>, and the two intervals. Printed whole, it is wider than the console, so R shows the columns that fit and lists the rest underneath the table (“2 more variables: …”). Selecting the columns you need avoids that.</p>
 </section>
 <section id="inspecting-the-prediction-intervals" class="level4">
 <h4 class="anchored" data-anchor-id="inspecting-the-prediction-intervals">Inspecting the prediction intervals</h4>
@@ -3071,6 +3079,7 @@ window.Quarto = {
 5 758.88 25.02067</code></pre>
 </div>
 </div>
+<p>The column <code>sigma</code> is <span class="math inline">\(\hat\sigma_h\)</span>, the standard deviation of the forecast distribution at each horizon. At <span class="math inline">\(h = 1\)</span> it is 11.19, the standard deviation of the residuals, computed by hand in the next section. At <span class="math inline">\(h = 2\)</span> it is 15.82, which is <span class="math inline">\(11.19 \times \sqrt{2}\)</span>: the naive formula <span class="math inline">\(\hat\sigma_h = \hat\sigma\sqrt{h}\)</span> from the table above.</p>
 </section>
 <section id="manual-check" class="level4">
 <h4 class="anchored" data-anchor-id="manual-check">Check: manual computation of a prediction interval vs <code>hilo()</code></h4>
@@ -3115,6 +3124,7 @@ window.Quarto = {
 <pre><code>[1] TRUE</code></pre>
 </div>
 </div>
+<p>So <span class="math inline">\(\hat\sigma = \sqrt{31{,}426.9 / 251} = \sqrt{125.21} = 11.19\)</span>, the <code>sigma</code> that <code>parameters()</code> reported at <span class="math inline">\(h = 1\)</span>.</p>
 <p>With this we can compute the prediction interval around the point forecast (the mean of the forecast distribution), applying the formula:</p>
 <p><span class="math display">\[
   \hat{y}_{T+h|T} \pm c \hat\sigma_h,
@@ -3160,7 +3170,7 @@ window.Quarto = {
 <pre><code>[1] TRUE</code></pre>
 </div>
 </div>
-<p>To compute intervals beyond a horizon of 1, we need an estimate of the standard deviation of the forecast distribution at that horizon. As noted earlier, explicit formulas exist for the four benchmark methods: mean, naïve, seasonal naïve and drift. More complex methods have no such simple formula, but each has its own way of computing it. As long as the residuals are uncorrelated and normal, with constant variance, the intervals <code>fable</code> returns can be trusted.</p>
+<p>To compute intervals beyond a horizon of 1, we need an estimate of the standard deviation of the forecast distribution at that horizon. As noted earlier, explicit formulas exist for the four benchmark methods: mean, naïve, seasonal naïve and drift. More complex methods have no such simple formula, but each has its own way of computing it. As long as the residuals pass the four checks listed above, the intervals <code>fable</code> returns can be trusted.</p>
 <p>Prediction intervals can also be computed from bootstrapped residuals, as noted earlier. That assumes uncorrelated residuals with constant variance, but not normal ones.</p>
 </section>
 </section>
@@ -3323,33 +3333,30 @@ window.Quarto = {
 <li><code>fc1</code>, from model 1. It returns forecasts on the transformed scale, because the model works on the transformed variable directly.</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(fc1, <span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(fc1, <span class="dv">4</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(year, log_eggs, .mean)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A fable: 4 x 4 [1Y]
-# Key:     .model [1]
-  .model  year      log_eggs
-  &lt;chr&gt;  &lt;dbl&gt;        &lt;dist&gt;
-1 drift   1994 N(4.1, 0.018)
-2 drift   1995 N(4.1, 0.036)
-3 drift   1996 N(4.1, 0.055)
-4 drift   1997 N(4.1, 0.074)
-# ℹ 1 more variable: .mean &lt;dbl&gt;</code></pre>
+<pre><code># A fable: 4 x 3 [1Y]
+   year      log_eggs .mean
+  &lt;dbl&gt;        &lt;dist&gt; &lt;dbl&gt;
+1  1994 N(4.1, 0.018)  4.12
+2  1995 N(4.1, 0.036)  4.10
+3  1996 N(4.1, 0.055)  4.08
+4  1997 N(4.1, 0.074)  4.07</code></pre>
 </div>
 </div>
 <ul>
 <li><code>fc2</code>, from model 2. <code>fable</code> knows that model 2 has a transformation, so it back-transforms to the original scale and returns <strong>bias-adjusted forecasts</strong>: the column <code>.mean</code> is the mean of the back-transformed forecast distribution.</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(fc2, <span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(fc2, <span class="dv">4</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(year, eggs, .mean)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A fable: 4 x 4 [1Y]
-# Key:     .model [1]
-  .model                   year             eggs .mean
-  &lt;chr&gt;                   &lt;dbl&gt;           &lt;dist&gt; &lt;dbl&gt;
-1 RW(log(eggs) ~ drift())  1994 t(N(4.1, 0.018))  61.8
-2 RW(log(eggs) ~ drift())  1995 t(N(4.1, 0.036))  61.4
-3 RW(log(eggs) ~ drift())  1996 t(N(4.1, 0.055))  61.0
-4 RW(log(eggs) ~ drift())  1997 t(N(4.1, 0.074))  60.6</code></pre>
+<pre><code># A fable: 4 x 3 [1Y]
+   year             eggs .mean
+  &lt;dbl&gt;           &lt;dist&gt; &lt;dbl&gt;
+1  1994 t(N(4.1, 0.018))  61.8
+2  1995 t(N(4.1, 0.036))  61.4
+3  1996 t(N(4.1, 0.055))  61.0
+4  1997 t(N(4.1, 0.074))  60.6</code></pre>
 </div>
 </div>
 </section>

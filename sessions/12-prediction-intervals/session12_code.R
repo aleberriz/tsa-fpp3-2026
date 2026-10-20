@@ -31,7 +31,9 @@ fc <- fit |>
         forecast(h = horiz)
 
 fc_hilo <- fc |> hilo()
-fc_hilo
+
+# Show the columns that matter here: the horizon, the point forecast and the two intervals
+fc_hilo |> select(day, .mean, `80%`, `95%`)
 
 # Vector of 80% prediction intervals
 pints_80 <- fc_hilo |> pull(`80%`)
@@ -154,9 +156,9 @@ fig2 <- fc2 |>
   ) &
   theme(legend.position = "bottom")
 
-head(fc1, 4)
+head(fc1, 4) |> select(year, log_eggs, .mean)
 
-head(fc2, 4)
+head(fc2, 4) |> select(year, eggs, .mean)
 
 # Lower and upper bounds of the 80% and 95% prediction intervals
 # on the transformed scale
