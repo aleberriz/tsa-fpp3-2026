@@ -11,7 +11,7 @@ library(patchwork) # to place two plots side by side with p1 + p2
 ### Computing prediction intervals with the fable package ----
 google_stock <- gafa_stock |>
   filter(Symbol == "GOOG", year(Date) >= 2015) |>
-  
+
   # Create regularly spaced time index `day`
   # since trading days are not evenly distributed.
   mutate(day = row_number()) |>
@@ -22,14 +22,7 @@ google_2015 <- google_stock |> filter(year(Date) == 2015) |>
 
 head(google_2015)
 
-horiz = 5
-
-google_stock <- gafa_stock |>
-  filter(Symbol == "GOOG", year(Date) >= 2015) |>
-  mutate(day = row_number()) |>
-  update_tsibble(index = day, regular = TRUE)
-
-google_2015 <- google_stock |> filter(year(Date) == 2015)
+horiz <- 5
 
 fit <- google_2015 |>
         model(NAIVE(Close))
@@ -48,23 +41,26 @@ pints_80[1]$lower # Lower bound of the prediction interval
 pints_80[1]$upper # Upper bound of the prediction interval
 pints_80[1]$level # Coverage level
 
-fc_hilo <- fc_hilo |> 
+fc_hilo <- fc_hilo |>
   unpack_hilo(c(`80%`, `95%`))
 
 fc_hilo |>
-  select(day, .mean, `80%_upper`, `80%_lower`, `95%_lower`, `95%_upper`)
+  select(day, .mean, `80%_lower`, `80%_upper`, `95%_lower`, `95%_upper`)
 
-# Compute the midpoints of the prediction intervals
+# Compute the midpoints of the 95% prediction intervals
 midpoints <- fc_hilo |>
-  mutate(midpoints = (`95%_lower` + `95%_upper`)*0.5) |> # Compute the midpoints of the 95% intervals
+  mutate(midpoints = (`95%_lower` + `95%_upper`) / 2) |>
   pull(midpoints)
 
 # Check that the column .mean is the midpoint of the intervals
-all.equal(midpoints, fc_hilo$`.mean`)
+all.equal(midpoints, fc_hilo$.mean)
 
 fc |>
   autoplot(google_2015) +
-  labs(title="Google daily closing stock price", y="$US" )
+  labs(title = "A naive forecast is flat, and its intervals widen with the horizon",
+       subtitle = "Google closing price, 2015, with a 5-day naive forecast and 80% and 95% intervals",
+       x = "Trading day", y = "US$",
+       caption = "Source: gafa_stock (fpp3)")
 
 fc |> select(day, Close)
 
@@ -72,30 +68,29 @@ fc |> pull(Close) |> distributional::parameters()
 
 # Extract the residuals
 res <- fit |> augment() |> pull(.innov)
-# Remove missing values before computing the length
+# Remove missing values before counting them
 res <- res[!is.na(res)]
 
-# Compute T and K
-T = length(res) # T number of points in the residuals
-K = nrow(tidy(fit)) # K number of parameters in our model. 0 for NAIVE model.
+# T and K in the formula. R already uses T as a shorthand for TRUE,
+# so the code calls them n_res and K.
+n_res <- length(res)  # number of residuals
+K <- nrow(tidy(fit))  # number of estimated parameters: 0 for the naive model
 
-sigma_res = sqrt(sum(res^2, na.rm=TRUE)/(T-K))
-
-# Check whether our result matches the std. deviation of the forecast distribution
+sigma_res <- sqrt(sum(res^2) / (n_res - K))
 sigma_res
 
-# Check that the standard deviation matches the fable computation
+# Check that it matches the standard deviation of the forecast distribution
 all.equal(sigma_res, distributional::parameters(fc$Close[1])$sigma)
 
 # Point forecast, which in this case is the mean of the forecast distribution
 y_hat <- fc$.mean[1]
 
-# Quantile of the normal distribution
-alpha = 0.05 # 95% prediction interval
-quant = qnorm(1-alpha*0.5, 0, 1)
+# Quantile of the standard normal distribution
+alpha <- 0.05 # 95% prediction interval
+quant <- qnorm(1 - alpha / 2)
 
 # Prediction interval computed by hand
-PI <- c(y_hat - quant*sigma_res, y_hat + quant*sigma_res)
+PI <- c(y_hat - quant * sigma_res, y_hat + quant * sigma_res)
 
 # Prediction interval computed by fable
 PI_hilo <- c(fc_hilo$`95%_lower`[1], fc_hilo$`95%_upper`[1])
@@ -114,7 +109,7 @@ prices <- prices |>
   mutate(log_eggs = log(eggs))
 
 # forecast horizon
-horiz = 50
+horiz <- 50
 
 # Model 1: fitted to the variable already transformed
 fit1 <- prices |>
@@ -125,33 +120,36 @@ fit1 <- prices |>
 fc1 <- fit1 |>
   forecast(h = horiz)
 
-# Model 2: fitted to the original variable specifying the transformation upon model definition
+# Model 2: fitted to the original variable, with the transformation in the model definition
 fit2 <- prices |>
-  filter(!is.na(eggs)) |> # This line simply selects values that are not NAs from the time series
+  filter(!is.na(eggs)) |> # keep the years with an egg price
   model(RW(log(eggs) ~ drift()))
- 
+
 # fc2: forecasts generated with model 2
 fc2 <- fit2 |>
   forecast(h = horiz)
 
-# figures for each model
+# One figure per model, each with the mean and the median point forecasts
 fig1 <- fc1 |>
   autoplot(prices |> filter(!is.na(eggs)),
-           level = 80, point_forecast = lst(mean, median) # Depict both mean and median in the back transformed forecasts
-           ) +
-  labs(title = "log(Annual egg prices)",
-       y = "log($US cents infl. adj)") +
-  theme(legend.position="none") # Remove legend for mean and median to have more space for the plots
+           level = 80, point_forecast = lst(mean, median)) +
+  labs(title = "Log scale: mean = median",
+       x = NULL, y = "log(price)")
 
 fig2 <- fc2 |>
   autoplot(prices |> filter(!is.na(eggs)),
-           level = 80, point_forecast = lst(mean, median) # Depict both mean and median in the back transformed forecasts
-           ) +
-  labs(title = "Annual egg prices",
-       y = "$US cents infl. adj") +
-  theme(legend.position="none") # Remove legend for mean and median to have more space for the plots
+           level = 80, point_forecast = lst(mean, median)) +
+  labs(title = "Original scale: mean > median",
+       x = NULL, y = "US cents")
 
-fig1 + fig2 
+(fig1 + fig2) +
+  plot_layout(guides = "collect") + # one shared legend for the two plots
+  plot_annotation(
+    title = "Annual price of a dozen eggs, 1900-1993, with a 50-year drift forecast",
+    subtitle = "US cents, adjusted for inflation; 80% intervals",
+    caption = "Source: prices (fpp3)"
+  ) &
+  theme(legend.position = "bottom")
 
 head(fc1, 4)
 
@@ -186,8 +184,8 @@ all.equal(fc2_95upper_manual, fc2_95upper_fable)
 # Back-transform the forecasts on the transformed scale (their mean)
 fc1_backtransf <- exp(fc1$.mean)
 
-# Compute medians of distributions of fc2
-# fc2$eggs is a vector containing the forecast distributions of fc2
+# Medians of the forecast distributions of fc2
+# (fc2$eggs is the column of forecast distributions)
 fc2_median <- median(fc2$eggs)
 
 # CHECK
