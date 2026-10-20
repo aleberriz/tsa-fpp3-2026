@@ -542,20 +542,22 @@ all.equal(PI, PI_hilo)                                      <span class="hl"># T
 <section class="slide" data-section="4" data-title="When to trust it">
   <div class="inner">
     <a class="nb" href="12_PredictionIntervals_Transformations.html#bootstrap" target="_blank" rel="noopener" title="Open the notebook at this section">12 &rsaquo; A more general approach: bootstrapped residuals</a>
-    <p class="kicker">Residual diagnostics (Session 9) &nbsp;&middot;&nbsp; the four properties, and what each failure does to the interval</p>
+    <p class="kicker">Two things worth noting &nbsp;&middot;&nbsp; the four properties, and Google&#39;s residuals</p>
     <h1 class="sowhat wide">The interval is only as honest as the residuals behind it.</h1>
+    <p class="small" style="margin-bottom:.6rem">The four properties from residual diagnostics (Session 9), what a failure does to the interval, and the fix Session 9 gave for each:</p>
     <div class="cards">
-      <div class="card terra"><h3>No autocorrelation</h3><p>If it fails, the model is not finished: it left predictable structure behind. Its residuals understate how wrong it will be, and the interval inherits that.</p></div>
-      <div class="card"><h3>Zero mean</h3><p>If it fails, the forecasts are biased and the interval is centered in the wrong place. Adding the mean of the residuals to every forecast fixes both.</p></div>
-      <div class="card"><h3>Constant variance</h3><p>If it fails, a single &sigma;&#770; for the whole series is wrong: too wide in calm stretches, too narrow in volatile ones. A Box&ndash;Cox transformation (Session 11) is the usual fix.</p></div>
-      <div class="card sage"><h3>Normality</h3><p>If it fails, 1.96 is the wrong multiplier, and heavy tails make the 95% interval miss more than 5% of the time. Bootstrapped intervals drop this assumption, but they are outside this course.</p></div>
+      <div class="card terra"><h3>No autocorrelation</h3><p>If it fails, the model left structure behind, and the interval understates the uncertainty. Fix: a richer model, such as the exponential smoothing of Sessions 15 to 19.</p></div>
+      <div class="card"><h3>Zero mean</h3><p>If it fails, the interval is centered in the wrong place. Fix: add the mean of the residuals to the forecasts.</p></div>
+      <div class="card"><h3>Constant variance</h3><p>If it fails, one &sigma;&#770; is too wide in calm stretches and too narrow in volatile ones. Fix: transform the series with Box&ndash;Cox (Session 11) and refit.</p></div>
+      <div class="card sage"><h3>Normality</h3><p>If it fails, 1.96 no longer gives 95% coverage, and the interval can be too wide or too narrow. Fix: bootstrapped intervals, below.</p></div>
     </div>
     <ul class="build" style="margin-top:1.4rem">
-      <li class="step"><b>The order of work is fixed:</b> fit, diagnose the residuals, then quote an interval. If you quote it before checking the residuals, you cannot say whether it has the coverage it claims.</li>
+      <li class="step"><b>Residual diagnostics (Session 9) already checked today&#39;s residuals.</b> Google&#39;s naive residuals show no autocorrelation and a small mean, but they are not normal: a few huge jumps, the largest $93, inflate &sigma;&#770;. Only 8 of the 251 fall outside &plusmn;1.96 &sigma;&#770;, about 3%, so today&#39;s 95% interval is wider than it needs to be.</li>
+      <li class="step"><b>When normality fails, bootstrap.</b> Bootstrapped intervals take their spread from the model&#39;s own past residuals instead of a bell curve. For Google at <code>h = 1</code> they give about [741, 778], narrower and slightly off-center. They take one argument in <code>forecast()</code>, and they are not examined.</li>
     </ul>
     <p class="punch step wide">Residual diagnostics told you when a model is finished. Today tells you what you are allowed to claim once it is.</p>
   </div>
-  <aside class="notes">Bootstrapping, for the curious: draw a residual at random from the model&#39;s own past residuals, add it to the one-step forecast, pretend that is the next observation, repeat for h steps, and do the whole thing a few thousand times. The spread of the simulated futures is the interval. In <code>fable</code>: <code>forecast(h = 8, bootstrap = TRUE)</code>. fpp3 5.5 covers it; it is not examined.</aside>
+  <aside class="notes">Bootstrapping, for the curious: draw a residual at random from the model&#39;s own past residuals, add it to the one-step forecast, pretend that is the next observation, repeat for h steps, and do the whole thing a few thousand times. The spread of the simulated futures is the interval. In <code>fable</code>: <code>forecast(h = 1, bootstrap = TRUE, times = 5000)</code>; the bounds move a little from run to run, so set a seed. fpp3 5.5 covers it; it is not examined.<br><br>Why the Google interval shrinks: the three biggest jumps (93, 50 and 47 dollars) push &sigma;&#770; up, so 1.96 &sigma;&#770; = 21.93 is wider than the middle 95% of the residuals actually is, which runs from about &minus;16 to +19. Heavy tails do not always make the 95% interval too narrow; the 99% one is where they usually bite.</aside>
 </section>
 
 <section class="slide" data-section="5" data-title="The way back">

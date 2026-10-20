@@ -31,4 +31,4 @@ log or Box–Cox transformation.
 > **One of the three hardest topics in the course.** Prediction intervals as *distributions*, rather
 > than as a formula to apply, is the idea to get right here.
 >
-> Bootstrapped intervals come up in the notebook but are outside the scope of this course.
+> Bootstrapped intervals come up in the notebook, and you may use them, but they are not examined.

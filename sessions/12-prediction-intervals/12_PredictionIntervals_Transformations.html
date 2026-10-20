@@ -2892,12 +2892,13 @@ window.Quarto = {
 <h4 class="anchored" data-anchor-id="bootstrap">A more general approach: bootstrapped residuals</h4>
 <p>The prediction intervals returned by the <code>fable</code> package can be trusted when the residuals pass the four checks of residual diagnostics (Session 9). Each failure does something different to the interval:</p>
 <ol type="1">
-<li><strong>No autocorrelation.</strong> If it fails, the model has left predictable structure behind, and the interval understates how wrong the forecast will be.</li>
+<li><strong>No autocorrelation.</strong> If it fails, the model has left predictable structure behind, and the interval understates how wrong the forecast will be. The fix is a richer model, such as the exponential smoothing of Sessions 15 to 19.</li>
 <li><strong>Zero mean.</strong> If it fails, the forecasts are biased and the interval is centered in the wrong place. Adding the mean of the residuals to every forecast fixes both.</li>
-<li><strong>Constant variance.</strong> If it fails, a single <span class="math inline">\(\hat\sigma\)</span> is too wide in calm stretches of the series and too narrow in volatile ones.</li>
+<li><strong>Constant variance.</strong> If it fails, a single <span class="math inline">\(\hat\sigma\)</span> is too wide in calm stretches of the series and too narrow in volatile ones. Transforming the series with Box–Cox (Session 11) and refitting is the usual fix.</li>
 <li><strong>Normality.</strong> If it fails, the multiplier <span class="math inline">\(c\)</span> from the normal table is wrong, and a 95% interval no longer covers 95%.</li>
 </ol>
-<p>When normality (property 4) is not a reasonable assumption, we may resort to <a href="https://otexts.com/fpp3/prediction-intervals.html#prediction-intervals-from-bootstrapped-residuals"><strong>bootstrapping</strong></a>. It simulates many possible futures by adding residuals drawn at random from the model’s own past residuals, and reads the interval off the percentiles of the simulated values. This assumes <strong>uncorrelated residuals with constant variance</strong>, but not normal ones.</p>
+<p>When normality (property 4) is not a reasonable assumption, we may resort to <a href="https://otexts.com/fpp3/prediction-intervals.html#prediction-intervals-from-bootstrapped-residuals"><strong>bootstrapping</strong></a>. It simulates many possible futures by adding residuals drawn at random from the model’s own past residuals, and reads the interval off the percentiles of the simulated values. This assumes <strong>uncorrelated residuals with constant variance</strong>, but not normal ones. In <code>fable</code> it is one argument, <code>forecast(h = ..., bootstrap = TRUE)</code>. Bootstrapping is not examined in this course, but you may use it.</p>
+<p>The Google example below is a case in point: residual diagnostics (Session 9) found that the naive model’s residuals for Google 2015 are not normal, because a few huge jumps inflate <span class="math inline">\(\hat\sigma\)</span>.</p>
 </section>
 </section>
 <section id="with-fable" class="level3">
