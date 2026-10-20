@@ -76,6 +76,9 @@ res <- res[!is.na(res)]
 n_res <- length(res)  # number of residuals
 K <- nrow(tidy(fit))  # number of estimated parameters: 0 for the naive model
 
+sum(res^2)   # numerator: the sum of the squared residuals
+n_res - K    # denominator: T - K
+
 sigma_res <- sqrt(sum(res^2) / (n_res - K))
 sigma_res
 

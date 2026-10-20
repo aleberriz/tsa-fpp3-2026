@@ -474,13 +474,16 @@ body.ov-on #overview{display:block}
     <h1 class="sowhat wide">For one step ahead, the residuals are the forecast errors in rehearsal.</h1>
     <div class="console">&sigma;&#770; = sqrt( sum(e<sub>t</sub>&sup2;) / (T &minus; K) )
 
-<span class="dim">T = number of residuals, after dropping NAs
-K = number of parameters the model estimated: 0 for naive, 1 for mean or drift</span>
+<span class="dim">e<sub>t</sub> = y<sub>t</sub> &minus; y&#770;<sub>t|t&minus;1</sub>  the residual: the observation minus its fitted value
+T   = number of residuals, after dropping NAs
+K   = number of parameters the model estimated: 0 for naive, 1 for mean or drift</span>
 
-<span class="dim">Google 2015, naive model:</span>  T = 251   K = 0   &sigma;&#770; = <span class="hl">11.19</span>   y&#770; = 758.88
-<span class="dim">95% interval:</span>  758.88 &plusmn; 1.96 &times; 11.19  =  [ 736.95 , 780.81 ]</div>
+<span class="dim">Google 2015, naive:</span>  e<sub>2</sub> = 511.06 &minus; 521.94 = &minus;10.88,  e<sub>3</sub> = &minus;11.84,  &hellip;,  e<sub>252</sub> = &minus;12.12
+                     sum(e<sub>t</sub>&sup2;) = 31,426.9 over T &minus; K = 251 &minus; 0
+                     &sigma;&#770; = sqrt( 31,426.9 / 251 ) = sqrt( 125.21 ) = <span class="hl">11.19</span>
+<span class="dim">95% interval:</span>        758.88 &plusmn; 1.96 &times; 11.19  =  [ 736.95 , 780.81 ]</div>
     <ul class="build">
-      <li class="step"><b>Why the residuals.</b> Each fitted value was a one-step forecast made inside the data, so the residuals are a record of how far one-step forecasts miss. Their standard deviation is the spread you want.</li>
+      <li class="step"><b>One forecast, 251 residuals.</b> The interval is for a single forecast, but its spread is estimated from every one-step miss inside the data. A residual is the observation minus its fitted value (benchmark methods and fitted values, Session 8), and each fitted value was a one-step forecast, so the sum adds up 251 squared one-step misses.</li>
       <li class="step"><b>Why T minus K.</b> The same correction as a sample variance: each parameter the model estimated used up one residual's worth of freedom.</li>
       <li class="step"><b>What it needs from residual diagnostics (Session 9).</b> Constant variance, so that one &sigma;&#770; holds across the whole series; normality, so that 1.96 is the right multiplier.</li>
     </ul>
