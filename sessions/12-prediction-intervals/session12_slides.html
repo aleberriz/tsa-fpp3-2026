@@ -423,12 +423,12 @@ body.ov-on #overview{display:block}
     <p class="who"><b>Session 12.</b> Prediction intervals, and forecasting with transformations.<br>
     Alejandro Berrizbeitia · aberrizbeitia@faculty.ie.edu</p>
   </div>
-  <aside class="notes">The deck is self-contained: press <b>N</b> at any time to open or close this panel, and <b>O</b> for a list of every slide.<br><br>Today is fpp3 sections 5.5 and 5.6, and notebook <code>12</code> in this folder. It is one of the three hardest topics of the course, with the ACF and the ETS notation: not because the formula is hard, but because a forecast has to be understood as a distribution rather than a number.</aside>
+  <aside class="notes">The deck is self-contained: press <b>N</b> at any time to open or close this panel, and <b>O</b> for a list of every slide.<br><br>Today is fpp3 sections 5.5 and 5.6, and notebook <code>12</code> in this folder. It is one of the three hardest topics of the course, with the ACF and the ETS notation. The formula is easy, but treating a forecast as a distribution rather than a number is not.</aside>
 </section>
 
 <section class="slide" data-section="2" data-title="A forecast is a distribution">
   <div class="inner">
-    <p class="kicker">Where we are &nbsp;&middot;&nbsp; from the benchmark forecasts, with the rest of the picture</p>
+    <p class="kicker">Where we are &nbsp;&middot;&nbsp; from the benchmark forecasts (Session 8)</p>
     <h1 class="sowhat wide">A forecast is a distribution. The point forecast is its mean, and an interval is a slice of it.</h1>
     <figure>
       <svg viewBox="0 0 760 198" role="img" aria-label="A time series ending at time T, followed by six forecasts. Each forecast is a dot with a bell curve drawn sideways through it, and the bells get wider as the horizon grows. A shaded band joins the middle 80% of every bell. Each dot is a mean; each bell is the whole forecast distribution; the band is the interval"><g font-family="SFMono-Regular,Menlo,monospace"><line x1="40" y1="170" x2="720" y2="170" stroke="#98928a" stroke-width="1"/><line x1="40" y1="170" x2="40" y2="30" stroke="#98928a" stroke-width="1"/><polyline points="50.0,122.3 59.0,120.5 68.0,119.3 77.0,117.2 86.0,118.8 95.0,116.3 104.0,125.5 113.0,120.2 122.0,114.4 131.0,117.1 140.0,113.8 149.0,121.9 158.0,117.4 167.0,119.3 176.0,115.5 185.0,114.6 194.0,120.2 203.0,117.5 212.0,116.2 221.0,108.7 230.0,109.8 239.0,115.9 248.0,108.4 257.0,115.0 266.0,109.3 275.0,114.1 284.0,114.9 293.0,104.9 302.0,111.5 311.0,110.9 320.0,102.0 329.0,102.7 338.0,108.5 347.0,100.6 356.0,104.7 365.0,102.6 374.0,107.2 383.0,98.6 392.0,100.8 401.0,97.3" fill="none" stroke="#1F3A4D" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" opacity="1"/><polygon points="401.0,97.3 442.0,89.6 483.0,84.3 524.0,80.0 565.0,76.4 606.0,73.1 647.0,70.0 647.0,127.0 606.0,125.1 565.0,122.9 524.0,120.3 483.0,117.2 442.0,112.9" fill="#B5471E" opacity=".12"/><polyline points="401.0,97.3 442.0,101.3 483.0,100.7 524.0,100.2 565.0,99.6 606.0,99.1 647.0,98.5" fill="none" stroke="#B5471E" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="5 4" opacity="1"/><polyline points="442.3,77.6 442.4,78.8 442.7,80.0 443.0,81.2 443.5,82.4 444.1,83.5 444.9,84.7 445.9,85.9 447.1,87.1 448.7,88.3 450.4,89.5 452.5,90.6 454.7,91.8 457.0,93.0 459.3,94.2 461.6,95.4 463.7,96.5 465.5,97.7 466.9,98.9 467.7,100.1 468.0,101.3 467.7,102.5 466.9,103.6 465.5,104.8 463.7,106.0 461.6,107.2 459.3,108.4 457.0,109.5 454.7,110.7 452.5,111.9 450.4,113.1 448.7,114.3 447.1,115.5 445.9,116.6 444.9,117.8 444.1,119.0 443.5,120.2 443.0,121.4 442.7,122.5 442.4,123.7 442.3,124.9" fill="none" stroke="#B5471E" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" opacity="1"/><circle cx="442" cy="101.3" r="3" fill="#B5471E"/><polyline points="483.3,67.3 483.4,69.0 483.7,70.6 484.0,72.3 484.5,74.0 485.1,75.7 485.9,77.3 486.9,79.0 488.1,80.7 489.7,82.3 491.4,84.0 493.5,85.7 495.7,87.4 498.0,89.0 500.3,90.7 502.6,92.4 504.7,94.0 506.5,95.7 507.9,97.4 508.7,99.1 509.0,100.7 508.7,102.4 507.9,104.1 506.5,105.7 504.7,107.4 502.6,109.1 500.3,110.8 498.0,112.4 495.7,114.1 493.5,115.8 491.4,117.4 489.7,119.1 488.1,120.8 486.9,122.5 485.9,124.1 485.1,125.8 484.5,127.5 484.0,129.1 483.7,130.8 483.4,132.5 483.3,134.2" fill="none" stroke="#B5471E" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" opacity="1"/><circle cx="483" cy="100.7" r="3" fill="#B5471E"/><polyline points="524.3,59.2 524.4,61.3 524.7,63.3 525.0,65.4 525.5,67.4 526.1,69.5 526.9,71.5 527.9,73.6 529.1,75.6 530.7,77.7 532.4,79.7 534.5,81.8 536.7,83.8 539.0,85.9 541.3,87.9 543.6,89.9 545.7,92.0 547.5,94.0 548.9,96.1 549.7,98.1 550.0,100.2 549.7,102.2 548.9,104.3 547.5,106.3 545.7,108.4 543.6,110.4 541.3,112.5 539.0,114.5 536.7,116.6 534.5,118.6 532.4,120.7 530.7,122.7 529.1,124.7 527.9,126.8 526.9,128.8 526.1,130.9 525.5,132.9 525.0,135.0 524.7,137.0 524.4,139.1 524.3,141.1" fill="none" stroke="#B5471E" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" opacity="1"/><circle cx="524" cy="100.2" r="3" fill="#B5471E"/><polyline points="565.3,52.4 565.4,54.7 565.7,57.1 566.0,59.5 566.5,61.8 567.1,64.2 567.9,66.5 568.9,68.9 570.1,71.3 571.7,73.6 573.4,76.0 575.5,78.4 577.7,80.7 580.0,83.1 582.3,85.5 584.6,87.8 586.7,90.2 588.5,92.5 589.9,94.9 590.7,97.3 591.0,99.6 590.7,102.0 589.9,104.4 588.5,106.7 586.7,109.1 584.6,111.5 582.3,113.8 580.0,116.2 577.7,118.5 575.5,120.9 573.4,123.3 571.7,125.6 570.1,128.0 568.9,130.4 567.9,132.7 567.1,135.1 566.5,137.5 566.0,139.8 565.7,142.2 565.4,144.5 565.3,146.9" fill="none" stroke="#B5471E" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" opacity="1"/><circle cx="565" cy="99.6" r="3" fill="#B5471E"/><polyline points="606.3,46.2 606.4,48.9 606.7,51.5 607.0,54.2 607.5,56.8 608.1,59.5 608.9,62.1 609.9,64.7 611.1,67.4 612.7,70.0 614.4,72.7 616.5,75.3 618.7,77.9 621.0,80.6 623.3,83.2 625.6,85.9 627.7,88.5 629.5,91.2 630.9,93.8 631.7,96.4 632.0,99.1 631.7,101.7 630.9,104.4 629.5,107.0 627.7,109.7 625.6,112.3 623.3,114.9 621.0,117.6 618.7,120.2 616.5,122.9 614.4,125.5 612.7,128.2 611.1,130.8 609.9,133.4 608.9,136.1 608.1,138.7 607.5,141.4 607.0,144.0 606.7,146.7 606.4,149.3 606.3,151.9" fill="none" stroke="#B5471E" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" opacity="1"/><circle cx="606" cy="99.1" r="3" fill="#B5471E"/><polyline points="647.3,40.6 647.4,43.5 647.7,46.4 648.0,49.3 648.5,52.2 649.1,55.1 649.9,58.0 650.9,60.9 652.1,63.8 653.7,66.7 655.4,69.6 657.5,72.5 659.7,75.4 662.0,78.3 664.3,81.2 666.6,84.1 668.7,87.0 670.5,89.9 671.9,92.8 672.7,95.7 673.0,98.5 672.7,101.4 671.9,104.3 670.5,107.2 668.7,110.1 666.6,113.0 664.3,115.9 662.0,118.8 659.7,121.7 657.5,124.6 655.4,127.5 653.7,130.4 652.1,133.3 650.9,136.2 649.9,139.1 649.1,142.0 648.5,144.9 648.0,147.8 647.7,150.7 647.4,153.5 647.3,156.4" fill="none" stroke="#B5471E" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" opacity="1"/><circle cx="647" cy="98.5" r="3" fill="#B5471E"/><line x1="401" y1="30" x2="401" y2="170" stroke="#98928a" stroke-width="1" stroke-dasharray="3 3"/><text x="395" y="42" text-anchor="end" fill="#98928a" font-size="11" >T</text><text x="409" y="42" text-anchor="start" fill="#98928a" font-size="11" >forecasts</text><text x="380" y="188" text-anchor="middle" fill="#98928a" font-size="10.5" >each dot is a mean; each bell is the whole forecast distribution; the band is the middle 80% of each bell</text></g></svg>
@@ -438,7 +438,7 @@ body.ov-on #overview{display:block}
       <li class="step"><b>An 80% prediction interval</b> is the stretch of the bell that holds 80% of its area. Eight times in ten, the observation lands inside it.</li>
       <li class="step"><b>Most models in this course give normal forecast distributions,</b> which is why a bell, two numbers and one table are enough to draw any interval.</li>
     </ul>
-    <p class="punch step wide">A point forecast on its own says nothing about how far off it might be, and the range is what tells you that.</p>
+    <p class="punch step wide">A point forecast on its own says nothing about how far off it might be, but the interval does.</p>
   </div>
   <aside class="notes">The promise of an interval is about the <i>observation</i>, not about the forecast: "the value that will be observed falls in this range with probability 80%". Students often reverse it.<br><br>The notebook draws the real version of this picture twice, with <code>ggdist</code>: the Australian arrivals trend and the Google closing price. Both show the bells standing on the forecast line and widening with the horizon.</aside>
 </section>
@@ -460,7 +460,7 @@ body.ov-on #overview{display:block}
       <li class="step"><b>The multiplier, c.</b> It sets how much of the bell you want to cover. 1.96 is where the normal curve leaves 2.5% in each tail; 1.28 leaves 10%.</li>
       <li class="step"><b>The bell itself is an assumption:</b> the normality property from residual diagnostics (Session 9). Residuals that are not normal make c the wrong number.</li>
     </ul>
-    <p class="punch step wide">Almost all of the difficulty with intervals lies in &sigma;&#770;<sub>h</sub>, since the multiplier comes straight from a table.</p>
+    <p class="punch step wide">The hard part is &sigma;&#770;<sub>h</sub>, while the multiplier comes straight from a table.</p>
   </div>
   <aside class="notes">Where 1.96 comes from: for a standard normal, 97.5% of the area lies below 1.96, so 2.5% lies above it, and by symmetry 2.5% lies below minus 1.96. The middle 95% sits between them. In R: <code>qnorm(0.975)</code>.<br><br>The notebook prints a longer version of the table, for coverages from 50% to 99%, computed with <code>qnorm(1 - alpha/2)</code>.</aside>
 </section>
@@ -480,9 +480,9 @@ K = number of parameters the model estimated: 0 for naive, 1 for mean or drift</
     <ul class="build">
       <li class="step"><b>Why the residuals.</b> Each fitted value was a one-step forecast made inside the data, so the residuals are a record of how far one-step forecasts miss. Their standard deviation is the spread you want.</li>
       <li class="step"><b>Why T minus K.</b> The same correction as a sample variance: each parameter the model estimated used up one residual's worth of freedom.</li>
-      <li class="step"><b>What it needs from residual diagnostics (Session 9).</b> Constant variance, so that one &sigma;&#770; is honest across the whole series; normality, so that 1.96 is the right multiplier.</li>
+      <li class="step"><b>What it needs from residual diagnostics (Session 9).</b> Constant variance, so that one &sigma;&#770; holds across the whole series; normality, so that 1.96 is the right multiplier.</li>
     </ul>
-    <p class="punch step wide">The by-hand version needs only a subtraction, a square, a sum and a square root. It takes about a minute, and it is on the final.</p>
+    <p class="punch step wide">The by-hand version is a subtraction, a square, a sum and a square root. It takes about a minute, and it is on the final.</p>
   </div>
   <aside class="notes">Practice the chain once on paper, with the calculator you will bring: from residuals to &sigma;&#770;, and from &sigma;&#770; to an interval.<br><br>Why one NA: the naive model's first fitted value does not exist, since there is no previous observation, so Google 2015's 252 trading days give 251 residuals. <code>na.omit()</code> or a logical filter drops it before counting.</aside>
 </section>
@@ -498,7 +498,7 @@ K = number of parameters the model estimated: 0 for naive, 1 for mean or drift</
     <ul class="build">
       <li class="step"><b>Naive widens like &radic;h.</b> Tomorrow is today plus a shock; the day after adds another. Variances add up, so the standard deviation grows with the square root of the number of steps.</li>
       <li class="step"><b>The mean method barely widens.</b> Its forecast is an average of the whole history, and that average is known well however far ahead you look.</li>
-      <li class="step"><b>For other methods there is no simple formula,</b> but every method has its own way to compute &sigma;&#770;<sub>h</sub>, and <code>fable</code> does it. Keep the formulas for reference; the idea to remember is that the interval widens.</li>
+      <li class="step"><b>For other methods there is no simple formula,</b> but every method has its own way to compute &sigma;&#770;<sub>h</sub>, and <code>fable</code> does it. Keep the formulas for reference; the point is that the interval widens.</li>
     </ul>
     <p class="punch step wide">Google at h = 2: &sigma;&#770; is 15.82, which is 11.19 times &radic;2. The notebook lets you read it straight off the forecast distribution.</p>
   </div>
@@ -517,8 +517,11 @@ fc |&gt; hilo() |&gt; unpack_hilo(c(`80%`, `95%`))
 <span class="dim">#  253  758.88   744.54     773.22     736.95     780.81</span>
 <span class="dim">#  254  758.88   738.60     779.16     727.86     789.90</span>
 
-res &lt;- fit |&gt; augment() |&gt; pull(.innov) |&gt; na.omit()
-sigma_res &lt;- sqrt(sum(res^2) / (length(res) - nrow(tidy(fit))))
+res &lt;- fit |&gt; augment() |&gt; pull(.innov)
+res &lt;- res[!is.na(res)]
+n_res &lt;- length(res)
+K &lt;- nrow(tidy(fit))
+sigma_res &lt;- sqrt(sum(res^2) / (n_res - K))
 PI &lt;- fc$.mean[1] + c(-1, 1) * qnorm(0.975) * sigma_res
 all.equal(PI, PI_hilo)                                      <span class="hl"># TRUE</span></div>
     <ul class="build">
@@ -543,7 +546,7 @@ all.equal(PI, PI_hilo)                                      <span class="hl"># T
       <div class="card"><h3>The escape hatch</h3><p>Bootstrapped intervals reuse the model&#39;s own past residuals to simulate futures. They need no autocorrelation and constant variance, but not normality. They take one argument in <code>forecast()</code>, but they are outside this course.</p></div>
     </div>
     <ul class="build" style="margin-top:1.4rem">
-      <li class="step"><b>So the order of work is fixed:</b> fit, diagnose the residuals, then quote an interval. If you quote it before checking the residuals, you cannot say whether it has the coverage it claims.</li>
+      <li class="step"><b>The order of work is fixed:</b> fit, diagnose the residuals, then quote an interval. If you quote it before checking the residuals, you cannot say whether it has the coverage it claims.</li>
     </ul>
     <p class="punch step wide">Residual diagnostics told you when a model is finished. Today tells you what you are allowed to claim once it is.</p>
   </div>
@@ -602,7 +605,7 @@ fit2 &lt;- prices |&gt; model(RW(<span class="hl">log(eggs)</span> ~ drift()))
 fc2 |&gt; autoplot(prices, level = 80, point_forecast = lst(mean, median))</div>
     <ul class="build">
       <li class="step"><b>The fit is the same, but the forecast table is not.</b> Model 1 does not know a transformation happened. Model 2 does, so it back-transforms the distribution, the intervals and the point forecast.</li>
-      <li class="step"><b>The notebook runs three checks, and all three return TRUE.</b> exp of model 1&#39;s bounds equals model 2&#39;s bounds; exp of model 1&#39;s mean equals model 2&#39;s median; the mean of model 2&#39;s distribution equals its <code>.mean</code>.</li>
+      <li class="step"><b>The notebook runs three checks, and each returns TRUE.</b> exp of model 1&#39;s bounds equals model 2&#39;s bounds; exp of model 1&#39;s mean equals model 2&#39;s median; the mean of model 2&#39;s distribution equals its <code>.mean</code>.</li>
       <li class="step"><b>The same rule holds inside <code>decomposition_model()</code>:</b> <code>STL(log(Turnover) ~ ...)</code> and the forecasts come back in turnover units, which is what the homework uses.</li>
     </ul>
     <p class="punch step wide">One rule covers every transformation in this course: put it in the formula, not in a new column.</p>
@@ -630,7 +633,7 @@ fc2 |&gt; autoplot(prices, level = 80, point_forecast = lst(mean, median))</div>
     <p class="kicker">What comes next</p>
     <h1 class="sowhat">Session 13 holds data back and measures the miss.</h1>
     <p class="lead wide">Today&#39;s interval says how wrong a forecast <i>might</i> be. Session 13 asks how wrong it <i>was</i>: fit on the early part of a series, forecast the part you hid, and compare. Residuals become forecast errors, and the errors get names: MAE, RMSE, MAPE, MASE. Session 14 then repeats the exercise many times over, so that one lucky split cannot fool you.</p>
-    <p class="punch step wide">After Session 13 you will have all three pieces of an honest forecast: a suitable scale, a range, and the size of the error.</p>
+    <p class="punch step wide">After Session 13 you will have the whole picture: a suitable scale, a range, and the size of the error.</p>
     <p class="url" style="font-size:clamp(0.95rem,1.7vw,1.9rem)">aberrizbeitia@faculty.ie.edu</p>
   </div>
   <aside class="notes">The bridge from today to Session 13 is the distinction between a residual and a forecast error, first drawn with the benchmark methods and fitted values (Session 8). A residual is a one-step miss inside the training data; a forecast error is a miss on data the model never saw, at any horizon. Today used residuals to size the interval. Session 13 uses forecast errors to size the model.</aside>
