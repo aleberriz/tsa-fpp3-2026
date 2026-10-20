@@ -484,7 +484,7 @@ K = number of parameters the model estimated: 0 for naive, 1 for mean or drift</
     </ul>
     <p class="punch step wide">The by-hand version needs only a subtraction, a square, a sum and a square root. It takes about a minute, and it is on the final.</p>
   </div>
-  <aside class="notes">The exam version of this is small: a table of a few residuals, compute the standard deviation, build the interval with 1.96. Practice it on paper once, with the calculator you will bring.<br><br>Why one NA: the naive model's first fitted value does not exist, since there is no previous observation, so Google 2015's 252 trading days give 251 residuals. <code>na.omit()</code> or a logical filter drops it before counting.</aside>
+  <aside class="notes">Practice the chain once on paper, with the calculator you will bring: from residuals to &sigma;&#770;, and from &sigma;&#770; to an interval.<br><br>Why one NA: the naive model's first fitted value does not exist, since there is no previous observation, so Google 2015's 252 trading days give 251 residuals. <code>na.omit()</code> or a logical filter drops it before counting.</aside>
 </section>
 
 <section class="slide" data-section="2" data-title="Further ahead">
