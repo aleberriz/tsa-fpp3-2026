@@ -4,6 +4,9 @@
 library(fpp3)
 library(patchwork) # to place two plots side by side with p1 + p2
 
+# Print 5 significant digits in tables, so 511.05762 shows as 511.06 rather than 511.
+options(pillar.sigfig = 5)
+
 # Forecast distributions ----
 
 ## Prediction intervals ----
@@ -67,6 +70,8 @@ fc |>
 fc |> select(day, Close)
 
 fc |> pull(Close) |> distributional::parameters()
+
+fit |> augment() |> as_tibble() |> select(day, Close, .fitted, .innov) |> head(3)
 
 # Extract the residuals
 res <- fit |> augment() |> pull(.innov)
