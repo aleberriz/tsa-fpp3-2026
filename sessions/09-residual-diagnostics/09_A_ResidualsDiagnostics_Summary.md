@@ -2,6 +2,7 @@
 
 *A one-page summary for Session 9 and Group Assignment 2. The handwritten original is
 [`09_A_ResidualsDiagnostics_Summary.pdf`](09_A_ResidualsDiagnostics_Summary.pdf) in this folder.
+Where the original says to subtract the mean of the residuals from the forecasts, add it: residuals that average m mean the forecasts sit m too low (fpp3 5.4).
 Prof. Juan Garbayo de Pablo and Prof. Alejandro Berrizbeitia.*
 
 All four properties are about the **innovation residuals**, the `.innov` column from `augment()`.
@@ -36,7 +37,7 @@ E[y<sub>t</sub>] = E[ŷ<sub>t</sub>]: on average, the fitted values hit the data
 | | How to check | If it fails |
 |---|---|---|
 | **1** Uncorrelated | ACF plot; Ljung–Box test (or Box–Pierce) on the first `lag` autocorrelations | **Harder.** Add regressors, or change the model |
-| **2** Zero mean | The average of the residuals; formally, a t-test on the mean | **Easy.** Subtract the residual mean from the forecasts |
+| **2** Zero mean | The average of the residuals; formally, a t-test on the mean | **Easy.** Add the residual mean to the forecasts |
 | **3** Constant variance | Time plot of the residuals; boxplots by year | Box–Cox transformation (Session 11); change the model |
 | **4** Normal | Histogram (or kernel density); QQ plot; boxplots for symmetry | Box–Cox transformation; bootstrapped intervals, which do not assume normality; change the model |
 
@@ -60,7 +61,7 @@ flowchart TD
     P1 -- yes --> F1["The model can be improved:<br/>add regressors or change the model"]
     P1 -- no --> P2{"2 · Mean not zero?"}
     F1 --> P2
-    P2 -- yes --> F2["Forecasts are biased:<br/>subtract the mean"]
+    P2 -- yes --> F2["Forecasts are biased:<br/>add the mean to them"]
     P2 -- no --> P3{"3 · Spread drifts?"}
     F2 --> P3
     P3 -- yes --> F3["One interval width is wrong:<br/>too narrow in some periods, too wide in others.<br/>Try Box–Cox"]

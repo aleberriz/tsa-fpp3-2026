@@ -2450,7 +2450,7 @@ window.Quarto = {
 <p>The summary sheet <code>09_A</code> in this folder covers all four on one page. In short:</p>
 <p><strong>1 and 2 are about the model.</strong> A model that fails either can be improved. Often several models pass both, and then you need to choose among them, with tools such as cross-validation and information criteria later in the course.</p>
 <ul>
-<li><p>A non-zero mean (bias) is easy to fix: subtract the mean of the residuals from the forecasts.</p></li>
+<li><p>A non-zero mean (bias) is easy to fix: add the mean of the residuals to the forecasts. A residual is the observation minus its fitted value, so residuals that average <span class="math inline">\(m\)</span> mean the forecasts sit <span class="math inline">\(m\)</span> too low.</p></li>
 <li><p>Autocorrelation left in the residuals is harder to fix. You may need autoregressive terms, external regressors, or a different model.</p></li>
 </ul>
 <p><strong>3 and 4 are about the prediction intervals.</strong></p>
@@ -2844,7 +2844,7 @@ y_t  = y_{t-1} + \varepsilon_t
 <h3 class="anchored" data-anchor-id="bricks-naive-reading">Reading the four properties</h3>
 <ol type="1">
 <li><strong>Autocorrelation:</strong> clear. The spikes at multiples of the seasonal period (4, 8, 12, 16, 20…) show that the naive model has missed the seasonal pattern.</li>
-<li><strong>Mean:</strong> close to 0 (0.08). A t-test would say whether this is statistically different from zero; whether it matters in practice depends on the application. Either way, you could subtract it from the forecasts.</li>
+<li><strong>Mean:</strong> close to 0 (0.08). A t-test would say whether this is statistically different from zero; whether it matters in practice depends on the application. Either way, you could add it to the forecasts.</li>
 <li><strong>Variance:</strong> closer to constant than for the mean model. The 1974 and 1982-83 crises could be treated as outliers.</li>
 <li><strong>Normality:</strong> roughly normal. The histogram is symmetric and close to bell-shaped, the points follow the QQ line except at the tails, and the boxplot is symmetric with the mean close to the median.</li>
 </ol>

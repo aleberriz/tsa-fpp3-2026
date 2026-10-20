@@ -513,9 +513,9 @@ body.ov-on #overview{display:block}
 <section class="slide" data-section="2" data-title="Zero mean">
   <div class="inner">
     <p class="kicker">Property 2 &nbsp;&middot;&nbsp; the easy one</p>
-    <h1 class="sowhat wide">A non-zero mean means biased forecasts, and it costs one subtraction to fix.</h1>
+    <h1 class="sowhat wide">A non-zero mean means biased forecasts, and it costs one addition to fix.</h1>
     <figure>
-      <svg viewBox="0 0 760 182" role="img" aria-label="Two residual time plots side by side. On the left the residuals scatter evenly around the zero line, so the forecasts are unbiased. On the right the residuals scatter around a dashed line marked m above zero, meaning every forecast carries the same offset. The whole remedy is one subtraction">
+      <svg viewBox="0 0 760 182" role="img" aria-label="Two residual time plots side by side. On the left the residuals scatter evenly around the zero line, so the forecasts are unbiased. On the right the residuals scatter around a dashed line marked m above zero, meaning every forecast falls short by the same amount. The whole remedy is to add m to every forecast">
         <g font-family="SFMono-Regular,Menlo,monospace">
           <rect x="24" y="24" width="348" height="106" rx="5" fill="#6B7F5E" opacity=".10"/><rect x="24" y="24" width="348" height="106" rx="5" fill="none" stroke="#6B7F5E" stroke-width="1.8"/>
           <text x="198" y="46" text-anchor="middle" fill="#6B7F5E" font-size="12.5" font-weight="700">PASSING</text>
@@ -532,20 +532,20 @@ body.ov-on #overview{display:block}
           <g stroke="#B5471E" stroke-width="1.4" fill="none"><path d="M420 104 V82"/><path d="M414 88 L420 81 L426 88"/></g>
           <text x="428" y="122" fill="#B5471E" font-size="10.5">offset m</text>
           <g fill="#B5471E"><circle cx="446" cy="68" r="3"/><circle cx="468" cy="86" r="3"/><circle cx="490" cy="74" r="3"/><circle cx="512" cy="90" r="3"/><circle cx="534" cy="64" r="3"/><circle cx="556" cy="82" r="3"/><circle cx="578" cy="70" r="3"/><circle cx="600" cy="88" r="3"/><circle cx="622" cy="66" r="3"/><circle cx="644" cy="84" r="3"/><circle cx="666" cy="72" r="3"/><circle cx="688" cy="87" r="3"/><circle cx="710" cy="67" r="3"/></g>
-          <text x="562" y="148" text-anchor="middle" fill="#6B665E" font-size="10.5">every forecast carries +m</text>
-          <text x="380" y="174" text-anchor="middle" fill="#98928a" font-size="11.5">the whole remedy: subtract m from every forecast</text>
+          <text x="562" y="148" text-anchor="middle" fill="#6B665E" font-size="10.5">every forecast falls short by m</text>
+          <text x="380" y="174" text-anchor="middle" fill="#98928a" font-size="11.5">the whole remedy: add m to every forecast</text>
         </g>
       </svg>
     </figure>
     <ul class="build">
       <li class="step"><b>What it means.</b> The model is systematically high or low. Every forecast it makes carries the same offset.</li>
-      <li class="step"><b>How to fix it.</b> Subtract the mean of the residuals from the forecasts. That is the whole remedy, and it is why this property is the least worrying of the four.</li>
+      <li class="step"><b>How to fix it.</b> Add the mean of the residuals to the forecasts. A residual is the observation minus its fitted value, so residuals that average m mean the forecasts sit m too low. That is the whole remedy, and it is why this property is the least worrying of the four.</li>
       <li class="step"><b>What it does not tell you.</b> A residual mean of zero is not evidence of a good model. The mean model's residuals average to zero by construction, and it can still be a terrible forecast.</li>
     </ul>
     <div class="callout slate"><b>Bias and uselessness are different problems.</b> A biased model that otherwise fits well is nearly fixed. An unbiased model with autocorrelated residuals is not.</div>
     <p class="punch step wide">Check it, fix it if it fails, and do not congratulate a model for passing it.</p>
   </div>
-  <aside class="notes">The reason the mean model passes automatically is one line of algebra. Its fitted value everywhere is the sample mean, so the residuals are the deviations from the mean, and those sum to zero by definition. Exactly the same algebra as centering the seasonal component in Session 7.<br><br>In practice a visibly non-zero residual mean often points at something more interesting than bias: a trend the model has not captured, which shows up as residuals mostly above zero early and mostly below later, or the reverse. Look at the time plot before reaching for the subtraction.</aside>
+  <aside class="notes">The reason the mean model passes automatically is one line of algebra. Its fitted value everywhere is the sample mean, so the residuals are the deviations from the mean, and those sum to zero by definition. Exactly the same algebra as centering the seasonal component in Session 7.<br><br>In practice a visibly non-zero residual mean often points at something more interesting than bias: a trend the model has not captured, which shows up as residuals mostly above zero early and mostly below later, or the reverse. Look at the time plot before reaching for the adjustment.</aside>
 </section>
 
 
@@ -696,7 +696,7 @@ body.ov-on #overview{display:block}
           <rect x="280" y="40" width="200" height="88" rx="5" fill="#B5471E" opacity=".04"/><rect x="280" y="40" width="200" height="88" rx="5" fill="none" stroke="#B5471E" stroke-width="1.8"/>
           <text x="380" y="66" text-anchor="middle" fill="#B5471E" font-size="12.5" font-weight="700">2 &#183; TIME PLOT: MEAN</text>
           <text x="380" y="88" text-anchor="middle" fill="#161513" font-size="11">bias: cheap to fix,</text>
-          <text x="380" y="102" text-anchor="middle" fill="#161513" font-size="11">one subtraction</text>
+          <text x="380" y="102" text-anchor="middle" fill="#161513" font-size="11">one addition</text>
           <text x="380" y="118" text-anchor="middle" fill="#98928a" font-size="10">are the forecasts aimed right?</text>
           <rect x="530" y="40" width="200" height="88" rx="5" fill="#1F3A4D" opacity=".07"/><rect x="530" y="40" width="200" height="88" rx="5" fill="none" stroke="#1F3A4D" stroke-width="1.8"/>
           <text x="630" y="66" text-anchor="middle" fill="#1F3A4D" font-size="12.5" font-weight="700">3 + 4 &#183; SPREAD &amp; SHAPE</text>
@@ -880,12 +880,12 @@ bricks_aug |&gt; filter(.model == "Mean") |&gt; features(.innov, ljung_box, lag 
     <h1 class="sowhat">Each failure has a different answer. Knowing which is the skill.</h1>
     <table class="traps compact">
       <tr><td class="os">Autocorrelation</td><td>The model missed usable structure.</td><td class="fix">Richer model. Hard. Sessions 15&ndash;19.</td></tr>
-      <tr><td class="os">Non-zero mean</td><td>Forecasts are biased by a constant.</td><td class="fix">Subtract it. Easy.</td></tr>
+      <tr><td class="os">Non-zero mean</td><td>Forecasts are biased by a constant.</td><td class="fix">Add it to the forecasts. Easy.</td></tr>
       <tr><td class="os">Changing variance</td><td>Often a multiplicative series fitted additively.</td><td class="fix">Transform. Session 11.</td></tr>
       <tr><td class="os">Not normal</td><td>The prediction interval arithmetic does not hold.</td><td class="fix">Transform, or bootstrap the intervals.</td></tr>
     </table>
     <ul class="build">
-      <li class="step"><b>Only the first one needs a better model.</b> The mean is fixed by a subtraction, and the other two are about the interval, not the aim.</li>
+      <li class="step"><b>Only the first one needs a better model.</b> The mean is fixed by an addition, and the other two are about the interval, not the aim.</li>
       <li class="step"><b>None of them is a reason to hide the diagnostic.</b> A reported failure you cannot fix is a legitimate finding, and Session 7 made the same argument about decompositions.</li>
     </ul>
     <p class="punch step wide">Keep the <code>09_A</code> summary sheet beside you for Group Assignment 2, printed or open in the browser. It is the most used page in the course.</p>
