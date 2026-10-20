@@ -487,7 +487,7 @@ K   = number of parameters the model estimated: 0 for naive, 1 for mean or drift
       <li class="step"><b>Why T minus K.</b> The same correction as a sample variance: each parameter the model estimated used up one residual's worth of freedom.</li>
       <li class="step"><b>What it needs from residual diagnostics (Session 9).</b> Constant variance, so that one &sigma;&#770; holds across the whole series; normality, so that 1.96 is the right multiplier.</li>
     </ul>
-    <p class="punch step wide">The by-hand version is a subtraction, a square, a sum and a square root. It takes about a minute, and it is on the final.</p>
+    <p class="punch step wide">With 251 residuals the sum is R&#39;s job. On a handful of them, the by-hand version is a subtraction, a square, a sum and a square root: about a minute with a calculator, and it is on the final.</p>
   </div>
   <aside class="notes">Practice the chain once on paper, with the calculator you will bring: from residuals to &sigma;&#770;, and from &sigma;&#770; to an interval.<br><br>Why one NA: the naive model's first fitted value does not exist, since there is no previous observation, so Google 2015's 252 trading days give 251 residuals. <code>na.omit()</code> or a logical filter drops it before counting.</aside>
 </section>
@@ -534,7 +534,7 @@ all.equal(PI, PI_hilo)                                      <span class="hl"># T
       <li class="step"><b>Then the check.</b> Take the residuals out, drop the NA, apply the formula from two slides ago, and compare the result with the bounds <code>fable</code> gave using <code>all.equal()</code>. This is the same habit as every build-then-verify exercise in the course.</li>
       <li class="step"><b>The midpoint check</b> is in the notebook too: the mean of the forecast distribution sits exactly between the two bounds. That stops being true after a transformation, later today.</li>
     </ul>
-    <p class="punch step wide">You will repeat this check alone on an exponential smoothing model in Session 16, so make sure you can follow every step of it today.</p>
+    <p class="punch step wide">The Session 16 homework repeats this check on an exponential smoothing model, so make sure you can follow every step of it today.</p>
   </div>
   <aside class="notes">Why <code>nrow(tidy(fit))</code> is K: <code>tidy()</code> lists one row per estimated parameter, so its row count is the number of parameters. For the naive model that is zero rows.<br><br><code>parameters()</code> returns one row per horizon with <code>mu</code> and <code>sigma</code>. The sigmas, 11.19, 15.82, 19.38, are the naive formula at h = 1, 2, 3: <code>sigma</code> times the square root of h.</aside>
 </section>
