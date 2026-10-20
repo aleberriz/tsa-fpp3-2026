@@ -135,6 +135,8 @@ kbd{
   text-transform:uppercase;color:var(--terra);font-weight:600;
 }
 .kicker.q{color:var(--muted)}
+/* labels set in capitals keep the case of math and code: h stays h, alpha stays alpha, optim() stays optim() */
+.nc,.kicker code,.card h3 code,.figrow p b code{text-transform:none}
 
 h1.sowhat{
   margin:0;font-family:var(--serif);font-weight:500;
@@ -465,7 +467,7 @@ trend        b<sub>t</sub> = &beta;*(&#8467;<sub>t</sub> &minus; &#8467;<sub>t&m
 <section class="slide" data-section="2" data-title="One step by hand">
   <div class="inner">
     <a class="nb" href="17_A_ESmoothing_Trended.html#fitting" target="_blank" rel="noopener" title="Open the notebook at this section">17_A &rsaquo; Fitting process</a>
-    <p class="kicker">Australian population, millions &nbsp;&middot;&nbsp; <span style="text-transform:none">&alpha;</span> = 0.9999, <span style="text-transform:none">&beta;*</span> = 0.3267, <span style="text-transform:none">&#8467;<sub>0</sub></span> = 10.05, <span style="text-transform:none">b<sub>0</sub></span> = 0.22</p>
+    <p class="kicker">Australian population, millions &nbsp;&middot;&nbsp; <span class="nc"><span style="text-transform:none">&alpha;</span></span> = 0.9999, <span class="nc"><span style="text-transform:none">&beta;*</span></span> = 0.3267, <span style="text-transform:none">&#8467;<sub>0</sub></span> = 10.05, <span style="text-transform:none">b<sub>0</sub></span> = 0.22</p>
     <h1 class="sowhat wide">Fitted value first, then the level, then the slope. The order is the method.</h1>
     <table class="traps compact">
       <tr><td class="os" style="text-transform:none">t</td><td>y<sub>t</sub></td><td>fitted = &#8467;<sub>t&minus;1</sub> + b<sub>t&minus;1</sub></td><td>&#8467;<sub>t</sub></td><td class="fix">b<sub>t</sub> = 0.3267 (&#8467;<sub>t</sub> &minus; &#8467;<sub>t&minus;1</sub>) + 0.6733 b<sub>t&minus;1</sub></td></tr>
@@ -562,7 +564,7 @@ fit |&gt; forecast(h = 10)  <span class="dim"># 24.97, 25.34, 25.71, ...: a stra
 <section class="slide" data-section="4" data-title="Why it flattens">
   <div class="inner">
     <a class="nb" href="17_A_ESmoothing_Trended.html#damped" target="_blank" rel="noopener" title="Open the notebook at this section">17_A &rsaquo; Damped trend methods</a>
-    <p class="kicker">Session 15&#39;s algebra, with ratio <span style="text-transform:none">&phi;</span></p>
+    <p class="kicker">Session 15&#39;s algebra, with ratio <span class="nc"><span style="text-transform:none">&phi;</span></span></p>
     <h1 class="sowhat wide">The damping factors are a geometric sequence, so their sum stops growing.</h1>
     <div class="console">Holt      y&#770;<sub>T+h|T</sub> = &#8467;<sub>T</sub> + <span class="hl">h</span> b<sub>T</sub>
 damped    y&#770;<sub>T+h|T</sub> = &#8467;<sub>T</sub> + <span class="hl">(&phi; + &phi;&sup2; + ... + &phi;<sup>h</sup>)</span> b<sub>T</sub>

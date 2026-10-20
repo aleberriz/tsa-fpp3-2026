@@ -135,6 +135,8 @@ kbd{
   text-transform:uppercase;color:var(--terra);font-weight:600;
 }
 .kicker.q{color:var(--muted)}
+/* labels set in capitals keep the case of math and code: h stays h, alpha stays alpha, optim() stays optim() */
+.nc,.kicker code,.card h3 code,.figrow p b code{text-transform:none}
 
 h1.sowhat{
   margin:0;font-family:var(--serif);font-weight:500;

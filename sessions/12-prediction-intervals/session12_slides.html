@@ -135,6 +135,8 @@ kbd{
   text-transform:uppercase;color:var(--terra);font-weight:600;
 }
 .kicker.q{color:var(--muted)}
+/* labels set in capitals keep the case of math and code: h stays h, alpha stays alpha, optim() stays optim() */
+.nc,.kicker code,.card h3 code,.figrow p b code{text-transform:none}
 
 h1.sowhat{
   margin:0;font-family:var(--serif);font-weight:500;
@@ -468,7 +470,7 @@ body.ov-on #overview{display:block}
 <section class="slide" data-section="2" data-title="One step ahead">
   <div class="inner">
     <a class="nb" href="12_PredictionIntervals_Transformations.html#one-step" target="_blank" rel="noopener" title="Open the notebook at this section">12 &rsaquo; Intervals for one-step forecasts</a>
-    <p class="kicker">The spread at h = 1 &nbsp;&middot;&nbsp; from the residuals</p>
+    <p class="kicker">The spread at <span class="nc">h</span> = 1 &nbsp;&middot;&nbsp; from the residuals</p>
     <h1 class="sowhat wide">For one step ahead, the residuals are the forecast errors in rehearsal.</h1>
     <div class="console">&sigma;&#770; = sqrt( sum(e<sub>t</sub>&sup2;) / (T &minus; K) )
 
@@ -490,7 +492,7 @@ K = number of parameters the model estimated: 0 for naive, 1 for mean or drift</
 <section class="slide" data-section="2" data-title="Further ahead">
   <div class="inner">
     <a class="nb" href="12_PredictionIntervals_Transformations.html#multi-step" target="_blank" rel="noopener" title="Open the notebook at this section">12 &rsaquo; Intervals for multi-step forecasts</a>
-    <p class="kicker">The spread at h &gt; 1 &nbsp;&middot;&nbsp; it grows</p>
+    <p class="kicker">The spread at <span class="nc">h</span> &gt; 1 &nbsp;&middot;&nbsp; it grows</p>
     <h1 class="sowhat wide">Intervals widen as you forecast further ahead, and how fast they widen depends on what the method assumes.</h1>
     <figure>
       <svg viewBox="0 0 760 196" role="img" aria-label="Left, three curves of interval width against the forecast horizon: the mean method stays almost flat, the naive method grows like the square root of h, and the drift method grows faster still. Right, the formulas for the four benchmark methods: mean, sigma times root of one plus one over T; naive, sigma times root h; seasonal naive, sigma times root of k plus one; drift, sigma times root of h times one plus h over T"><g font-family="SFMono-Regular,Menlo,monospace"><line x1="60" y1="170" x2="370" y2="170" stroke="#98928a" stroke-width="1"/><line x1="60" y1="170" x2="60" y2="30" stroke="#98928a" stroke-width="1"/><polyline points="70.0,136.0 95.0,136.0 120.0,136.0 145.0,136.0 170.0,136.0 195.0,136.0 220.0,136.0 245.0,136.0 270.0,136.0 295.0,136.0 320.0,136.0 345.0,136.0" fill="none" stroke="#6B7F5E" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="1"/><text x="353" y="139.98910849829514" text-anchor="start" fill="#6B7F5E" font-size="11.5" font-weight="700" >mean</text><polyline points="70.0,136.3 95.0,122.3 120.0,111.6 145.0,102.5 170.0,94.6 195.0,87.4 220.0,80.8 245.0,74.6 270.0,68.8 295.0,63.3 320.0,58.1 345.0,53.2" fill="none" stroke="#1F3A4D" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="1"/><text x="353" y="63.15252106556457" text-anchor="start" fill="#1F3A4D" font-size="11.5" font-weight="700" >naive</text><polyline points="70.0,136.0 95.0,121.5 120.0,110.1 145.0,100.3 170.0,91.5 195.0,83.3 220.0,75.7 245.0,68.4 270.0,61.5 295.0,54.8 320.0,48.3 345.0,42.0" fill="none" stroke="#B5471E" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="1"/><text x="353" y="40.0" text-anchor="start" fill="#B5471E" font-size="11.5" font-weight="700" >drift</text><text x="215" y="188" text-anchor="middle" fill="#98928a" font-size="11" >forecast horizon h</text><text x="48" y="100" transform="rotate(-90 48 100)" text-anchor="middle" fill="#98928a" font-size="11">interval width</text><text x="440" y="48" text-anchor="start" fill="#161513" font-size="11.5" font-weight="700" >Mean</text><text x="565" y="48" text-anchor="start" fill="#1F3A4D" font-size="11" >&sigma;&#770; &radic;(1 + 1/T)</text><text x="440" y="63" text-anchor="start" fill="#98928a" font-size="10" >almost flat: the mean is known well</text><text x="440" y="86" text-anchor="start" fill="#161513" font-size="11.5" font-weight="700" >Naive</text><text x="565" y="86" text-anchor="start" fill="#1F3A4D" font-size="11" >&sigma;&#770; &radic;h</text><text x="440" y="101" text-anchor="start" fill="#98928a" font-size="10" >each step adds a fresh shock</text><text x="440" y="124" text-anchor="start" fill="#161513" font-size="11.5" font-weight="700" >Seasonal naive</text><text x="565" y="124" text-anchor="start" fill="#1F3A4D" font-size="11" >&sigma;&#770; &radic;(k + 1)</text><text x="440" y="139" text-anchor="start" fill="#98928a" font-size="10" >widens once per season</text><text x="440" y="162" text-anchor="start" fill="#161513" font-size="11.5" font-weight="700" >Drift</text><text x="565" y="162" text-anchor="start" fill="#1F3A4D" font-size="11" >&sigma;&#770; &radic;(h (1 + h/T))</text><text x="440" y="177" text-anchor="start" fill="#98928a" font-size="10" >the slope is uncertain too</text></g></svg>
