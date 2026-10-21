@@ -615,7 +615,7 @@ fc2 |&gt; autoplot(prices, level = 80, point_forecast = lst(mean, median))</div>
       <li class="step"><b>The notebook runs three checks, and each returns TRUE.</b> exp of model 1&#39;s bounds equals model 2&#39;s bounds; exp of model 1&#39;s mean equals model 2&#39;s median; the mean of model 2&#39;s distribution equals its <code>.mean</code>.</li>
       <li class="step"><b>The same rule holds inside <code>decomposition_model()</code>:</b> <code>STL(log(Turnover) ~ ...)</code> and the forecasts come back in turnover units, which is what the homework uses.</li>
     </ul>
-    <p class="punch step wide">One rule covers every transformation in this course: put it in the formula, not in a new column.</p>
+    <p class="punch step wide">One rule covers every transformation in this course: put it in the formula, not in a new column made with <code>mutate()</code>.</p>
   </div>
   <aside class="notes"><code>point_forecast = lst(mean, median)</code> asks <code>autoplot()</code> to draw both middles; they are drawn in different line types. On the log scale they coincide; on the original scale they separate as h grows.<br><br>Box&ndash;Cox works the same way: <code>RW(box_cox(y, 0.3) ~ drift())</code>. The lambda has to be a number in the formula, so compute it with <code>guerrero</code> first and pass it in.</aside>
 </section>
