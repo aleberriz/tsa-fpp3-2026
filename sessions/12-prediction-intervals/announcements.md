@@ -1,7 +1,7 @@
 # Session 12 announcements
 
-- **Homework due Sunday 25 October 2026, 23:59.** Short on purpose: the Session 11 homework is due
-  the same day, and Group Assignment 1 five days later.
+- **Homework posted on Blackboard on Monday 26 October, with the Session 13 homework; both are due
+  Sunday 1 November 2026, 23:59.** Short on purpose: Group Assignment 1 is due two days earlier.
 - **Group Assignment 1 is now due Friday 30 October 2026, 23:59.** The deadline has moved from
   Sunday 25 October.
 - **The common-errors note on this homework** goes up on Blackboard after the due date.
