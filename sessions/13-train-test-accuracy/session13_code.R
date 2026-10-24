@@ -63,17 +63,17 @@ library(patchwork) # Necessary to produce combinations of graphs
 ## Scale-dependent error metrics ----
 
 ### Why the median and why the mean ----
-x <- c(1, 2, 3, 4, 100)
-median(x)
-mean(x)
+y <- c(1, 2, 3, 4, 100)
+median(y)
+mean(y)
 
-# Total absolute deviation: smaller at the median
-sum(abs(x - median(x)))
-sum(abs(x - mean(x)))
+# MAE and RMSE of the forecast c = median(y)
+mean(abs(y - median(y)))
+sqrt(mean((y - median(y))^2))
 
-# Total squared deviation: smaller at the mean
-sum((x - median(x))^2)
-sum((x - mean(x))^2)
+# MAE and RMSE of the forecast c = mean(y)
+mean(abs(y - mean(y)))
+sqrt(mean((y - mean(y))^2))
 
 # Example 1 of error metrics ----
 recent_production <- aus_production |>
