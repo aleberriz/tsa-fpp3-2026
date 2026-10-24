@@ -425,7 +425,7 @@ body.ov-on #overview{display:block}
     <p class="who"><b>Session 13.</b> Train/test splits and point forecast accuracy.<br>
     Alejandro Berrizbeitia · aberrizbeitia@faculty.ie.edu</p>
   </div>
-  <aside class="notes">The deck is self-contained: press <b>N</b> at any time to open or close this panel, and <b>O</b> for a list of every slide.<br><br>Today is fpp3 section 5.8 and two notebooks in this folder: <code>13_Train_Test</code>, which cuts a series into a training and a test set, and <code>13_A</code>, which measures the errors. Session 12 said how wrong a forecast might be. Today measures how wrong it was.</aside>
+  <aside class="notes">The deck is self-contained: press <b>N</b> at any time to open or close this panel, and <b>O</b> for a list of every slide.<br><br>This session covers fpp3 section 5.8 and two notebooks in this folder: <code>13_Train_Test</code>, which cuts a series into a training and a test set, and <code>13_A</code>, which measures the errors. Prediction intervals (Session 12) said how wrong a forecast might be; this session measures how wrong it was.</aside>
 </section>
 
 <section class="slide" data-section="2" data-title="Judged on unseen data">
@@ -449,7 +449,7 @@ body.ov-on #overview{display:block}
 <section class="slide" data-section="2" data-title="Residual or forecast error">
   <div class="inner">
     <a class="nb" href="13_A_PointAccuracy.html#errors-vs-residuals" target="_blank" rel="noopener" title="Open the notebook at this section">13_A &rsaquo; Forecast errors vs residuals</a>
-    <p class="kicker">Session 8&#39;s distinction &nbsp;&middot;&nbsp; now it earns its keep</p>
+    <p class="kicker">From benchmark methods (Session 8) &nbsp;&middot;&nbsp; now it earns its keep</p>
     <h1 class="sowhat wide">A residual is a one-step miss inside the data. A forecast error is a miss on the future you hid.</h1>
     <div class="cards">
       <div class="card"><h3>Residual</h3><p>Observation minus fitted value, <code>y<sub>t</sub> &minus; y&#770;<sub>t|t&minus;1</sub></code>, on the <b>training set</b>. Always one step ahead, because a fitted value is a one-step forecast made inside the data.</p></div>
@@ -458,11 +458,11 @@ body.ov-on #overview{display:block}
     <ul class="build" style="margin-top:1.4rem">
       <li class="step"><b>Two differences, and only two:</b> where the comparison happens, training or test, and how far ahead the forecast reached, one step or <code>h</code>.</li>
       <li class="step"><b>Error is not mistake.</b> It is the unpredictable part of an observation: whatever the model could not capture. A good model still has errors; it has small, patternless ones.</li>
-      <li class="step"><b>Session 12 used residuals to size the interval.</b> Today uses forecast errors to size the model. It is the same subtraction, applied to different data.</li>
+      <li class="step"><b>Prediction intervals (Session 12) used residuals to size the interval.</b> Today uses forecast errors to size the model. It is the same subtraction, applied to different data.</li>
     </ul>
     <p class="punch step wide">The residuals show how the model did in rehearsal, on the training data, and the forecast errors show how it did on the test set.</p>
   </div>
-  <aside class="notes">Why residuals are always one step ahead: a fitted value at time <i>t</i> is the model&#39;s forecast of <i>y<sub>t</sub></i> from everything up to <i>t</i> minus 1. So the residual at <i>t</i> is a one-step miss by construction. Forecast errors on the test set are made from the end of the training set, <i>T</i>, and reach <i>h</i> steps out, so the tenth test observation is compared with a ten-step forecast.<br><br>Multi-step errors are usually larger than one-step errors, for the same reason Session 12&#39;s intervals widen with the horizon.</aside>
+  <aside class="notes">Why residuals are always one step ahead: a fitted value at time <i>t</i> is the model&#39;s forecast of <i>y<sub>t</sub></i> from everything up to <i>t</i> minus 1. So the residual at <i>t</i> is a one-step miss by construction. Forecast errors on the test set are made from the end of the training set, <i>T</i>, and reach <i>h</i> steps out, so the tenth test observation is compared with a ten-step forecast.<br><br>Multi-step errors are usually larger than one-step errors, for the same reason the prediction intervals of Session 12 widen with the horizon.</aside>
 </section>
 
 <section class="slide" data-section="2" data-title="How much to hold back">
@@ -482,11 +482,11 @@ body.ov-on #overview{display:block}
   <aside class="notes">The 20% rule is a rule of thumb, not a law. The three requirements pull against each other: a longer test set judges more reliably, a longer training set estimates more reliably, and the test set has to reach at least as far as you intend to forecast. With a short series something has to give, and Session 14&#39;s cross-validation is the way to get more judging out of the same data.<br><br>Session 18 returns to overfitting with the Holt&ndash;Winters models, which have many parameters: "with four parameters I can fit an elephant".</aside>
 </section>
 
-<section class="slide" data-section="3" data-title="Switch: three verbs">
+<section class="slide" data-section="3" data-title="Switch: two verbs">
   <div class="inner">
     <a class="nb" href="13_Train_Test.html#subsetting" target="_blank" rel="noopener" title="Open the notebook at this section">13_Train_Test &rsaquo; Functions to subset a time series</a>
     <p class="kicker">Now we compute</p>
-    <h1 class="sowhat wide">Three verbs cut a series, and the parentheses decide which rows you get.</h1>
+    <h1 class="sowhat wide">Two verbs cut a series, and the parentheses decide which rows you get.</h1>
     <div class="console tight"><span class="dim"># by condition</span>
 aus_production |&gt; filter(year(Quarter) &gt;= 1995)
 
@@ -494,16 +494,16 @@ aus_production |&gt; filter(year(Quarter) &gt;= 1995)
 aus_retail |&gt; group_by(State, Industry) |&gt; slice(1:(n() - 12))  |&gt; ungroup()
 aus_retail |&gt; group_by(State, Industry) |&gt; slice(-(1:(n() - 12))) |&gt; ungroup()
 
-<span class="dim"># the last 20 rows: 19:0 is a sequence, n() - 19:0 shifts it</span>
+<span class="dim"># the last 20 rows: n() - 19:0 runs from n() - 19 up to n()</span>
 aus_production |&gt; slice(n() - 19:0)</div>
     <ul class="build">
       <li class="step"><b><code>filter()</code> by condition, <code>slice()</code> by position.</b> Convert the index before comparing: <code>year(Quarter) &gt;= 1995</code>, not <code>Quarter &gt;= 1995</code>.</li>
       <li class="step"><b>The parentheses are the trap.</b> <code>1:(n() - 12)</code> is the first <code>n &minus; 12</code> rows. <code>1:n() - 12</code> is something else, silently, because <code>:</code> binds tighter than <code>&minus;</code>.</li>
       <li class="step"><b>Many series at once:</b> <code>group_by()</code> the keys before <code>slice()</code>, and <code>ungroup()</code> after, or the split happens across all series together.</li>
     </ul>
-    <p class="punch step wide">Every test set you build this term starts with one of these three lines, so check the parentheses carefully now.</p>
+    <p class="punch step wide">Every test set you build this term starts with <code>filter()</code> or <code>slice()</code>, so check the parentheses carefully now.</p>
   </div>
-  <aside class="notes">The minus sign in <code>slice(-(1:(n() - 12)))</code> means "everything except these positions", the same idiom as dropping columns with <code>select(-x)</code>.<br><br>Why <code>n() - 19:0</code> gives the last 20 rows: <code>19:0</code> is the sequence 19, 18, ..., 0, and subtracting it from <code>n()</code> gives <code>n - 19</code> up to <code>n</code>. Adding or subtracting a number shifts a sequence; it does not change its length.<br><br>fpp3 also uses <code>filter_index()</code> for date ranges written as strings. It is a convenience; <code>filter()</code> with <code>year()</code> or <code>yearmonth()</code> does the same job.</aside>
+  <aside class="notes">The minus sign in <code>slice(-(1:(n() - 12)))</code> means "everything except these positions", the same idiom as dropping columns with <code>select(-x)</code>.<br><br>Why <code>n() - 19:0</code> gives the last 20 rows: <code>19:0</code> is the sequence 19, 18, ..., 0, and subtracting it from <code>n()</code> gives <code>n - 19</code> up to <code>n</code>. Subtracting a sequence from a number keeps its length, so the result is always 20 rows.<br><br>fpp3 also uses <code>filter_index()</code> for date ranges written as strings. It is a convenience; <code>filter()</code> with <code>year()</code> or <code>yearmonth()</code> does the same job.<br><br><code>aus_retail</code> measures <code>Turnover</code>, the Australian and British word for sales. In American usage, turnover usually means staff or inventory turnover, so read it as retail sales.</aside>
 </section>
 
 <section class="slide" data-section="4" data-title="Differences or ratios">
@@ -515,12 +515,12 @@ aus_production |&gt; slice(n() - 19:0)</div>
 relative error    |y &minus; y&#770;| / |y|    <span class="dim">no units: a fraction, usually read as a percentage</span></div>
     <ul class="build">
       <li class="step"><b>Every metric today is one of the two,</b> averaged in some way over the errors: MAE and RMSE are differences; MAPE is a ratio; MASE is a difference divided by a reference difference.</li>
-      <li class="step"><b>The absolute value is there so misses do not cancel.</b> A model that is 10 too high and then 10 too low has a mean error of zero and an average miss of 10. The plain mean of the errors measures bias, Session 9&#39;s property 2, not size.</li>
+      <li class="step"><b>The absolute value is there so misses do not cancel.</b> A model that is 10 too high and then 10 too low has a mean error of zero and an average miss of 10. The plain mean of the errors measures bias, not size: it is the zero-mean check of residual diagnostics (Session 9).</li>
       <li class="step"><b>Units decide what you can compare.</b> A difference compares models on one series. A ratio, or a scaled error, compares across series measured in different things.</li>
     </ul>
     <p class="punch step wide">Before reading any accuracy number, check whether it is a difference or a ratio; its units will tell you.</p>
   </div>
-  <aside class="notes">The exam asks for this at the level of a table: given a few observations and forecasts, compute the errors, the absolute errors, the percentage errors, and the metrics on the next slides. It is arithmetic; the judgment is in knowing which metric answers which question.</aside>
+  <aside class="notes">This is the kind of calculation the final can ask for by hand: from a few observations and forecasts in a table, the errors, the absolute errors, the percentage errors, and the metrics on the next slides. The arithmetic is easy; the judgment is in matching the metric to the question.</aside>
 </section>
 
 <section class="slide" data-section="4" data-title="MAE and RMSE">
@@ -534,50 +534,68 @@ relative error    |y &minus; y&#770;| / |y|    <span class="dim">no units: a fra
     <div class="console tight">MAE  = mean( |e<sub>t</sub>| )           RMSE = sqrt( mean( e<sub>t</sub>&sup2; ) )</div>
     <ul class="build">
       <li class="step"><b>MAE reads as a sentence:</b> "on average, off by 14.3 megalitres". RMSE is in the same units but weighs large misses more, so it reacts to the occasional big error.</li>
-      <li class="step"><b>They aim at different targets.</b> A method that minimizes the MAE forecasts the median; one that minimizes the RMSE forecasts the mean. This is Session 12&#39;s mean-or-median question again.</li>
-      <li class="step"><b>Neither compares across series.</b> 14 megalitres of beer and 14 dollars of turnover are not the same miss.</li>
+      <li class="step"><b>They aim at different targets.</b> A method that minimizes the MAE forecasts the median; one that minimizes the RMSE forecasts the mean. The next slide shows why, on five numbers.</li>
+      <li class="step"><b>Neither compares across series.</b> 14 megalitres of beer and 14 dollars of retail sales are not the same miss.</li>
     </ul>
     <p class="punch step wide">Use MAE when you want a number a manager can read. Use RMSE when a big miss hurts more than several small ones.</p>
   </div>
-  <aside class="notes">On the training set these are computed from the residuals, with the NAs at the start dropped (a seasonal naive has four of them on quarterly data). On the test set, from the forecast errors. The formulas are the same; only the vector of errors changes.<br><br>Why the median: the sum of absolute deviations is smallest at the median of a set of numbers. Why the mean: the sum of squared deviations is smallest at the mean. The proofs are outside this course; the statements are not.</aside>
+  <aside class="notes">On the training set these are computed from the residuals, with the NAs at the start dropped (a seasonal naive has four of them on quarterly data). On the test set, from the forecast errors. The formulas are the same; only the vector of errors changes.</aside>
+</section>
+
+<section class="slide" data-section="4" data-title="Median or mean">
+  <div class="inner">
+    <a class="nb" href="13_A_PointAccuracy.html#median-mean" target="_blank" rel="noopener" title="Open the notebook at this section">13_A &rsaquo; Why the median and why the mean</a>
+    <p class="kicker">Scale-dependent metrics &nbsp;&middot;&nbsp; one number for many</p>
+    <h1 class="sowhat wide">The total absolute miss is lowest at the median, and the total squared miss is lowest at the mean.</h1>
+    <figure>
+      <svg viewBox="0 0 760 232" role="img" aria-label="Top, the five numbers 1, 2, 3, 4 and 100 on a line from 0 to 100, with the median, 3, and the mean, 22, marked: the one far value drags the mean but not the median. Below, two curves of the total miss as a function of a candidate number c from 0 to 30. Left, the total of the absolute deviations, a V shape lowest at c = 3, where it is 101; at c = 22 it is 156. Right, the total of the squared deviations, a parabola lowest at c = 22, where it is 7,610; at c = 3 it is 9,415"><g font-family="SFMono-Regular,Menlo,monospace"><line x1="60.0" y1="40" x2="700.0" y2="40" stroke="#98928a" stroke-width="1"/><line x1="60.0" y1="37" x2="60.0" y2="43" stroke="#98928a" stroke-width="1"/><line x1="380.0" y1="37" x2="380.0" y2="43" stroke="#98928a" stroke-width="1"/><line x1="700.0" y1="37" x2="700.0" y2="43" stroke="#98928a" stroke-width="1"/><circle cx="66.4" cy="40" r="3.4" fill="#161513"/><circle cx="72.8" cy="40" r="3.4" fill="#161513"/><circle cx="79.2" cy="40" r="3.4" fill="#161513"/><circle cx="85.6" cy="40" r="3.4" fill="#161513"/><circle cx="700.0" cy="40" r="3.4" fill="#161513"/><text x="76.0" y="28" text-anchor="middle" fill="#161513" font-size="10.5" font-weight="700" >1, 2, 3, 4</text><text x="700.0" y="28" text-anchor="middle" fill="#161513" font-size="10.5" font-weight="700" >100</text><path d="M79.2,46 l-4,7 h8 z" fill="#1F3A4D"/><text x="79.2" y="66" text-anchor="middle" fill="#1F3A4D" font-size="10.5" font-weight="700" >median 3</text><path d="M200.8,46 l-4,7 h8 z" fill="#B5471E"/><text x="200.8" y="66" text-anchor="middle" fill="#B5471E" font-size="10.5" font-weight="700" >mean 22</text><text x="450.40000000000003" y="58" text-anchor="middle" fill="#98928a" font-size="10" >the one far value drags the mean; the median does not move</text><line x1="60" y1="212" x2="350" y2="212" stroke="#98928a" stroke-width="1"/><line x1="60" y1="212" x2="60" y2="100" stroke="#98928a" stroke-width="1"/><text x="205" y="92" text-anchor="middle" fill="#6B665E" font-size="11" >total of |x &minus; c|: lowest at the median</text><text x="60.0" y="226" text-anchor="middle" fill="#98928a" font-size="10" >0</text><text x="154.0" y="226" text-anchor="middle" fill="#98928a" font-size="10" >10</text><text x="248.0" y="226" text-anchor="middle" fill="#98928a" font-size="10" >20</text><text x="342.0" y="226" text-anchor="middle" fill="#98928a" font-size="10" >30</text><text x="201" y="226" text-anchor="middle" fill="#98928a" font-size="10" >candidate c</text><polyline points="60.0,194.7 62.4,196.1 64.7,197.6 67.0,199.0 69.4,200.4 71.8,201.3 74.1,202.2 76.5,203.0 78.8,203.9 81.2,204.2 83.5,204.5 85.8,204.8 88.2,205.1 90.5,204.8 92.9,204.5 95.2,204.2 97.6,203.9 100.0,203.0 102.3,202.2 104.7,201.3 107.0,200.4 109.3,199.6 111.7,198.7 114.1,197.8 116.4,197.0 118.8,196.1 121.1,195.2 123.5,194.4 125.8,193.5 128.2,192.6 130.5,191.8 132.9,190.9 135.2,190.0 137.6,189.2 139.9,188.3 142.2,187.4 144.6,186.6 146.9,185.7 149.3,184.8 151.7,184.0 154.0,183.1 156.4,182.2 158.7,181.4 161.1,180.5 163.4,179.6 165.8,178.8 168.1,177.9 170.4,177.0 172.8,176.2 175.2,175.3 177.5,174.4 179.9,173.6 182.2,172.7 184.6,171.8 186.9,171.0 189.2,170.1 191.6,169.2 194.0,168.4 196.3,167.5 198.7,166.6 201.0,165.8 203.3,164.9 205.7,164.0 208.1,163.2 210.4,162.3 212.8,161.4 215.1,160.6 217.5,159.7 219.8,158.8 222.2,158.0 224.5,157.1 226.8,156.2 229.2,155.4 231.6,154.5 233.9,153.6 236.2,152.8 238.6,151.9 241.0,151.0 243.3,150.2 245.7,149.3 248.0,148.4 250.3,147.6 252.7,146.7 255.1,145.8 257.4,145.0 259.8,144.1 262.1,143.2 264.5,142.4 266.8,141.5 269.1,140.6 271.5,139.8 273.9,138.9 276.2,138.0 278.6,137.2 280.9,136.3 283.2,135.4 285.6,134.6 288.0,133.7 290.3,132.8 292.6,132.0 295.0,131.1 297.4,130.2 299.7,129.4 302.1,128.5 304.4,127.6 306.8,126.8 309.1,125.9 311.5,125.0 313.8,124.2 316.2,123.3 318.5,122.4 320.9,121.6 323.2,120.7 325.6,119.8 327.9,119.0 330.2,118.1 332.6,117.2 334.9,116.4 337.3,115.5 339.7,114.6 342.0,113.8" fill="none" stroke="#1F3A4D" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="1"/><line x1="88.2" y1="171.1" x2="88.2" y2="212" stroke="#1F3A4D" stroke-width="1" stroke-dasharray="2 2"/><circle cx="88.2" cy="205.1" r="4" fill="#1F3A4D"/><text x="94.2" y="167.06666666666666" text-anchor="start" fill="#161513" font-size="10.5" font-weight="700" >c = 3: 101</text><line x1="266.8" y1="141.5" x2="266.8" y2="212" stroke="#1F3A4D" stroke-width="1" stroke-dasharray="2 2"/><circle cx="266.8" cy="141.5" r="4" fill="#FAF8F5" stroke="#1F3A4D" stroke-width="1.6"/><text x="257.8" y="137.51111111111112" text-anchor="end" fill="#6B665E" font-size="10.5" >c = 22: 156</text><line x1="420" y1="212" x2="710" y2="212" stroke="#98928a" stroke-width="1"/><line x1="420" y1="212" x2="420" y2="100" stroke="#98928a" stroke-width="1"/><text x="565" y="92" text-anchor="middle" fill="#6B665E" font-size="11" >total of (x &minus; c)&sup2;: lowest at the mean</text><text x="420.0" y="226" text-anchor="middle" fill="#98928a" font-size="10" >0</text><text x="514.0" y="226" text-anchor="middle" fill="#98928a" font-size="10" >10</text><text x="608.0" y="226" text-anchor="middle" fill="#98928a" font-size="10" >20</text><text x="702.0" y="226" text-anchor="middle" fill="#98928a" font-size="10" >30</text><text x="561" y="226" text-anchor="middle" fill="#98928a" font-size="10" >candidate c</text><polyline points="420.0,110.7 422.4,112.8 424.7,114.9 427.1,116.9 429.4,119.0 431.8,121.0 434.1,123.0 436.4,124.9 438.8,126.9 441.1,128.8 443.5,130.7 445.9,132.5 448.2,134.4 450.6,136.2 452.9,138.0 455.2,139.8 457.6,141.5 459.9,143.2 462.3,144.9 464.6,146.6 467.0,148.3 469.4,149.9 471.7,151.5 474.1,153.1 476.4,154.6 478.8,156.1 481.1,157.6 483.4,159.1 485.8,160.6 488.1,162.0 490.5,163.4 492.9,164.8 495.2,166.2 497.6,167.5 499.9,168.8 502.2,170.1 504.6,171.4 506.9,172.6 509.3,173.8 511.6,175.0 514.0,176.2 516.4,177.3 518.7,178.4 521.0,179.5 523.4,180.6 525.8,181.7 528.1,182.7 530.5,183.7 532.8,184.7 535.1,185.6 537.5,186.5 539.9,187.4 542.2,188.3 544.5,189.2 546.9,190.0 549.2,190.8 551.6,191.6 554.0,192.3 556.3,193.1 558.6,193.8 561.0,194.5 563.4,195.1 565.7,195.8 568.0,196.4 570.4,197.0 572.8,197.5 575.1,198.1 577.5,198.6 579.8,199.1 582.1,199.6 584.5,200.0 586.9,200.4 589.2,200.8 591.5,201.2 593.9,201.6 596.2,201.9 598.6,202.2 601.0,202.5 603.3,202.7 605.6,202.9 608.0,203.1 610.4,203.3 612.7,203.5 615.0,203.6 617.4,203.7 619.8,203.8 622.1,203.9 624.5,203.9 626.8,203.9 629.1,203.9 631.5,203.9 633.9,203.8 636.2,203.7 638.5,203.6 640.9,203.5 643.2,203.3 645.6,203.1 648.0,202.9 650.3,202.7 652.6,202.5 655.0,202.2 657.4,201.9 659.7,201.6 662.0,201.2 664.4,200.8 666.8,200.4 669.1,200.0 671.5,199.6 673.8,199.1 676.2,198.6 678.5,198.1 680.9,197.5 683.2,197.0 685.5,196.4 687.9,195.8 690.2,195.1 692.6,194.5 695.0,193.8 697.3,193.1 699.7,192.3 702.0,191.6" fill="none" stroke="#B5471E" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="1"/><line x1="626.8" y1="169.9" x2="626.8" y2="212" stroke="#B5471E" stroke-width="1" stroke-dasharray="2 2"/><circle cx="626.8" cy="203.9" r="4" fill="#B5471E"/><text x="632.8" y="165.9111111111111" text-anchor="start" fill="#161513" font-size="10.5" font-weight="700" >c = 22: 7,610</text><line x1="448.2" y1="134.4" x2="448.2" y2="212" stroke="#B5471E" stroke-width="1" stroke-dasharray="2 2"/><circle cx="448.2" cy="134.4" r="4" fill="#FAF8F5" stroke="#B5471E" stroke-width="1.6"/><text x="456.2" y="126.38518518518518" text-anchor="start" fill="#6B665E" font-size="10.5" >c = 3: 9,415</text></g></svg>
+    </figure>
+    <ul class="build">
+      <li class="step"><b>Absolute misses count sides, not distances.</b> Move <code>c</code> one unit right: each value on its left gets one unit farther, each on its right one unit closer. The total falls while more values lie to the right, and stops where the sides balance, at the median. The 100 counts as one value, however far away.</li>
+      <li class="step"><b>Squared misses let far values pull.</b> A value twice as far away costs four times as much, so <code>c</code> moves toward the 100 until the deviations above and below it cancel, <code>&Sigma;(x &minus; c) = 0</code>: the mean, 22.</li>
+      <li class="step"><b>A point forecast is one number standing in for many possible futures.</b> Judged by MAE, the best one is the median of the forecast distribution; judged by RMSE, its mean. They differ when the distribution is skewed, as for the back-transformed forecasts of prediction intervals (Session 12).</li>
+    </ul>
+    <p class="punch step wide">Before choosing between MAE and RMSE, decide whether the forecast should be the median or the mean of what could happen.</p>
+  </div>
+  <aside class="notes">For the curious, the two arguments are the proofs. The slope of the total of <code>|x &minus; c|</code> is the number of values below <code>c</code> minus the number above it, which is zero at the median. The derivative of the total of <code>(x &minus; c)&sup2;</code> is <code>&minus;2 &Sigma;(x &minus; c)</code>, which is zero at <code>c = mean(x)</code>. With an even number of values, any <code>c</code> between the two middle ones gives the same total absolute miss. The proofs are outside this course; the statements are not.<br><br>The notebook section behind the chip reproduces the four totals in R, with <code>sum(abs(x - c))</code> and <code>sum((x - c)^2)</code>.</aside>
 </section>
 
 <section class="slide" data-section="4" data-title="MAPE">
   <div class="inner">
     <a class="nb" href="13_A_PointAccuracy.html#percentage" target="_blank" rel="noopener" title="Open the notebook at this section">13_A &rsaquo; Percentage errors</a>
-    <p class="kicker">Percentage errors &nbsp;&middot;&nbsp; no units, two failures</p>
-    <h1 class="sowhat wide">A percentage error needs a meaningful zero.</h1>
+    <p class="kicker">Percentage errors &nbsp;&middot;&nbsp; no units, three cautions</p>
+    <h1 class="sowhat wide">A percentage error needs a meaningful zero, and it charges more for forecasting too high.</h1>
     <div class="console">p<sub>t</sub> = 100 &middot; e<sub>t</sub> / y<sub>t</sub>          MAPE = mean( |p<sub>t</sub>| )
 
-<span class="dim">case 1:</span>  y = 150,  y&#770; = 100  &rarr;  |150 &minus; 100| / 150 = <span class="hl">33%</span>
-<span class="dim">case 2:</span>  y = 100,  y&#770; = 150  &rarr;  |100 &minus; 150| / 100 = <span class="hl">50%</span>      <span class="dim">same miss of 50, different y</span></div>
+<span class="dim">same actual,   y = 100:</span>   y&#770; = 150 &rarr; 50%     y&#770; = 50 &rarr; 50%      <span class="dim">same cost</span>
+<span class="dim">same forecast, y&#770; = 100:</span>   y = 50  &rarr; <span class="hl">100%</span>    y = 150 &rarr; <span class="hl">33%</span>      <span class="dim">too high costs more</span></div>
     <ul class="build">
-      <li class="step"><b>It is unit-free, so it compares across series.</b> "Off by 3.3%" means the same for beer and for turnover.</li>
-      <li class="step"><b>Failure one: zeros.</b> A <code>y<sub>t</sub></code> of zero makes the ratio infinite; values near zero make it enormous. Daily sales of a slow product cannot be judged with MAPE.</li>
-      <li class="step"><b>Failure two: an arbitrary zero.</b> Temperature in Celsius has a zero that means nothing special, so a percentage of it means nothing either. MAPE needs a scale where zero is zero.</li>
+      <li class="step"><b>It is unit-free, so it compares across series.</b> "Off by 3.3%" means the same for beer and for retail sales.</li>
+      <li class="step"><b>It fails without a meaningful zero.</b> A <code>y<sub>t</sub></code> of zero makes the ratio infinite, and values near zero make it enormous, so daily sales of a slow product cannot be judged with MAPE. Temperature in Celsius has a zero that means nothing special, so a percentage of it means nothing either.</li>
+      <li class="step"><b>It is lopsided.</b> With <code>e = y &minus; y&#770;</code>, a negative error is a forecast above the actual. With positive actuals and forecasts, a forecast below the actual can never miss by more than 100%; one above it has no ceiling. This is what fpp3 means when it says MAPE penalizes negative errors more heavily.</li>
     </ul>
-    <p class="punch step wide">The 33% versus 50% example is not an asymmetry in the metric. The miss was 50 both times; what changed was the <code>y</code> it was divided by.</p>
+    <p class="punch step wide">A model chosen by its MAPE leans toward forecasting too low, because the forecasts that were too high are the expensive ones.</p>
   </div>
-  <aside class="notes">The claim that MAPE "penalizes negative errors more" is common and the notebook argues it is misleading. Take <code>y</code> = 100 and forecasts of 150 and 50: both give 50%. The asymmetry in the two cases on the slide comes from the actual value changing from 150 to 100, not from the sign of the error.<br><br>sMAPE, the "symmetric" version, is in the notebook for completeness. It is not examined, its value can be negative, and it does not fix the zero problem.</aside>
+  <aside class="notes">Whether MAPE is asymmetric depends on what you hold fixed. Hold the actual at 100 and forecasts of 150 and 50 both give 50%: no asymmetry. Hold the forecast at 100 and let the actual come in at 50 or 150: 100% against 33%. In forecasting the forecast is what you commit to and the actual is what arrives, so the second reading is the one that matters, and it is the one behind fpp3&#39;s warning.<br><br>sMAPE, the "symmetric" version, is in the notebook for completeness. It is not examined. It is not symmetric either (with <code>y</code> = 100, forecasts of 150 and 50 give 40% and 67%), its value can be negative, and it does not fix the zero problem.</aside>
 </section>
 
 <section class="slide" data-section="4" data-title="MASE and RMSSE">
   <div class="inner">
     <a class="nb" href="13_A_PointAccuracy.html#scaled" target="_blank" rel="noopener" title="Open the notebook at this section">13_A &rsaquo; Scaled errors</a>
     <p class="kicker">Scaled errors &nbsp;&middot;&nbsp; no units, no zero problem</p>
-    <h1 class="sowhat wide">MASE answers the first question to ask of any model: is it better than doing nothing?</h1>
+    <h1 class="sowhat wide">MASE measures every error against the naive method&#39;s typical miss on the training set.</h1>
     <div class="console">Q = mean |y<sub>t</sub> &minus; y<sub>t&minus;1</sub>|   on the training set     <span class="dim">(y<sub>t&minus;m</sub> for seasonal data)</span>
 q<sub>j</sub> = e<sub>j</sub> / Q                                         <span class="dim">a scaled error: no units</span>
 
 MASE = mean( |q<sub>j</sub>| )      RMSSE = sqrt( mean( q<sub>j</sub>&sup2; ) )</div>
     <ul class="build">
       <li class="step"><b>The scale, Q, is the naive method&#39;s average miss on the training set</b>: how far the series typically moves from one observation to the next (or from one season to the next).</li>
-      <li class="step"><b>So MASE below 1 beats "forecast the last value".</b> Above 1, the naive forecast would have done better. It has no units, and it works on series with zeros.</li>
-      <li class="step"><b>A built-in check:</b> on the beer training set, the seasonal naive model has a MASE of exactly 1, because its own errors are the scale.</li>
+      <li class="step"><b>MASE below 1: smaller errors, on average, than the one-step naive forecast made on the training data.</b> It has no units, and it works on series with zeros.</li>
+      <li class="step"><b>The benchmark is the training set, not the test set.</b> On beer, the seasonal naive model scores exactly 1 on the training set, because its own errors are the scale, and 0.94 on the test set. It did not beat itself; its test errors were simply smaller than its training ones.</li>
     </ul>
-    <p class="punch step wide">If a model cannot beat the naive forecast, nothing else about it matters. MASE puts that test in one number.</p>
+    <p class="punch step wide">To ask whether a model beats the naive forecast, compare its MASE with the naive row of the same table. Every row shares the same scale, so the lower MASE is the lower MAE.</p>
   </div>
-  <aside class="notes">MASE and RMSSE are the scaled versions of MAE and RMSE. The notebook section that defines them is new in this build; fpp3 5.8 is the reference. <code>accuracy()</code> returns both, and Group Assignment 2 uses them to compare the naive method against the smoothing models.<br><br>The scale Q is always computed on the training data, even when the metric is for the test set. That is what makes MASE comparable across series and across models fitted to the same series.</aside>
+  <aside class="notes">MASE and RMSSE are the scaled versions of MAE and RMSE. The notebook section that defines them is new in this build; fpp3 5.8 is the reference. <code>accuracy()</code> returns both, and Group Assignment 2 uses them to compare the naive method against the smoothing models.<br><br>The scale Q is always computed on the training data, even when the metric is for the test set. That is what makes MASE comparable across series and across models fitted to the same series.<br><br>A common misreading is "a test MASE above 1 means the naive forecast would have done better on the test set". It does not follow: the naive method&#39;s own multi-step test errors are usually larger than its one-step training errors, so its test MASE is usually above 1 too. In the notebook&#39;s Google example the naive model wins the test set with a MASE of 5.67. The fair comparison is row against row.</aside>
 </section>
 
 <section class="slide" data-section="5" data-title="Switch: accuracy() twice">
@@ -597,7 +615,7 @@ beer_fc  |&gt; accuracy(recent_production)     <span class="dim"># .type = Test:
     <ul class="build">
       <li class="step"><b>Two calls give two tables.</b> On the mable, <code>accuracy()</code> reads the residuals. On the fable, it needs the whole series to match each forecast with the observation it missed.</li>
       <li class="step"><b>Read the units.</b> MAE and RMSE in megalitres; MAPE in percent; MASE against the seasonal naive&#39;s training miss, which is why its own training MASE is 1.</li>
-      <li class="step"><b>Here the seasonal naive wins everything,</b> on both sets. Usually the picture is messier, and then you choose the metric before you choose the model.</li>
+      <li class="step"><b>Here the seasonal naive wins on both sets, on every metric.</b> Usually one model wins on one metric and another on another; then you choose the metric before you choose the model.</li>
     </ul>
     <p class="punch step wide">The notebook&#39;s Google example applies the same workflow to non-seasonal data. The code is the same, but a different model wins.</p>
   </div>
@@ -623,7 +641,7 @@ all.equal(sqrt(mean(err^2)), RMSE_fable)                      <span class="hl">#
       <li class="step"><b>Forecast errors are observations minus forecasts,</b> in that order, matched quarter by quarter. The sign convention matters for the mean error; it vanishes under the absolute value and the square.</li>
       <li class="step"><b>The homework repeats this for the seasonal naive.</b> It uses the same four lines with a different model name, and there are four NAs to drop instead of one.</li>
     </ul>
-    <p class="punch step wide">If you can do this with a calculator on a table of ten numbers, you are ready for the accuracy questions on the final.</p>
+    <p class="punch step wide">If you can do this with a calculator on a table of ten numbers, you can check every number <code>accuracy()</code> reports.</p>
   </div>
   <aside class="notes">Model names with spaces, such as <code>Seasonal naive</code>, need backticks when used in <code>select()</code>. Or name the models without spaces when you fit them.<br><br>Why <code>accuracy()</code> wants the full series rather than the test set alone: it matches each forecast to the observation at the same index, and it needs the training part to compute the scale for MASE. Passing only the test set gives the same MAE and RMSE and a different MASE.</aside>
 </section>
@@ -647,7 +665,7 @@ all.equal(sqrt(mean(err^2)), RMSE_fable)                      <span class="hl">#
     <p class="kicker">What comes next</p>
     <h1 class="sowhat">One train/test split is a single draw, and Session 14 repeats it many times.</h1>
     <p class="lead wide">Today&#39;s test set was one stretch of ten quarters. Move the cut by a year and the winner can change. Session 14 slides the cut along the whole series with <code>stretch_tsibble()</code>, fits every model on every training set, and averages the errors: cross-validation for time series, and why the k-fold version from other courses is wrong here.</p>
-    <p class="punch step wide">Session 14 makes the last of the three pieces, the size of the error, more reliable.</p>
+    <p class="punch step wide">One split gives one estimate of the error; Session 14 averages many.</p>
     <p class="url" style="font-size:clamp(0.95rem,1.7vw,1.9rem)">aberrizbeitia@faculty.ie.edu</p>
   </div>
   <aside class="notes">Before Session 14, be sure of two things from today: that the test set must come after the training set in time, and that <code>group_by()</code> followed by <code>mutate()</code> labels rows within each group. Cross-validation is those two ideas, repeated.</aside>
@@ -665,7 +683,7 @@ all.equal(sqrt(mean(err^2)), RMSE_fable)                      <span class="hl">#
 </div>
 
 <div id="hud">
-  <span id="count">1 / 13</span>
+  <span id="count">1 / 14</span>
   <button id="prev" title="Previous">&larr;</button>
   <button id="next" title="Next">&rarr;</button>
 </div>
@@ -674,7 +692,7 @@ all.equal(sqrt(mean(err^2)), RMSE_fable)                      <span class="hl">#
 (function(){
   "use strict";
 
-  var SECTIONS = [{"name":"Where we are","from":1,"to":1},{"name":"The honest test","from":2,"to":4},{"name":"Cutting a series","from":5,"to":5,"live":true},{"name":"The metrics","from":6,"to":9},{"name":"Beer, both sets","from":10,"to":11,"live":true},{"name":"Close","from":12,"to":13}];
+  var SECTIONS = [{"name":"Where we are","from":1,"to":1},{"name":"The honest test","from":2,"to":4},{"name":"Cutting a series","from":5,"to":5,"live":true},{"name":"The metrics","from":6,"to":10},{"name":"Beer, both sets","from":11,"to":12,"live":true},{"name":"Close","from":13,"to":14}];
 var slides = Array.prototype.slice.call(document.querySelectorAll(".slide"));
   var toc    = document.getElementById("toc");
   var ovlist = document.getElementById("ovlist");

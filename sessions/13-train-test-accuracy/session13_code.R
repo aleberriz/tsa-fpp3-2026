@@ -58,6 +58,23 @@ library(fpp3)
 library(patchwork) # Necessary to produce combinations of graphs
                    # E.g. when we do p1 + p2 (with p1 an p2 being ggplot objects)
 
+# Metrics to summarize errors ----
+
+## Scale-dependent error metrics ----
+
+### Why the median and why the mean ----
+x <- c(1, 2, 3, 4, 100)
+median(x)
+mean(x)
+
+# Total absolute deviation: smaller at the median
+sum(abs(x - median(x)))
+sum(abs(x - mean(x)))
+
+# Total squared deviation: smaller at the mean
+sum((x - median(x))^2)
+sum((x - mean(x))^2)
+
 # Example 1 of error metrics ----
 recent_production <- aus_production |>
   filter(year(Quarter) >= 1992)
