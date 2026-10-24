@@ -2409,22 +2409,10 @@ window.Quarto = {
   <li><a href="#exercise-1" id="toc-exercise-1" class="nav-link" data-scroll-target="#exercise-1">Exercise 1</a>
   <ul>
   <li><a href="#stl-decomposition-solved" id="toc-stl-decomposition-solved" class="nav-link" data-scroll-target="#stl-decomposition-solved">1. STL decomposition (solved)</a></li>
-  <li><a href="#extract-the-seasonally-adjusted-data" id="toc-extract-the-seasonally-adjusted-data" class="nav-link" data-scroll-target="#extract-the-seasonally-adjusted-data">2. Extract the seasonally adjusted data</a>
-  <ul>
-  <li><a href="#well-go-over-what-to-bear-in-mind-for-this-exercise-in-the-live-session." id="toc-well-go-over-what-to-bear-in-mind-for-this-exercise-in-the-live-session." class="nav-link" data-scroll-target="#well-go-over-what-to-bear-in-mind-for-this-exercise-in-the-live-session.">We’ll go over what to bear in mind for this exercise in the live session.</a></li>
-  </ul></li>
-  <li><a href="#forecast-the-seasonally-adjusted-data-with-the-drift-method" id="toc-forecast-the-seasonally-adjusted-data-with-the-drift-method" class="nav-link" data-scroll-target="#forecast-the-seasonally-adjusted-data-with-the-drift-method">3. Forecast the seasonally adjusted data with the drift method</a>
-  <ul>
-  <li><a href="#well-go-over-what-to-bear-in-mind-for-this-exercise-in-the-live-session.-1" id="toc-well-go-over-what-to-bear-in-mind-for-this-exercise-in-the-live-session.-1" class="nav-link" data-scroll-target="#well-go-over-what-to-bear-in-mind-for-this-exercise-in-the-live-session.-1">We’ll go over what to bear in mind for this exercise in the live session.</a></li>
-  </ul></li>
-  <li><a href="#forecast-the-seasonal-component-with-snaive" id="toc-forecast-the-seasonal-component-with-snaive" class="nav-link" data-scroll-target="#forecast-the-seasonal-component-with-snaive">4. Forecast the seasonal component with SNAIVE</a>
-  <ul>
-  <li><a href="#well-go-over-what-to-bear-in-mind-for-this-exercise-in-the-live-session.-2" id="toc-well-go-over-what-to-bear-in-mind-for-this-exercise-in-the-live-session.-2" class="nav-link" data-scroll-target="#well-go-over-what-to-bear-in-mind-for-this-exercise-in-the-live-session.-2">We’ll go over what to bear in mind for this exercise in the live session.</a></li>
-  </ul></li>
-  <li><a href="#combine-both-models-with-decomposition_model" id="toc-combine-both-models-with-decomposition_model" class="nav-link" data-scroll-target="#combine-both-models-with-decomposition_model">5. Combine both models with <code>decomposition_model()</code></a>
-  <ul>
-  <li><a href="#well-go-over-what-to-bear-in-mind-for-this-exercise-in-the-live-session.-3" id="toc-well-go-over-what-to-bear-in-mind-for-this-exercise-in-the-live-session.-3" class="nav-link" data-scroll-target="#well-go-over-what-to-bear-in-mind-for-this-exercise-in-the-live-session.-3">We’ll go over what to bear in mind for this exercise in the live session.</a></li>
-  </ul></li>
+  <li><a href="#extract-the-seasonally-adjusted-data" id="toc-extract-the-seasonally-adjusted-data" class="nav-link" data-scroll-target="#extract-the-seasonally-adjusted-data">2. Extract the seasonally adjusted data</a></li>
+  <li><a href="#forecast-the-seasonally-adjusted-data-with-the-drift-method" id="toc-forecast-the-seasonally-adjusted-data-with-the-drift-method" class="nav-link" data-scroll-target="#forecast-the-seasonally-adjusted-data-with-the-drift-method">3. Forecast the seasonally adjusted data with the drift method</a></li>
+  <li><a href="#forecast-the-seasonal-component-with-snaive" id="toc-forecast-the-seasonal-component-with-snaive" class="nav-link" data-scroll-target="#forecast-the-seasonal-component-with-snaive">4. Forecast the seasonal component with SNAIVE</a></li>
+  <li><a href="#combine-both-models-with-decomposition_model" id="toc-combine-both-models-with-decomposition_model" class="nav-link" data-scroll-target="#combine-both-models-with-decomposition_model">5. Combine both models with <code>decomposition_model()</code></a></li>
   </ul></li>
   </ul>
 </nav>
@@ -3748,30 +3736,18 @@ Caused by error in `UseMethod()`:
 <section id="extract-the-seasonally-adjusted-data" class="level2">
 <h2 class="anchored" data-anchor-id="extract-the-seasonally-adjusted-data">2. Extract the seasonally adjusted data</h2>
 <p>Extract the seasonally adjusted data from <code>dcmp</code> using <code>select</code> and store it in a separate tsibble called <code>season_adjust</code>. Plot the seasonally adjusted data.</p>
-<section id="well-go-over-what-to-bear-in-mind-for-this-exercise-in-the-live-session." class="level3">
-<h3 class="anchored" data-anchor-id="well-go-over-what-to-bear-in-mind-for-this-exercise-in-the-live-session.">We’ll go over what to bear in mind for this exercise in the live session.</h3>
-</section>
 </section>
 <section id="forecast-the-seasonally-adjusted-data-with-the-drift-method" class="level2">
 <h2 class="anchored" data-anchor-id="forecast-the-seasonally-adjusted-data-with-the-drift-method">3. Forecast the seasonally adjusted data with the drift method</h2>
 <p>Use the drift method to produce forecasts of the seasonally adjusted data. Generate a graph with the time series, the fitted values, and the forecasts.</p>
-<section id="well-go-over-what-to-bear-in-mind-for-this-exercise-in-the-live-session.-1" class="level3">
-<h3 class="anchored" data-anchor-id="well-go-over-what-to-bear-in-mind-for-this-exercise-in-the-live-session.-1">We’ll go over what to bear in mind for this exercise in the live session.</h3>
-</section>
 </section>
 <section id="forecast-the-seasonal-component-with-snaive" class="level2">
 <h2 class="anchored" data-anchor-id="forecast-the-seasonal-component-with-snaive">4. Forecast the seasonal component with SNAIVE</h2>
 <p>Extract the seasonal component from <code>dcmp</code> using <code>select</code> and store it in a separate tsibble called <code>seasonal</code>. Use the SNAIVE method to produce forecasts of the seasonal component. Generate a graph with the time series, the fitted values, and the forecasts.</p>
-<section id="well-go-over-what-to-bear-in-mind-for-this-exercise-in-the-live-session.-2" class="level3">
-<h3 class="anchored" data-anchor-id="well-go-over-what-to-bear-in-mind-for-this-exercise-in-the-live-session.-2">We’ll go over what to bear in mind for this exercise in the live session.</h3>
-</section>
 </section>
 <section id="combine-both-models-with-decomposition_model" class="level2">
 <h2 class="anchored" data-anchor-id="combine-both-models-with-decomposition_model">5. Combine both models with <code>decomposition_model()</code></h2>
 <p>Use <code>decomposition_model()</code> on the original time series. Use the drift method for the seasonally adjusted data and the seasonal naïve method for the seasonal component.</p>
-<section id="well-go-over-what-to-bear-in-mind-for-this-exercise-in-the-live-session.-3" class="level3">
-<h3 class="anchored" data-anchor-id="well-go-over-what-to-bear-in-mind-for-this-exercise-in-the-live-session.-3">We’ll go over what to bear in mind for this exercise in the live session.</h3>
-</section>
 </section>
 </section>
 
