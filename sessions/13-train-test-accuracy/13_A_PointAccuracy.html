@@ -2630,63 +2630,67 @@ e_t = y_t - \hat{y_t}
 </section>
 <section id="median-mean" class="level3">
 <h3 class="anchored" data-anchor-id="median-mean">Why the median and why the mean</h3>
-<p>Suppose a single number <span class="math inline">\(c\)</span> has to stand in for the five values 1, 2, 3, 4 and 100. Which <span class="math inline">\(c\)</span> makes the total miss smallest depends on how each miss is measured.</p>
-<ul>
-<li><strong>The total of the absolute deviations, <span class="math inline">\(\sum |x_i - c|\)</span>, is smallest at the median.</strong> Move <span class="math inline">\(c\)</span> one unit to the right: every value to its left gets one unit farther away, and every value to its right one unit closer. The total keeps falling while more values lie to the right of <span class="math inline">\(c\)</span> than to its left, and stops falling where the two sides balance, which is the median. Only how many values lie on each side matters, not how far away they are, so the 100 counts as one value like any other.</li>
-<li><strong>The total of the squared deviations, <span class="math inline">\(\sum (x_i - c)^2\)</span>, is smallest at the mean.</strong> Squaring makes a value twice as far away cost four times as much, so the far values pull <span class="math inline">\(c\)</span> toward them. The total is smallest where the deviations above and below <span class="math inline">\(c\)</span> cancel, <span class="math inline">\(\sum (x_i - c) = 0\)</span>, that is, at <span class="math inline">\(c = \bar{x}\)</span>, the mean.</li>
-</ul>
-<p>Here the median is 3 and the mean is 22, and each one wins under its own criterion:</p>
+<p>Suppose the value we want to forecast, <span class="math inline">\(y_{T+h}\)</span>, can turn out to be 1, 2, 3, 4 or 100, each with probability 1/5. This is a small, skewed forecast distribution. We must commit to a single point forecast, <span class="math inline">\(c\)</span>. Which <span class="math inline">\(c\)</span> gives the lowest MAE, and which the lowest RMSE?</p>
+<p>For each candidate <span class="math inline">\(c\)</span>, the error in each possible outcome is <span class="math inline">\(y - c\)</span>. The MAE is the mean of the absolute errors and the RMSE is the square root of the mean of the squared errors, exactly as on a test set:</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
-<th><span class="math inline">\(c\)</span></th>
-<th><span class="math inline">\(\sum \lvert x_i - c \rvert\)</span></th>
-<th><span class="math inline">\(\sum (x_i - c)^2\)</span></th>
+<th>Forecast <span class="math inline">\(c\)</span></th>
+<th>Errors <span class="math inline">\(y - c\)</span></th>
+<th>MAE</th>
+<th>RMSE</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>3 (median)</td>
-<td><strong>101</strong></td>
-<td>9415</td>
+<td>-2, -1, 0, 1, 97</td>
+<td><strong>20.2</strong></td>
+<td>43.4</td>
 </tr>
 <tr class="even">
 <td>22 (mean)</td>
-<td>156</td>
-<td><strong>7610</strong></td>
+<td>-21, -20, -19, -18, 78</td>
+<td>31.2</td>
+<td><strong>39.0</strong></td>
 </tr>
 </tbody>
 </table>
+<p>For <span class="math inline">\(c = 3\)</span>: MAE <span class="math inline">\(= (2 + 1 + 0 + 1 + 97)/5 = 20.2\)</span> and RMSE <span class="math inline">\(= \sqrt{(4 + 1 + 0 + 1 + 9409)/5} = 43.4\)</span>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">100</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">median</span>(x)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">100</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">median</span>(y)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 3</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(x)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(y)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 22</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Total absolute deviation: smaller at the median</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">abs</span>(x <span class="sc">-</span> <span class="fu">median</span>(x)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># MAE and RMSE of the forecast c = median(y)</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">abs</span>(y <span class="sc">-</span> <span class="fu">median</span>(y)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 101</code></pre>
+<pre><code>[1] 20.2</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">abs</span>(x <span class="sc">-</span> <span class="fu">mean</span>(x)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">mean</span>((y <span class="sc">-</span> <span class="fu">median</span>(y))<span class="sc">^</span><span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 156</code></pre>
+<pre><code>[1] 43.39355</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Total squared deviation: smaller at the mean</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>((x <span class="sc">-</span> <span class="fu">median</span>(x))<span class="sc">^</span><span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># MAE and RMSE of the forecast c = mean(y)</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">abs</span>(y <span class="sc">-</span> <span class="fu">mean</span>(y)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 9415</code></pre>
+<pre><code>[1] 31.2</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>((x <span class="sc">-</span> <span class="fu">mean</span>(x))<span class="sc">^</span><span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">mean</span>((y <span class="sc">-</span> <span class="fu">mean</span>(y))<span class="sc">^</span><span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 7610</code></pre>
+<pre><code>[1] 39.01282</code></pre>
 </div>
 </div>
-<p>A point forecast is one number standing in for a whole distribution of possible future values. The same argument, applied to that distribution, is why a forecast method that minimizes the MAE forecasts its median and one that minimizes the RMSE forecasts its mean. The two differ when the distribution is skewed, as for the back-transformed forecasts in the prediction intervals session (Session 12).</p>
+<ul>
+<li><strong>Absolute errors count values, not distances.</strong> Each step of <span class="math inline">\(c\)</span> to the right adds 1 to the absolute error of every value below <span class="math inline">\(c\)</span> and removes 1 from every value above it. The MAE keeps falling while more values lie above <span class="math inline">\(c\)</span> than below, and stops where the two sides balance, which is the median. How far away the 100 is does not matter: it is one value above.</li>
+<li><strong>Squared errors let far values pull.</strong> A value twice as far away costs four times as much, so the 100 pulls the best <span class="math inline">\(c\)</span> toward it. The mean squared error is smallest where the errors above and below <span class="math inline">\(c\)</span> cancel, <span class="math inline">\(\text{mean}(y - c) = 0\)</span>, that is, at <span class="math inline">\(c = \bar{y}\)</span>, the mean. The square root in the RMSE does not move the minimum.</li>
+</ul>
+<p>The five values stand for a forecast distribution, like the skewed distributions of back-transformed forecasts in the prediction intervals session (Session 12). A forecast judged by MAE is best at the median of that distribution; a forecast judged by RMSE, at its mean.</p>
 </section>
 </section>
 <section id="percentage" class="level2">
