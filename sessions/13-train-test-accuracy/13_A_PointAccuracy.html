@@ -2704,7 +2704,7 @@ p_{t} = 100 \frac{e_{t}}{y_{t}} = 100 \frac{y_t - \hat{y_t}}{y_t}
 <li><strong>Drawbacks</strong>
 <ul>
 <li><p>Percentage errors become <strong>infinite or undefined if</strong> <span class="math inline">\(y_t = 0\)</span>, and enormous if <span class="math inline">\(y_t\)</span> is close to zero.</p></li>
-<li><p>Percentage errors <strong>assume the unit of measurement has a meaningful zero</strong>. For example, temperature in Celsius or Fahrenheit has an <strong>arbitrary zero point</strong>, so dividing an error by the temperature gives a number that means nothing.</p></li>
+<li><p>Percentage errors <strong>assume the unit of measurement has a meaningful zero</strong>: a zero that means none of the quantity, as 0 kilograms or 0 dollars do. Temperature in Celsius or Fahrenheit does not have one. 0 °C is where water freezes, a useful reference point but a <strong>convention</strong>, not the absence of heat, and 0 °F sits somewhere else. So the same forecast gets a different percentage error on each scale: forecasting 12 °C when the actual value is 10 °C is a 20% error, while the same forecast in Fahrenheit, 53.6 °F against 50 °F, is a 7.2% error. On the Kelvin scale, whose zero is the absence of heat, percentage errors would be meaningful.</p></li>
 <li><p>Percentage errors <strong>put a heavier penalty on negative errors than on positive errors</strong> (reference 1). Since <span class="math inline">\(e_t = y_t - \hat{y_t}\)</span>, a negative error is a forecast above the actual value. Whether the penalty is heavier depends on what we hold fixed.</p></li>
 </ul></li>
 </ul>
