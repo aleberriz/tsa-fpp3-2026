@@ -607,11 +607,11 @@ MASE = mean( |q<sub>j</sub>| )      RMSSE = sqrt( mean( q<sub>j</sub>&sup2; ) )<
     <p class="kicker">The four metrics &nbsp;&middot;&nbsp; side by side</p>
     <h1 class="sowhat wide">Each metric answers a different question, so choose it before you compare models.</h1>
     <table class="traps compact">
-      <tr><td class="os"></td><td><b>Use it when</b></td><td class="fix"><b>Watch out</b></td></tr>
-      <tr><td class="os">MAE</td><td>You want an average miss, in the units of the series, that anyone can read, and a miss of 20 costs twice a miss of 10. It targets the median.</td><td class="fix">It cannot compare series measured in different units.</td></tr>
-      <tr><td class="os">RMSE</td><td>One big miss hurts more than several small ones, or the forecasts will be added up. It targets the mean, and means add up.</td><td class="fix">One large error can dominate it. It cannot compare series in different units.</td></tr>
-      <tr><td class="os">MAPE</td><td>You compare series in different units, on a scale with a true zero and values well away from it.</td><td class="fix">Zeros and values near zero blow it up. It charges more for forecasts that are too high.</td></tr>
-      <tr><td class="os">MASE</td><td>You compare series in different units, including series with zeros, against the naive benchmark.</td><td class="fix">Below 1 means better than the naive forecast on the training data. To beat the naive model on the test set, compare rows.</td></tr>
+      <tr><td class="os"></td><td><b>Use it when</b></td><td><b>Use case</b></td><td class="fix"><b>Watch out</b></td></tr>
+      <tr><td class="os">MAE</td><td>You want an average miss anyone can read, and every unit of miss costs the same. It targets the median.</td><td>A brewery&#39;s quarterly beer production, the notebook&#39;s Example 1: "off by 14 megalitres a quarter".</td><td class="fix">It cannot compare series in different units or scales.</td></tr>
+      <tr><td class="os">RMSE</td><td>One big miss hurts more than several small ones. It targets the mean.</td><td>Flu vaccine doses for a region: one large miss, a shortage or a pile of wasted doses, is far worse than several small ones.</td><td class="fix">One large error can dominate it. Same units as the series, like MAE.</td></tr>
+      <tr><td class="os">MAPE</td><td>You compare series in different units or scales, with a true zero and values well above it.</td><td>Stock prices, as in Example 2&#39;s <code>gafa_stock</code>: Google and Apple trade at very different prices, and investors think in percent.</td><td class="fix">Zeros and values near zero blow it up. It charges more for forecasts that are too high.</td></tr>
+      <tr><td class="os">MASE</td><td>You compare many series, including series with zeros, against the naive benchmark.</td><td>Daily sales across a store&#39;s catalog, where slow-moving products have days with no sales.</td><td class="fix">Below 1 means better than the naive forecast on the training data. To beat the naive model on the test set, compare rows.</td></tr>
     </table>
     <ul class="build">
       <li class="step"><b>Choose the metric first.</b> Decide what a bad forecast costs you, then read that metric&#39;s column in the <code>accuracy()</code> table. Choosing the metric after seeing the results is choosing the winner you wanted.</li>
@@ -619,7 +619,7 @@ MASE = mean( |q<sub>j</sub>| )      RMSSE = sqrt( mean( q<sub>j</sub>&sup2; ) )<
       <li class="step"><b>Report each number with its unit:</b> MAE and RMSE in the units of the series, MAPE in percent, MASE in none.</li>
     </ul>
   </div>
-  <aside class="notes">Every row of the table comes from the four slides before it: the median and the mean from the median-or-mean slide, the cost of forecasts that are too high from the percentage-errors slide, and the reading of MASE from the scaled-errors slide.<br><br>Why the mean matters when forecasts are added up: the sum of the means is the mean of the sum, but the sum of the medians is not the median of the sum. Prediction intervals (Session 12) made the same point about back-transformed forecasts.</aside>
+  <aside class="notes">Every row of the table comes from the four slides before it: the median and the mean from the median-or-mean slide, the cost of forecasts that are too high from the percentage-errors slide, and the reading of MASE from the scaled-errors slide. The use cases are examples, not rules: the same series can call for a different metric when the cost of a miss is different.<br><br>A second reason to choose RMSE is forecasts that will be added up, such as regional sales summed to a national total: the sum of the means is the mean of the sum, but the sum of the medians is not the median of the sum. Prediction intervals (Session 12) made the same point about back-transformed forecasts.</aside>
 </section>
 
 <section class="slide" data-section="5" data-title="Switch: accuracy() twice">
