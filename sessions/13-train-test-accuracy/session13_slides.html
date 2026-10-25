@@ -678,7 +678,7 @@ all.equal(sqrt(mean(err^2)), RMSE_fable)                      <span class="hl">#
     <ul class="build">
       <li><b><code>13_Train_Test</code> Exercises 1 to 3.</b> Household wealth, Argentinian exports, takeaway food: training and test sets, row counts checked.</li>
       <li><b><code>13_A</code>, after the worked example:</b> the <b>seasonal naive</b> model&#39;s MAE and RMSE by hand on both sets, checked with <code>all.equal()</code>; then two percentage errors with a calculator, and the test MAPE and MASE.</li>
-      <li><b><code>13_A</code> Exercise 1, sections 2 and 3.</b> The retail series on a training set: residual and forecast metrics, with their units and meaning. The residual diagnostics in section 1 are optional; you diagnosed this model in the residual diagnostics homework (Session 9).</li>
+      <li><b><code>13_A</code> Exercise 1, sections 2 and 3.</b> The retail series on a training set: residual and forecast metrics, with their units and meaning. The residual diagnostics in section 1 and question 3.3 are not part of the homework.</li>
     </ul>
   </div>
   <aside class="notes">The interpretation sentences matter as much as the numbers: a MAE without units, or a MAPE with them, is the thing the exercise is designed to catch.<br><br>For the seasonal naive by hand: the first four residuals are NA on quarterly data, and <code>select()</code> on a model name with a space needs backticks.</aside>
