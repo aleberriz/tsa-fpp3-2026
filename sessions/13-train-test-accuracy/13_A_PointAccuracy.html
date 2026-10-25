@@ -2372,13 +2372,11 @@ window.Quarto = {
   <li><a href="#expression-of-the-rmse-for-the-model-residuals-and-for-forecast-errors" id="toc-expression-of-the-rmse-for-the-model-residuals-and-for-forecast-errors" class="nav-link" data-scroll-target="#expression-of-the-rmse-for-the-model-residuals-and-for-forecast-errors">Expression of the RMSE for the model residuals and for forecast errors:</a></li>
   <li><a href="#rmse-minimization-and-forecasts-on-the-mean" id="toc-rmse-minimization-and-forecasts-on-the-mean" class="nav-link" data-scroll-target="#rmse-minimization-and-forecasts-on-the-mean">RMSE minimization and forecasts on the mean:</a></li>
   </ul></li>
-  <li><a href="#median-mean" id="toc-median-mean" class="nav-link" data-scroll-target="#median-mean">Why the median and why the mean</a></li>
+  <li><a href="#mae-or-rmse" id="toc-mae-or-rmse" class="nav-link" data-scroll-target="#mae-or-rmse">MAE or RMSE?</a></li>
   </ul></li>
   <li><a href="#percentage" id="toc-percentage" class="nav-link" data-scroll-target="#percentage">Percentage errors (relative errors)</a>
   <ul>
-  <li><a href="#asymmetry" id="toc-asymmetry" class="nav-link" data-scroll-target="#asymmetry">Asymmetry of percentage errors</a></li>
   <li><a href="#mape-mean-absolute-percentage-error" id="toc-mape-mean-absolute-percentage-error" class="nav-link" data-scroll-target="#mape-mean-absolute-percentage-error">MAPE: Mean Absolute Percentage Error</a></li>
-  <li><a href="#smape-symmetric-mean-absolute-percentage-error" id="toc-smape-symmetric-mean-absolute-percentage-error" class="nav-link" data-scroll-target="#smape-symmetric-mean-absolute-percentage-error">sMAPE: “symmetric” Mean Absolute Percentage Error</a></li>
   </ul></li>
   <li><a href="#scaled" id="toc-scaled" class="nav-link" data-scroll-target="#scaled">Scaled errors</a></li>
   </ul></li>
@@ -2425,6 +2423,13 @@ window.Quarto = {
   <li><a href="#give-an-interpretation-of-mae-and-the-mape." id="toc-give-an-interpretation-of-mae-and-the-mape." class="nav-link" data-scroll-target="#give-an-interpretation-of-mae-and-the-mape.">3.2 Give an interpretation of MAE and the MAPE.</a></li>
   <li><a href="#optional-what-are-the-differences-between-forecast-errors-and-residuals" id="toc-optional-what-are-the-differences-between-forecast-errors-and-residuals" class="nav-link" data-scroll-target="#optional-what-are-the-differences-between-forecast-errors-and-residuals">3.3 (Optional) What are the differences between forecast errors and residuals?</a></li>
   </ul></li>
+  <li><a href="#appendix" id="toc-appendix" class="nav-link" data-scroll-target="#appendix">Appendix: going further</a>
+  <ul>
+  <li><a href="#median-mean" id="toc-median-mean" class="nav-link" data-scroll-target="#median-mean">Why the median and why the mean</a></li>
+  <li><a href="#asymmetry" id="toc-asymmetry" class="nav-link" data-scroll-target="#asymmetry">Asymmetry of percentage errors</a></li>
+  <li><a href="#smape-the-symmetric-mape" id="toc-smape-the-symmetric-mape" class="nav-link" data-scroll-target="#smape-the-symmetric-mape">sMAPE, the “symmetric” MAPE</a></li>
+  <li><a href="#mase-reading" id="toc-mase-reading" class="nav-link" data-scroll-target="#mase-reading">Reading the MASE on the test set</a></li>
+  </ul></li>
   </ul>
 </nav>
 </div>
@@ -2463,7 +2468,7 @@ window.Quarto = {
 <li><a href="https://fable.tidyverts.org/articles/fable.html">Basics</a></li>
 </ul>
 <ol start="3" type="1">
-<li><p><a href="https://www.statworx.com/content-hub/blog/was-dem-mape-falschlicherweise-vorgeworfen-wird-seine-wahren-schwachen-und-bessere-alternativen/">Percent errors discussion</a></p></li>
+<li><p>statworx (2019). <em>Was dem MAPE fälschlicherweise vorgeworfen wird: seine wahren Schwächen und bessere Alternativen</em> (What MAPE is wrongly accused of: its true weaknesses and better alternatives), in German. <a href="https://www.statworx.com/content-hub/blog/was-dem-mape-falschlicherweise-vorgeworfen-wird-seine-wahren-schwachen-und-bessere-alternativen/">Link</a></p></li>
 <li><p>Hyndman, R. J., &amp; Koehler, A. B. (2006). Another look at measures of forecast accuracy. International Journal of Forecasting, 22(4), 679–688.</p></li>
 </ol>
 </section>
@@ -2584,8 +2589,7 @@ e_t = y_t - \hat{y_t}
 <section id="mae-minimization-and-forecasts-on-the-median" class="level4">
 <h4 class="anchored" data-anchor-id="mae-minimization-and-forecasts-on-the-median">MAE minimization and forecasts on the median</h4>
 <ul>
-<li><strong>A forecast method that minimizes the MAE leads to forecasts of the median</strong> of the random variable we want to predict (<span class="math inline">\(y_t\)</span>).</li>
-<li>The proof is outside the scope of this course. The section <a href="#median-mean">Why the median and why the mean</a> below shows the idea on five numbers.</li>
+<li><strong>A forecast method that minimizes the MAE leads to forecasts of the median</strong> of the random variable we want to predict (<span class="math inline">\(y_t\)</span>). Why: see <a href="#median-mean">the appendix</a>.</li>
 </ul>
 </section>
 </section>
@@ -2623,74 +2627,18 @@ e_t = y_t - \hat{y_t}
 <section id="rmse-minimization-and-forecasts-on-the-mean" class="level4">
 <h4 class="anchored" data-anchor-id="rmse-minimization-and-forecasts-on-the-mean">RMSE minimization and forecasts on the mean:</h4>
 <ul>
-<li><strong>A forecast method that minimizes the RMSE leads to forecasts of the mean</strong> of the random variable we want to predict (<span class="math inline">\(y_t\)</span>).</li>
-<li>It is a standard result: if <span class="math inline">\(X\)</span> is a random variable and <span class="math inline">\(\hat{x}\)</span> a constant estimate of it, the mean of <span class="math inline">\(X\)</span> (its expected value <span class="math inline">\(E[X]\)</span>) is the estimate that minimizes the expected squared error <span class="math inline">\(E[(X-\hat{x})^2]\)</span>.</li>
+<li><strong>A forecast method that minimizes the RMSE leads to forecasts of the mean</strong> of the random variable we want to predict (<span class="math inline">\(y_t\)</span>). Why: see <a href="#median-mean">the appendix</a>.</li>
 </ul>
 </section>
 </section>
-<section id="median-mean" class="level3">
-<h3 class="anchored" data-anchor-id="median-mean">Why the median and why the mean</h3>
-<p>Suppose the value we want to forecast, <span class="math inline">\(y_{T+h}\)</span>, can turn out to be 1, 2, 3, 4 or 100, each with probability 1/5. This is a small, skewed forecast distribution. We must commit to a single point forecast, <span class="math inline">\(c\)</span>. Which <span class="math inline">\(c\)</span> gives the lowest MAE, and which the lowest RMSE?</p>
-<p>For each candidate <span class="math inline">\(c\)</span>, the error in each possible outcome is <span class="math inline">\(y - c\)</span>. The MAE is the mean of the absolute errors and the RMSE is the square root of the mean of the squared errors, exactly as on a test set:</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Forecast <span class="math inline">\(c\)</span></th>
-<th>Errors <span class="math inline">\(y - c\)</span></th>
-<th>MAE</th>
-<th>RMSE</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>3 (median)</td>
-<td>-2, -1, 0, 1, 97</td>
-<td><strong>20.2</strong></td>
-<td>43.4</td>
-</tr>
-<tr class="even">
-<td>22 (mean)</td>
-<td>-21, -20, -19, -18, 78</td>
-<td>31.2</td>
-<td><strong>39.0</strong></td>
-</tr>
-</tbody>
-</table>
-<p>For <span class="math inline">\(c = 3\)</span>: MAE <span class="math inline">\(= (2 + 1 + 0 + 1 + 97)/5 = 20.2\)</span> and RMSE <span class="math inline">\(= \sqrt{(4 + 1 + 0 + 1 + 9409)/5} = 43.4\)</span>.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">100</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">median</span>(y)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 3</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(y)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 22</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># MAE and RMSE of the forecast c = median(y)</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">abs</span>(y <span class="sc">-</span> <span class="fu">median</span>(y)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 20.2</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">mean</span>((y <span class="sc">-</span> <span class="fu">median</span>(y))<span class="sc">^</span><span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 43.39355</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># MAE and RMSE of the forecast c = mean(y)</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">abs</span>(y <span class="sc">-</span> <span class="fu">mean</span>(y)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 31.2</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">mean</span>((y <span class="sc">-</span> <span class="fu">mean</span>(y))<span class="sc">^</span><span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 39.01282</code></pre>
-</div>
-</div>
-<ul>
-<li><strong>Absolute errors count values, not distances.</strong> Each step of <span class="math inline">\(c\)</span> to the right adds 1 to the absolute error of every value below <span class="math inline">\(c\)</span> and removes 1 from every value above it. The MAE keeps falling while more values lie above <span class="math inline">\(c\)</span> than below, and stops where the two sides balance, which is the median. How far away the 100 is does not matter: it is one value above.</li>
-<li><strong>Squared errors let far values pull.</strong> A value twice as far away costs four times as much, so the 100 pulls the best <span class="math inline">\(c\)</span> toward it. The mean squared error is smallest where the errors above and below <span class="math inline">\(c\)</span> cancel, <span class="math inline">\(\text{mean}(y - c) = 0\)</span>, that is, at <span class="math inline">\(c = \bar{y}\)</span>, the mean. The square root in the RMSE does not move the minimum.</li>
-</ul>
-<p>The five values stand for a forecast distribution, like the skewed distributions of back-transformed forecasts in the prediction intervals session (Session 12). A forecast judged by MAE is best at the median of that distribution; a forecast judged by RMSE, at its mean.</p>
+<section id="mae-or-rmse" class="level3">
+<h3 class="anchored" data-anchor-id="mae-or-rmse">MAE or RMSE?</h3>
+<p>The two target the same point forecast unless the forecast distribution is skewed, as after a log transformation (prediction intervals, Session 12): then the median and the mean differ, and you have to decide in this order:</p>
+<ol type="1">
+<li><strong>What does a miss cost?</strong> If every unit of miss costs the same, you want the median of the possible outcomes. If a big miss costs disproportionately more, or the forecasts will be added up, you want the mean.</li>
+<li><strong>Judge with the matching metric</strong>: MAE for a median forecast, RMSE for a mean forecast.</li>
+</ol>
+<p><code>fable</code> reports the mean as its point forecast, bias-adjusted after a transformation, so by default the RMSE is the matching metric.</p>
 </section>
 </section>
 <section id="percentage" class="level2">
@@ -2704,75 +2652,16 @@ p_{t} = 100 \frac{e_{t}}{y_{t}} = 100 \frac{y_t - \hat{y_t}}{y_t}
 <li><strong>Drawbacks</strong>
 <ul>
 <li><p>Percentage errors become <strong>infinite or undefined if</strong> <span class="math inline">\(y_t = 0\)</span>, and enormous if <span class="math inline">\(y_t\)</span> is close to zero.</p></li>
-<li><p>Percentage errors <strong>assume the unit of measurement has a meaningful zero</strong>: a zero that means none of the quantity, as 0 kilograms or 0 dollars do. Temperature in Celsius or Fahrenheit does not have one. 0 °C is where water freezes, a useful reference point but a <strong>convention</strong>, not the absence of heat, and 0 °F sits somewhere else. So the same forecast gets a different percentage error on each scale: forecasting 12 °C when the actual value is 10 °C is a 20% error, while the same forecast in Fahrenheit, 53.6 °F against 50 °F, is a 7.2% error. On the Kelvin scale, whose zero is the absence of heat, percentage errors would be meaningful.</p></li>
-<li><p>Percentage errors <strong>put a heavier penalty on negative errors than on positive errors</strong> (reference 1). Since <span class="math inline">\(e_t = y_t - \hat{y_t}\)</span>, a negative error is a forecast above the actual value. Whether the penalty is heavier depends on what we hold fixed.</p></li>
+<li><p>Percentage errors <strong>assume the unit of measurement has a meaningful zero</strong>: a zero that means none of the quantity, as 0 kilograms or 0 dollars do. Temperature fails: 0 °C is where water freezes, not the absence of heat, so the same forecast is a 20% error in Celsius (12 °C against 10 °C) and a 7.2% error in Fahrenheit (53.6 °F against 50 °F).</p></li>
+<li><p><strong>Asymmetry, a debated point.</strong> fpp3 (reference 1) says percentage errors put a heavier penalty on negative errors, that is, on forecasts above the actual value. Others, such as reference [3], say this only appears because the actual value changes: hold the actual value fixed, and a miss of 50 above it or below it costs the same. Both views rest on correct arithmetic, worked through in <a href="#asymmetry">the appendix</a>. Which one matters is a judgment call for your own use case.</p></li>
 </ul></li>
 </ul>
-<section id="asymmetry" class="level4">
-<h4 class="anchored" data-anchor-id="asymmetry">Asymmetry of percentage errors</h4>
-<p>A common example changes both numbers at once:</p>
-<ul>
-<li>Case 1: <span class="math inline">\(y_t = 150\)</span> ; <span class="math inline">\(\hat{y_t} = 100\)</span> (a positive error)</li>
-</ul>
-<p><span class="math display">\[
-  \frac{|y_t-\hat{y_t}|}{y_t} \cdot 100 =\frac{|150-100|}{150} \cdot 100 = 33.33\%
-\]</span></p>
-<ul>
-<li>Case 2: <span class="math inline">\(y_t = 100\)</span> ; <span class="math inline">\(\hat{y_t} = 150\)</span> (a negative error)</li>
-</ul>
-<p><span class="math display">\[
-  \frac{|y_t-\hat{y_t}|}{y_t} \cdot 100 =\frac{|100-150|}{100} \cdot 100 = 50\%
-\]</span></p>
-<p>Case 2 gives the larger percentage error, but here the actual value changed too, so the example does not isolate the sign of the error. Two cleaner comparisons do.</p>
-<p><strong>Same actual value, <span class="math inline">\(y_t = 100\)</span>, errors of the same size and opposite sign:</strong></p>
-<ul>
-<li>Case 3: <span class="math inline">\(\hat{y_t} = 150\)</span></li>
-</ul>
-<p><span class="math display">\[
-  \frac{|100-150|}{100} \cdot 100 = 50\%
-\]</span></p>
-<ul>
-<li>Case 4: <span class="math inline">\(\hat{y_t} = 50\)</span></li>
-</ul>
-<p><span class="math display">\[
-  \frac{|100-50|}{100} \cdot 100 = 50\%
-\]</span></p>
-<p>With the actual value fixed there is no asymmetry. Reference [3] (in German) discusses this case further.</p>
-<p><strong>Same forecast, <span class="math inline">\(\hat{y_t} = 100\)</span>, actual values above and below it by the same amount:</strong></p>
-<ul>
-<li>Case 5: <span class="math inline">\(y_t = 150\)</span> (a positive error: the forecast was too low)</li>
-</ul>
-<p><span class="math display">\[
-  \frac{|150-100|}{150} \cdot 100 = 33.33\%
-\]</span></p>
-<ul>
-<li>Case 6: <span class="math inline">\(y_t = 50\)</span> (a negative error: the forecast was too high)</li>
-</ul>
-<p><span class="math display">\[
-  \frac{|50-100|}{50} \cdot 100 = 100\%
-\]</span></p>
-<p>With the forecast fixed, the negative error costs three times as much. This is the comparison that matters when forecasting: the forecast is what we commit to, and the actual value is what arrives. It is also the general pattern. When the actual values and the forecasts are positive, a forecast below the actual value can never have a percentage error above 100%, while a forecast above it has no upper limit. A model chosen by its MAPE therefore leans toward forecasts that are too low.</p>
-<p>Reference [4] compares these accuracy measures and introduces the MASE, below.</p>
-</section>
 <section id="mape-mean-absolute-percentage-error" class="level3">
 <h3 class="anchored" data-anchor-id="mape-mean-absolute-percentage-error">MAPE: Mean Absolute Percentage Error</h3>
 <p>MAPE averages the absolute percentage errors:</p>
 <p><span class="math display">\[
 \text{Mean absolute percentage error: MAPE} = \text{mean}(|p_{t}|)
 \]</span></p>
-</section>
-<section id="smape-symmetric-mean-absolute-percentage-error" class="level3">
-<h3 class="anchored" data-anchor-id="smape-symmetric-mean-absolute-percentage-error">sMAPE: “symmetric” Mean Absolute Percentage Error</h3>
-<p>This section is included for completeness. sMAPE is not examined.</p>
-<p><span class="math display">\[
-\text{sMAPE} = \text{mean}\left(200|y_{t} - \hat{y}_{t}|/(y_{t}+\hat{y}_{t})\right)
-\]</span></p>
-<ul>
-<li>Proposed to remove the asymmetry of the MAPE. It is not symmetric either: with <span class="math inline">\(y_t = 100\)</span>, forecasts of 150 and 50 give 40% and 67%.</li>
-<li>Its value can be negative, so it is not a measure of “absolute percentage errors” at all.</li>
-<li>It does not fix the division by zero: if <span class="math inline">\(y_t\)</span> is close to 0, <span class="math inline">\(\hat{y_t}\)</span> is usually close to 0 too.</li>
-<li>Not recommended (reference [4]). Included because it is still widely used.</li>
-</ul>
 </section>
 </section>
 <section id="scaled" class="level2">
@@ -2785,12 +2674,16 @@ Q = \frac{1}{T-1}\sum_{t=2}^{T}|y_t - y_{t-1}|
 <p><span class="math display">\[
 Q = \frac{1}{T-m}\sum_{t=m+1}^{T}|y_t - y_{t-m}|
 \]</span></p>
-<p>A <strong>scaled error</strong> is <span class="math inline">\(q_j = e_j / Q\)</span>. It has no units, because <span class="math inline">\(e_j\)</span> and <span class="math inline">\(Q\)</span> are in the same units.</p>
+<p>A <strong>scaled error</strong> is <span class="math inline">\(q_j = e_j / Q\)</span>. It has no units, because <span class="math inline">\(e_j\)</span> and <span class="math inline">\(Q\)</span> are in the same units, and the MASE is the mean of their absolute values:</p>
 <p><span class="math display">\[
-\text{MASE} = \text{mean}(|q_j|) \qquad \text{RMSSE} = \sqrt{\text{mean}(q_j^2)}
+\text{MASE} = \text{mean}(|q_j|)
 \]</span></p>
-<p>The RMSSE scales the squared errors by the mean of the squared differences instead, and takes the square root at the end. The two metrics are the scaled versions of the MAE and the RMSE.</p>
-<p><strong>How to read them.</strong> a MASE below 1 means the errors are smaller, on average, than those of the one-step naive (or seasonal naive) forecast on the training data. The benchmark is the training data, not the test set: on the beer data below, the seasonal naive model has a training MASE of exactly 1, because its own training errors are the scale, and a test MASE of 0.94, which says only that its test errors were smaller than its training ones. To know whether a model beats the naive forecast on the test set, compare its MASE with the naive model’s MASE in the same table. All the rows share the same scale, so the lower MASE is also the lower MAE. In the Google example further down, the naive model wins on the test set with a test MASE of 5.67: a MASE far above 1 can still belong to the best model.</p>
+<p>The <strong>RMSSE</strong> is the same idea for the RMSE: the squared errors are divided by the mean <em>squared</em> naive difference on the training data, and the square root is taken at the end:</p>
+<p><span class="math display">\[
+\text{RMSSE} = \sqrt{\frac{\text{mean}(e_j^2)}{\frac{1}{T-m}\sum_{t=m+1}^{T}(y_t - y_{t-m})^2}}
+\]</span></p>
+<p>with <span class="math inline">\(m = 1\)</span> for non-seasonal data.</p>
+<p><strong>How to read them.</strong> A MASE below 1 means the errors are smaller, on average, than those of the one-step naive (or seasonal naive) forecast on the training data; above 1, larger. On the beer training set below, the seasonal naive model has a MASE of exactly 1, because its own training errors are the scale. To compare models, compare their MASEs in the same table: they share the scale, so the lower MASE is also the lower MAE. A test MASE above 1 does not mean the naive model would have done better on the test set; <a href="#mase-reading">the appendix</a> explains why.</p>
 <p><code>accuracy()</code> returns both. Because the scale comes from the training data, MASE and RMSSE compare across series measured in different units and work on series with zeros. Percentage errors can do neither.</p>
 </section>
 </section>
@@ -2798,10 +2691,10 @@ Q = \frac{1}{T-m}\sum_{t=m+1}^{T}|y_t - y_{t-m}|
 <h1>Example 1 of error metrics</h1>
 <p>We use the Australian beer production data:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>recent_production <span class="ot">&lt;-</span> aus_production <span class="sc">|&gt;</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">year</span>(Quarter) <span class="sc">&gt;=</span> <span class="dv">1992</span>)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>recent_production <span class="sc">|&gt;</span> <span class="fu">autoplot</span>(Beer)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>recent_production <span class="ot">&lt;-</span> aus_production <span class="sc">|&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">year</span>(Quarter) <span class="sc">&gt;=</span> <span class="dv">1992</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>recent_production <span class="sc">|&gt;</span> <span class="fu">autoplot</span>(Beer)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -2813,31 +2706,31 @@ Q = \frac{1}{T-m}\sum_{t=m+1}^{T}|y_t - y_{t-m}|
 <section id="fitting-the-models-to-the-training-dataset-and-generating-forecasts" class="level2">
 <h2 class="anchored" data-anchor-id="fitting-the-models-to-the-training-dataset-and-generating-forecasts">Fitting the models to the training dataset and generating forecasts</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create training dataset</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>beer_train <span class="ot">&lt;-</span> recent_production <span class="sc">|&gt;</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">year</span>(Quarter) <span class="sc">&lt;=</span> <span class="dv">2007</span>)</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>beer_fit <span class="ot">&lt;-</span> beer_train <span class="sc">|&gt;</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">model</span>(</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">Mean =</span> <span class="fu">MEAN</span>(Beer),</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Naive</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">NAIVE</span>(Beer),</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Seasonal naive</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">SNAIVE</span>(Beer),</span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">Drift =</span> <span class="fu">RW</span>(Beer <span class="sc">~</span> <span class="fu">drift</span>())</span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>beer_fc <span class="ot">&lt;-</span> beer_fit <span class="sc">|&gt;</span></span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">forecast</span>(<span class="at">h =</span> <span class="dv">10</span>)</span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>beer_fc <span class="sc">|&gt;</span></span>
-<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(</span>
-<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>    aus_production <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="fu">year</span>(Quarter) <span class="sc">&gt;=</span> <span class="dv">1992</span>),</span>
-<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">level =</span> <span class="cn">NULL</span></span>
-<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Megalitres&quot;</span>,</span>
-<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Forecasts for quarterly beer production&quot;</span></span>
-<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">colour =</span> <span class="fu">guide_legend</span>(<span class="at">title =</span> <span class="st">&quot;Forecast&quot;</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create training dataset</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>beer_train <span class="ot">&lt;-</span> recent_production <span class="sc">|&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">year</span>(Quarter) <span class="sc">&lt;=</span> <span class="dv">2007</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>beer_fit <span class="ot">&lt;-</span> beer_train <span class="sc">|&gt;</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">model</span>(</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">Mean =</span> <span class="fu">MEAN</span>(Beer),</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Naive</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">NAIVE</span>(Beer),</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Seasonal naive</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">SNAIVE</span>(Beer),</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">Drift =</span> <span class="fu">RW</span>(Beer <span class="sc">~</span> <span class="fu">drift</span>())</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>beer_fc <span class="ot">&lt;-</span> beer_fit <span class="sc">|&gt;</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">forecast</span>(<span class="at">h =</span> <span class="dv">10</span>)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>beer_fc <span class="sc">|&gt;</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    aus_production <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="fu">year</span>(Quarter) <span class="sc">&gt;=</span> <span class="dv">1992</span>),</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">level =</span> <span class="cn">NULL</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Megalitres&quot;</span>,</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Forecasts for quarterly beer production&quot;</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">colour =</span> <span class="fu">guide_legend</span>(<span class="at">title =</span> <span class="st">&quot;Forecast&quot;</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -2851,11 +2744,11 @@ Q = \frac{1}{T-m}\sum_{t=m+1}^{T}|y_t - y_{t-m}|
 <h2 class="anchored" data-anchor-id="training-errors">Residual errors: errors on the training dataset</h2>
 <p>For the errors on the training set, the residuals, run <code>accuracy()</code> on the <code>mable</code> of fitted models:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>summary_tr <span class="ot">&lt;-</span> beer_fit <span class="sc">|&gt;</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">accuracy</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">select</span>(.model, .type, MAE, RMSE, MAPE, MASE, RMSSE) <span class="sc">|&gt;</span> </span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">arrange</span>(MAE) <span class="co"># Order from smallest to largest MAE</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>summary_tr</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>summary_tr <span class="ot">&lt;-</span> beer_fit <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">accuracy</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">select</span>(.model, .type, MAE, RMSE, MAPE, MASE, RMSSE) <span class="sc">|&gt;</span> </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">arrange</span>(MAE) <span class="co"># Order from smallest to largest MAE</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>summary_tr</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4 × 7
   .model         .type      MAE  RMSE  MAPE  MASE RMSSE
@@ -2896,11 +2789,11 @@ p_{t} = 100 e_{t}/y_{t}
 <h2 class="anchored" data-anchor-id="test-errors">Forecast errors: errors on the test dataset</h2>
 <p>For the errors on the test set, the forecast errors, run <code>accuracy()</code> on the <code>fable</code> (forecast table) returned by <code>forecast()</code>, and give it <strong>the whole dataset, training and test together</strong>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>summary_test <span class="ot">&lt;-</span> beer_fc <span class="sc">|&gt;</span> </span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">accuracy</span>(recent_production) <span class="sc">|&gt;</span> </span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">select</span>(.model, .type, RMSE, MAE, MAPE, MASE, RMSSE) <span class="sc">|&gt;</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">arrange</span>(MAE) <span class="co"># Order from smallest to largest MAE</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>summary_test</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>summary_test <span class="ot">&lt;-</span> beer_fc <span class="sc">|&gt;</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">accuracy</span>(recent_production) <span class="sc">|&gt;</span> </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">select</span>(.model, .type, RMSE, MAE, MAPE, MASE, RMSSE) <span class="sc">|&gt;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">arrange</span>(MAE) <span class="co"># Order from smallest to largest MAE</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>summary_test</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4 × 7
   .model         .type  RMSE   MAE  MAPE  MASE RMSSE
@@ -2934,27 +2827,27 @@ p_{t} = 100 e_{t}/y_{t}
 <section id="a-worked-answer" class="level2">
 <h2 class="anchored" data-anchor-id="a-worked-answer">A worked answer</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Extract the residuals produced by the drift model from beer_fit using</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># select(), augment() and pull()</span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>resid <span class="ot">&lt;-</span> beer_fit <span class="sc">|&gt;</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>         <span class="fu">select</span>(Drift) <span class="sc">|&gt;</span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>         <span class="fu">augment</span>() <span class="sc">|&gt;</span></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>         <span class="fu">pull</span>(.innov) <span class="sc">|&gt;</span></span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>         <span class="fu">na.omit</span>() <span class="co">#remove NAs</span></span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Compute the MAE and RMSE using their respective formulas</span></span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>MAE_manual <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">abs</span>(resid))</span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>RMSE_manual <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>((resid)<span class="sc">^</span><span class="dv">2</span>))</span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Compare with the values computed by fable</span></span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>MAE_fable <span class="ot">&lt;-</span> summary_tr <span class="sc">|&gt;</span> <span class="fu">filter</span>(.model <span class="sc">==</span> <span class="st">&quot;Drift&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">pull</span>(MAE)</span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>RMSE_fable <span class="ot">&lt;-</span> summary_tr <span class="sc">|&gt;</span> <span class="fu">filter</span>(.model <span class="sc">==</span> <span class="st">&quot;Drift&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">pull</span>(RMSE)</span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(MAE_manual, MAE_fable)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Extract the residuals produced by the drift model from beer_fit using</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># select(), augment() and pull()</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>resid <span class="ot">&lt;-</span> beer_fit <span class="sc">|&gt;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>         <span class="fu">select</span>(Drift) <span class="sc">|&gt;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>         <span class="fu">augment</span>() <span class="sc">|&gt;</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>         <span class="fu">pull</span>(.innov) <span class="sc">|&gt;</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>         <span class="fu">na.omit</span>() <span class="co">#remove NAs</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Compute the MAE and RMSE using their respective formulas</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>MAE_manual <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">abs</span>(resid))</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>RMSE_manual <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>((resid)<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Compare with the values computed by fable</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>MAE_fable <span class="ot">&lt;-</span> summary_tr <span class="sc">|&gt;</span> <span class="fu">filter</span>(.model <span class="sc">==</span> <span class="st">&quot;Drift&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">pull</span>(MAE)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>RMSE_fable <span class="ot">&lt;-</span> summary_tr <span class="sc">|&gt;</span> <span class="fu">filter</span>(.model <span class="sc">==</span> <span class="st">&quot;Drift&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">pull</span>(RMSE)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(MAE_manual, MAE_fable)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] TRUE</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(RMSE_manual, RMSE_fable)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(RMSE_manual, RMSE_fable)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] TRUE</code></pre>
 </div>
@@ -2966,31 +2859,31 @@ p_{t} = 100 e_{t}/y_{t}
 <section id="a-worked-answer-1" class="level2">
 <h2 class="anchored" data-anchor-id="a-worked-answer-1">A worked answer</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Extract the forecasts produced by the drift model from beer_fc</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co"># using filter() and pull()</span></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>fc <span class="ot">&lt;-</span> beer_fc <span class="sc">|&gt;</span> <span class="fu">filter</span>(.model <span class="sc">==</span> <span class="st">&quot;Drift&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">pull</span>(.mean) <span class="sc">|&gt;</span> <span class="fu">na.omit</span>()</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Extract the true values of the test data from recent_production </span></span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="co"># using filter() and pull()</span></span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>tv <span class="ot">&lt;-</span> recent_production <span class="sc">|&gt;</span> <span class="fu">select</span>(Quarter, Beer) <span class="sc">|&gt;</span> </span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(Quarter <span class="sc">&gt;=</span> <span class="fu">yearquarter</span>(<span class="st">&quot;2008 Q1&quot;</span>)) <span class="sc">|&gt;</span> <span class="fu">pull</span>(Beer) <span class="sc">|&gt;</span> <span class="fu">na.omit</span>()</span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Compute the errors as the difference between true values and forecasts</span></span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>err <span class="ot">&lt;-</span> tv<span class="sc">-</span>fc</span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Compute the MAE and RMSE averaging errors</span></span>
-<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>RMSE_manual <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>(err<span class="sc">^</span><span class="dv">2</span>))</span>
-<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>MAE_manual <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">abs</span>(err))</span>
-<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. Compare with the values computed by the function accuracy()</span></span>
-<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>RMSE_fable <span class="ot">&lt;-</span> summary_test <span class="sc">|&gt;</span> <span class="fu">filter</span>(.model <span class="sc">==</span> <span class="st">&quot;Drift&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">pull</span>(RMSE)</span>
-<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>MAE_fable <span class="ot">&lt;-</span> summary_test <span class="sc">|&gt;</span> <span class="fu">filter</span>(.model <span class="sc">==</span> <span class="st">&quot;Drift&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">pull</span>(MAE)</span>
-<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(RMSE_manual, RMSE_fable)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Extract the forecasts produced by the drift model from beer_fc</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># using filter() and pull()</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>fc <span class="ot">&lt;-</span> beer_fc <span class="sc">|&gt;</span> <span class="fu">filter</span>(.model <span class="sc">==</span> <span class="st">&quot;Drift&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">pull</span>(.mean) <span class="sc">|&gt;</span> <span class="fu">na.omit</span>()</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Extract the true values of the test data from recent_production </span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co"># using filter() and pull()</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>tv <span class="ot">&lt;-</span> recent_production <span class="sc">|&gt;</span> <span class="fu">select</span>(Quarter, Beer) <span class="sc">|&gt;</span> </span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(Quarter <span class="sc">&gt;=</span> <span class="fu">yearquarter</span>(<span class="st">&quot;2008 Q1&quot;</span>)) <span class="sc">|&gt;</span> <span class="fu">pull</span>(Beer) <span class="sc">|&gt;</span> <span class="fu">na.omit</span>()</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Compute the errors as the difference between true values and forecasts</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>err <span class="ot">&lt;-</span> tv<span class="sc">-</span>fc</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Compute the MAE and RMSE averaging errors</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>RMSE_manual <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>(err<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>MAE_manual <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">abs</span>(err))</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. Compare with the values computed by the function accuracy()</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>RMSE_fable <span class="ot">&lt;-</span> summary_test <span class="sc">|&gt;</span> <span class="fu">filter</span>(.model <span class="sc">==</span> <span class="st">&quot;Drift&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">pull</span>(RMSE)</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>MAE_fable <span class="ot">&lt;-</span> summary_test <span class="sc">|&gt;</span> <span class="fu">filter</span>(.model <span class="sc">==</span> <span class="st">&quot;Drift&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">pull</span>(MAE)</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(RMSE_manual, RMSE_fable)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] TRUE</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(MAE_manual, MAE_fable)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(MAE_manual, MAE_fable)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] TRUE</code></pre>
 </div>
@@ -3002,36 +2895,36 @@ p_{t} = 100 e_{t}/y_{t}
 <p>The same metrics on non-seasonal data; their interpretation does not change.</p>
 <p>We compute the errors on the Google stock data, with 2015 as the training set and January 2016 as the test set, using <code>fable</code> only.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Data filtering</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>google_stock <span class="ot">&lt;-</span> gafa_stock <span class="sc">|&gt;</span></span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Symbol <span class="sc">==</span> <span class="st">&quot;GOOG&quot;</span>, <span class="fu">year</span>(Date) <span class="sc">&gt;=</span> <span class="dv">2015</span>) <span class="sc">|&gt;</span></span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">day =</span> <span class="fu">row_number</span>()) <span class="sc">|&gt;</span></span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">update_tsibble</span>(<span class="at">index =</span> day, <span class="at">regular =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>google_2015 <span class="ot">&lt;-</span> google_stock <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="fu">year</span>(Date) <span class="sc">==</span> <span class="dv">2015</span>)</span>
-<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>google_jan_2016 <span class="ot">&lt;-</span> google_stock <span class="sc">|&gt;</span></span>
-<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">yearmonth</span>(Date) <span class="sc">==</span> <span class="fu">yearmonth</span>(<span class="st">&quot;2016 Jan&quot;</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Data filtering</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>google_stock <span class="ot">&lt;-</span> gafa_stock <span class="sc">|&gt;</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Symbol <span class="sc">==</span> <span class="st">&quot;GOOG&quot;</span>, <span class="fu">year</span>(Date) <span class="sc">&gt;=</span> <span class="dv">2015</span>) <span class="sc">|&gt;</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">day =</span> <span class="fu">row_number</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">update_tsibble</span>(<span class="at">index =</span> day, <span class="at">regular =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>google_2015 <span class="ot">&lt;-</span> google_stock <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="fu">year</span>(Date) <span class="sc">==</span> <span class="dv">2015</span>)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>google_jan_2016 <span class="ot">&lt;-</span> google_stock <span class="sc">|&gt;</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">yearmonth</span>(Date) <span class="sc">==</span> <span class="fu">yearmonth</span>(<span class="st">&quot;2016 Jan&quot;</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit model</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>google_fit <span class="ot">&lt;-</span> google_2015 <span class="sc">|&gt;</span></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">model</span>(</span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">Mean =</span> <span class="fu">MEAN</span>(Close),</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">Naive =</span> <span class="fu">NAIVE</span>(Close),</span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">Drift =</span> <span class="fu">RW</span>(Close <span class="sc">~</span> <span class="fu">drift</span>())</span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate forecasts</span></span>
-<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>google_fc <span class="ot">&lt;-</span> google_fit <span class="sc">|&gt;</span></span>
-<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">forecast</span>(google_jan_2016)</span>
-<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>google_fc <span class="sc">|&gt;</span></span>
-<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(<span class="fu">bind_rows</span>(google_2015, google_jan_2016),</span>
-<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">level =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
-<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&quot;$US&quot;</span>,</span>
-<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">&quot;Google closing stock prices from Jan 2015&quot;</span>) <span class="sc">+</span></span>
-<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">colour =</span> <span class="fu">guide_legend</span>(<span class="at">title =</span> <span class="st">&quot;Forecast&quot;</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit model</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>google_fit <span class="ot">&lt;-</span> google_2015 <span class="sc">|&gt;</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">model</span>(</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">Mean =</span> <span class="fu">MEAN</span>(Close),</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">Naive =</span> <span class="fu">NAIVE</span>(Close),</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">Drift =</span> <span class="fu">RW</span>(Close <span class="sc">~</span> <span class="fu">drift</span>())</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate forecasts</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>google_fc <span class="ot">&lt;-</span> google_fit <span class="sc">|&gt;</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">forecast</span>(google_jan_2016)</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>google_fc <span class="sc">|&gt;</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(<span class="fu">bind_rows</span>(google_2015, google_jan_2016),</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">level =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&quot;$US&quot;</span>,</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">&quot;Google closing stock prices from Jan 2015&quot;</span>) <span class="sc">+</span></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">colour =</span> <span class="fu">guide_legend</span>(<span class="at">title =</span> <span class="st">&quot;Forecast&quot;</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -3043,11 +2936,11 @@ p_{t} = 100 e_{t}/y_{t}
 <section id="residual-errors-errors-on-the-training-dataset" class="level3">
 <h3 class="anchored" data-anchor-id="residual-errors-errors-on-the-training-dataset">Residual errors: errors on the training dataset</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>summary_tr <span class="ot">&lt;-</span> google_fit <span class="sc">|&gt;</span></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">accuracy</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">select</span>(.model, .type, MAE, RMSE, MAPE, MASE, RMSSE) <span class="sc">|&gt;</span> </span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">arrange</span>(MASE) <span class="co"># Order from smallest to highest MASE </span></span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>summary_tr</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>summary_tr <span class="ot">&lt;-</span> google_fit <span class="sc">|&gt;</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">accuracy</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">select</span>(.model, .type, MAE, RMSE, MAPE, MASE, RMSSE) <span class="sc">|&gt;</span> </span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">arrange</span>(MASE) <span class="co"># Order from smallest to highest MASE </span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>summary_tr</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 7
   .model .type      MAE  RMSE  MAPE  MASE RMSSE
@@ -3062,11 +2955,11 @@ p_{t} = 100 e_{t}/y_{t}
 <section id="forecast-errors-errors-on-the-test-dataset" class="level3">
 <h3 class="anchored" data-anchor-id="forecast-errors-errors-on-the-test-dataset">Forecast errors: errors on the test dataset</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>summary_test <span class="ot">&lt;-</span> google_fc <span class="sc">|&gt;</span> </span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">accuracy</span>(google_stock) <span class="sc">|&gt;</span> </span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">select</span>(.model, .type, RMSE, MAE, MAPE, MASE, RMSSE) <span class="sc">|&gt;</span></span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">arrange</span>(RMSE) <span class="co"># Order from smallest to largest RMSE</span></span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>summary_test</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>summary_test <span class="ot">&lt;-</span> google_fc <span class="sc">|&gt;</span> </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">accuracy</span>(google_stock) <span class="sc">|&gt;</span> </span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">select</span>(.model, .type, RMSE, MAE, MAPE, MASE, RMSSE) <span class="sc">|&gt;</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">arrange</span>(RMSE) <span class="co"># Order from smallest to largest RMSE</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>summary_test</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 7
   .model .type  RMSE   MAE  MAPE  MASE RMSSE
@@ -3083,35 +2976,35 @@ p_{t} = 100 e_{t}/y_{t}
 <h1>Exercise 1</h1>
 <p>Take the retail series used in notebooks <code>08_A</code>, <code>09_B</code> and <code>12</code>. The code below filters it from <code>aus_retail</code> and creates a training dataset that leaves out the last 36 months (3 years) for testing:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract series</span></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>retail_series <span class="ot">&lt;-</span> aus_retail <span class="sc">|&gt;</span> </span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">Series ID</span><span class="st">`</span> <span class="sc">==</span> <span class="st">&quot;A3349767W&quot;</span>)</span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Create train dataset</span></span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>n_test_years <span class="ot">=</span> <span class="dv">3</span></span>
-<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>retail_train <span class="ot">&lt;-</span> </span>
-<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>  retail_series <span class="sc">|&gt;</span> </span>
-<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span>(<span class="fu">n</span>()<span class="sc">-</span><span class="dv">12</span><span class="sc">*</span>n_test_years))</span>
-<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Check difference = 36</span></span>
-<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(retail_series) <span class="sc">-</span> <span class="fu">nrow</span>(retail_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract series</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>retail_series <span class="ot">&lt;-</span> aus_retail <span class="sc">|&gt;</span> </span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">Series ID</span><span class="st">`</span> <span class="sc">==</span> <span class="st">&quot;A3349767W&quot;</span>)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Create train dataset</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>n_test_years <span class="ot">=</span> <span class="dv">3</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>retail_train <span class="ot">&lt;-</span> </span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  retail_series <span class="sc">|&gt;</span> </span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span>(<span class="fu">n</span>()<span class="sc">-</span><span class="dv">12</span><span class="sc">*</span>n_test_years))</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Check difference = 36</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(retail_series) <span class="sc">-</span> <span class="fu">nrow</span>(retail_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 36</code></pre>
 </div>
 </div>
 <p>Fit the same <code>decomposition_model()</code> as in those notebooks, to the training set only:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>retail_fit <span class="ot">&lt;-</span> </span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  retail_train <span class="sc">|&gt;</span> </span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">model</span>(<span class="at">stlf =</span> <span class="fu">decomposition_model</span>(</span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>                <span class="co"># 1. Define model to be used for the decomposition</span></span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>                <span class="fu">STL</span>(<span class="fu">log</span>(Turnover) <span class="sc">~</span> <span class="fu">trend</span>(<span class="at">window =</span> <span class="dv">7</span>), <span class="at">robust =</span> <span class="cn">TRUE</span>), </span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>                </span>
-<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>                <span class="co"># 2. Define model for the seasonally adjusted component</span></span>
-<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>                <span class="fu">RW</span>(season_adjust <span class="sc">~</span> <span class="fu">drift</span>()) </span>
-<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>            ))</span>
-<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>retail_fit</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>retail_fit <span class="ot">&lt;-</span> </span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  retail_train <span class="sc">|&gt;</span> </span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">model</span>(<span class="at">stlf =</span> <span class="fu">decomposition_model</span>(</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>                <span class="co"># 1. Define model to be used for the decomposition</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>                <span class="fu">STL</span>(<span class="fu">log</span>(Turnover) <span class="sc">~</span> <span class="fu">trend</span>(<span class="at">window =</span> <span class="dv">7</span>), <span class="at">robust =</span> <span class="cn">TRUE</span>), </span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>                <span class="co"># 2. Define model for the seasonally adjusted component</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>                <span class="fu">RW</span>(season_adjust <span class="sc">~</span> <span class="fu">drift</span>()) </span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>            ))</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>retail_fit</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A mable: 1 x 3
 # Key:     State, Industry [1]
@@ -3122,11 +3015,11 @@ p_{t} = 100 e_{t}/y_{t}
 </div>
 <p>Then produce forecasts for 3 years:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>retail_fc <span class="ot">&lt;-</span> </span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  retail_fit <span class="sc">|&gt;</span> </span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">forecast</span>(<span class="at">h =</span> <span class="dv">36</span>, <span class="at">point_forecast =</span> <span class="fu">lst</span>(mean, median))</span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="co"># autoplot(retail_fc, retail_series, level = 80, point_forecast = lst(mean, median))</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>retail_fc <span class="ot">&lt;-</span> </span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  retail_fit <span class="sc">|&gt;</span> </span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">forecast</span>(<span class="at">h =</span> <span class="dv">36</span>, <span class="at">point_forecast =</span> <span class="fu">lst</span>(mean, median))</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="co"># autoplot(retail_fc, retail_series, level = 80, point_forecast = lst(mean, median))</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="exercise-1-residuals" class="level1">
@@ -3164,6 +3057,138 @@ p_{t} = 100 e_{t}/y_{t}
 </section>
 <section id="optional-what-are-the-differences-between-forecast-errors-and-residuals" class="level2">
 <h2 class="anchored" data-anchor-id="optional-what-are-the-differences-between-forecast-errors-and-residuals">3.3 (Optional) What are the differences between forecast errors and residuals?</h2>
+</section>
+</section>
+<section id="appendix" class="level1">
+<h1>Appendix: going further</h1>
+<p>The main text gives everything the exercises need. These sections show why its statements hold. Read them for intuition; nothing here needs to be memorized.</p>
+<section id="median-mean" class="level2">
+<h2 class="anchored" data-anchor-id="median-mean">Why the median and why the mean</h2>
+<p>Suppose the value we want to forecast, <span class="math inline">\(y_{T+h}\)</span>, can turn out to be 1, 2, 3, 4 or 100, each with probability 1/5. This is a small, skewed forecast distribution. We must commit to a single point forecast, <span class="math inline">\(c\)</span>. Which <span class="math inline">\(c\)</span> gives the lowest MAE, and which the lowest RMSE?</p>
+<p>For each candidate <span class="math inline">\(c\)</span>, the error in each possible outcome is <span class="math inline">\(y - c\)</span>. The MAE is the mean of the absolute errors and the RMSE is the square root of the mean of the squared errors, exactly as on a test set:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Forecast <span class="math inline">\(c\)</span></th>
+<th>Errors <span class="math inline">\(y - c\)</span></th>
+<th>MAE</th>
+<th>RMSE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>3 (median)</td>
+<td>-2, -1, 0, 1, 97</td>
+<td><strong>20.2</strong></td>
+<td>43.4</td>
+</tr>
+<tr class="even">
+<td>22 (mean)</td>
+<td>-21, -20, -19, -18, 78</td>
+<td>31.2</td>
+<td><strong>39.0</strong></td>
+</tr>
+</tbody>
+</table>
+<p>For <span class="math inline">\(c = 3\)</span>: MAE <span class="math inline">\(= (2 + 1 + 0 + 1 + 97)/5 = 20.2\)</span> and RMSE <span class="math inline">\(= \sqrt{(4 + 1 + 0 + 1 + 9409)/5} = 43.4\)</span>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">100</span>)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">median</span>(y)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(y)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 22</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># MAE and RMSE of the forecast c = median(y)</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">abs</span>(y <span class="sc">-</span> <span class="fu">median</span>(y)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 20.2</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">mean</span>((y <span class="sc">-</span> <span class="fu">median</span>(y))<span class="sc">^</span><span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 43.39355</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># MAE and RMSE of the forecast c = mean(y)</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">abs</span>(y <span class="sc">-</span> <span class="fu">mean</span>(y)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 31.2</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">mean</span>((y <span class="sc">-</span> <span class="fu">mean</span>(y))<span class="sc">^</span><span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 39.01282</code></pre>
+</div>
+</div>
+<ul>
+<li><strong>Absolute errors count values, not distances.</strong> Each step of <span class="math inline">\(c\)</span> to the right adds 1 to the absolute error of every value below <span class="math inline">\(c\)</span> and removes 1 from every value above it. The MAE keeps falling while more values lie above <span class="math inline">\(c\)</span> than below, and stops where the two sides balance, which is the median. How far away the 100 is does not matter: it is one value above.</li>
+<li><strong>Squared errors let far values pull.</strong> A value twice as far away costs four times as much, so the 100 pulls the best <span class="math inline">\(c\)</span> toward it. The mean squared error is smallest where the errors above and below <span class="math inline">\(c\)</span> cancel, <span class="math inline">\(\text{mean}(y - c) = 0\)</span>, that is, at <span class="math inline">\(c = \bar{y}\)</span>, the mean. The square root in the RMSE does not move the minimum.</li>
+</ul>
+<p>The five values stand for a forecast distribution, like the skewed distributions of back-transformed forecasts in the prediction intervals session (Session 12). A forecast judged by MAE is best at the median of that distribution; a forecast judged by RMSE, at its mean.</p>
+</section>
+<section id="asymmetry" class="level2">
+<h2 class="anchored" data-anchor-id="asymmetry">Asymmetry of percentage errors</h2>
+<p>A common example changes both numbers at once:</p>
+<ul>
+<li>Case 1: <span class="math inline">\(y_t = 150\)</span> ; <span class="math inline">\(\hat{y_t} = 100\)</span> (a positive error)</li>
+</ul>
+<p><span class="math display">\[
+  \frac{|y_t-\hat{y_t}|}{y_t} \cdot 100 =\frac{|150-100|}{150} \cdot 100 = 33.33\%
+\]</span></p>
+<ul>
+<li>Case 2: <span class="math inline">\(y_t = 100\)</span> ; <span class="math inline">\(\hat{y_t} = 150\)</span> (a negative error)</li>
+</ul>
+<p><span class="math display">\[
+  \frac{|y_t-\hat{y_t}|}{y_t} \cdot 100 =\frac{|100-150|}{100} \cdot 100 = 50\%
+\]</span></p>
+<p>Case 2 gives the larger percentage error, but here the actual value changed too, so the example does not isolate the sign of the error. Two cleaner comparisons do.</p>
+<p><strong>Same actual value, <span class="math inline">\(y_t = 100\)</span>, errors of the same size and opposite sign:</strong></p>
+<ul>
+<li>Case 3: <span class="math inline">\(\hat{y_t} = 150\)</span></li>
+</ul>
+<p><span class="math display">\[
+  \frac{|100-150|}{100} \cdot 100 = 50\%
+\]</span></p>
+<ul>
+<li>Case 4: <span class="math inline">\(\hat{y_t} = 50\)</span></li>
+</ul>
+<p><span class="math display">\[
+  \frac{|100-50|}{100} \cdot 100 = 50\%
+\]</span></p>
+<p>With the actual value fixed there is no asymmetry. This is the view of reference [3] (in German), which concludes that the asymmetry is a false accusation against the MAPE.</p>
+<p><strong>Same forecast, <span class="math inline">\(\hat{y_t} = 100\)</span>, actual values above and below it by the same amount:</strong></p>
+<ul>
+<li>Case 5: <span class="math inline">\(y_t = 150\)</span> (a positive error: the forecast was too low)</li>
+</ul>
+<p><span class="math display">\[
+  \frac{|150-100|}{150} \cdot 100 = 33.33\%
+\]</span></p>
+<ul>
+<li>Case 6: <span class="math inline">\(y_t = 50\)</span> (a negative error: the forecast was too high)</li>
+</ul>
+<p><span class="math display">\[
+  \frac{|50-100|}{50} \cdot 100 = 100\%
+\]</span></p>
+<p>With the forecast fixed, the negative error costs three times as much. This reading supports fpp3’s warning: the forecast is what we commit to, and the actual value is what arrives. More generally, when the actual values and the forecasts are positive, a forecast below the actual value can never have a percentage error above 100%, while a forecast above it has no upper limit, so a model chosen by its MAPE can lean toward forecasts that are too low. Reference [3] answers that errors above 100% from under-forecasting are impossible, not penalized less.</p>
+<p><strong>Which reading should you use?</strong> Ask what is fixed in your problem. If you compare forecasts of the same actual value, the MAPE is symmetric. If you commit to a forecast and the outcome is uncertain, over-forecasts can cost more. Neither reading changes how the MAPE is computed.</p>
+</section>
+<section id="smape-the-symmetric-mape" class="level2">
+<h2 class="anchored" data-anchor-id="smape-the-symmetric-mape">sMAPE, the “symmetric” MAPE</h2>
+<p>This section is included for completeness. sMAPE is not examined.</p>
+<p><span class="math display">\[
+\text{sMAPE} = \text{mean}\left(200|y_{t} - \hat{y}_{t}|/(y_{t}+\hat{y}_{t})\right)
+\]</span></p>
+<ul>
+<li>Proposed to remove the asymmetry of the MAPE. It is not symmetric either: with <span class="math inline">\(y_t = 100\)</span>, forecasts of 150 and 50 give 40% and 67%.</li>
+<li>Its value can be negative, so it is not a measure of “absolute percentage errors” at all.</li>
+<li>It does not fix the division by zero: if <span class="math inline">\(y_t\)</span> is close to 0, <span class="math inline">\(\hat{y_t}\)</span> is usually close to 0 too.</li>
+<li>Not recommended (reference [4]). Included because it is still widely used.</li>
+</ul>
+</section>
+<section id="mase-reading" class="level2">
+<h2 class="anchored" data-anchor-id="mase-reading">Reading the MASE on the test set</h2>
+<p>The benchmark in the MASE is the one-step naive forecast <em>on the training data</em>, not the naive model’s forecasts on the test set. On beer, the seasonal naive model has a training MASE of exactly 1 and a test MASE of 0.94. It did not beat itself; its test errors were simply smaller than its training ones. The naive model’s own multi-step test errors are usually larger than its one-step training errors, so its test MASE is usually above 1: in the Google example, the naive model wins on the test set with a MASE of 5.67. A MASE far above 1 can still belong to the best model, which is why models are compared row against row.</p>
+<p>Reference [4] compares these accuracy measures and introduces the MASE.</p>
 </section>
 </section>
 

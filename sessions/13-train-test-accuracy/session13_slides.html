@@ -567,8 +567,8 @@ relative error    |y &minus; y&#770;| / |y|    <span class="dim">no units: a fra
 <section class="slide" data-section="4" data-title="MAPE">
   <div class="inner">
     <a class="nb" href="13_A_PointAccuracy.html#percentage" target="_blank" rel="noopener" title="Open the notebook at this section">13_A &rsaquo; Percentage errors</a>
-    <p class="kicker">Percentage errors &nbsp;&middot;&nbsp; no units, three cautions</p>
-    <h1 class="sowhat wide">A percentage error needs a true zero, and it charges more for forecasting too high.</h1>
+    <p class="kicker">Percentage errors &nbsp;&middot;&nbsp; no units, one requirement, one debate</p>
+    <h1 class="sowhat wide">A percentage error has no units, but it needs a true zero.</h1>
     <div class="console">p<sub>t</sub> = 100 &middot; e<sub>t</sub> / y<sub>t</sub>          MAPE = mean( |p<sub>t</sub>| )
 
 <span class="dim">same actual,   y = 100:</span>   y&#770; = 150 &rarr; 50%     y&#770; = 50 &rarr; 50%      <span class="dim">same cost</span>
@@ -576,11 +576,11 @@ relative error    |y &minus; y&#770;| / |y|    <span class="dim">no units: a fra
     <ul class="build">
       <li class="step"><b>It is unit-free, so it compares across series.</b> "Off by 3.3%" means the same for beer and for retail sales.</li>
       <li class="step"><b>It needs a true zero, one that means none of the quantity.</b> A <code>y<sub>t</sub></code> of zero makes the ratio infinite, and values near zero make it enormous, as in daily sales of a slow product. And 0 &deg;C is where water freezes, not the absence of heat, so the percentage depends on the scale: forecasting 12 &deg;C when it is 10 &deg;C is 20% off, but the same forecast in Fahrenheit is 7.2% off.</li>
-      <li class="step"><b>It is lopsided.</b> With <code>e = y &minus; y&#770;</code>, a negative error is a forecast above the actual. With positive actuals and forecasts, a forecast below the actual can never miss by more than 100%; one above it has no ceiling. This is what fpp3 means when it says MAPE penalizes negative errors more heavily.</li>
+      <li class="step"><b>Is it lopsided? That is debated.</b> fpp3 says MAPE penalizes negative errors, forecasts above the actual, more heavily: hold the forecast fixed, the second row. Others say it does not: hold the actual fixed, the first row. Both rows are correct arithmetic; which one describes your problem is your call.</li>
     </ul>
-    <p class="punch step wide">A model chosen by its MAPE leans toward forecasting too low, because the forecasts that were too high are the expensive ones.</p>
+    <p class="punch step wide">Before using MAPE, check that the series has a true zero and stays well away from it.</p>
   </div>
-  <aside class="notes">Whether MAPE is asymmetric depends on what you hold fixed. Hold the actual at 100 and forecasts of 150 and 50 both give 50%: no asymmetry. Hold the forecast at 100 and let the actual come in at 50 or 150: 100% against 33%. In forecasting the forecast is what you commit to and the actual is what arrives, so the second reading is the one that matters, and it is the one behind fpp3&#39;s warning.<br><br>sMAPE, the "symmetric" version, is in the notebook for completeness. It is not examined. It is not symmetric either (with <code>y</code> = 100, forecasts of 150 and 50 give 40% and 67%), its value can be negative, and it does not fix the zero problem.</aside>
+  <aside class="notes">The debate in one line each. fpp3: the forecast is what you commit to and the actual is what arrives, so hold the forecast fixed; then an under-forecast can never cost more than 100% while an over-forecast has no ceiling, and a model chosen by MAPE can lean toward forecasting too low. The other side (the German post in the notebook&#39;s references): hold the actual fixed and a miss of 50 either way costs 50%, so the asymmetry is an artifact of changing the actual. The notebook&#39;s appendix works through the cases. It is not something to memorize.<br><br>sMAPE, the "symmetric" version, is in the notebook for completeness. It is not examined. It is not symmetric either (with <code>y</code> = 100, forecasts of 150 and 50 give 40% and 67%), its value can be negative, and it does not fix the zero problem.</aside>
 </section>
 
 <section class="slide" data-section="4" data-title="MASE and RMSSE">
@@ -599,7 +599,7 @@ MASE = mean( |q<sub>j</sub>| )      RMSSE = sqrt( mean( q<sub>j</sub>&sup2; ) )<
     </ul>
     <p class="punch step wide">To ask whether a model beats the naive forecast, compare its MASE with the naive row of the same table. Every row shares the same scale, so the lower MASE is the lower MAE.</p>
   </div>
-  <aside class="notes">MASE and RMSSE are the scaled versions of MAE and RMSE. The notebook section that defines them is new in this build; fpp3 5.8 is the reference. <code>accuracy()</code> returns both, and Group Assignment 2 uses them to compare the naive method against the smoothing models.<br><br>The scale Q is always computed on the training data, even when the metric is for the test set. That is what makes MASE comparable across series and across models fitted to the same series.<br><br>A common misreading is "a test MASE above 1 means the naive forecast would have done better on the test set". It does not follow: the naive method&#39;s own multi-step test errors are usually larger than its one-step training errors, so its test MASE is usually above 1 too. In the notebook&#39;s Google example the naive model wins the test set with a MASE of 5.67. The fair comparison is row against row.</aside>
+  <aside class="notes">MASE and RMSSE are the scaled versions of MAE and RMSE; fpp3 5.8 is the reference. <code>accuracy()</code> returns both.<br><br>The scale Q is always computed on the training data, even when the metric is for the test set. That is what makes MASE comparable across series and across models fitted to the same series.<br><br>A common misreading is "a test MASE above 1 means the naive forecast would have done better on the test set". It does not follow: the naive method&#39;s own multi-step test errors are usually larger than its one-step training errors, so its test MASE is usually above 1 too. In the notebook&#39;s Google example the naive model wins the test set with a MASE of 5.67. The fair comparison is row against row.</aside>
 </section>
 
 <section class="slide" data-section="4" data-title="Which metric, when">
@@ -610,7 +610,7 @@ MASE = mean( |q<sub>j</sub>| )      RMSSE = sqrt( mean( q<sub>j</sub>&sup2; ) )<
       <tr><td class="os"></td><td><b>Use it when</b></td><td><b>Use case</b></td><td class="fix"><b>Watch out</b></td></tr>
       <tr><td class="os">MAE</td><td>You want an average miss anyone can read, and every unit of miss costs the same. It targets the median.</td><td>A brewery&#39;s quarterly beer production, the notebook&#39;s Example 1: each megalitre over or under costs about the same, and "off by 14 megalitres a quarter" reads at once.</td><td class="fix">It cannot compare series in different units or scales.</td></tr>
       <tr><td class="os">RMSE</td><td>One big miss hurts more than several small ones. It targets the mean.</td><td>Flu vaccine doses for a region: one large miss, a shortage or a pile of wasted doses, hurts far more than several small ones.</td><td class="fix">One large error can dominate it. Same units as the series, like MAE.</td></tr>
-      <tr><td class="os">MAPE</td><td>You compare series in different units or scales, with a true zero and values well above it.</td><td>Google and Apple stock prices, from Example 2&#39;s <code>gafa_stock</code>: very different price levels, a true zero, and prices far above it.</td><td class="fix">Zeros and values near zero blow it up. It charges more for forecasts that are too high.</td></tr>
+      <tr><td class="os">MAPE</td><td>You compare series in different units or scales, with a true zero and values well above it.</td><td>Google and Apple stock prices, from Example 2&#39;s <code>gafa_stock</code>: very different price levels, a true zero, and prices far above it.</td><td class="fix">Zeros and values near zero blow it up. Whether it favors forecasts that are too low is debated.</td></tr>
       <tr><td class="os">MASE</td><td>You compare many series, including series with zeros, against the naive benchmark.</td><td>Daily sales of every product in a store&#39;s catalog, each judged against the naive forecast; slow-moving products have days with no sales.</td><td class="fix">Below 1 means better than the naive forecast on the training data. To beat the naive model on the test set, compare rows.</td></tr>
     </table>
     <ul class="build">
@@ -619,7 +619,7 @@ MASE = mean( |q<sub>j</sub>| )      RMSSE = sqrt( mean( q<sub>j</sub>&sup2; ) )<
       <li class="step"><b>Report each number with its unit:</b> MAE and RMSE in the units of the series, MAPE in percent, MASE in none.</li>
     </ul>
   </div>
-  <aside class="notes">Every row of the table comes from the four slides before it: the median and the mean from the median-or-mean slide, the cost of forecasts that are too high from the percentage-errors slide, and the reading of MASE from the scaled-errors slide. The use cases are examples, not rules: the same series can call for a different metric when the cost of a miss is different.<br><br>A second reason to choose RMSE is forecasts that will be added up, such as regional sales summed to a national total: the sum of the means is the mean of the sum, but the sum of the medians is not the median of the sum. Prediction intervals (Session 12) made the same point about back-transformed forecasts.</aside>
+  <aside class="notes">Every row of the table comes from the four slides before it: the median and the mean from the median-or-mean slide, the debate about forecasts that are too high from the percentage-errors slide, and the reading of MASE from the scaled-errors slide. The use cases are examples, not rules: the same series can call for a different metric when the cost of a miss is different.<br><br>A second reason to choose RMSE is forecasts that will be added up, such as regional sales summed to a national total: the sum of the means is the mean of the sum, but the sum of the medians is not the median of the sum. Prediction intervals (Session 12) made the same point about back-transformed forecasts.</aside>
 </section>
 
 <section class="slide" data-section="5" data-title="Switch: accuracy() twice">

@@ -60,23 +60,6 @@ library(fpp3)
 # patchwork combines graphs, e.g. p1 + p2 with p1 and p2 ggplot objects
 library(patchwork)
 
-# Metrics to summarize errors ----
-
-## Scale-dependent error metrics ----
-
-### Why the median and why the mean ----
-y <- c(1, 2, 3, 4, 100)
-median(y)
-mean(y)
-
-# MAE and RMSE of the forecast c = median(y)
-mean(abs(y - median(y)))
-sqrt(mean((y - median(y))^2))
-
-# MAE and RMSE of the forecast c = mean(y)
-mean(abs(y - mean(y)))
-sqrt(mean((y - mean(y))^2))
-
 # Example 1 of error metrics ----
 recent_production <- aus_production |>
   filter(year(Quarter) >= 1992)
@@ -246,3 +229,18 @@ retail_fc <-
   forecast(h = 36, point_forecast = lst(mean, median))
 
 # autoplot(retail_fc, retail_series, level = 80, point_forecast = lst(mean, median))
+
+# Appendix: going further ----
+
+## Why the median and why the mean ----
+y <- c(1, 2, 3, 4, 100)
+median(y)
+mean(y)
+
+# MAE and RMSE of the forecast c = median(y)
+mean(abs(y - median(y)))
+sqrt(mean((y - median(y))^2))
+
+# MAE and RMSE of the forecast c = mean(y)
+mean(abs(y - mean(y)))
+sqrt(mean((y - mean(y))^2))
