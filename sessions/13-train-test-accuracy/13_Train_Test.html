@@ -2339,7 +2339,8 @@ vertical-align: -.125em;
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>aus_retail <span class="sc">|&gt;</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(State, Industry)  <span class="sc">|&gt;</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="co"># So that subsequent operations are not performed group-wise</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> <span class="co"># So that subsequent operations are not performed group-wise</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="at">n =</span> <span class="dv">14</span>) <span class="co"># Show 14 rows: the 12 of the first series and the start of the next</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tsibble: 1,824 x 5 [1M]
 # Key:       State, Industry [152]
@@ -2355,9 +2356,14 @@ vertical-align: -.125em;
  8 Australian Capital Territory Cafes, restaurant… A3349849A   1982 Nov      5.4
  9 Australian Capital Territory Cafes, restaurant… A3349849A   1982 Dec      6.9
 10 Australian Capital Territory Cafes, restaurant… A3349849A   1983 Jan      3.8
-# ℹ 1,814 more rows</code></pre>
+11 Australian Capital Territory Cafes, restaurant… A3349849A   1983 Feb      4.2
+12 Australian Capital Territory Cafes, restaurant… A3349849A   1983 Mar      4  
+13 Australian Capital Territory Cafes, restaurant… A3349606J   1982 Apr      7.6
+14 Australian Capital Territory Cafes, restaurant… A3349606J   1982 May      6.7
+# ℹ 1,810 more rows</code></pre>
 </div>
 </div>
+<p>Rows 1 to 12 are the first series, 1982 Apr to 1983 Mar. Row 13 starts again at 1982 Apr with a new <code>Series ID</code>: <code>slice()</code> counted the 12 rows within each series, not across the whole table.</p>
 <p><code>slice()</code> can be combined with <code>n()</code>, which stands for the number of rows.</p>
 <ul>
 <li>In the examples below, <strong>the parentheses matter</strong>: <code>:</code> binds tighter than <code>-</code>, so <code>1:(n()-12)</code> and <code>1:n()-12</code> give different rows.</li>

@@ -18,7 +18,8 @@ aus_production |> filter(year(Quarter) >= 1995)
 aus_retail |>
   group_by(State, Industry)  |>
   slice(1:12) |> 
-  ungroup() # So that subsequent operations are not performed group-wise
+  ungroup() |> # So that subsequent operations are not performed group-wise
+  print(n = 14) # Show 14 rows: the 12 of the first series and the start of the next
 
 # Extract everything but the last 12 observations of each series
 # (each combination of State, Industry)
