@@ -19,9 +19,9 @@ examples on training and test sets, and the manual recomputation of MAE and RMSE
 
 **R:** `filter()`, `slice()`, `n()`, `accuracy()`
 
-**Homework:** `13_Train_Test` Exercises 1 to 3; the `13_A` manual computation of MAE and RMSE for
-the seasonal naive model on both sets, then two percentage errors by hand and its test MAPE and
-MASE; `13_A` Exercise 1, sections 2 and 3, without question 3.3 (the residual diagnostics in section 1
+**Homework:** `13_Train_Test` Exercises 1 to 3; the `13_A` manual computation of MAE and RMSE,
+repeated for the seasonal naive model on both sets, then the MAE, RMSE, MAPE and MASE of four test
+quarters by hand on paper, as in the exam; `13_A` Exercise 1, sections 2 and 3, without question 3.3 (the residual diagnostics in section 1
 are not part of the homework). Due date in
 the announcements.
 

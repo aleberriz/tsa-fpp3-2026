@@ -625,7 +625,7 @@ beer_fc  |&gt; accuracy(recent_production)     <span class="dim"># .type = Test:
   <aside class="notes">Why the naive and the drift methods tie on the training set: their fitted values differ by one constant, the estimated slope, so their residuals differ by that constant too and the absolute and squared averages barely move. On the test set the drift&#39;s slope carries the forecast away from the seasonal pattern and it loses by a little.<br><br>The training MAPE of 3.3% for the seasonal naive reads as: on average, last year&#39;s same quarter was 3.3% away from this year&#39;s.</aside>
 </section>
 
-<section class="slide" data-section="5" data-title="Switch: by hand">
+<section class="slide" data-section="5" data-title="Switch: from the formulas">
   <div class="inner">
     <a class="nb" href="13_A_PointAccuracy.html#manual" target="_blank" rel="noopener" title="Open the notebook at this section">13_A &rsaquo; Manual computation of MAE and RMSE</a>
     <p class="kicker">Now we compute &nbsp;&middot;&nbsp; drift model, both sets</p>
@@ -653,14 +653,14 @@ all.equal(sqrt(mean(err^2)), RMSE_fable)                      <span class="hl">#
   <div class="inner">
     <a class="nb" href="13_A_PointAccuracy.html#exercise-1" target="_blank" rel="noopener" title="Open the notebook at this section">13_A &rsaquo; Exercise 1</a>
     <p class="kicker">Due date in this session&#39;s announcements</p>
-    <h1 class="sowhat">Homework: three splits, one model by hand, one series judged on both sets.</h1>
+    <h1 class="sowhat">Homework: three splits, one model in R and on paper, one series judged on both sets.</h1>
     <ul class="build">
       <li><b><code>13_Train_Test</code> Exercises 1 to 3.</b> Household wealth, Argentinian exports, takeaway food: training and test sets, row counts checked.</li>
-      <li><b><code>13_A</code>, after the worked example:</b> the <b>seasonal naive</b> model&#39;s MAE and RMSE by hand on both sets, checked with <code>all.equal()</code>; then two percentage errors with a calculator, and the test MAPE and MASE.</li>
+      <li><b><code>13_A</code>, section &ldquo;Manual computation of MAE and RMSE&rdquo;:</b> repeat it for the <b>seasonal naive</b> model on the beer training and test sets, from the formulas in R, checked with <code>all.equal()</code>. Then, <b>by hand on paper</b> with a calculator, as in the exam: the MAE, RMSE, MAPE and MASE of four test quarters, from the table in the homework, with a photo of the page.</li>
       <li><b><code>13_A</code> Exercise 1, sections 2 and 3.</b> The retail series on a training set: residual and forecast metrics, with their units and meaning. The residual diagnostics in section 1 and question 3.3 are not part of the homework.</li>
     </ul>
   </div>
-  <aside class="notes">The interpretation sentences matter as much as the numbers: a MAE without units, or a MAPE with them, is the thing the exercise is designed to catch.<br><br>For the seasonal naive by hand: the first four residuals are NA on quarterly data, and <code>select()</code> on a model name with a space needs backticks.</aside>
+  <aside class="notes">The interpretation sentences matter as much as the numbers: a MAE without units, or a MAPE with them, is the thing the exercise is designed to catch.<br><br>For the seasonal naive in R: the first four residuals are NA on quarterly data, and <code>select()</code> on a model name with a space needs backticks.</aside>
 </section>
 
 <section class="slide" data-section="6" data-title="Next session">
