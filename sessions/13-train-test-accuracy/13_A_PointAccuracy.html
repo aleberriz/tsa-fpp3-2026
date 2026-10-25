@@ -2470,6 +2470,7 @@ window.Quarto = {
 <ol start="3" type="1">
 <li><p>statworx (2019). <em>Was dem MAPE fälschlicherweise vorgeworfen wird: seine wahren Schwächen und bessere Alternativen</em> (What MAPE is wrongly accused of: its true weaknesses and better alternatives), in German. <a href="https://www.statworx.com/content-hub/blog/was-dem-mape-falschlicherweise-vorgeworfen-wird-seine-wahren-schwachen-und-bessere-alternativen/">Link</a></p></li>
 <li><p>Hyndman, R. J., &amp; Koehler, A. B. (2006). Another look at measures of forecast accuracy. International Journal of Forecasting, 22(4), 679–688.</p></li>
+<li><p>Hyndman, R. J. (2014, April 16). Errors on percentage errors. <em>Hyndsight</em> blog. <a href="https://robjhyndman.com/hyndsight/smape/">Link</a></p></li>
 </ol>
 </section>
 <section id="packages" class="level1">
@@ -2652,7 +2653,7 @@ p_{t} = 100 \frac{e_{t}}{y_{t}} = 100 \frac{y_t - \hat{y_t}}{y_t}
 <ul>
 <li><p><strong>Infinite or undefined if</strong> <span class="math inline">\(y_t = 0\)</span>, and enormous near zero.</p></li>
 <li><p><strong>They need a meaningful zero</strong>, one that means none of the quantity, as 0 kilograms or 0 dollars do. Temperature has none: 0 °C is where water freezes, not the absence of heat. The same forecast is a 20% error in Celsius (12 °C against 10 °C) and 7.2% in Fahrenheit (53.6 °F against 50 °F).</p></li>
-<li><p><strong>Asymmetry, a debated point.</strong> fpp3 (reference 1) says percentage errors penalize negative errors, forecasts above the actual value, more heavily. Others, such as reference [3], say this only appears when the actual value changes: with the actual fixed, a miss of 50 either way costs the same. Both rest on correct arithmetic (<a href="#asymmetry">appendix</a>); which matters depends on your use case.</p></li>
+<li><p><strong>Asymmetry, a debated point.</strong> fpp3 (reference 1) says percentage errors penalize negative errors, forecasts above the actual value, more heavily. Others, such as reference [3], say this only appears when the actual value changes: with the actual fixed, a miss of 50 either way costs the same. Both rest on correct arithmetic (<a href="#asymmetry">appendix</a>); which matters depends on your use case, as fpp3’s own author concludes (reference [5]).</p></li>
 </ul></li>
 </ul>
 <section id="mape-mean-absolute-percentage-error" class="level3">
@@ -3164,7 +3165,7 @@ p_{t} = 100 e_{t}/y_{t}
   \frac{|50-100|}{50} \cdot 100 = 100\%
 \]</span></p>
 <p>With the forecast fixed, the negative error costs three times as much. This reading supports fpp3’s warning: we commit to the forecast, and the actual value arrives. More generally, with positive values, a forecast below the actual can never miss by more than 100%, while one above it has no limit, so a model chosen by MAPE can lean toward forecasting too low. Reference [3] answers that errors above 100% from under-forecasting are impossible, not penalized less.</p>
-<p><strong>Which reading fits?</strong> Ask what is fixed in your problem. When you compare forecasts of the same actual value, the MAPE is symmetric. When you commit to a forecast and the outcome is uncertain, over-forecasts can cost more. Either way, the MAPE is computed the same.</p>
+<p><strong>Which reading fits?</strong> Ask what is fixed in your problem. When you compare forecasts of the same actual value, the MAPE is symmetric. When you commit to a forecast and the outcome is uncertain, over-forecasts can cost more. Either way, the MAPE is computed the same. Reference [5], by fpp3’s first author, reviews this literature and concludes that whether symmetry matters “depends entirely on the problem”.</p>
 </section>
 <section id="smape-the-symmetric-mape" class="level2">
 <h2 class="anchored" data-anchor-id="smape-the-symmetric-mape">sMAPE, the “symmetric” MAPE</h2>
