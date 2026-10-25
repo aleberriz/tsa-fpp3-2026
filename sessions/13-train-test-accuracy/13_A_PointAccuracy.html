@@ -2405,24 +2405,11 @@ window.Quarto = {
   <li><a href="#residual-errors-errors-on-the-training-dataset" id="toc-residual-errors-errors-on-the-training-dataset" class="nav-link" data-scroll-target="#residual-errors-errors-on-the-training-dataset">Residual errors: errors on the training dataset</a></li>
   <li><a href="#forecast-errors-errors-on-the-test-dataset" id="toc-forecast-errors-errors-on-the-test-dataset" class="nav-link" data-scroll-target="#forecast-errors-errors-on-the-test-dataset">Forecast errors: errors on the test dataset</a></li>
   </ul></li>
-  <li><a href="#exercise-1" id="toc-exercise-1" class="nav-link" data-scroll-target="#exercise-1">Exercise 1</a></li>
-  <li><a href="#exercise-1-residuals" id="toc-exercise-1-residuals" class="nav-link" data-scroll-target="#exercise-1-residuals">1. Residual diagnostics</a>
+  <li><a href="#exercise-1" id="toc-exercise-1" class="nav-link" data-scroll-target="#exercise-1">Exercise 1</a>
   <ul>
-  <li><a href="#analyze-the-residuals." id="toc-analyze-the-residuals." class="nav-link" data-scroll-target="#analyze-the-residuals.">1.1 Analyze the residuals.</a></li>
-  </ul></li>
-  <li><a href="#exercise-1-residual-metrics" id="toc-exercise-1-residual-metrics" class="nav-link" data-scroll-target="#exercise-1-residual-metrics">2. Residual accuracy metrics</a>
-  <ul>
-  <li><a href="#compute-the-mae-rmse-and-mape-of-the-residuals" id="toc-compute-the-mae-rmse-and-mape-of-the-residuals" class="nav-link" data-scroll-target="#compute-the-mae-rmse-and-mape-of-the-residuals">2.1 Compute the MAE, RMSE and MAPE of the residuals:</a></li>
-  <li><a href="#which-are-the-units-of-the-mae-and-the-rmse" id="toc-which-are-the-units-of-the-mae-and-the-rmse" class="nav-link" data-scroll-target="#which-are-the-units-of-the-mae-and-the-rmse">2.2 Which are the units of the MAE and the RMSE?</a></li>
-  <li><a href="#which-are-the-units-of-the-mape" id="toc-which-are-the-units-of-the-mape" class="nav-link" data-scroll-target="#which-are-the-units-of-the-mape">2.3 Which are the units of the MAPE?</a></li>
-  <li><a href="#give-an-interpretation-of-the-mae-and-the-mape." id="toc-give-an-interpretation-of-the-mae-and-the-mape." class="nav-link" data-scroll-target="#give-an-interpretation-of-the-mae-and-the-mape.">2.4 Give an interpretation of the MAE and the MAPE.</a></li>
-  <li><a href="#to-what-kind-of-forecast-errors-can-we-compare-the-residual-errors" id="toc-to-what-kind-of-forecast-errors-can-we-compare-the-residual-errors" class="nav-link" data-scroll-target="#to-what-kind-of-forecast-errors-can-we-compare-the-residual-errors">2.5 To what kind of forecast errors can we compare the residual errors?</a></li>
-  </ul></li>
-  <li><a href="#exercise-1-forecast-metrics" id="toc-exercise-1-forecast-metrics" class="nav-link" data-scroll-target="#exercise-1-forecast-metrics">3. Forecast accuracy metrics</a>
-  <ul>
-  <li><a href="#compute-the-mae-rmse-and-mape-of-the-forecasts." id="toc-compute-the-mae-rmse-and-mape-of-the-forecasts." class="nav-link" data-scroll-target="#compute-the-mae-rmse-and-mape-of-the-forecasts.">3.1 Compute the MAE, RMSE and MAPE of the forecasts.</a></li>
-  <li><a href="#give-an-interpretation-of-mae-and-the-mape." id="toc-give-an-interpretation-of-mae-and-the-mape." class="nav-link" data-scroll-target="#give-an-interpretation-of-mae-and-the-mape.">3.2 Give an interpretation of MAE and the MAPE.</a></li>
-  <li><a href="#optional-what-are-the-differences-between-forecast-errors-and-residuals" id="toc-optional-what-are-the-differences-between-forecast-errors-and-residuals" class="nav-link" data-scroll-target="#optional-what-are-the-differences-between-forecast-errors-and-residuals">3.3 (Optional) What are the differences between forecast errors and residuals?</a></li>
+  <li><a href="#exercise-1-residuals" id="toc-exercise-1-residuals" class="nav-link" data-scroll-target="#exercise-1-residuals">1. Residual diagnostics (optional)</a></li>
+  <li><a href="#exercise-1-residual-metrics" id="toc-exercise-1-residual-metrics" class="nav-link" data-scroll-target="#exercise-1-residual-metrics">2. Residual accuracy metrics</a></li>
+  <li><a href="#exercise-1-forecast-metrics" id="toc-exercise-1-forecast-metrics" class="nav-link" data-scroll-target="#exercise-1-forecast-metrics">3. Forecast accuracy metrics</a></li>
   </ul></li>
   <li><a href="#appendix" id="toc-appendix" class="nav-link" data-scroll-target="#appendix">Appendix: going further</a>
   <ul>
@@ -3022,42 +3009,24 @@ p_{t} = 100 e_{t}/y_{t}
 <span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="co"># autoplot(retail_fc, retail_series, level = 80, point_forecast = lst(mean, median))</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<section id="exercise-1-residuals" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-1-residuals">1. Residual diagnostics (optional)</h2>
+<p>Optional practice: you diagnosed this model in the residual diagnostics homework (Session 9).</p>
+<p><strong>1.1</strong> Analyze the residuals.</p>
 </section>
-<section id="exercise-1-residuals" class="level1">
-<h1>1. Residual diagnostics</h1>
-<p>This section is optional practice: you diagnosed this model in the residual diagnostics homework (Session 9).</p>
-<section id="analyze-the-residuals." class="level2">
-<h2 class="anchored" data-anchor-id="analyze-the-residuals.">1.1 Analyze the residuals.</h2>
+<section id="exercise-1-residual-metrics" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-1-residual-metrics">2. Residual accuracy metrics</h2>
+<p><strong>2.1</strong> Compute the MAE, RMSE and MAPE of the residuals.</p>
+<p><strong>2.2</strong> What are the units of the MAE and the RMSE?</p>
+<p><strong>2.3</strong> What are the units of the MAPE?</p>
+<p><strong>2.4</strong> Give an interpretation of the MAE and the MAPE.</p>
+<p><strong>2.5</strong> To what kind of forecast errors can we compare the residual errors?</p>
 </section>
-</section>
-<section id="exercise-1-residual-metrics" class="level1">
-<h1>2. Residual accuracy metrics</h1>
-<section id="compute-the-mae-rmse-and-mape-of-the-residuals" class="level2">
-<h2 class="anchored" data-anchor-id="compute-the-mae-rmse-and-mape-of-the-residuals">2.1 Compute the MAE, RMSE and MAPE of the residuals:</h2>
-</section>
-<section id="which-are-the-units-of-the-mae-and-the-rmse" class="level2">
-<h2 class="anchored" data-anchor-id="which-are-the-units-of-the-mae-and-the-rmse">2.2 Which are the units of the MAE and the RMSE?</h2>
-</section>
-<section id="which-are-the-units-of-the-mape" class="level2">
-<h2 class="anchored" data-anchor-id="which-are-the-units-of-the-mape">2.3 Which are the units of the MAPE?</h2>
-</section>
-<section id="give-an-interpretation-of-the-mae-and-the-mape." class="level2">
-<h2 class="anchored" data-anchor-id="give-an-interpretation-of-the-mae-and-the-mape.">2.4 Give an interpretation of the MAE and the MAPE.</h2>
-</section>
-<section id="to-what-kind-of-forecast-errors-can-we-compare-the-residual-errors" class="level2">
-<h2 class="anchored" data-anchor-id="to-what-kind-of-forecast-errors-can-we-compare-the-residual-errors">2.5 To what kind of forecast errors can we compare the residual errors?</h2>
-</section>
-</section>
-<section id="exercise-1-forecast-metrics" class="level1">
-<h1>3. Forecast accuracy metrics</h1>
-<section id="compute-the-mae-rmse-and-mape-of-the-forecasts." class="level2">
-<h2 class="anchored" data-anchor-id="compute-the-mae-rmse-and-mape-of-the-forecasts.">3.1 Compute the MAE, RMSE and MAPE of the forecasts.</h2>
-</section>
-<section id="give-an-interpretation-of-mae-and-the-mape." class="level2">
-<h2 class="anchored" data-anchor-id="give-an-interpretation-of-mae-and-the-mape.">3.2 Give an interpretation of MAE and the MAPE.</h2>
-</section>
-<section id="optional-what-are-the-differences-between-forecast-errors-and-residuals" class="level2">
-<h2 class="anchored" data-anchor-id="optional-what-are-the-differences-between-forecast-errors-and-residuals">3.3 (Optional) What are the differences between forecast errors and residuals?</h2>
+<section id="exercise-1-forecast-metrics" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-1-forecast-metrics">3. Forecast accuracy metrics</h2>
+<p><strong>3.1</strong> Compute the MAE, RMSE and MAPE of the forecasts.</p>
+<p><strong>3.2</strong> Give an interpretation of the MAE and the MAPE.</p>
+<p><strong>3.3</strong> (optional) What are the differences between forecast errors and residuals?</p>
 </section>
 </section>
 <section id="appendix" class="level1">
