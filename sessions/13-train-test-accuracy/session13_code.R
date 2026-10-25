@@ -177,6 +177,7 @@ google_fit <- google_2015 |>
 google_fc <- google_fit |>
   forecast(google_jan_2016)
 
+# bind_rows() stacks the two tsibbles, so the plot shows 2015 and January 2016 together
 google_fc |>
   autoplot(bind_rows(google_2015, google_jan_2016),
     level = NULL) +
