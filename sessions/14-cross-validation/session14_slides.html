@@ -606,7 +606,7 @@ google_2015_fc_cv |&gt; accuracy(google_2015)                             <span 
     </ul>
     <p class="punch step wide">Cross-validation does not tell you the truth about the future. It tells you which model has been least wrong about it, many times over.</p>
   </div>
-  <aside class="notes">Minimizing the cross-validated RMSE picks the model whose forecasts are closest to the mean of the future, following Session 13. For a decision that cares about typical misses rather than large ones, read the MAE column instead.<br><br>Group Assignment 2 ends with exactly this plot for four models on share prices, and the honest answer there is that the naive method is very hard to beat.</aside>
+  <aside class="notes">Minimizing the cross-validated RMSE picks the model whose forecasts are closest to the mean of the future, as in error metrics (Session 13). For a decision that cares about typical misses rather than large ones, read the MAE column instead.<br><br>Once cross-validation has picked the model, refit it on the whole series, the last observations included, before forecasting the real future. The folds were for judging; the final forecast should use all the data, and the most recent most of all.<br><br>Group Assignment 2 has the same kind of plot, the MAE and MAPE against the horizon for three models on a stock index, and the honest answer there is that the naive method is very hard to beat.</aside>
 </section>
 
 <section class="slide" data-section="5" data-title="Homework">

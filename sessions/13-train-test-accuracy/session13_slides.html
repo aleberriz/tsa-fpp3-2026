@@ -479,7 +479,7 @@ body.ov-on #overview{display:block}
     </ul>
     <p class="punch step wide">A good training fit shows that a model can learn from the data, but you need the test set to find out whether what it learned carries over to new observations.</p>
   </div>
-  <aside class="notes">The 20% rule is a rule of thumb, not a law. The three requirements pull against each other: a longer test set judges more reliably, a longer training set estimates more reliably, and the test set has to reach at least as far as you intend to forecast. With a short series something has to give, and Session 14&#39;s cross-validation is the way to get more judging out of the same data.<br><br>Session 18 returns to overfitting with the Holt&ndash;Winters models, which have many parameters: "with four parameters I can fit an elephant".</aside>
+  <aside class="notes">The 20% rule is a rule of thumb, not a law. The three requirements pull against each other: a longer test set judges more reliably, a longer training set estimates more reliably, and the test set has to reach at least as far as you intend to forecast. With a short series something has to give, and Session 14&#39;s cross-validation is the way to get more judging out of the same data.<br><br>Session 18 returns to overfitting with the Holt&ndash;Winters models, which have many parameters: "with four parameters I can fit an elephant".<br><br>The test set judges the model; it does not have to be left out forever. Once the test has chosen the model, refit it on the whole series, test period included, before forecasting the real future: the most recent data is the most relevant, and the final forecast should use it.</aside>
 </section>
 
 <section class="slide" data-section="3" data-title="Switch: two verbs">
