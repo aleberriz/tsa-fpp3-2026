@@ -34,7 +34,8 @@ aus_retail |>
 aus_retail |>
   group_by(State, Industry) |>
   slice(-(1:(n()-12))) |> # We need to enclose (n()-12) in parentheses.
-  ungroup() # So that subsequent operations are not performed group-wise
+  ungroup() |> # So that subsequent operations are not performed group-wise
+  print(n = 14) # Show 14 rows: the last 12 of the first series and the start of the next
 
 # ALTERNATIVE: Extract just the last 12 observations of each series
 # (each combination of State, Industry)

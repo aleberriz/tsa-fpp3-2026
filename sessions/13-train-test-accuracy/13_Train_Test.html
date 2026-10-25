@@ -2406,7 +2406,8 @@ vertical-align: -.125em;
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>aus_retail <span class="sc">|&gt;</span></span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(State, Industry) <span class="sc">|&gt;</span></span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span>(<span class="fu">n</span>()<span class="sc">-</span><span class="dv">12</span>))) <span class="sc">|&gt;</span> <span class="co"># We need to enclose (n()-12) in parentheses.</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="co"># So that subsequent operations are not performed group-wise</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> <span class="co"># So that subsequent operations are not performed group-wise</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="at">n =</span> <span class="dv">14</span>) <span class="co"># Show 14 rows: the last 12 of the first series and the start of the next</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tsibble: 1,824 x 5 [1M]
 # Key:       State, Industry [152]
@@ -2422,9 +2423,14 @@ vertical-align: -.125em;
  8 Australian Capital Territory Cafes, restaurant… A3349849A   2018 Aug     41.7
  9 Australian Capital Territory Cafes, restaurant… A3349849A   2018 Sep     41.4
 10 Australian Capital Territory Cafes, restaurant… A3349849A   2018 Oct     41.7
-# ℹ 1,814 more rows</code></pre>
+11 Australian Capital Territory Cafes, restaurant… A3349849A   2018 Nov     44  
+12 Australian Capital Territory Cafes, restaurant… A3349849A   2018 Dec     40.9
+13 Australian Capital Territory Cafes, restaurant… A3349606J   2018 Jan     54.9
+14 Australian Capital Territory Cafes, restaurant… A3349606J   2018 Feb     59.8
+# ℹ 1,810 more rows</code></pre>
 </div>
 </div>
+<p>Rows 1 to 12 are the last year of the first series, 2018 Jan to 2018 Dec. Row 13 starts again at 2018 Jan with a new <code>Series ID</code>: the next series’ last 12 months.</p>
 </section>
 <section id="slice-example-3" class="level4">
 <h4 class="anchored" data-anchor-id="slice-example-3">Slice example 3</h4>
