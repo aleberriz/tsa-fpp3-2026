@@ -2307,7 +2307,7 @@ vertical-align: -.125em;
 <h3 class="anchored" data-anchor-id="filter"><code>filter()</code></h3>
 <p><code>filter()</code> keeps the rows of a time series that meet a condition.</p>
 <ul>
-<li><strong>Convert the time index before comparing</strong>: <code>year(Quarter) &gt;= 1995</code>, not <code>Quarter &gt;= 1995</code>. Here the <code>yearquarter</code> index becomes a <code>year</code> before it is compared with 1995.</li>
+<li><strong>Compare like with like.</strong> Either convert the index, <code>year(Quarter) &gt;= 1995</code>, as in the example below, or convert the value, <code>Quarter &gt;= yearquarter(&quot;1995 Q1&quot;)</code>; both keep the same 62 rows. Comparing the <code>yearquarter</code> index with a plain number or string, <code>Quarter &gt;= 1995</code> or <code>Quarter &gt;= &quot;1995 Q1&quot;</code>, stops with an error.</li>
 </ul>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Data from 1995 onwards</span></span>

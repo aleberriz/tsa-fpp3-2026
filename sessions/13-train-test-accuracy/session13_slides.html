@@ -497,7 +497,7 @@ aus_retail |&gt; group_by(State, Industry) |&gt; slice(-(1:(n() - 12))) |&gt; un
 <span class="dim"># the last 20 rows: n() - 19:0 runs from n() - 19 up to n()</span>
 aus_production |&gt; slice(n() - 19:0)</div>
     <ul class="build">
-      <li class="step"><b><code>filter()</code> by condition, <code>slice()</code> by position.</b> Convert the index before comparing: <code>year(Quarter) &gt;= 1995</code>, not <code>Quarter &gt;= 1995</code>.</li>
+      <li class="step"><b><code>filter()</code> by condition, <code>slice()</code> by position.</b> Compare like with like: <code>year(Quarter) &gt;= 1995</code> or <code>Quarter &gt;= yearquarter("1995 Q1")</code>. A plain <code>1995</code> or <code>"1995 Q1"</code> stops with an error.</li>
       <li class="step"><b>The parentheses are the trap.</b> <code>1:(n() - 12)</code> is the first <code>n &minus; 12</code> rows. <code>1:n() - 12</code> is something else, silently, because <code>:</code> binds tighter than <code>&minus;</code>.</li>
       <li class="step"><b>Many series at once:</b> <code>group_by()</code> the keys before <code>slice()</code>, and <code>ungroup()</code> after, or the split happens across all series together.</li>
     </ul>
