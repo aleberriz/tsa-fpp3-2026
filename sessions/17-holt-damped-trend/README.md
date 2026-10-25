@@ -22,7 +22,8 @@ with `components()` and the fitted values rebuilt from them.
 `trend("Ad", phi_range = c(0.8, 0.95))`, `components()`, `augment()`
 
 **Homework:** the `17_B` workbook (Holt by hand for Australian population), plus `17_A` Exercise 1
-(internet usage: SES, Holt and damped Holt, the residuals compared, the forecasts plotted) and one
+(internet usage: SES, Holt and damped Holt, the residuals compared with a Ljung-Box test, the
+forecasts plotted) and one
 sentence on the damping, then one damped forecast at h = 2 by hand. Due date in the announcements.
 
 **Outcome:** Student fits Holt and damped Holt and reads alpha, beta* and phi.
