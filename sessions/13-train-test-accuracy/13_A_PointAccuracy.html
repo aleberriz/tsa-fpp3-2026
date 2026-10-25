@@ -2665,7 +2665,7 @@ Q = \frac{1}{T-m}\sum_{t=m+1}^{T}|y_t - y_{t-m}|
 <p><strong><code>accuracy()</code> picks the benchmark from the series’ seasonal period</strong>: the seasonal naive (lag <span class="math inline">\(m\)</span>) for seasonal data, the naive (lag 1) otherwise. So, unlike the MAE and RMSE, the formula of the MASE and RMSSE depends on the data. On quarterly beer (<span class="math inline">\(m = 4\)</span>) the scale is the seasonal naive’s training MAE, so that model’s training MASE and RMSSE are exactly 1. On Google’s trading days, which have no seasonal period, the scale is the naive’s, so the naive model scores exactly 1 instead.</p>
 <p>A <strong>scaled error</strong>, <span class="math inline">\(q_j = e_j / Q\)</span>, has no units. The MASE averages their absolute values:</p>
 <p><span class="math display">\[
-\text{MASE} = \text{mean}(|q_j|)
+\text{MASE} = \text{mean}(|q_j|) = \frac{\text{mean}(|e_j|)}{Q} = \frac{\text{MAE of the model}}{\text{MAE of the naive method on the training data}}
 \]</span></p>
 <p>The <strong>RMSSE</strong> does the same for the RMSE, dividing the squared errors by the mean <em>squared</em> naive difference on the training data:</p>
 <p><span class="math display">\[

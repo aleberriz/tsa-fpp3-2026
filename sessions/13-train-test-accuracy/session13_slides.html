@@ -566,18 +566,19 @@ relative error    |y &minus; y&#770;| / |y|    <span class="dim">no units: a fra
     <a class="nb" href="13_A_PointAccuracy.html#scaled" target="_blank" rel="noopener" title="Open the notebook at this section">13_A &rsaquo; Scaled errors</a>
     <p class="kicker">Scaled errors &nbsp;&middot;&nbsp; no units, no zero problem</p>
     <h1 class="sowhat wide">MASE measures every error against the naive method&#39;s typical miss on the training set.</h1>
-    <div class="console">Q = mean |y<sub>t</sub> &minus; y<sub>t&minus;1</sub>|   on the training set     <span class="dim">(y<sub>t&minus;m</sub> for seasonal data)</span>
-q<sub>j</sub> = e<sub>j</sub> / Q                                         <span class="dim">a scaled error: no units</span>
+    <div class="console">Q    = mean |y<sub>t</sub> &minus; y<sub>t&minus;m</sub>| on the training set   <span class="dim">the naive method&#39;s training MAE</span>
 
-MASE = mean( |q<sub>j</sub>| )      RMSSE = sqrt( mean( q<sub>j</sub>&sup2; ) )</div>
+MASE = mean |e<sub>j</sub>| / Q  =  <span class="hl">MAE of the model</span>  &divide;  <span class="hl">MAE of the naive method on the training set</span>
+
+RMSSE = sqrt( mean e<sub>j</sub>&sup2;  &divide;  mean (y<sub>t</sub> &minus; y<sub>t&minus;m</sub>)&sup2; )   <span class="dim">the same idea for the RMSE</span></div>
     <ul class="build">
-      <li class="step"><b>The scale, Q, is the naive method&#39;s average miss on the training set</b>: how far the series typically moves from one observation to the next (or from one season to the next).</li>
+      <li class="step"><b>The scale, Q, is the naive method&#39;s average miss on the training set</b>: how far the series typically moves from one observation to the next (<code>m = 1</code>), or from one season to the next (<code>m</code> = the season length).</li>
       <li class="step"><b>MASE below 1: smaller errors, on average, than the one-step naive forecast made on the training data.</b> It has no units, and it works on series with zeros.</li>
-      <li class="step"><b>The benchmark is the training set, not the test set.</b> On beer, the seasonal naive model scores exactly 1 on the training set, because its own errors are the scale, and 0.94 on the test set. It did not beat itself; its test errors were simply smaller than its training ones.</li>
+      <li class="step"><b>The benchmark is the training set, not the test set.</b> On beer, the seasonal naive model scores exactly 1 on the training set, because its MAE there is the denominator, and 0.94 on the test set. It did not beat itself; its test errors were simply smaller than its training ones.</li>
     </ul>
-    <p class="punch step wide">To ask whether a model beats the naive forecast, compare its MASE with the naive row of the same table. Every row shares the same scale, so the lower MASE is the lower MAE.</p>
+    <p class="punch step wide">To ask whether a model beats the naive forecast, compare its MASE with the naive row of the same table. Every row is divided by the same Q, so ranking models by MASE gives the same order as ranking them by MAE.</p>
   </div>
-  <aside class="notes">MASE and RMSSE are the scaled versions of MAE and RMSE; fpp3 5.8 is the reference. <code>accuracy()</code> returns both.<br><br>The scale Q is always computed on the training data, even when the metric is for the test set. That is what makes MASE comparable across series and across models fitted to the same series.<br><br>A common misreading is "a test MASE above 1 means the naive forecast would have done better on the test set". It does not follow: the naive method&#39;s own multi-step test errors are usually larger than its one-step training errors, so its test MASE is usually above 1 too. In the notebook&#39;s Google example the naive model wins the test set with a MASE of 5.67. The fair comparison is row against row.</aside>
+  <aside class="notes">MASE and RMSSE are the scaled versions of MAE and RMSE; fpp3 5.8 is the reference. fpp3 writes the MASE as the mean of scaled errors, q<sub>j</sub> = e<sub>j</sub> / Q; dividing each error by Q and then averaging is the same as averaging and then dividing once, which gives the ratio of two MAEs on the slide. <code>accuracy()</code> returns both.<br><br>The scale Q is always computed on the training data, even when the metric is for the test set. That is what makes MASE comparable across series and across models fitted to the same series.<br><br>A common misreading is "a test MASE above 1 means the naive forecast would have done better on the test set". It does not follow: the naive method&#39;s own multi-step test errors are usually larger than its one-step training errors, so its test MASE is usually above 1 too. In the notebook&#39;s Google example the naive model wins the test set with a MASE of 5.67. The fair comparison is row against row.</aside>
 </section>
 
 <section class="slide" data-section="4" data-title="Which metric, when">
