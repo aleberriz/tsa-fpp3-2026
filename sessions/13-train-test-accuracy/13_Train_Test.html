@@ -2364,6 +2364,7 @@ vertical-align: -.125em;
 </div>
 </div>
 <p>Rows 1 to 12 are the first series, 1982 Apr to 1983 Mar. Row 13 starts again at 1982 Apr with a new <code>Series ID</code>: <code>slice()</code> counted the 12 rows within each series, not across the whole table.</p>
+<p><strong>Why <code>ungroup()</code>.</strong> Without it the rows printed would be the same; the only visible change is a <code># Groups: State, Industry [152]</code> line in the header. The difference shows in the next step: a <code>mutate()</code> or <code>summarise()</code> would still run once per series, so <code>summarise(total = sum(Turnover))</code> would return 152 totals instead of one. <code>group_by()</code> and <code>ungroup()</code> are from the R primer you worked through after the course introduction (Session 1): see <a href="../../self-study/00-r-basics/00_B_1_tibbles_dplyr_fundamentals.html#ungroup-to-remove-the-partitions."><code>ungroup()</code> to remove the partitions</a> in <code>00_B_1</code>, and <a href="../../self-study/00-r-basics/00_B_2_group_by_examples.html#why-is-it-important-to-use-ungroup">Why is it important to use <code>ungroup()</code>?</a> in <code>00_B_2</code>.</p>
 <p><code>slice()</code> can be combined with <code>n()</code>, which stands for the number of rows.</p>
 <ul>
 <li>In the examples below, <strong>the parentheses matter</strong>: <code>:</code> binds tighter than <code>-</code>, so <code>1:(n()-12)</code> and <code>1:n()-12</code> give different rows.</li>
