@@ -537,7 +537,7 @@ relative error    |y &minus; y&#770;| / |y|    <span class="dim">no units: a fra
       <li class="step"><b>They aim at different targets.</b> A method that minimizes the MAE forecasts the median; one that minimizes the RMSE forecasts the mean. The next slide shows why, on five numbers.</li>
       <li class="step"><b>Neither compares across series.</b> 14 megalitres of beer and 14 dollars of retail sales are not the same miss.</li>
     </ul>
-    <p class="punch step wide">Use MAE when you want a number a manager can read. Use RMSE when a big miss hurts more than several small ones.</p>
+    <p class="punch step wide">Use MAE when every unit of miss costs the same. Use RMSE when one big miss costs more than several small ones, like the stockout that empties a shelf for a week.</p>
   </div>
   <aside class="notes">On the training set these are computed from the residuals, with the NAs at the start dropped (a seasonal naive has four of them on quarterly data). On the test set, from the forecast errors. The formulas are the same; only the vector of errors changes.</aside>
 </section>
