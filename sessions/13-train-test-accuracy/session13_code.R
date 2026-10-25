@@ -48,17 +48,17 @@ aus_retail |>
 
 200 - 19:0
 
-# Extract the latest 20 observations (20 quarters -> 5 years)
+# Extract the latest 20 observations (20 quarters -> 5 years).
+# aus_production has 218 rows, so n()-19:0 is 218-19:0: rows 199 to 218.
 aus_production |>
-  slice(n()-19:0) # n()-19:0 is equivalent to 218-19:0 (218 is the number of
-                  # rows in aus_production).
+  slice(n()-19:0)
 
 # 13_A_PointAccuracy ====
 
 # Packages ----
 library(fpp3)
-library(patchwork) # Necessary to produce combinations of graphs
-                   # E.g. when we do p1 + p2 (with p1 an p2 being ggplot objects)
+# patchwork combines graphs, e.g. p1 + p2 with p1 and p2 ggplot objects
+library(patchwork)
 
 # Metrics to summarize errors ----
 

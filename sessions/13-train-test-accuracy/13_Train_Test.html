@@ -2480,9 +2480,10 @@ vertical-align: -.125em;
 </div>
 <p>Inside <code>slice()</code>, <code>n()</code> is the number of rows, so <code>n() - 19:0</code> gives the last 20 rows:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract the latest 20 observations (20 quarters -&gt; 5 years)</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>aus_production <span class="sc">|&gt;</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="fu">n</span>()<span class="sc">-</span><span class="dv">19</span><span class="sc">:</span><span class="dv">0</span>) <span class="co"># n()-19:0 is equivalent to 218-19:0 (218 is the number of</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract the latest 20 observations (20 quarters -&gt; 5 years).</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># aus_production has 218 rows, so n()-19:0 is 218-19:0: rows 199 to 218.</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>aus_production <span class="sc">|&gt;</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="fu">n</span>()<span class="sc">-</span><span class="dv">19</span><span class="sc">:</span><span class="dv">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tsibble: 20 x 7 [1Q]
    Quarter  Beer Tobacco Bricks Cement Electricity   Gas
@@ -2508,7 +2509,6 @@ vertical-align: -.125em;
 19 2010 Q1   414      NA     NA   1904       58309   205
 20 2010 Q2   374      NA     NA   2401       58041   236</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>                  <span class="co"># rows in aus_production).</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 </section>
