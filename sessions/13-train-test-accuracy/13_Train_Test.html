@@ -2307,7 +2307,7 @@ vertical-align: -.125em;
 <h3 class="anchored" data-anchor-id="filter"><code>filter()</code></h3>
 <p><code>filter()</code> keeps the rows of a time series that meet a condition.</p>
 <ul>
-<li><strong>Convert the time index before comparing</strong>: <code>year(Quarter) &gt;= 1995</code>, not <code>Quarter &gt;= 1995</code>. Here the <code>yearquarter</code> index becomes a <code>year</code> before it is compared with 1995.</li>
+<li><strong>Compare like with like.</strong> Either convert the index, <code>year(Quarter) &gt;= 1995</code>, as in the example below, or convert the value, <code>Quarter &gt;= yearquarter(&quot;1995 Q1&quot;)</code>; both keep the same 62 rows. Comparing the <code>yearquarter</code> index with a plain number or string, <code>Quarter &gt;= 1995</code> or <code>Quarter &gt;= &quot;1995 Q1&quot;</code>, stops with an error.</li>
 </ul>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Data from 1995 onwards</span></span>
@@ -2339,7 +2339,8 @@ vertical-align: -.125em;
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>aus_retail <span class="sc">|&gt;</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(State, Industry)  <span class="sc">|&gt;</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="co"># So that subsequent operations are not performed group-wise</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> <span class="co"># So that subsequent operations are not performed group-wise</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="at">n =</span> <span class="dv">14</span>) <span class="co"># Show 14 rows: the 12 of the first series and the start of the next</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tsibble: 1,824 x 5 [1M]
 # Key:       State, Industry [152]
@@ -2355,9 +2356,15 @@ vertical-align: -.125em;
  8 Australian Capital Territory Cafes, restaurant… A3349849A   1982 Nov      5.4
  9 Australian Capital Territory Cafes, restaurant… A3349849A   1982 Dec      6.9
 10 Australian Capital Territory Cafes, restaurant… A3349849A   1983 Jan      3.8
-# ℹ 1,814 more rows</code></pre>
+11 Australian Capital Territory Cafes, restaurant… A3349849A   1983 Feb      4.2
+12 Australian Capital Territory Cafes, restaurant… A3349849A   1983 Mar      4  
+13 Australian Capital Territory Cafes, restaurant… A3349606J   1982 Apr      7.6
+14 Australian Capital Territory Cafes, restaurant… A3349606J   1982 May      6.7
+# ℹ 1,810 more rows</code></pre>
 </div>
 </div>
+<p>Rows 1 to 12 are the first series, 1982 Apr to 1983 Mar. Row 13 starts again at 1982 Apr with a new <code>Series ID</code>: <code>slice()</code> counted the 12 rows within each series, not across the whole table.</p>
+<p><strong>Why <code>ungroup()</code>.</strong> Without it the rows printed would be the same; the only visible change is a <code># Groups: State, Industry [152]</code> line in the header. The difference shows in the next step: a <code>mutate()</code> or <code>summarise()</code> would still run once per series, so <code>summarise(total = sum(Turnover))</code> would return 152 totals instead of one. <code>group_by()</code> and <code>ungroup()</code> are from the R primer you worked through after the course introduction (Session 1): see <a href="../../self-study/00-r-basics/00_B_1_tibbles_dplyr_fundamentals.html#ungroup-to-remove-the-partitions."><code>ungroup()</code> to remove the partitions</a> in <code>00_B_1</code>, and <a href="../../self-study/00-r-basics/00_B_2_group_by_examples.html#why-is-it-important-to-use-ungroup">Why is it important to use <code>ungroup()</code>?</a> in <code>00_B_2</code>.</p>
 <p><code>slice()</code> can be combined with <code>n()</code>, which stands for the number of rows.</p>
 <ul>
 <li>In the examples below, <strong>the parentheses matter</strong>: <code>:</code> binds tighter than <code>-</code>, so <code>1:(n()-12)</code> and <code>1:n()-12</code> give different rows.</li>
@@ -2400,7 +2407,8 @@ vertical-align: -.125em;
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>aus_retail <span class="sc">|&gt;</span></span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(State, Industry) <span class="sc">|&gt;</span></span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span>(<span class="fu">n</span>()<span class="sc">-</span><span class="dv">12</span>))) <span class="sc">|&gt;</span> <span class="co"># We need to enclose (n()-12) in parentheses.</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="co"># So that subsequent operations are not performed group-wise</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> <span class="co"># So that subsequent operations are not performed group-wise</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="at">n =</span> <span class="dv">14</span>) <span class="co"># Show 14 rows: the last 12 of the first series and the start of the next</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tsibble: 1,824 x 5 [1M]
 # Key:       State, Industry [152]
@@ -2416,9 +2424,14 @@ vertical-align: -.125em;
  8 Australian Capital Territory Cafes, restaurant… A3349849A   2018 Aug     41.7
  9 Australian Capital Territory Cafes, restaurant… A3349849A   2018 Sep     41.4
 10 Australian Capital Territory Cafes, restaurant… A3349849A   2018 Oct     41.7
-# ℹ 1,814 more rows</code></pre>
+11 Australian Capital Territory Cafes, restaurant… A3349849A   2018 Nov     44  
+12 Australian Capital Territory Cafes, restaurant… A3349849A   2018 Dec     40.9
+13 Australian Capital Territory Cafes, restaurant… A3349606J   2018 Jan     54.9
+14 Australian Capital Territory Cafes, restaurant… A3349606J   2018 Feb     59.8
+# ℹ 1,810 more rows</code></pre>
 </div>
 </div>
+<p>Rows 1 to 12 are the last year of the first series, 2018 Jan to 2018 Dec. Row 13 starts again at 2018 Jan with a new <code>Series ID</code>: the next series’ last 12 months.</p>
 </section>
 <section id="slice-example-3" class="level4">
 <h4 class="anchored" data-anchor-id="slice-example-3">Slice example 3</h4>
@@ -2467,9 +2480,10 @@ vertical-align: -.125em;
 </div>
 <p>Inside <code>slice()</code>, <code>n()</code> is the number of rows, so <code>n() - 19:0</code> gives the last 20 rows:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract the latest 20 observations (20 quarters -&gt; 5 years)</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>aus_production <span class="sc">|&gt;</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="fu">n</span>()<span class="sc">-</span><span class="dv">19</span><span class="sc">:</span><span class="dv">0</span>) <span class="co"># n()-19:0 is equivalent to 218-19:0 (218 is the number of</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract the latest 20 observations (20 quarters -&gt; 5 years).</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># aus_production has 218 rows, so n()-19:0 is 218-19:0: rows 199 to 218.</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>aus_production <span class="sc">|&gt;</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="fu">n</span>()<span class="sc">-</span><span class="dv">19</span><span class="sc">:</span><span class="dv">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tsibble: 20 x 7 [1Q]
    Quarter  Beer Tobacco Bricks Cement Electricity   Gas
@@ -2495,7 +2509,6 @@ vertical-align: -.125em;
 19 2010 Q1   414      NA     NA   1904       58309   205
 20 2010 Q2   374      NA     NA   2401       58041   236</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>                  <span class="co"># rows in aus_production).</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 </section>

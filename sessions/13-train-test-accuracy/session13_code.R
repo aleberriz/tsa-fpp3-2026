@@ -18,7 +18,8 @@ aus_production |> filter(year(Quarter) >= 1995)
 aus_retail |>
   group_by(State, Industry)  |>
   slice(1:12) |> 
-  ungroup() # So that subsequent operations are not performed group-wise
+  ungroup() |> # So that subsequent operations are not performed group-wise
+  print(n = 14) # Show 14 rows: the 12 of the first series and the start of the next
 
 # Extract everything but the last 12 observations of each series
 # (each combination of State, Industry)
@@ -33,7 +34,8 @@ aus_retail |>
 aus_retail |>
   group_by(State, Industry) |>
   slice(-(1:(n()-12))) |> # We need to enclose (n()-12) in parentheses.
-  ungroup() # So that subsequent operations are not performed group-wise
+  ungroup() |> # So that subsequent operations are not performed group-wise
+  print(n = 14) # Show 14 rows: the last 12 of the first series and the start of the next
 
 # ALTERNATIVE: Extract just the last 12 observations of each series
 # (each combination of State, Industry)
@@ -46,34 +48,17 @@ aus_retail |>
 
 200 - 19:0
 
-# Extract the latest 20 observations (20 quarters -> 5 years)
+# Extract the latest 20 observations (20 quarters -> 5 years).
+# aus_production has 218 rows, so n()-19:0 is 218-19:0: rows 199 to 218.
 aus_production |>
-  slice(n()-19:0) # n()-19:0 is equivalent to 218-19:0 (218 is the number of
-                  # rows in aus_production).
+  slice(n()-19:0)
 
 # 13_A_PointAccuracy ====
 
 # Packages ----
 library(fpp3)
-library(patchwork) # Necessary to produce combinations of graphs
-                   # E.g. when we do p1 + p2 (with p1 an p2 being ggplot objects)
-
-# Metrics to summarize errors ----
-
-## Scale-dependent error metrics ----
-
-### Why the median and why the mean ----
-y <- c(1, 2, 3, 4, 100)
-median(y)
-mean(y)
-
-# MAE and RMSE of the forecast c = median(y)
-mean(abs(y - median(y)))
-sqrt(mean((y - median(y))^2))
-
-# MAE and RMSE of the forecast c = mean(y)
-mean(abs(y - mean(y)))
-sqrt(mean((y - mean(y))^2))
+# patchwork combines graphs, e.g. p1 + p2 with p1 and p2 ggplot objects
+library(patchwork)
 
 # Example 1 of error metrics ----
 recent_production <- aus_production |>
@@ -192,6 +177,7 @@ google_fit <- google_2015 |>
 google_fc <- google_fit |>
   forecast(google_jan_2016)
 
+# bind_rows() stacks the two tsibbles, so the plot shows 2015 and January 2016 together
 google_fc |>
   autoplot(bind_rows(google_2015, google_jan_2016),
     level = NULL) +
@@ -244,3 +230,18 @@ retail_fc <-
   forecast(h = 36, point_forecast = lst(mean, median))
 
 # autoplot(retail_fc, retail_series, level = 80, point_forecast = lst(mean, median))
+
+# Appendix: going further ----
+
+## Why the median and why the mean ----
+y <- c(1, 2, 3, 4, 100)
+median(y)
+mean(y)
+
+# MAE and RMSE of the forecast c = median(y)
+mean(abs(y - median(y)))
+sqrt(mean((y - median(y))^2))
+
+# MAE and RMSE of the forecast c = mean(y)
+mean(abs(y - mean(y)))
+sqrt(mean((y - mean(y))^2))
