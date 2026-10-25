@@ -2387,6 +2387,7 @@ window.Quarto = {
   <ul>
   <li><a href="#interpretation-of-mae-and-rmse" id="toc-interpretation-of-mae-and-rmse" class="nav-link" data-scroll-target="#interpretation-of-mae-and-rmse">Interpretation of MAE and RMSE</a></li>
   <li><a href="#interpretation-of-mape" id="toc-interpretation-of-mape" class="nav-link" data-scroll-target="#interpretation-of-mape">Interpretation of MAPE</a></li>
+  <li><a href="#interpretation-of-mase" id="toc-interpretation-of-mase" class="nav-link" data-scroll-target="#interpretation-of-mase">Interpretation of MASE</a></li>
   </ul></li>
   <li><a href="#test-errors" id="toc-test-errors" class="nav-link" data-scroll-target="#test-errors">Forecast errors: errors on the test dataset</a>
   <ul>
@@ -2780,6 +2781,10 @@ p_{t} = 100 e_{t}/y_{t}
 \]</span></p>
 <p>The seasonal naive model’s MAPE of 3.31 means its fitted values are off by 3.31% of the actual value, on average.</p>
 </section>
+<section id="interpretation-of-mase" class="level3">
+<h3 class="anchored" data-anchor-id="interpretation-of-mase">Interpretation of MASE</h3>
+<p>See <a href="#scaled">how to read the MASE</a>, and <a href="#mase-reading">the appendix</a> for its reading on the test set.</p>
+</section>
 </section>
 <section id="test-errors" class="level2">
 <h2 class="anchored" data-anchor-id="test-errors">Forecast errors: errors on the test dataset</h2>
@@ -2888,7 +2893,7 @@ p_{t} = 100 e_{t}/y_{t}
 </section>
 <section id="example-2" class="level1">
 <h1>Example 2 of error metrics with non-seasonal data</h1>
-<p>The same metrics on non-seasonal data: Google stock, with 2015 as the training set and January 2016 as the test set, using <code>fable</code> only.</p>
+<p>The same metrics on non-seasonal data: Google stock, with 2015 as the training set and January 2016 as the test set, using <code>fable</code> only. There is no seasonal naive model here: daily stock prices have no seasonal pattern to copy, and with a trading-day index <code>SNAIVE()</code> has no season to work with.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Data filtering</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>google_stock <span class="ot">&lt;-</span> gafa_stock <span class="sc">|&gt;</span></span>
