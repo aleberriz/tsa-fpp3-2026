@@ -18,7 +18,9 @@ Google example.
 **R:** `stretch_tsibble()`, `group_by()` + `mutate(h = row_number())` + `as_fable()`, `accuracy(..., by = ...)`
 
 **Homework:** the notebook's cross-validation exercise on beer production with the four benchmark
-methods, plus two sentences. Due date in the announcements.
+methods; a small cross-validation by hand on paper, as in the exam: the one-step naive and seasonal
+naive forecasts on the last eight quarters, with their MAE and RMSE, checked in R; and two
+sentences. Due date in the announcements.
 
 **Outcome:** Student runs a time series cross-validation and compares models by forecast horizon.
 
