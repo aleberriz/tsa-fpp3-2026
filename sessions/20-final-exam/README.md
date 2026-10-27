@@ -1,6 +1,6 @@
 # Session 20 — Final exam
 
-**Date:** Monday, 14 December 2026, 9:00–10:20 — IE Tower, room T-05.02
+**Date:** Monday, 14 December 2026, 9:00–10:20 — IE Tower, room T-14.03
 
 **Coverage:** the whole course, S1–S19.
 
