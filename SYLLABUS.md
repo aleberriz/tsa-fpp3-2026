@@ -277,7 +277,7 @@ for the stochastic-process framing.
 
 **Reading:** fpp3 5.8
 
-### Session 14 — Train-test split / time series cross-validation
+### Session 14 — Train/test split / time series cross-validation
 
 - Why k-fold cross-validation is invalid for time series
 - Visualizing the expanding-window splits
