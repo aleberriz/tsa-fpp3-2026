@@ -87,7 +87,7 @@ peaks at multiples of the seasonal period. **White noise** has every bar inside 
 ±1.96/√T, except about one in twenty by chance.
 
 Seasonal patterns have a fixed, known period; cycles have a variable length, usually at least two
-years. Remember that `lag_max` counts in units of the index.
+years. `lag_max` counts in units of the index.
 
 ## 3. Decompose: trend, seasonal component, remainder
 
@@ -168,8 +168,8 @@ A small p-value means structure is left in the residuals. Use `lag = 10` for non
 `2m` for seasonal data with period m, but no more than T/5. The full summary is
 [`09_A`](../09-residual-diagnostics/09_A_ResidualsDiagnostics_Summary.md).
 
-**Watch out for:** reading each ACF bar as its own test. With many bars, some cross the bounds by
-chance, which is why the Ljung–Box test looks at all of them together.
+**Watch out for:** reading each ACF bar as its own test. With 20 bars, about one crosses the bounds
+by chance, which is why the Ljung–Box test looks at all of them together.
 
 ## 7. Forecast, with prediction intervals
 
@@ -225,7 +225,7 @@ fc |> accuracy(data)                          # averaged over all horizons
 ```
 
 **Watch out for:** residuals are errors on the training data, forecast errors on the test data,
-and only the second judge a forecast. The k-fold cross-validation of other courses shuffles the
+and only the second judges a forecast. The k-fold cross-validation of other courses shuffles the
 data, so the model is trained on the future: **no shuffling, ever.** The last training sets
 forecast past the end of the data, so `accuracy()` warns that the future dataset is incomplete;
 the warning does not affect the result.
