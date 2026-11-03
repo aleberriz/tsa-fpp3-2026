@@ -615,13 +615,13 @@ google_2015_fc_cv |&gt; accuracy(google_2015)                             <span 
   <div class="inner">
     <a class="nb" href="14_A_TS_CrossValidation.html#exercise" target="_blank" rel="noopener" title="Open the notebook at this section">14_A &rsaquo; Exercise: cross-validation</a>
     <p class="kicker">Due date in this session&#39;s announcements</p>
-    <h1 class="sowhat">Homework: the four steps on beer, a small cross-validation by hand, and two sentences.</h1>
+    <h1 class="sowhat">Homework: the beer series, in R and by hand.</h1>
     <ul class="build">
-      <li><b><code>14_A</code>, the exercise at the end:</b> beer production from 1992, the four benchmark methods, forecasts up to <code>h = 4</code>. Steps 1 to 4 as in the Google stock example, with both summaries: by model and horizon, and averaged over horizons. Plot RMSE against <code>h</code>, and compare naive and seasonal naive at <code>h = 4</code>. Choose <code>.init</code> yourself and say why it is large enough.</li>
-      <li><b>By hand, on paper, as in the exam:</b> on the last eight quarters, the one-step naive and seasonal naive forecasts from every training set, and their cross-validated MAE and RMSE. Then check them in R.</li>
-      <li><b>Two sentences:</b> which model you would use to forecast the next four quarters, and which table you read to decide; and why the k-fold cross-validation of other courses would be wrong here.</li>
+      <li><b>In R, the exercise at the end of <code>14_A</code>:</b> the four steps on beer production, with the four benchmark methods and forecasts up to <code>h = 4</code>.</li>
+      <li><b>By hand, on paper:</b> a small cross-validation of the naive and seasonal naive methods, checked in R.</li>
+      <li><b>Two sentences:</b> which model you would use for the next four quarters, and why k-fold would be wrong here.</li>
     </ul>
-    <p class="small">Group Assignment 2, released in Session 17, runs this exact workflow on share prices, so this homework is good practice for it.</p>
+    <p class="small">The full instructions are on Blackboard, under Assignments. Group Assignment 2, released in Session 17, runs this exact workflow on share prices.</p>
   </div>
   <aside class="notes">The two places the code goes wrong: the horizon label computed outside <code>group_by(.id, .model)</code>, and <code>as_fable()</code> left off the end. Both are on today&#39;s slide 8.<br><br>The seasonal naive model needs at least one full year in the smallest training set to have anything to copy; two years is comfortable.</aside>
 </section>
