@@ -590,7 +590,7 @@ google_2015_fc_cv |&gt; accuracy(google_2015)                             <span 
     </ul>
     <p class="punch step wide">A warning will say the future dataset is incomplete. It means the last few splits forecast past the end of the data; those forecasts are simply dropped.</p>
   </div>
-  <aside class="notes">The warning in full: "The future dataset is incomplete, incomplete out-of-sample data will be treated as missing". The last seven training sets end within eight days of the end of the series, so some of their eight-step forecasts have no observation to be compared with. <code>accuracy()</code> skips those; the averages use fewer errors at long horizons than at short ones.</aside>
+  <aside class="notes">The warning in full: "The future dataset is incomplete, incomplete out-of-sample data will be treated as missing". The last eight training sets, 226 to 233, end within eight days of the end of the series, so some of their eight-step forecasts have no observation to be compared with: 36 per model. <code>accuracy()</code> skips those; the averages use fewer errors at long horizons than at short ones.</aside>
 </section>
 
 <section class="slide" data-section="4" data-title="Reading the result">
