@@ -15,8 +15,8 @@ what does not.
   rendered notebooks go through every slide's idea in more detail, and office hours are open for
   concrete questions.
 - **A mock exam.** There will be no mock exam. Instead, before the final, you will get a **practice
-  set for the calculation questions**, built from the homework you already have: a list of things
-  to compute by hand on the homework's own datasets, each of which you can check against R. For
+  set for the calculation questions**, built from the homework you already have: a list of hand
+  calculations on the homework's own datasets, each of which you can check against R. For
   the concept questions, the rendered notebooks are the material: everything the final asks about
   is in them.
 - **More practice by hand, less R.** From now on, every homework has a **compulsory part by hand**,
@@ -33,7 +33,7 @@ what does not.
 
 One result worth correcting: only 2 of 26 got the Box–Cox question right. A transformation evens
 out the seasonal swings only when their size follows the level of the series. If the level is
-steady and the swings grow and shrink for some other reason, no value of lambda can fix them.
+steady and the swings grow and shrink for some other reason, no value of λ can fix them.
 
 ## Why the exam questions are new
 
@@ -55,8 +55,8 @@ steady and the swings grow and shrink for some other reason, no value of lambda 
 
 - **Practice while the lesson is fresh.** A method you apply within a few days of the session
   sticks; one you first try weeks later has to be learned again.
-- **The final cannot be crammed.** It covers the whole course, far more than one evening before the
-  exam can hold.
+- **The final cannot be crammed.** It covers the whole course, more than a single evening can
+  hold.
 - **Reps, like at the gym.** Nobody gets fit the day before a race. A calculation you have done by
   hand several times is one you can do under exam conditions.
 - **Low stakes by design.** Homework is 10% of the grade and is graded on completion and genuine
