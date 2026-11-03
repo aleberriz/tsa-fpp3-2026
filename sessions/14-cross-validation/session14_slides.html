@@ -603,7 +603,7 @@ google_2015_fc_cv |&gt; accuracy(google_2015)                             <span 
     </figure>
     <ul class="build">
       <li class="step"><b>Drift wins everywhere on this series,</b> by a wide margin, and this verdict comes from 233 splits rather than one stretch of days.</li>
-      <li class="step"><b>Drift&#39;s error grows with h,</b> just as its prediction intervals widen with h (Session 12): each step ahead adds uncertainty. The mean method&#39;s error does not grow, because its forecast is the same flat line at every horizon, and the line is far from where a trending series ends up.</li>
+      <li class="step"><b>Drift&#39;s error grows with h,</b> as Session 12 on prediction intervals showed: each step ahead adds uncertainty, so the intervals widen. The mean method&#39;s error does not grow, because its forecast is the same flat line at every horizon, and the line is far from where a trending series ends up.</li>
       <li class="step"><b>The rule:</b> read the per-horizon table at the horizon your decision needs. When no single horizon matters, use the table averaged over horizons.</li>
     </ul>
     <p class="punch step wide">Cross-validation does not tell you the truth about the future. It tells you which model has been least wrong about it, many times over.</p>
@@ -635,7 +635,7 @@ google_2015_fc_cv |&gt; accuracy(google_2015)                             <span 
     <p class="punch step wide">From here on, every diagnostic, interval and error metric you have learned is applied to models you build yourself.</p>
     <p class="url" style="font-size:clamp(0.95rem,1.7vw,1.9rem)">aberrizbeitia@faculty.ie.edu</p>
   </div>
-  <aside class="notes">Before next session, refresh geometric sequences: a first term, a constant ratio, the general term, and the sum of the first n terms. The weights of simple exponential smoothing are a geometric sequence, and the fact that they add up to one is the sum formula.<br><br>Also keep the mean and naive benchmark methods (Session 8) in mind: simple exponential smoothing is a dial between them.</aside>
+  <aside class="notes">Before next session, refresh geometric sequences: a first term, a constant ratio, the general term, and the sum of the first n terms. The weights of simple exponential smoothing are a geometric sequence, and the fact that they add up to one is the sum formula.<br><br>Also keep the mean and naive methods from Session 8 on benchmark methods in mind: simple exponential smoothing is a dial between them.</aside>
 </section>
 <!-- lives inside the stage so it is positioned against it, not the viewport,
      and therefore never covers the rail -->
