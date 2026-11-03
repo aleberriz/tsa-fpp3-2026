@@ -23,10 +23,10 @@ google_2015_tr <- google_2015 |>
 
 google_2015_tr
 
-# Number of training datasets generated
+# Number of training sets generated
 google_2015_tr |> pull(.id) |> max()
 
-### Step 2: fit the models to each training dataset ----
+### Step 2: fit the models to each training set ----
 google_2015_fit_cv <- google_2015_tr |>
                         model(
                               Drift = RW(Close ~ drift()),
@@ -53,8 +53,6 @@ google_2015_fc_cv
 
 summary_cv_h <- google_2015_fc_cv |> 
   accuracy(google_2015, by = c(".model", "h"))
-
-summary_cv_h
 
 summary_cv_h
 

@@ -2355,7 +2355,7 @@ window.Quarto = {
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction to the concept</a></li>
   <li><a href="#tscv" id="toc-tscv" class="nav-link" data-scroll-target="#tscv">Cross-validation in time series</a></li>
-  <li><a href="#splits" id="toc-splits" class="nav-link" data-scroll-target="#splits">Visualizing the train-test splits</a>
+  <li><a href="#splits" id="toc-splits" class="nav-link" data-scroll-target="#splits">Visualizing the train/test splits</a>
   <ul>
   <li><a href="#one-step" id="toc-one-step" class="nav-link" data-scroll-target="#one-step">Example 1: one-step-ahead forecasts</a></li>
   <li><a href="#multi-step" id="toc-multi-step" class="nav-link" data-scroll-target="#multi-step">Example 2: multi-step forecasts</a></li>
@@ -2369,7 +2369,7 @@ window.Quarto = {
   <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example">Detailed example of time series cross-validation</a>
   <ul>
   <li><a href="#step-1" id="toc-step-1" class="nav-link" data-scroll-target="#step-1">Step 1: build the training sets with <code>stretch_tsibble()</code></a></li>
-  <li><a href="#step-2" id="toc-step-2" class="nav-link" data-scroll-target="#step-2">Step 2: fit the models to each training dataset</a></li>
+  <li><a href="#step-2" id="toc-step-2" class="nav-link" data-scroll-target="#step-2">Step 2: fit the models to each training set</a></li>
   <li><a href="#step-3" id="toc-step-3" class="nav-link" data-scroll-target="#step-3">Step 3: generate forecasts</a></li>
   <li><a href="#step-4" id="toc-step-4" class="nav-link" data-scroll-target="#step-4">Step 4: compute the cross-validated accuracy metrics</a>
   <ul>
@@ -2419,7 +2419,7 @@ window.Quarto = {
 
 <section id="references" class="level1">
 <h1>References</h1>
-<p>NOTE: the following material not fully original, but rather an extension of reference 1 with comments and other sources to improve the student’s understanding:</p>
+<p>Note: the material below extends reference 1, with added comments and other sources:</p>
 <ol type="1">
 <li>Hyndman, R.J., &amp; Athanasopoulos, G., 2021. <em>Forecasting: principles and practice</em>. 3rd edition.</li>
 <li>Fable package documentation</li>
@@ -2439,10 +2439,10 @@ window.Quarto = {
 <h1>Time Series Cross-Validation</h1>
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction to the concept</h2>
-<p>Accuracy measured on a <strong>single train-test split</strong> depends heavily on where the split was made.</p>
+<p>Accuracy measured on a <strong>single train/test split</strong> depends heavily on where the split was made.</p>
 <p>For more reliable results, we can:</p>
 <ol type="1">
-<li>Compute the error metrics on many different train-test splits.</li>
+<li>Compute the error metrics on many different train/test splits.</li>
 <li>Average the results over the splits.</li>
 </ol>
 <p>This simple idea is called <strong>cross-validation</strong>.</p>
@@ -2451,21 +2451,20 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="tscv">Cross-validation in time series</h2>
 <p>Cross-validation for time series consists of:</p>
 <ol type="1">
-<li><strong>Generating a series of train-test splits.</strong> These splits must respect the aspects below:
+<li><strong>Generating a series of train/test splits.</strong> The splits must follow these rules:
 <ul>
-<li><strong>They must respect the time order of the data</strong>. In other areas of machine learning, train-test splits are drawn at random. Here the time structure must be respected: a model may never see observations that come after the ones it is tested on.</li>
-<li><strong>Training sets need a minimum size</strong>: the earliest observations cannot serve as test sets, or the training set would be too small.</li>
-<li><strong>The smallest training set should be at least as large as the longest forecast horizon required</strong>, and preferably larger.</li>
+<li><strong>They must preserve the time order of the data</strong>. In other areas of machine learning, train/test splits are drawn at random. Here the time order must be preserved: a model may never see observations that come after the ones it is tested on.</li>
+<li><strong>Training sets need a minimum size</strong>: the earliest observations cannot be test sets, or the training set would be too small.</li>
+<li><strong>The smallest training set should be at least as large as the longest forecast horizon you need</strong>, and preferably larger.</li>
 <li>The training set only contains observations that come <strong>before</strong> the observations of the test set.</li>
 <li><strong>All test sets have the same length</strong>, and each one sits in time <strong>after its training set</strong>.</li>
 </ul></li>
-<li><strong>Compute the point forecast accuracy metrics on each train-test split, and average them.</strong></li>
+<li><strong>Compute the point-forecast accuracy metrics on each train/test split, and average them.</strong></li>
 </ol>
-<p>Again: the splits must respect the time structure of the data.</p>
 </section>
 <section id="splits" class="level2">
-<h2 class="anchored" data-anchor-id="splits">Visualizing the train-test splits</h2>
-<p><strong>Problem:</strong> given a time series, fit several models and compare their performance with cross-validation. <strong>Input:</strong> the values of the series <span class="math inline">\(y_t\)</span> at a sequence of points in time, shown below in grey. For simplicity, the figures show only the points in time, not the values <span class="math inline">\(y_t\)</span>:</p>
+<h2 class="anchored" data-anchor-id="splits">Visualizing the train/test splits</h2>
+<p><strong>Problem:</strong> given a time series, fit several models and compare their performance with cross-validation. <strong>Input:</strong> the values of the series <span class="math inline">\(y_t\)</span> at a sequence of points in time, shown below in gray. For simplicity, the figures show only the points in time, not the values <span class="math inline">\(y_t\)</span>:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -2475,10 +2474,10 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>Instead of one train-test split, we <strong>generate many train-test splits from this one series</strong>.</p>
+<p>Instead of one train/test split, we <strong>generate many train/test splits from this one series</strong>.</p>
 <section id="one-step" class="level3">
 <h3 class="anchored" data-anchor-id="one-step">Example 1: one-step-ahead forecasts</h3>
-<p>Let us start with a simple example, in which:</p>
+<p>Start with a simple example, in which:</p>
 <ol type="1">
 <li>Training sets have an initial size and grow one observation at a time.</li>
 <li>Test sets consist of a single observation, with forecast horizon h = 1.</li>
@@ -2497,18 +2496,18 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>Cross-validation on this set of train-test splits means:</p>
+<p>Cross-validation on this set of train/test splits means:</p>
 <ol type="1">
 <li>Fit the models to each of the training sets.</li>
 <li>For each model fitted to each training set, evaluate the forecast errors on their corresponding test set.</li>
-<li>Compute the average of the resulting forecast errors over all the train-test splits.</li>
+<li>Compute the average of the resulting forecast errors over all the train/test splits.</li>
 </ol>
-<p><strong>Result</strong>: average errors over all the training datasets of each model for the forecast horizon being considered (in the example h = 1)</p>
+<p><strong>Result</strong>: average errors over all the training sets of each model for the forecast horizon being considered (in the example h = 1)</p>
 </section>
 <section id="multi-step" class="level3">
 <h3 class="anchored" data-anchor-id="multi-step">Example 2: multi-step forecasts</h3>
 <p>For multi-step forecasts the strategy is the same, but the test set sits at a distance <code>h</code> (the forecast horizon) from the training set.</p>
-<p>Suppose we are interested in models that produce good 4-step-ahead forecasts. The corresponding train-test splits would be:</p>
+<p>Suppose we are interested in models that produce good 4-step-ahead forecasts. The corresponding train/test splits would be:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -2518,17 +2517,17 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>Again, cross-validation on this set of train-test splits means:</p>
+<p>Again, cross-validation on this set of train/test splits means:</p>
 <ol type="1">
 <li>Fit the models to each of the training sets.</li>
 <li>For each model fitted to each training set, evaluate the forecast errors on their corresponding test set.</li>
-<li>Compute the average of the resulting forecast errors over all the train-test splits.</li>
+<li>Compute the average of the resulting forecast errors over all the train/test splits.</li>
 </ol>
-<p><strong>Result</strong>: average errors over all the training datasets of each model for the forecast horizon being considered (in the example h = 4)</p>
+<p><strong>Result</strong>: average errors over all the training sets of each model for the forecast horizon being considered (in the example h = 4)</p>
 </section>
 <section id="multi-horizon" class="level3">
 <h3 class="anchored" data-anchor-id="multi-horizon">Example 3: cross-validation for several forecast horizons</h3>
-<p>In practice we want to know which model performs best across a range of forecast horizons, not at one horizon only. For that we need train-test splits like those in the figure below: the test sets now cover more than one forecast horizon.</p>
+<p>In practice we want to know which model performs best across a range of forecast horizons, not at one horizon only. For that we need train/test splits like those in the figure below: the test sets now cover more than one forecast horizon.</p>
 <ul>
 <li>With the splits in the example, we can analyze forecast horizons up to h = 4.</li>
 </ul>
@@ -2545,7 +2544,7 @@ window.Quarto = {
 <ol type="1">
 <li><strong>Performance of the different models for each forecast horizon separately.</strong>
 <ul>
-<li>Result: average performance metrics over all training datasets for each combination of:
+<li>Result: average performance metrics over all training sets for each combination of:
 <ul>
 <li>Model.</li>
 <li>Forecast horizon.</li>
@@ -2553,7 +2552,7 @@ window.Quarto = {
 </ul></li>
 <li><strong>Performance of the different models on average across all forecast horizons.</strong>
 <ul>
-<li>Result: average performance metrics over all training datasets and forecast horizons for each model.</li>
+<li>Result: average performance metrics over all training sets and forecast horizons for each model.</li>
 </ul></li>
 </ol>
 <section id="option-1-performance-of-the-different-models-for-each-forecast-horizon-separately" class="level4">
@@ -2561,11 +2560,11 @@ window.Quarto = {
 <ol type="1">
 <li>Fit the models to each of the training sets.</li>
 <li>For each model fitted to each training set, evaluate the forecast errors on their corresponding test set, separately for each forecast horizon.</li>
-<li>For each combination of model and forecast horizon, compute the average of the resulting errors over all the train-test splits.</li>
+<li>For each combination of model and forecast horizon, compute the average of the resulting errors over all the train/test splits.</li>
 </ol>
-<p><strong>Result</strong>: average errors of each model over all the training datasets for every forecast horizon being considered (in the example for h = 1, 2, 3 and 4).</p>
+<p><strong>Result</strong>: average errors of each model over all the training sets for every forecast horizon being considered (in the example for h = 1, 2, 3 and 4).</p>
 <ul>
-<li>That is, we would obtain <strong>h results per model</strong> (average error for each forecast horizon).</li>
+<li>So each model gets <strong>h results</strong>, one average error per forecast horizon.</li>
 </ul>
 </section>
 <section id="option-2-performance-of-the-different-models-averaged-over-all-the-forecast-horizons" class="level4">
@@ -2573,24 +2572,24 @@ window.Quarto = {
 <ol type="1">
 <li>Fit the models to each of the training sets.</li>
 <li>For each model fitted to each training set, evaluate the forecast errors on their corresponding test set, separately for each forecast horizon.</li>
-<li>For each combination of model and forecast horizon, compute the average of the resulting errors over all the train-test splits.</li>
+<li>For each combination of model and forecast horizon, compute the average of the resulting errors over all the train/test splits.</li>
 <li>For each model compute the average over all forecast horizons.</li>
 </ol>
-<p><strong>Result</strong>: average errors of each model over all the training datasets and forecast horizons.</p>
+<p><strong>Result</strong>: average errors of each model over all the training sets and forecast horizons.</p>
 <ul>
-<li>That is, we would obtain <strong>1 result per model</strong> (error averaged over all forecast horizons)</li>
+<li>So each model gets <strong>1 result</strong>, its error averaged over all forecast horizons.</li>
 </ul>
 </section>
 </section>
 </section>
 <section id="stretch" class="level2">
 <h2 class="anchored" data-anchor-id="stretch">The function <code>stretch_tsibble()</code></h2>
-<p>Let us move to the practical side: how to build these train-test splits in R.</p>
+<p>Now the practical side: how to build these train/test splits in R.</p>
 <p>The function <code>stretch_tsibble()</code>, from the <code>tsibble</code> package (loaded with <code>fpp3</code>), creates the many training sets that cross-validation needs. Arguments:</p>
 <p><code>stretch_tsibble(.x, .step = 1, .init = 1)</code></p>
 <ul>
 <li><code>.x</code>: tsibble to be split following the time series cross-validation strategy.</li>
-<li><code>.step</code>: a positive integer, the growth rate of the training sets: how many observations are added at a time. Default: <code>.step = 1</code>.</li>
+<li><code>.step</code>: a positive integer, how many observations each new training set adds. Default: <code>.step = 1</code>.</li>
 <li><code>.init</code>: a positive integer, the size of the first training set. Default: <code>.init = 1</code>.</li>
 </ul>
 <p>Remember the rule above about the minimum size of the training sets.</p>
@@ -2645,22 +2644,22 @@ window.Quarto = {
 10 2015-01-15     1  503.  503.  495.  499.      499. 2715800    10
 # ℹ 31,678 more rows</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of training datasets generated</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of training sets generated</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>google_2015_tr <span class="sc">|&gt;</span> <span class="fu">pull</span>(.id) <span class="sc">|&gt;</span> <span class="fu">max</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 233</code></pre>
 </div>
 </div>
-<p>233 training datasets have been generated:</p>
+<p>233 training sets have been generated:</p>
 <ul>
 <li>The column <code>.id</code> is an identifier for each of the training sets.</li>
-<li>Because <code>.init</code> was set to 20, the first training set has 20 elements.</li>
+<li>Because <code>.init</code> was set to 20, the first training set has 20 observations.</li>
 <li>Because <code>.step</code> was set to 1, the training set is increased one observation at a time.</li>
 </ul>
 </section>
 <section id="step-2" class="level3">
-<h3 class="anchored" data-anchor-id="step-2">Step 2: fit the models to each training dataset</h3>
-<p>The following code fits a drift model and a mean model to each of the training datasets: 2 x 233 = 466 models.</p>
+<h3 class="anchored" data-anchor-id="step-2">Step 2: fit the models to each training set</h3>
+<p>The following code fits a drift model and a mean model to each of the training sets: 2 × 233 = 466 models.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>google_2015_fit_cv <span class="ot">&lt;-</span> google_2015_tr <span class="sc">|&gt;</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">model</span>(</span>
@@ -2687,16 +2686,16 @@ window.Quarto = {
 # ℹ 223 more rows</code></pre>
 </div>
 </div>
-<p>The resulting mable has, as expected:</p>
+<p>The resulting mable has:</p>
 <ul>
-<li>233 rows, because there are a total of 233 training datasets (think of each training dataset as a separate time series)</li>
-<li>The column <code>.id</code> indicates to which training dataset the model has been fit.</li>
-<li>The columns <code>Drift</code> and <code>Mean</code> (user choices to name the models) correspond to the models fitted to each of these training datasets.</li>
+<li>233 rows, one per training set (think of each training set as a separate time series).</li>
+<li>The column <code>.id</code>, which says which training set the model was fitted to.</li>
+<li>The columns <code>Drift</code> and <code>Mean</code> (names chosen by the user), with the models fitted to each training set.</li>
 </ul>
 </section>
 <section id="step-3" class="level3">
 <h3 class="anchored" data-anchor-id="step-3">Step 3: generate forecasts</h3>
-<p>Let us generate forecasts up to 8 trading days ahead from each of those models:</p>
+<p>The next step forecasts up to 8 trading days ahead from each of those models:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># TSCV accuracy</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>google_2015_fc_cv <span class="ot">&lt;-</span> google_2015_fit_cv <span class="sc">|&gt;</span> <span class="fu">forecast</span>(<span class="at">h =</span> <span class="dv">8</span>)</span>
@@ -2721,9 +2720,9 @@ window.Quarto = {
 # ℹ 2 more variables: Close &lt;dist&gt;, .mean &lt;dbl&gt;</code></pre>
 </div>
 </div>
-<p>The output of the forecast table (<code>fable</code>) is, as expected:</p>
+<p>The forecast table (<code>fable</code>) has:</p>
 <ul>
-<li>8 forecasts for each combination of <code>.id</code> and <code>.model</code>: a total of 8 x 2 x 233 = 3,728 point forecasts (column <code>.mean</code>), each with its forecast distribution (column <code>Close</code>).</li>
+<li>8 forecasts for each combination of <code>.id</code> and <code>.model</code>: a total of 8 × 2 × 233 = 3,728 point forecasts (column <code>.mean</code>), each with its forecast distribution (column <code>Close</code>).</li>
 </ul>
 </section>
 <section id="step-4" class="level3">
@@ -2732,10 +2731,10 @@ window.Quarto = {
 <h4 class="anchored" data-anchor-id="by-horizon">4.1 Option 1: accuracy metrics for each combination of model and forecast horizon</h4>
 <p>First we need a column in the forecast table that says which horizon each forecast belongs to.</p>
 <ul>
-<li>That is, a row counter that resets every time the combination of <code>.id</code> and <code>.model</code> changes.</li>
-<li>Pay attention to the line <code>as_fable(response = &quot;Close&quot;, distribution = Close)</code>. It makes sure that, after <code>group_by()</code>, <code>mutate()</code> and <code>ungroup()</code>, the result is still a <code>fable</code> (forecast table).
+<li>A row counter that resets every time the combination of <code>.id</code> and <code>.model</code> changes.</li>
+<li>The line <code>as_fable(response = &quot;Close&quot;, distribution = Close)</code> makes sure that, after <code>group_by()</code>, <code>mutate()</code> and <code>ungroup()</code>, the result is still a <code>fable</code> (forecast table).
 <ul>
-<li><code>accuracy()</code> needs that in the next step.</li>
+<li><code>accuracy()</code> needs one in the next step.</li>
 </ul></li>
 </ul>
 <div class="cell">
@@ -2798,56 +2797,30 @@ window.Quarto = {
 16 Mean       8 Test  64.7    89.8 66.8  9.48    9.88  9.37  8.02 0.977 </code></pre>
 </div>
 </div>
-<p>In the code above, pay attention to <code>accuracy(google_2015, by = c(&quot;.model&quot;, &quot;h&quot;))</code>:</p>
+<p>In the call <code>accuracy(google_2015, by = c(&quot;.model&quot;, &quot;h&quot;))</code>:</p>
 <ul>
 <li><code>google_2015</code> is the original dataset, before <code>stretch_tsibble()</code> was applied.</li>
 <li><code>by = c(&quot;.model&quot;, &quot;h&quot;)</code> sets the level of aggregation of the accuracy metrics.</li>
 </ul>
-<p>Let us inspect the result:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>summary_cv_h</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 16 × 11
-   .model     h .type     ME  RMSE   MAE    MPE  MAPE  MASE RMSSE   ACF1
-   &lt;chr&gt;  &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
- 1 Drift      1 Test   0.430  11.3  7.17 0.0515  1.16  1.01  1.01 0.0859
- 2 Drift      2 Test   0.951  16.8 10.6  0.113   1.72  1.49  1.50 0.504 
- 3 Drift      3 Test   1.51   20.5 13.3  0.181   2.17  1.87  1.83 0.669 
- 4 Drift      4 Test   2.04   23.4 15.3  0.249   2.47  2.14  2.09 0.747 
- 5 Drift      5 Test   2.51   25.8 16.8  0.307   2.73  2.36  2.31 0.789 
- 6 Drift      6 Test   2.98   27.9 18.4  0.367   2.98  2.58  2.49 0.827 
- 7 Drift      7 Test   3.47   29.9 20.1  0.431   3.25  2.82  2.67 0.835 
- 8 Drift      8 Test   3.93   31.5 21.1  0.490   3.41  2.96  2.82 0.857 
- 9 Mean       1 Test  60.5    85.5 62.6  8.87    9.26  8.78  7.64 0.976 
-10 Mean       2 Test  61.1    86.1 63.2  8.95    9.35  8.87  7.70 0.976 
-11 Mean       3 Test  61.7    86.7 63.8  9.04    9.44  8.95  7.75 0.976 
-12 Mean       4 Test  62.3    87.4 64.4  9.13    9.53  9.04  7.81 0.976 
-13 Mean       5 Test  62.9    88.0 65.1  9.22    9.63  9.13  7.86 0.976 
-14 Mean       6 Test  63.5    88.6 65.6  9.31    9.71  9.21  7.92 0.976 
-15 Mean       7 Test  64.1    89.2 66.2  9.40    9.80  9.29  7.97 0.977 
-16 Mean       8 Test  64.7    89.8 66.8  9.48    9.88  9.37  8.02 0.977 </code></pre>
-</div>
-</div>
-<p>The result gives the accuracy metrics (columns <code>ME</code> to <code>ACF1</code>) for each combination of <code>.model</code> and <code>h</code>: for each model and forecast horizon.</p>
-<p>The output above contains, as expected:</p>
+<p>The result gives the accuracy metrics for each combination of model and forecast horizon. It has:</p>
 <ul>
-<li>16 rows, one row for each combination of model (<code>.model</code>) and forecast horizon (<code>h</code>)</li>
-<li>One column for each of the accuracy metrics returned by <code>accuracy()</code>.
+<li>16 rows, one for each combination of model (<code>.model</code>) and forecast horizon (<code>h</code>).</li>
+<li>One column for each accuracy metric that <code>accuracy()</code> returns, from <code>ME</code> to <code>ACF1</code>.
 <ul>
-<li>In this course we use only the ones explained in class.</li>
+<li>This course uses only MAE, RMSE, MAPE, MASE and RMSSE.</li>
 </ul></li>
 </ul>
-<p>Each row shows the error metrics averaged over all 233 training datasets, for one model and one forecast horizon. Two examples:</p>
+<p>Each row shows the error metrics averaged over all 233 training sets, for one model and one forecast horizon. Two examples:</p>
 <ul>
-<li>The row with <code>h = 1</code> and <code>.model = Drift</code> averages the error metrics (MAE, RMSE, …) of the 233 drift models, each fitted to its training dataset and forecasting one step ahead into its test dataset.</li>
+<li>The row with <code>h = 1</code> and <code>.model = Drift</code> averages the error metrics (MAE, RMSE, …) of the 233 drift models, each fitted to its training set and forecasting one step ahead into its test set.</li>
 <li>The row with <code>h = 4</code> and <code>.model = Drift</code> averages the same metrics for the same 233 models forecasting four steps ahead.</li>
 </ul>
-<p>This is far more reliable than a single train-test split.</p>
-<p>A good way to choose a forecasting model: take the one with the smallest cross-validated RMSE at the forecast horizon you need. As explained in the session on point forecast accuracy, minimizing the RMSE targets the mean.</p>
+<p>Averaged over 233 splits, these metrics are more reliable than those of a single train/test split.</p>
+<p>To choose a forecasting model, take the one with the smallest cross-validated RMSE at the forecast horizon you need. As explained in the session on point forecast accuracy, minimizing the RMSE targets the mean.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>summary_cv_h <span class="sc">|&gt;</span> </span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> h, <span class="at">y =</span> RMSE, <span class="at">color =</span> .model)) <span class="sc">+</span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>summary_cv_h <span class="sc">|&gt;</span> </span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> h, <span class="at">y =</span> RMSE, <span class="at">color =</span> .model)) <span class="sc">+</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -2856,15 +2829,15 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>The graph shows that, averaged over all the train-test splits, the drift model has much smaller errors than the mean method on this series, at every forecast horizon analyzed.</p>
+<p>The graph shows that, averaged over all the train/test splits, the drift model has much smaller errors than the mean method on this series, at every forecast horizon analyzed.</p>
 </section>
 <section id="averaged" class="level4">
 <h4 class="anchored" data-anchor-id="averaged">4.2 Option 2: accuracy metrics for each model, averaged over all forecast horizons</h4>
 <p>Perhaps no single horizon matters, and we want the model that forecasts best on average over all of them.</p>
-<p>For that we call <code>accuracy()</code> again without the <code>by</code> argument. It then groups by <code>.model</code> and by the key of the time series only. Let us check:</p>
+<p>For that we call <code>accuracy()</code> again without the <code>by</code> argument. It then groups by <code>.model</code> and by the key of the time series only:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>google_2015_fc_cv <span class="sc">|&gt;</span> </span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">accuracy</span>(google_2015)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>google_2015_fc_cv <span class="sc">|&gt;</span> </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">accuracy</span>(google_2015)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: The future dataset is incomplete, incomplete out-of-sample data will be treated as missing. 
 8 observations are missing between 253 and 260</code></pre>
@@ -2879,8 +2852,8 @@ window.Quarto = {
 </div>
 <p>This is equivalent to doing:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>google_2015_fc_cv <span class="sc">|&gt;</span> </span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">accuracy</span>(google_2015, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;.model&quot;</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>google_2015_fc_cv <span class="sc">|&gt;</span> </span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">accuracy</span>(google_2015, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;.model&quot;</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: The future dataset is incomplete, incomplete out-of-sample data will be treated as missing. 
 8 observations are missing between 253 and 260</code></pre>
@@ -2893,9 +2866,9 @@ window.Quarto = {
 2 Mean   Test  62.6   87.7  64.7 9.17   9.57  9.08  7.83 0.966</code></pre>
 </div>
 </div>
-<p>These metrics average the performance of each model over all the train-test splits and all the forecast horizons. For example:</p>
+<p>These metrics average the performance of each model over all the train/test splits and all the forecast horizons. For example:</p>
 <ul>
-<li>The <code>Drift</code> row contains the error metrics of the drift model averaged over the 233 train-test splits and the 8 forecast horizons.</li>
+<li>The <code>Drift</code> row contains the error metrics of the drift model averaged over the 233 train/test splits and the 8 forecast horizons.</li>
 </ul>
 </section>
 </section>
@@ -2909,16 +2882,16 @@ window.Quarto = {
 <section id="step-0-the-dataset-and-the-variables-it-needs" class="level3">
 <h3 class="anchored" data-anchor-id="step-0-the-dataset-and-the-variables-it-needs">Step 0: the dataset, and the variables it needs</h3>
 <ul>
-<li>We work with <code>recent_production</code>, specifically with the production of beer, stored in <code>beer_production</code>. <code>stretch_tsibble()</code> is applied to this series to generate the training datasets.</li>
+<li>We work with <code>recent_production</code>, specifically with the production of beer, stored in <code>beer_production</code>. <code>stretch_tsibble()</code> is applied to this series to generate the training sets.</li>
 <li>For convenience, only the relevant variables are kept.</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>recent_production <span class="ot">&lt;-</span> aus_production <span class="sc">|&gt;</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">year</span>(Quarter) <span class="sc">&gt;=</span> <span class="dv">1992</span>) <span class="co"># from 1992 on, as in the point accuracy session</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>recent_production <span class="ot">&lt;-</span> aus_production <span class="sc">|&gt;</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">year</span>(Quarter) <span class="sc">&gt;=</span> <span class="dv">1992</span>) <span class="co"># from 1992 on, as in the point accuracy session</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>beer_production <span class="ot">&lt;-</span> recent_production <span class="sc">|&gt;</span> <span class="fu">select</span>(Quarter, Beer)</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>beer_production</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>beer_production <span class="ot">&lt;-</span> recent_production <span class="sc">|&gt;</span> <span class="fu">select</span>(Quarter, Beer)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>beer_production</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tsibble: 74 x 2 [1Q]
    Quarter  Beer
