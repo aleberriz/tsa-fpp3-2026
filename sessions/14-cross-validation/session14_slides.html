@@ -511,22 +511,22 @@ body.ov-on #overview{display:block}
       <tr><td class="os">Same length</td><td>All test sets have the same length, so the errors are comparable across splits.</td><td class="fix"><code>forecast(h = ...)</code></td></tr>
     </table>
     <ul class="build">
-      <li class="step"><b>The third rule is the one that gets broken in homework.</b> With <code>.init = 4</code> and <code>h = 8</code>, the first few splits forecast further ahead than they have data behind them. Make <code>.init</code> comfortably larger than <code>h</code>.</li>
+      <li class="step"><b>The third rule is the easiest to break by accident.</b> A first training set of one year, asked for forecasts two years ahead, is forecasting further than it has data behind it. Keep the smallest training set comfortably longer than the horizon.</li>
       <li class="step"><b>The first rule is the one that gets broken by habit,</b> by anyone who has used k-fold before.</li>
     </ul>
     <p class="punch step wide">Cross-validation needs only two arguments and a horizon. The rest is bookkeeping, which the next three slides go through.</p>
   </div>
-  <aside class="notes">A reasonable <code>.init</code> for seasonal data is at least two full seasons, so that a seasonal naive model has a previous season to copy and a second one to be scored on. For the quarterly beer series in the homework, eight observations is the minimum and sixteen is comfortable.</aside>
+  <aside class="notes">For seasonal data, the smallest training set should hold at least one full seasonal period, so that a seasonal naive model has something to copy (for quarterly data, last year&#39;s same quarter); two full seasonal periods are comfortable. For the quarterly beer series in the homework, that is four observations at least, and eight comfortably.</aside>
 </section>
 
 <section class="slide" data-section="3" data-title="Switch: stretch_tsibble()">
   <div class="inner">
     <a class="nb" href="14_A_TS_CrossValidation.html#stretch" target="_blank" rel="noopener" title="Open the notebook at this section">14_A &rsaquo; The function stretch_tsibble()</a>
     <p class="kicker">Now we compute &nbsp;&middot;&nbsp; step 1 of 4</p>
-    <h1 class="sowhat wide">One function builds every training set, and <code>.id</code> is the only new column it adds.</h1>
+    <h1 class="sowhat wide"><code>stretch_tsibble()</code> builds every training set, and <code>.id</code> is the only new column it adds.</h1>
     <div class="console tight">google_2015_tr &lt;- google_2015 |&gt;
   stretch_tsibble(.init = 20, .step = 1) |&gt;
-  relocate(Date, .id)
+  relocate(Date, .id)                       <span class="dim"># just reorders the columns</span>
 
 google_2015_tr |&gt; pull(.id) |&gt; max()        <span class="dim"># 233 training sets</span>
 
