@@ -51,6 +51,7 @@ fitted_vals
 sum(fitted_vals$weight[1:3]) 
 
 sum(fitted_vals$weight)
+sum(fitted_vals$weight) + (1 - alpha)^nrow(fitted_vals)
 
 ### 5. Computing forecasts ----
 # Generate 5 step forecasts

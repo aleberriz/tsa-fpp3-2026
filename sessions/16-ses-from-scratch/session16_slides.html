@@ -417,233 +417,41 @@ body.ov-on #overview{display:block}
 </nav>
 
 <main id="stage">
-<section class="slide title-slide" data-section="1" data-title="Title">
-  <div class="inner">
-    <p class="kicker">IE University · Dual Degree BBA &amp; Data and Business Analytics</p>
-    <h1>Let the search<br>turn the dial.</h1>
-    <div class="rule"></div>
-    <p class="who"><b>Session 16.</b> Fitting simple exponential smoothing from scratch.<br>
-    Alejandro Berrizbeitia · aberrizbeitia@faculty.ie.edu</p>
-  </div>
-  <aside class="notes">The deck is self-contained: press <b>N</b> at any time to open or close this panel, and <b>O</b> for a list of every slide.<br><br>Today is the estimation half of fpp3 section 8.1, done by hand: notebook <code>16_D</code> has the three functions to complete, with templates, and <code>16_E</code> is the homework. Bring the spreadsheet from Session 15 to mind; today writes it in R and lets R do the searching.</aside>
-</section>
-
-<section class="slide" data-section="1" data-title="Where we are">
-  <div class="inner">
-    <p class="kicker">Where we are &nbsp;&middot;&nbsp; the verification half of "build it by hand"</p>
-    <h1 class="sowhat wide">The spreadsheet&#39;s two columns become two functions, and a searcher turns the dial.</h1>
-    <ul class="build">
-      <li class="step"><b>Session 15 gave you &alpha; and &#8467;<sub>0</sub> and asked for the table.</b> You filled the level column with the smoothing equation and the fitted-value column with the previous level, then added the squared errors.</li>
-      <li class="step"><b>Today nobody gives you &alpha; and &#8467;<sub>0</sub>.</b> You write the table as a function of them, write the SSE as a function of them, and hand both to <code>optim()</code>, which tries values until the SSE stops falling.</li>
-      <li class="step"><b>Then you compare with <code>fable</code>.</b> You get the same &alpha; and &#8467;<sub>0</sub> to three decimals, and after that <code>ETS()</code> is a function whose insides you have seen.</li>
-    </ul>
-    <p class="punch step wide">After today you will know what a call to <code>ETS()</code> does, because you will have written the same computation yourself.</p>
-  </div>
-  <aside class="notes">This from-scratch-then-verify pattern is the signature of the course: classical decomposition in Session 7, the prediction interval in Session 12, the error metrics in Session 13, and now the fitting of a model. Group Assignment 2 asks for the same habit on share prices.<br><br>The method you write today is the one every later model in the block uses too. Holt and Holt&ndash;Winters have more parameters, but the loop is the same shape and <code>optim()</code> does not care how many numbers are in the vector.</aside>
-</section>
-
-<section class="slide" data-section="2" data-title="The plan">
-  <div class="inner">
-    <a class="nb" href="16_D_SES_ModelFitting.html#levels" target="_blank" rel="noopener" title="Open the notebook at this section">16_D &rsaquo; The outline</a>
-    <p class="kicker">Session 15&#39;s flowchart &nbsp;&middot;&nbsp; with a function name on each box</p>
-    <h1 class="sowhat wide">The plan has four boxes: three functions that you write and one searcher from base R.</h1>
-    <figure>
-      <svg viewBox="0 0 760 176" role="img" aria-label="The fitting loop from Session 15 with a function name on each box: guess alpha and the initial level, done by optim; compute the fitted values, ses_levels; compute the SSE, SSE_func; smallest yet, decided by optim, which adjusts and goes round again. A dashed outline groups the middle two boxes as my_ses_sse, the composition of the two"><g font-family="SFMono-Regular,Menlo,monospace"><defs><marker id="ar3" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z" fill="#98928a"/></marker></defs><rect x="20" y="60" width="140" height="60" rx="5" fill="#FAF8F5" stroke="#B5471E" stroke-width="1.6"/><text x="90.0" y="87.0" text-anchor="middle" fill="#161513" font-size="11.5" font-weight="700" >1. guess &alpha;, &#8467;<tspan baseline-shift='sub' font-size='8'>0</tspan></text><text x="90.0" y="104.0" text-anchor="middle" fill="#6B665E" font-size="10" >optim()</text><line x1="160" y1="90" x2="195" y2="90" stroke="#98928a" stroke-width="1.4" marker-end="url(#ar3)"/><rect x="200" y="60" width="160" height="60" rx="5" fill="#FAF8F5" stroke="#1F3A4D" stroke-width="1.6"/><text x="280.0" y="87.0" text-anchor="middle" fill="#161513" font-size="11.5" font-weight="700" >2. fitted values</text><text x="280.0" y="104.0" text-anchor="middle" fill="#6B665E" font-size="10" >ses_levels()</text><line x1="360" y1="90" x2="395" y2="90" stroke="#98928a" stroke-width="1.4" marker-end="url(#ar3)"/><rect x="400" y="60" width="130" height="60" rx="5" fill="#FAF8F5" stroke="#1F3A4D" stroke-width="1.6"/><text x="465.0" y="87.0" text-anchor="middle" fill="#161513" font-size="11.5" font-weight="700" >3. SSE</text><text x="465.0" y="104.0" text-anchor="middle" fill="#6B665E" font-size="10" >SSE_func()</text><line x1="530" y1="90" x2="565" y2="90" stroke="#98928a" stroke-width="1.4" marker-end="url(#ar3)"/><rect x="570" y="60" width="170" height="60" rx="5" fill="#FAF8F5" stroke="#B5471E" stroke-width="1.6"/><text x="655.0" y="87.0" text-anchor="middle" fill="#161513" font-size="11.5" font-weight="700" >4. smallest yet?</text><text x="655.0" y="104.0" text-anchor="middle" fill="#6B665E" font-size="10" >optim()</text><path d="M655 120 L655 150 L90 150 L90 124" fill="none" stroke="#98928a" stroke-width="1.4" marker-end="url(#ar3)"/><text x="372" y="164" text-anchor="middle" fill="#98928a" font-size="10.5" >no: adjust and go round again</text><rect x="196" y="36" width="338" height="100" rx="6" fill="none" stroke="#6B7F5E" stroke-width="1.4" stroke-dasharray="5 4"/><text x="365" y="30" text-anchor="middle" fill="#6B7F5E" font-size="10.5" font-weight="700" >my_ses_sse(par, y): steps 2 and 3 composed</text></g></svg>
-    </figure>
-    <ul class="build">
-      <li class="step"><b><code>ses_levels()</code> is the level column:</b> given &alpha;, &#8467;<sub>0</sub> and the series, run the recursion and return every level.</li>
-      <li class="step"><b><code>SSE_func()</code> is the squared-errors column:</b> given the series and the fitted values, return one number.</li>
-      <li class="step"><b><code>my_ses_sse()</code> glues them together</b> in the shape <code>optim()</code> expects: one vector of parameters in, one number out. <code>optim()</code> does steps 1 and 4: guess, evaluate, adjust, repeat.</li>
-    </ul>
-    <p class="punch step wide">You write the part that knows about time series. <code>optim()</code> writes the part that knows about searching. Neither needs to understand the other.</p>
-  </div>
-  <aside class="notes">The notebook provides templates for all three functions with the gaps marked TODO, and a test after each one. Complete them in order; each test tells you whether the previous function is right before you build on it.<br><br><code>optim()</code> lives in the <code>stats</code> package, which R loads at start-up. Nothing to install.</aside>
-</section>
-
-<section class="slide" data-section="3" data-title="Switch: ses_levels()">
-  <div class="inner">
-    <a class="nb" href="16_D_SES_ModelFitting.html#levels" target="_blank" rel="noopener" title="Open the notebook at this section">16_D &rsaquo; 1. Function ses_levels</a>
-    <p class="kicker">Now we code &nbsp;&middot;&nbsp; function 1 of 3</p>
-    <h1 class="sowhat wide">One vector holds every level: the fitted values first, the forecast last.</h1>
-    <figure>
-      <svg viewBox="0 0 760 166" role="img" aria-label="A row of six cells for the vector of levels: l zero at position 1, l one at position 2, l two at position 3, dots, l T minus 1 at position T, and l T at position T plus 1, the last cell highlighted. A bracket under the first T positions reads: the fitted values, y hat at t given t minus 1 equals l at t minus 1. A bracket under the last cell reads: the forecast"><g font-family="SFMono-Regular,Menlo,monospace"><rect x="60" y="60" width="90" height="44" fill="#FAF8F5" stroke="#1F3A4D" stroke-width="1.5"/><text x="105" y="88" text-anchor="middle" fill="#161513" font-size="14" font-weight="700" >&#8467;<tspan baseline-shift='sub' font-size='8'>0</tspan></text><text x="105" y="48" text-anchor="middle" fill="#98928a" font-size="9.5" >position 1</text><text x="105" y="122" text-anchor="middle" fill="#98928a" font-size="9.5" >time 0</text><rect x="160" y="60" width="90" height="44" fill="#FAF8F5" stroke="#1F3A4D" stroke-width="1.5"/><text x="205" y="88" text-anchor="middle" fill="#161513" font-size="14" font-weight="700" >&#8467;<tspan baseline-shift='sub' font-size='8'>1</tspan></text><text x="205" y="48" text-anchor="middle" fill="#98928a" font-size="9.5" >position 2</text><text x="205" y="122" text-anchor="middle" fill="#98928a" font-size="9.5" >time 1</text><rect x="260" y="60" width="90" height="44" fill="#FAF8F5" stroke="#1F3A4D" stroke-width="1.5"/><text x="305" y="88" text-anchor="middle" fill="#161513" font-size="14" font-weight="700" >&#8467;<tspan baseline-shift='sub' font-size='8'>2</tspan></text><text x="305" y="48" text-anchor="middle" fill="#98928a" font-size="9.5" >position 3</text><text x="305" y="122" text-anchor="middle" fill="#98928a" font-size="9.5" >time 2</text><rect x="360" y="60" width="90" height="44" fill="#FAF8F5" stroke="#1F3A4D" stroke-width="1.5"/><text x="405" y="88" text-anchor="middle" fill="#161513" font-size="14" font-weight="700" >...</text><text x="405" y="48" text-anchor="middle" fill="#98928a" font-size="9.5" ></text><text x="405" y="122" text-anchor="middle" fill="#98928a" font-size="9.5" ></text><rect x="460" y="60" width="90" height="44" fill="#FAF8F5" stroke="#1F3A4D" stroke-width="1.5"/><text x="505" y="88" text-anchor="middle" fill="#161513" font-size="14" font-weight="700" >&#8467;<tspan baseline-shift='sub' font-size='8'>T&minus;1</tspan></text><text x="505" y="48" text-anchor="middle" fill="#98928a" font-size="9.5" >position T</text><text x="505" y="122" text-anchor="middle" fill="#98928a" font-size="9.5" >time T&minus;1</text><rect x="560" y="60" width="90" height="44" fill="#B5471E" stroke="#B5471E" stroke-width="1.5"/><text x="605" y="88" text-anchor="middle" fill="#FAF8F5" font-size="14" font-weight="700" >&#8467;<tspan baseline-shift='sub' font-size='8'>T</tspan></text><text x="605" y="48" text-anchor="middle" fill="#98928a" font-size="9.5" >position T+1</text><text x="605" y="122" text-anchor="middle" fill="#98928a" font-size="9.5" >time T</text><path d="M60 140 L550 140" stroke="#1F3A4D" stroke-width="1.4"/><text x="305" y="156" text-anchor="middle" fill="#1F3A4D" font-size="10.5" font-weight="700" >the first T positions are the fitted values y&#770;<tspan baseline-shift='sub' font-size='8'>t|t&minus;1</tspan> = &#8467;<tspan baseline-shift='sub' font-size='8'>t&minus;1</tspan></text><path d="M560 140 L650 140" stroke="#B5471E" stroke-width="1.4"/><text x="605" y="156" text-anchor="middle" fill="#B5471E" font-size="10.5" font-weight="700" >the forecast</text></g></svg>
-    </figure>
-    <div class="console tight">ses_levels &lt;- function(y, alpha, l_0) {
-  levels &lt;- numeric(length(y) + 1)              <span class="dim"># T + 1 slots, from t = 0 to t = T</span>
-  levels[1] &lt;- # TODO                           <span class="dim"># the level at t = 0</span>
-  for (i in 2:length(levels)) {
-    levels[i] &lt;- # TODO                         <span class="dim"># the smoothing equation</span>
-  }
-  levels
-}</div>
-    <ul class="build">
-      <li class="step"><b>Position i holds time i &minus; 1,</b> because the vector starts at &#8467;<sub>0</sub>. That is why the loop runs from 2 and reads <code>y[i-1]</code>: position 2 is time 1, and time 1&#39;s level uses observation 1.</li>
-      <li class="step"><b>Why return all T + 1 levels and not just the fitted values:</b> the last one is the forecast, and SES forecasts are flat, so that one number is every forecast.</li>
-      <li class="step"><b>Fill the two TODO lines now.</b> The next slide tests them.</li>
-    </ul>
-    <p class="punch step wide">The inherited notebook called this function <code>levels</code>, which hides a base R function of the same name. It is <code>ses_levels</code> now.</p>
-  </div>
-  <aside class="notes">The index shift is the only hard thing in this function. A way to keep it straight: write the vector on paper with two rows of labels, positions above and times below, and read the smoothing equation off the paper. The slide does that for you.<br><br>Why <code>numeric(length(y) + 1)</code> before the loop: allocating the full vector once and filling it is both clearer and faster than growing it one element at a time.</aside>
-</section>
-
-<section class="slide" data-section="3" data-title="Switch: test it">
-  <div class="inner">
-    <a class="nb" href="16_D_SES_ModelFitting.html#test-levels" target="_blank" rel="noopener" title="Open the notebook at this section">16_D &rsaquo; Test your code</a>
-    <p class="kicker">Now we code &nbsp;&middot;&nbsp; a test before the next function</p>
-    <h1 class="sowhat wide">A test file tells you the loop is right before you build on it.</h1>
-    <div class="console tight">y     &lt;- algerian_exports$Exports
-alpha &lt;- 0.8399875
-l_0   &lt;- 39.5389994
-
-levels_function &lt;- ses_levels(y = y, alpha = alpha, l_0 = l_0)
-levels_test     &lt;- dget("../../data/yhat_SES_test")     <span class="dim"># the reference: 59 numbers</span>
-all.equal(levels_function, levels_test)                 <span class="hl"># TRUE</span></div>
-    <ul class="build">
-      <li class="step"><b><code>dget()</code> reads an R object written to a text file.</b> The file holds the 59 correct levels for these parameters, &#8467;<sub>0</sub> = 39.54 first and the forecast 22.44 last: Session 15&#39;s table.</li>
-      <li class="step"><b>TRUE means the index shift is right.</b> FALSE almost always means the loop read <code>y[i]</code> instead of <code>y[i-1]</code>, or started at 1 instead of 2.</li>
-      <li class="step"><b>The path is relative to the session folder.</b> From the repo root it is <code>data/yhat_SES_test</code>. A file-not-found error is about the working directory, not the function.</li>
-    </ul>
-    <p class="punch step wide">Group Assignment 2 has no test file. Testing each piece before building the next is the habit to take there.</p>
-  </div>
-  <aside class="notes">Why not compare with <code>augment()</code> directly: that comparison comes later, once the whole fit is done, and it is the homework in Session 15. Here the point is to isolate one function and check it alone, with parameters fixed, so that any error is in the loop and nowhere else.<br><br><code>all.equal()</code> tolerates differences at the level of floating-point rounding, which is why it is the course&#39;s check rather than <code>==</code>.</aside>
-</section>
-
-<section class="slide" data-section="3" data-title="Switch: SSE_func()">
-  <div class="inner">
-    <a class="nb" href="16_D_SES_ModelFitting.html#sse" target="_blank" rel="noopener" title="Open the notebook at this section">16_D &rsaquo; 2. Function SSE_func</a>
-    <p class="kicker">Now we code &nbsp;&middot;&nbsp; function 2 of 3</p>
-    <h1 class="sowhat wide">One number says how badly a given &alpha; and &#8467;<sub>0</sub> fit.</h1>
-    <div class="console tight">SSE_func &lt;- function(y, yhat) {
-  residuals &lt;- # TODO                       <span class="dim"># observed minus fitted</span>
-  SSE &lt;- # TODO                             <span class="dim"># squared and added up</span>
-  SSE
-}
-
-yhat_fvals &lt;- ses_levels(y, alpha, l_0)[1:length(y)]   <span class="dim"># drop the last element: it is the forecast</span>
-all.equal(1995.285, round(SSE_func(y, yhat_fvals), 3)) <span class="hl"># TRUE</span></div>
-    <ul class="build">
-      <li class="step"><b>Compute the residuals, square them and add them up.</b> It is the same column as in the spreadsheet, written in two lines.</li>
-      <li class="step"><b>The trap is the length.</b> <code>yhat</code> must be the first T elements of the levels vector, not all T + 1. The last level is the forecast, and there is no observation to subtract it from.</li>
-      <li class="step"><b>1995.285 again,</b> the SSE from Session 15&#39;s table. The same number from code is the sign that both functions are right.</li>
-    </ul>
-    <p class="punch step wide">The search will try to make this number as small as possible, and it is the only information about the model that the searcher has.</p>
-  </div>
-  <aside class="notes"><code>na.rm = TRUE</code> is a precaution: SES has no missing fitted values, but the same function will serve for models that do, such as a seasonal naive with its first season of NAs.<br><br>The check rounds to three decimals and uses <code>all.equal()</code> on the rounded value; it is informal but enough to catch a wrong loop.</aside>
-</section>
-
-<section class="slide" data-section="3" data-title="Switch: my_ses_sse()">
-  <div class="inner">
-    <a class="nb" href="16_D_SES_ModelFitting.html#compose" target="_blank" rel="noopener" title="Open the notebook at this section">16_D &rsaquo; 3. Function my_ses_sse</a>
-    <p class="kicker">Now we code &nbsp;&middot;&nbsp; function 3 of 3</p>
-    <h1 class="sowhat wide"><code>optim()</code> talks to one function with one vector of parameters, so wrap yours to match.</h1>
-    <div class="console tight">my_ses_sse &lt;- function(par, y) {
-  alpha &lt;- par[1]                                   <span class="dim"># unwrap the parameter vector</span>
-  l_0   &lt;- par[2]
-  T     &lt;- # TODO                                   <span class="dim"># the length of the series</span>
-  levels_values &lt;- # TODO                           <span class="dim"># the levels, given y, alpha and l_0</span>
-  yhat_fvals    &lt;- # TODO                           <span class="dim"># the fitted values, from the levels</span>
-  SSE           &lt;- # TODO                           <span class="dim"># the SSE, given y and yhat_fvals</span>
-  SSE
-}
-all.equal(1995.285, round(my_ses_sse(c(alpha, l_0), y), 3))   <span class="hl"># TRUE</span></div>
-    <ul class="build">
-      <li class="step"><b>Nothing new is computed.</b> The wrapper unwraps <code>par</code>, calls the two functions and returns the SSE, so it is pure composition.</li>
-      <li class="step"><b>Why the parameters travel in one vector:</b> <code>optim()</code> adjusts a vector of numbers and nothing else. &alpha; and &#8467;<sub>0</sub> ride together in <code>par</code>; the series rides separately, as a further argument.</li>
-      <li class="step"><b>The signature is the contract:</b> <code>f(par, ...)</code> in, one number out. Any function shaped like that can be minimized by <code>optim()</code>, whatever it computes.</li>
-    </ul>
-    <p class="punch step wide">All three functions return TRUE, so the model is written and only the search remains.</p>
-  </div>
-  <aside class="notes">The order inside <code>par</code> is a convention you choose and then must keep: here <code>par[1]</code> is &alpha; and <code>par[2]</code> is &#8467;<sub>0</sub>, so the starting guesses and the output of <code>optim()</code> follow the same order.<br><br>Holt&#39;s method in Session 17 would use a <code>par</code> of four: &alpha;, &beta;*, &#8467;<sub>0</sub>, b<sub>0</sub>. Same wrapper, longer vector.</aside>
-</section>
-
-<section class="slide" data-section="4" data-title="What optim() does">
-  <div class="inner">
-    <a class="nb" href="16_D_SES_ModelFitting.html#optim" target="_blank" rel="noopener" title="Open the notebook at this section">16_D &rsaquo; 4. Understanding optim()</a>
-    <p class="kicker">The searcher &nbsp;&middot;&nbsp; no formula, only steps</p>
-    <h1 class="sowhat wide"><code>optim()</code> walks downhill on the SSE until it cannot go lower.</h1>
-    <figure>
-      <svg viewBox="0 0 760 206" role="img" aria-label="A bowl-shaped curve of SSE against alpha, lowest at alpha 0.84. Orange dots mark a search that starts at alpha 0.1 high on the left slope and steps downhill, each step shorter than the last, until it reaches the bottom. To the right: feel the slope, step downhill, stop when every direction goes up"><g font-family="SFMono-Regular,Menlo,monospace"><line x1="60" y1="170" x2="430" y2="170" stroke="#98928a" stroke-width="1"/><line x1="60" y1="170" x2="60" y2="30" stroke="#98928a" stroke-width="1"/><polyline points="87.5,45.0 91.0,48.0 94.5,50.9 98.0,53.8 101.5,56.7 105.0,59.5 108.5,62.3 112.0,65.0 115.5,67.7 119.0,70.4 122.5,73.0 126.0,75.6 129.5,78.2 133.0,80.7 136.5,83.2 140.0,85.6 143.5,88.0 147.0,90.4 150.5,92.7 154.0,95.0 157.5,97.2 161.0,99.5 164.5,101.6 168.0,103.8 171.5,105.9 175.0,107.9 178.5,110.0 182.0,111.9 185.5,113.9 189.0,115.8 192.5,117.7 196.0,119.5 199.5,121.3 203.0,123.1 206.5,124.8 210.0,126.5 213.5,128.1 217.0,129.7 220.5,131.3 224.0,132.8 227.5,134.3 231.0,135.8 234.5,137.2 238.0,138.6 241.5,139.9 245.0,141.2 248.5,142.5 252.0,143.7 255.5,144.9 259.0,146.1 262.5,147.2 266.0,148.3 269.5,149.3 273.0,150.3 276.5,151.3 280.0,152.2 283.5,153.1 287.0,154.0 290.5,154.8 294.0,155.5 297.5,156.3 301.0,157.0 304.5,157.6 308.0,158.3 311.5,158.9 315.0,159.4 318.5,159.9 322.0,160.4 325.5,160.8 329.0,161.2 332.5,161.6 336.0,161.9 339.5,162.2 343.0,162.4 346.5,162.6 350.0,162.8 353.5,162.9 357.0,163.0 360.5,163.1 364.0,163.1 367.5,163.1 371.0,163.0 374.5,162.9 378.0,162.8 381.5,162.6 385.0,162.4 388.5,162.2 392.0,161.9 395.5,161.6 399.0,161.2 402.5,160.8 406.0,160.4 409.5,159.9 413.0,159.4 416.5,158.9" fill="none" stroke="#1F3A4D" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="1"/><circle cx="105.0" cy="59.5" r="4.5" fill="#B5471E"/><line x1="105.0" y1="59.5" x2="175.0" y2="107.9" stroke="#B5471E" stroke-width="1.4" stroke-dasharray="3 3"/><circle cx="175.0" cy="107.9" r="4.5" fill="#B5471E"/><line x1="175.0" y1="107.9" x2="245.0" y2="141.2" stroke="#B5471E" stroke-width="1.4" stroke-dasharray="3 3"/><circle cx="245.0" cy="141.2" r="4.5" fill="#B5471E"/><line x1="245.0" y1="141.2" x2="301.0" y2="157.0" stroke="#B5471E" stroke-width="1.4" stroke-dasharray="3 3"/><circle cx="301.0" cy="157.0" r="4.5" fill="#B5471E"/><line x1="301.0" y1="157.0" x2="339.5" y2="162.2" stroke="#B5471E" stroke-width="1.4" stroke-dasharray="3 3"/><circle cx="339.5" cy="162.2" r="4.5" fill="#B5471E"/><line x1="339.5" y1="162.2" x2="360.5" y2="163.1" stroke="#B5471E" stroke-width="1.4" stroke-dasharray="3 3"/><circle cx="360.5" cy="163.1" r="4.5" fill="#B5471E"/><line x1="360.5" y1="163.1" x2="364.0" y2="163.1" stroke="#B5471E" stroke-width="1.4" stroke-dasharray="3 3"/><circle cx="364.0" cy="163.1" r="4.5" fill="#B5471E"/><text x="105.0" y="49.47846554073584" text-anchor="start" fill="#B5471E" font-size="10.5" font-weight="700" >start: &alpha; = 0.1</text><text x="364.0" y="186" text-anchor="middle" fill="#98928a" font-size="11" >&alpha;</text><text x="364.0" y="200" text-anchor="middle" fill="#B5471E" font-size="10" font-weight="700" >0.84: the bottom</text><text x="46" y="100" text-anchor="middle" fill="#98928a" font-size="10.5" transform="rotate(-90 46 100)">SSE</text><text x="610" y="70" text-anchor="middle" fill="#161513" font-size="12" font-weight="700" >feel the slope,</text><text x="610" y="90" text-anchor="middle" fill="#161513" font-size="12" font-weight="700" >step downhill,</text><text x="610" y="110" text-anchor="middle" fill="#161513" font-size="12" font-weight="700" >stop when every</text><text x="610" y="130" text-anchor="middle" fill="#161513" font-size="12" font-weight="700" >direction goes up</text></g></svg>
-    </figure>
-    <ul class="build">
-      <li class="step"><b>The fog analogy.</b> You stand on a hillside in fog and want the lowest point. You cannot see it, but you can feel the slope, so you step downhill, and again, until every direction goes up.</li>
-      <li class="step"><b>Two consequences,</b> both on the final as concepts: where you start matters, because a different valley is possible; and the answer is approximate, because "flat enough" is a judgment the algorithm makes.</li>
-      <li class="step"><b>The real search is in two dimensions,</b> &alpha; and &#8467;<sub>0</sub> together. The picture shows one for clarity; <code>optim()</code> does not care how many.</li>
-    </ul>
-    <p class="punch step wide">A model "fitted by minimizing the SSE" was fitted by a walk like this. Session 19 changes what is walked on, not the walking.</p>
-  </div>
-  <aside class="notes">The starting guesses in the notebook: &alpha; = 0.1, a method that takes the past into account, and &#8467;<sub>0</sub> = y<sub>1</sub>, because the first observation is a good guess for the first level. The notebook explains both; they are reasonable, not unique.<br><br>How <code>optim()</code> feels the slope with no formula: it evaluates the function at nearby points and compares. The default method is Nelder&ndash;Mead, which needs no derivatives. The details are outside this course.</aside>
-</section>
-
-<section class="slide" data-section="4" data-title="Reading the output">
-  <div class="inner">
-    <p class="kicker">Algerian exports &nbsp;&middot;&nbsp; the four fields of an <code>optim()</code> result</p>
-    <h1 class="sowhat wide">Three decimals of agreement is a match, and the rest comes from the starting point and the algorithm.</h1>
-    <div class="console tight">opt &lt;- optim(par = c(0.1, algerian_exports$Exports[1]), fn = my_ses_sse, y = algerian_exports$Exports)
-
-<span class="dim">$par          0.8399  39.53      # alpha, then l_0: the order we chose for par
-$value        1995.285           # the SSE at the end of the search
-$counts       53                 # evaluations of my_ses_sse on the way down
-$convergence  0                  # 0 means it stopped because it was flat, not because it gave up</span>
-
-tidy(fit) |&gt; pull(estimate)    <span class="dim"># fable:  0.8400  39.54</span></div>
-    <ul class="build">
-      <li class="step"><b><code>par</code> is the answer,</b> in the order you defined. <code>value</code> is the SSE there. <code>counts</code> says how many steps the walk took. <code>convergence</code> of 0 is the only good value.</li>
-      <li class="step"><b><code>fable</code> says 0.8400 and 39.54.</b> The difference is in the fourth decimal: a different starting point and a different algorithm reach almost, not exactly, the same bottom of the same valley.</li>
-      <li class="step"><b>This is the expected result,</b> and the notebook explains why; an exact match would be surprising.</li>
-    </ul>
-    <p class="punch step wide">You have reproduced what <code>ETS()</code> does, with fifteen lines of your own. Keep them; Session 17 only adds lines.</p>
-  </div>
-  <aside class="notes">Why <code>fable</code> and <code>optim()</code> differ at all: <code>fable</code> starts the search from its own heuristic initial values and uses its own optimizer with its own stopping rule. On a smooth bowl like this one they agree to three decimals; on a bumpier surface, with more parameters, they could land in different valleys, which is one reason Session 19 looks at more than the SSE.</aside>
-</section>
-
-<section class="slide" data-section="5" data-title="Switch: Argentina">
-  <div class="inner">
-    <a class="nb" href="16_D_SES_ModelFitting.html#argentina" target="_blank" rel="noopener" title="Open the notebook at this section">16_D &rsaquo; 5. Fitting SES to Argentinian exports</a>
-    <p class="kicker">Now we compute &nbsp;&middot;&nbsp; a new series, the same fifteen lines</p>
-    <h1 class="sowhat wide">Fitting a new series takes no extra work, because the functions do not know which series they are on.</h1>
-    <div class="console tight">arg_exports &lt;- global_economy |&gt; filter(Country == "Argentina") |&gt; select(Year, Exports)
-
-opt &lt;- optim(par = c(0.1, arg_exports$Exports[1]), fn = my_ses_sse, y = arg_exports$Exports)
-opt$par                                            <span class="dim"># 0.886   7.41</span>
-
-fit &lt;- arg_exports |&gt; model(ETS(Exports ~ error("A") + trend("N") + season("N")))
-tidy(fit) |&gt; pull(estimate)                        <span class="dim"># 0.886   7.41</span>
-all.equal(tidy(fit) |&gt; pull(estimate), opt$par)    <span class="dim"># a small relative difference, as expected</span></div>
-    <ul class="build">
-      <li class="step"><b>&alpha; = 0.89:</b> Argentinian exports are jumpy too, so the forecast leans almost entirely on the last observation.</li>
-      <li class="step"><b>&#8467;<sub>0</sub> = 7.41,</b> close to the first observation, as the starting guess assumed.</li>
-      <li class="step"><b><code>all.equal()</code> reports a tiny difference rather than TRUE.</b> This is the main result of Session 16: the fit comes from a numerical search rather than a formula, so two searches agree closely but not exactly.</li>
-    </ul>
-    <p class="punch step wide">This is the series of the homework. The fitted model is on your screen; the homework asks what you can say with it.</p>
-  </div>
-  <aside class="notes">The homework notebook <code>16_E</code> fits the same model with <code>ETS()</code> and then works through the Session 12 interval by hand: residual standard deviation with T minus K, where K is 2 because &alpha; and &#8467;<sub>0</sub> are both estimated, then the point forecast plus or minus 1.96 times that.</aside>
-</section>
-
-<section class="slide" data-section="6" data-title="Homework">
-  <div class="inner">
-    <a class="nb" href="16_E_SES_Exercise.html#exercise" target="_blank" rel="noopener" title="Open the notebook at this section">16_E &rsaquo; SES exercise</a>
-    <p class="kicker">Due date in this session&#39;s announcements</p>
-    <h1 class="sowhat">Homework: one series, the whole SES workflow, Sessions 12 and 15 together.</h1>
-    <ul class="build">
-      <li><b><code>16_E</code>, parts 1 to 6, on Argentinian exports.</b> Time plot and whether SES suits it; the <code>ETS(A,N,N)</code> fit with forecasts and fitted values; &alpha; interpreted, and the weight on the three most recent observations.</li>
-      <li><b>Then Session 12 by hand:</b> &sigma;&#770; with T &minus; K, checked against <code>parameters()</code>; the 95% interval for h = 1, compared with <code>hilo()</code> to two decimals.</li>
-      <li><b>K is 2</b> (&alpha; and &#8467;<sub>0</sub>), and the interval is for h = 1 only. <b>Part 7:</b> two sentences on why <code>optim()</code> and <code>fable</code> differ. <b>Part 8:</b> the same chain on a calculator, from the first five residuals to &sigma;&#770; to an interval.</li>
-    </ul>
-    <p class="small">Every step was done in class, in Session 12 on Google and in Session 15 on Algeria. The exercise is to do them in one piece, alone.</p>
-  </div>
-  <aside class="notes">The sentences matter: why SES suits the series, what &alpha; = 0.89 means, and whether your interval matches <code>fable</code>&#39;s.<br><br>The weights loop from Session 15 needs <code>rev()</code> to attach the largest weight to the most recent year; copying it without the reversal is the common slip.</aside>
-</section>
-
-<section class="slide" data-section="6" data-title="Next session">
-  <div class="inner">
-    <p class="kicker">What comes next</p>
-    <h1 class="sowhat">Session 17 adds a trend, and releases Group Assignment 2.</h1>
-    <p class="lead wide">Holt&#39;s method keeps the level equation and adds a second one for the slope, with its own smoothing parameter. The forecasts stop being flat. Then the damped version bends the trend toward flat again, which turns out to be one of the most successful forecasting methods there is. Group Assignment 2 asks you to compare the naive method against SES and damped Holt on share prices, with every tool from Sessions 9 to 14.</p>
-    <p class="punch step wide">Re-read Session 15&#39;s component form before next session, since Holt&#39;s method is that form with one more line.</p>
-    <p class="url" style="font-size:clamp(0.95rem,1.7vw,1.9rem)">aberrizbeitia@faculty.ie.edu</p>
-  </div>
-  <aside class="notes">The Session 17 exercise compares the residuals of Holt and damped Holt with the tools of Session 9, including the QQ plot. Having the <code>09_A</code> summary sheet to hand will help.</aside>
-</section>
+<style>
+.smoothing > .inner {max-width:1200px}
+.smoothing h1.sowhat, .smoothing h1.sowhat.wide {font-size:clamp(2rem,3.1vw,3.4rem);max-width:38ch;line-height:1.12;margin-bottom:1rem}
+.smoothing figure {margin:1rem 0}
+.smoothing figure svg {max-height:32vh}
+.smoothing .console {font-size:clamp(1rem,1.35vw,1.55rem);line-height:1.55;margin:1rem 0;padding:1rem;white-space:pre-wrap}
+.smoothing li {margin-bottom:.65rem;line-height:1.4}
+.smoothing .lead {font-size:clamp(1.1rem,1.55vw,1.7rem);line-height:1.45}
+.smoothing .small {line-height:1.45}
+.smoothing table {font-size:clamp(1rem,1.35vw,1.5rem)}
+@media(max-height:950px){.smoothing {padding-top:1.2rem;padding-bottom:1.2rem}.smoothing h1.sowhat{font-size:clamp(1.8rem,2.7vw,2.8rem)}.smoothing figure svg{max-height:32vh}.smoothing .console{margin:.6rem 0}}
+</style>
+<section class="slide smoothing" data-section="1" data-title="Make the fitting process visible."><div class="inner"><p class="kicker">Session 16 &middot; From equations to code</p><h1 class="sowhat wide">Make the fitting process visible.</h1><p class="lead">Write the SES recursion and its error score. Then let a numerical search choose alpha and the initial level.</p><p class="small">Alejandro Berrizbeitia &middot; aberrizbeitia@faculty.ie.edu</p></div></section>
+<section class="slide smoothing" data-section="1" data-title="A candidate fit must replay the series."><div class="inner"><p class="kicker">Session 16 &middot; From equations to code</p><h1 class="sowhat wide">A candidate fit must replay the series.</h1><figure><svg viewBox="0 0 760 145" role="img" aria-label="Candidate parameters: alpha and initial levelThen Recursion: One prediction per observationThen Score: Sum of squared residuals"><g font-family="SFMono-Regular,Menlo,monospace"><rect x="20" y="28" width="220" height="90" rx="7" fill="#EFEAE1" stroke="#1F3A4D"/><text x="130" y="61" text-anchor="middle" fill="#1F3A4D" font-size="18" font-weight="700" >Candidate parameters</text><text x="130" y="89" text-anchor="middle" fill="#161513" font-size="16" >alpha and initial level</text><text x="255" y="80" text-anchor="middle" fill="#B5471E" font-size="20" >&#8594;</text><rect x="270" y="28" width="220" height="90" rx="7" fill="#EFEAE1" stroke="#1F3A4D"/><text x="380" y="61" text-anchor="middle" fill="#1F3A4D" font-size="18" font-weight="700" >Recursion</text><text x="380" y="89" text-anchor="middle" fill="#161513" font-size="16" >One prediction per observation</text><text x="505" y="80" text-anchor="middle" fill="#B5471E" font-size="20" >&#8594;</text><rect x="520" y="28" width="220" height="90" rx="7" fill="#EFEAE1" stroke="#1F3A4D"/><text x="630" y="61" text-anchor="middle" fill="#1F3A4D" font-size="18" font-weight="700" >Score</text><text x="630" y="89" text-anchor="middle" fill="#161513" font-size="16" >Sum of squared residuals</text></g></svg></figure><p class="lead">Every trial uses the same data. Only the candidate parameter values change.</p></div></section>
+<section class="slide smoothing" data-section="2" data-title="Store the initial level as well as the updates."><div class="inner"><a class="nb" href="16_D_SES_ModelFitting.html#levels" target="_blank" rel="noopener">Implement and test ses_levels()</a><p class="kicker">Session 16 &middot; Build two functions</p><h1 class="sowhat wide">Store the initial level as well as the updates.</h1><div class="console">levels:       l0, l1, l2, ..., lT
+observations: y1, y2, y3, ..., yT
+fitted:       l0, l1, l2, ..., l(T-1)</div><ul class="build"><li class="step">The level vector has T + 1 entries.</li><li class="step">The final level is the next forecast; it is excluded from the fitted-value vector.</li></ul></div></section>
+<section class="slide smoothing" data-section="2" data-title="Score predictions using their residuals."><div class="inner"><a class="nb" href="16_D_SES_ModelFitting.html#sse" target="_blank" rel="noopener">Implement the error score</a><p class="kicker">Session 16 &middot; Build two functions</p><h1 class="sowhat wide">Score predictions using their residuals.</h1><div class="console">e<sub>t</sub> = y<sub>t</sub> &minus; y&#770;<sub>t|t&minus;1</sub>
+SSE = &sum; e<sub>t</sub><sup>2</sup></div><p class="lead">Write SSE_func(). Check equal vector lengths and confirm that predictions precede observations.</p></div></section>
+<section class="slide smoothing" data-section="3" data-title="Read the supplied wrapper."><div class="inner"><a class="nb" href="16_D_SES_ModelFitting.html#compose" target="_blank" rel="noopener">Supplied wrapper</a><p class="kicker">Session 16 &middot; Search and verify</p><h1 class="sowhat wide">Read the supplied wrapper.</h1><div class="console">my_ses_sse &lt;- function(par, y) {
+  levels &lt;- ses_levels(y, alpha = par[1], l_0 = par[2])
+  predictions &lt;- levels[seq_along(y)]
+  SSE_func(y, predictions)
+}</div><p class="lead">Explain the slice before running it. The optimizer needs one number for each candidate pair.</p></div></section>
+<section class="slide smoothing" data-section="3" data-title="Bounds define the search we intend."><div class="inner"><a class="nb" href="16_D_SES_ModelFitting.html#optim" target="_blank" rel="noopener">Run the numerical search</a><p class="kicker">Session 16 &middot; Search and verify</p><h1 class="sowhat wide">Bounds define the search we intend.</h1><div class="console">opt &lt;- optim(c(0.1, y[1]), my_ses_sse, y = y,
+  method = "L-BFGS-B",
+  lower = c(0.0001, -Inf), upper = c(0.9999, Inf))</div><ul class="build"><li class="step">Alpha stays slightly inside zero and one. The initial level is also estimated.</li><li class="step">The starting values begin the search; they are not the final parameter estimates.</li></ul></div></section>
+<section class="slide smoothing" data-section="3" data-title="Convergence is a check, not a proof."><div class="inner"><p class="kicker">Session 16 &middot; Search and verify</p><h1 class="sowhat wide">Convergence is a check, not a proof.</h1><div class="console">opt$convergence
+opt$value
+opt$par</div><ul class="build"><li class="step">Check stopping status, SSE, fitted values and forecasts against fable.</li><li class="step">If results differ materially, try another start with the same objective and bounds.</li></ul></div></section>
+<section class="slide smoothing" data-section="4" data-title="A better fit still needs a forecast test."><div class="inner"><p class="kicker">Session 16 &middot; Judgment</p><h1 class="sowhat wide">A better fit still needs a forecast test.</h1><figure><svg viewBox="0 0 760 145" role="img" aria-label="Training SSE: Fits the parametersThen Residual diagnostics: Finds remaining structureThen Held-out forecasts: Tests predictive usefulness"><g font-family="SFMono-Regular,Menlo,monospace"><rect x="20" y="28" width="220" height="90" rx="7" fill="#EFEAE1" stroke="#1F3A4D"/><text x="130" y="61" text-anchor="middle" fill="#1F3A4D" font-size="18" font-weight="700" >Training SSE</text><text x="130" y="89" text-anchor="middle" fill="#161513" font-size="16" >Fits the parameters</text><text x="255" y="80" text-anchor="middle" fill="#B5471E" font-size="20" >&#8594;</text><rect x="270" y="28" width="220" height="90" rx="7" fill="#EFEAE1" stroke="#1F3A4D"/><text x="380" y="61" text-anchor="middle" fill="#1F3A4D" font-size="18" font-weight="700" >Residual diagnostics</text><text x="380" y="89" text-anchor="middle" fill="#161513" font-size="16" >Finds remaining structure</text><text x="505" y="80" text-anchor="middle" fill="#B5471E" font-size="20" >&#8594;</text><rect x="520" y="28" width="220" height="90" rx="7" fill="#EFEAE1" stroke="#1F3A4D"/><text x="630" y="61" text-anchor="middle" fill="#1F3A4D" font-size="18" font-weight="700" >Held-out forecasts</text><text x="630" y="89" text-anchor="middle" fill="#161513" font-size="16" >Tests predictive usefulness</text></g></svg></figure><p class="lead">Name the horizon and loss that match the business decision before choosing the winner.</p></div></section>
+<section class="slide smoothing" data-section="5" data-title="Argentina: explain the fitted memory."><div class="inner"><a class="nb" href="16_E_SES_Exercise.html#parameters" target="_blank" rel="noopener">Argentina exercise</a><p class="kicker">Session 16 &middot; Practice</p><h1 class="sowhat wide">Argentina: explain the fitted memory.</h1><p class="lead">Fit ETS(A,N,N). Interpret alpha through the weights on the three newest observations, and check whether a flat forecast is useful.</p><ul class="build"><li class="step">Calculate the weights with a calculator before checking R.</li><li class="step">Include the remaining initial-level weight when explaining the finite total.</li></ul></div></section>
+<section class="slide smoothing" data-section="5" data-title="Connect errors to a prediction interval."><div class="inner"><p class="kicker">Session 16 &middot; Practice</p><h1 class="sowhat wide">Connect errors to a prediction interval.</h1><div class="console">Residuals &#8594; SSE &#8594; estimated variance &#8594; interval
+For the first forecast: point forecast &plusmn; 1.96 &times; sigma</div><p class="lead">Use the course residual-variance convention. Longer-horizon uncertainty is a different quantity.</p></div></section>
+<section class="slide smoothing" data-section="6" data-title="Homework: computation plus interpretation."><div class="inner"><a class="nb" href="16_E_SES_Exercise.html#exercise" target="_blank" rel="noopener">Homework</a><p class="kicker">Session 16 &middot; Close</p><h1 class="sowhat wide">Homework: computation plus interpretation.</h1><ul class="build"><li class="step">Complete 16_E: fit, weights, residual scale and the first prediction interval. Use a readable plot; special tick spacing is unnecessary.</li><li class="step">Do the short calculator chain. Explain why convergence and lower training SSE do not establish forecast quality.</li></ul><p class="lead">Next session adds a slope. The prediction-before-update logic stays the same.</p></div></section>
 <!-- lives inside the stage so it is positioned against it, not the viewport,
      and therefore never covers the rail -->
 <div id="notepane"><h4>Going further</h4><div class="body"></div></div>
@@ -657,7 +465,7 @@ all.equal(tidy(fit) |&gt; pull(estimate), opt$par)    <span class="dim"># a smal
 </div>
 
 <div id="hud">
-  <span id="count">1 / 12</span>
+  <span id="count">1 / 11</span>
   <button id="prev" title="Previous">&larr;</button>
   <button id="next" title="Next">&rarr;</button>
 </div>
@@ -666,7 +474,7 @@ all.equal(tidy(fit) |&gt; pull(estimate), opt$par)    <span class="dim"># a smal
 (function(){
   "use strict";
 
-  var SECTIONS = [{"name":"Where we are","from":1,"to":2},{"name":"The plan","from":3,"to":3},{"name":"Three functions","from":4,"to":7,"live":true},{"name":"The search","from":8,"to":9},{"name":"Argentina","from":10,"to":10,"live":true},{"name":"Close","from":11,"to":12}];
+  var SECTIONS = [{"name":"From equations to code","from":1,"to":2},{"name":"Build two functions","from":3,"to":4},{"name":"Search and verify","from":5,"to":7},{"name":"Judgment","from":8,"to":8},{"name":"Practice","from":9,"to":10},{"name":"Close","from":11,"to":11}];
 var slides = Array.prototype.slice.call(document.querySelectorAll(".slide"));
   var toc    = document.getElementById("toc");
   var ovlist = document.getElementById("ovlist");

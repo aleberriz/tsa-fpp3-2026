@@ -13,18 +13,16 @@ homework). Script: [`session16_code.R`](session16_code.R), both notebooks' R cod
 **Data:** `yhat_SES_test`, in `data/` at the repo root: the reference output for testing your
 level function.
 
-**Focus:** The Session 15 spreadsheet written as R functions: `ses_levels()` for the level
-recursion, `SSE_func()` for the sum of squared errors, `my_ses_sse()` composing the two with the
-parameters in one vector; a test file for the first function; what `optim()` does and how to read
-its output; recovering alpha and the initial level for Algerian and Argentinian exports, and why
-they differ from `fable`'s in the third decimal.
+**Focus:** Implement the SES recursion and SSE, read a supplied optimizer wrapper, search within bounds, and compare convergence, fit and forecasts with fable.
 
 **R:** user-defined functions, `for` loops, `dget()`, `optim()`, `tidy()`
 
+**Practice:** complete the calculator weights and residual-to-interval rehearsal in the notebook, plus the search and forecast judgments.
+
 **Homework:** `16_E` in full: time plot, fit, parameters and the weight on the three most recent
 observations, residual standard deviation by hand, a 95% interval by hand, and the comparison with
-`fable`, then two sentences on why `optim()` and `fable` can differ, and the same chain once on a
-calculator, from five residuals to an interval. Due date in the announcements.
+`fable`, then the calculator rehearsal from five residuals to an interval and short judgments about
+optimizer checks and forecast evaluation. Due date in the announcements.
 
 **Outcome:** Student can explain what `ETS()` is doing numerically, because they have done it.
 

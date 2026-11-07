@@ -11,16 +11,11 @@
 [`15_C`](15_C_SES_excel_fittedvals_exercise.xlsx). Script: [`session15_code.R`](session15_code.R),
 the notebook's R code in notebook order.
 
-**Focus:** Naive, mean and simple exponential smoothing as three ways of weighting the past; the
-weights as a geometric sequence, why they shrink and why they add up to one; the weighted average
-form and why the forecasts are flat; the recursive form, where each new observation updates the
-previous forecast; the component form with the level, and the initial level as a second parameter;
-the fitted values computed by hand from alpha and the initial level; what fitting means: searching
-for the alpha and initial level with the smallest sum of squared errors. Then in R: `ETS(A,N,N)`,
-the parameters from `tidy()`, the fitted values from `augment()`, the weight on the three most
-recent observations, and the forecast.
+**Focus:** Predict before observing, update the level from the surprise, unfold the recursion into finite weights including the initial level, and judge when a flat forecast is useful.
 
 **R:** `ETS(y ~ error("A") + trend("N") + season("N"))`, `tidy()`, `augment()`, `forecast()`
+
+**Calculator practice:** trace the first two workbook rows before filling down. Explain why a smaller training SSE alone cannot establish better forecasts.
 
 **Homework:** the `15_C` workbook: the level and fitted-value columns from the given alpha and
 initial level, the SSE, a check against R, and two sentences after changing alpha. Due date in

@@ -2360,6 +2360,8 @@ window.Quarto = {
   <li><a href="#sigma" id="toc-sigma" class="nav-link" data-scroll-target="#sigma">4. Standard deviation of the residuals</a></li>
   <li><a href="#interval" id="toc-interval" class="nav-link" data-scroll-target="#interval">5. 95% prediction interval</a></li>
   <li><a href="#compare" id="toc-compare" class="nav-link" data-scroll-target="#compare">6. Comparing prediction intervals</a></li>
+  <li><a href="#calculator" id="toc-calculator" class="nav-link" data-scroll-target="#calculator">7. Calculator checks</a></li>
+  <li><a href="#decision" id="toc-decision" class="nav-link" data-scroll-target="#decision">8. Decision</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -2394,7 +2396,7 @@ window.Quarto = {
 <h1>SES exercise</h1>
 <section id="timeplot" class="level3">
 <h3 class="anchored" data-anchor-id="timeplot">1. Argentina’s exports</h3>
-<p>Select the rows for Argentina from the dataset <code>global_economy</code>, keeping the exports column. Produce a time plot of exports with major ticks every ten years and minor ticks every five years.</p>
+<p>Select the rows for Argentina from the dataset <code>global_economy</code>, keeping the exports column. Produce a readable time plot. State whether a flat forecast is plausible for this series.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>arg_exports <span class="ot">&lt;-</span> global_economy <span class="sc">|&gt;</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">filter</span>(Country <span class="sc">==</span> <span class="st">&quot;Argentina&quot;</span>) <span class="sc">|&gt;</span></span>
@@ -2447,6 +2449,15 @@ window.Quarto = {
 <section id="compare" class="level3">
 <h3 class="anchored" data-anchor-id="compare">6. Comparing prediction intervals</h3>
 <p>Extract the prediction interval that <code>fable</code> gives for h = 1. How does your interval compare with it?</p>
+</section>
+<section id="calculator" class="level3">
+<h3 class="anchored" data-anchor-id="calculator">7. Calculator checks</h3>
+<p>Use the fitted alpha rounded to two decimals. Calculate the weights on the three most recent observations, their sum, and the remaining weight. Explain why that remainder includes the initial level as well as older observations. Small differences from calculations with the unrounded alpha are expected.</p>
+<p>For the first five fitted values, write the residuals and add their squares by hand. For an arithmetic rehearsal only, treat these five rounded residuals as the complete series with <span class="math inline">\(K=2\)</span>: divide their SSE by <span class="math inline">\(5-2\)</span>, take the square root, and build a 95% interval around the first point forecast. Check each step against R. This artificial five-residual scale is not an estimate of the full model’s forecast uncertainty.</p>
+</section>
+<section id="decision" class="level3">
+<h3 class="anchored" data-anchor-id="decision">8. Decision</h3>
+<p>What would you check if <code>optim()</code> and <code>fable</code> differed materially? Does the lower training SSE establish that this model will forecast better than the naive method? Name the evidence you would use and the forecast horizon your comparison would target.</p>
 </section>
 </section>
 
