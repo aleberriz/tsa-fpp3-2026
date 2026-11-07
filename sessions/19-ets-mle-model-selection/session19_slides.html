@@ -417,247 +417,40 @@ body.ov-on #overview{display:block}
 </nav>
 
 <main id="stage">
-<section class="slide title-slide" data-section="1" data-title="Title">
-  <div class="inner">
-    <p class="kicker">IE University · Dual Degree BBA &amp; Data and Business Analytics</p>
-    <h1>Three letters<br>and a referee.</h1>
-    <div class="rule"></div>
-    <p class="who"><b>Session 19.</b> The ETS taxonomy, model selection, and forecasting with ETS.<br>
-    Alejandro Berrizbeitia · aberrizbeitia@faculty.ie.edu</p>
-  </div>
-  <aside class="notes">The deck is self-contained: press <b>N</b> at any time to open or close this panel, and <b>O</b> for a list of every slide.<br><br>Today is fpp3 sections 8.4 to 8.7, notebooks <code>19_A</code> (the taxonomy, short) and <code>19_B</code> (estimation, selection, forecasting, and the homework), and the reading <code>19_A_MLE_Informal_Intro.pdf</code>, which this session relies on for the details of maximum likelihood. It is the last content session of the course.</aside>
-</section>
-
-<section class="slide" data-section="1" data-title="Where we are">
-  <div class="inner">
-    <p class="kicker">Where we are &nbsp;&middot;&nbsp; the last content session</p>
-    <h1 class="sowhat wide">Four sessions built six models by hand. Today they get names, a referee, and forecasts.</h1>
-    <ul class="build">
-      <li class="step"><b>Each model gets a name.</b> SES, Holt, damped Holt, Holt&ndash;Winters additive, multiplicative and damped: one family, ETS, with a three-letter name for each member.</li>
-      <li class="step"><b>A referee chooses among them.</b> Maximum likelihood fits each one; AICc charges each for its parameters; <code>ETS()</code> picks the cheapest good fit on its own.</li>
-      <li class="step"><b>The chosen model forecasts.</b> It comes with Session 12&#39;s intervals, which is fpp3 8.7 and the point of the whole block.</li>
-    </ul>
-    <p class="punch step wide">After today, <code>ETS(y)</code> is one line of code you can explain letter by letter.</p>
-  </div>
-  <aside class="notes">The final covers the whole course. Slide 13 is a one-line check of every session since the midterm, in the same format as the Session 10 deck&#39;s check for Sessions 1 to 8.</aside>
-</section>
-
-<section class="slide" data-section="2" data-title="Three letters">
-  <div class="inner">
-    <a class="nb" href="19_A_ExpSmoothing_Classification.html#notation" target="_blank" rel="noopener" title="Open the notebook at this section">19_A &rsaquo; General notation</a>
-    <p class="kicker">fpp3 8.4 &nbsp;&middot;&nbsp; ETS(Error, Trend, Season)</p>
-    <h1 class="sowhat wide">Every model you have fitted is one cell of this grid.</h1>
-    <figure>
-      <svg viewBox="0 0 760 190" role="img" aria-label="A three by three grid. Rows are the trend: none, additive, additive damped. Columns are the season: none, additive, multiplicative. The cells you have met are highlighted: none-none is SES, additive-none is Holt, damped-none is damped Holt, additive-additive and additive-multiplicative are Holt-Winters, and damped with additive or multiplicative season are damped Holt-Winters"><g font-family="SFMono-Regular,Menlo,monospace"><text x="440.0" y="20" text-anchor="middle" fill="#1F3A4D" font-size="10.5" font-weight="700" >SEASON</text><text x="60" y="127.0" text-anchor="middle" fill="#1F3A4D" font-size="10.5" font-weight="700" transform="rotate(-90 60 127.0)">TREND</text><text x="260.0" y="40" text-anchor="middle" fill="#161513" font-size="10.5" font-weight="700" >N none</text><text x="440.0" y="40" text-anchor="middle" fill="#161513" font-size="10.5" font-weight="700" >A additive</text><text x="620.0" y="40" text-anchor="middle" fill="#161513" font-size="10.5" font-weight="700" >M multiplicative</text><text x="160" y="85.0" text-anchor="end" fill="#161513" font-size="10.5" font-weight="700" >N none</text><rect x="174" y="54" width="172" height="36" rx="4" fill="#EFEAE1" stroke="#B5471E" stroke-width="1.3"/><text x="260.0" y="69" text-anchor="middle" fill="#98928a" font-size="10" >(N, N)</text><text x="260.0" y="83" text-anchor="middle" fill="#B5471E" font-size="10.5" font-weight="700" >SES</text><rect x="354" y="54" width="172" height="36" rx="4" fill="#FAF8F5" stroke="#E4DFD5" stroke-width="1.3"/><text x="440.0" y="69" text-anchor="middle" fill="#98928a" font-size="10" >(N, A)</text><rect x="534" y="54" width="172" height="36" rx="4" fill="#FAF8F5" stroke="#E4DFD5" stroke-width="1.3"/><text x="620.0" y="69" text-anchor="middle" fill="#98928a" font-size="10" >(N, M)</text><text x="160" y="127.0" text-anchor="end" fill="#161513" font-size="10.5" font-weight="700" >A additive</text><rect x="174" y="96" width="172" height="36" rx="4" fill="#EFEAE1" stroke="#B5471E" stroke-width="1.3"/><text x="260.0" y="111" text-anchor="middle" fill="#98928a" font-size="10" >(A, N)</text><text x="260.0" y="125" text-anchor="middle" fill="#B5471E" font-size="10.5" font-weight="700" >Holt</text><rect x="354" y="96" width="172" height="36" rx="4" fill="#EFEAE1" stroke="#B5471E" stroke-width="1.3"/><text x="440.0" y="111" text-anchor="middle" fill="#98928a" font-size="10" >(A, A)</text><text x="440.0" y="125" text-anchor="middle" fill="#B5471E" font-size="10.5" font-weight="700" >Holt&ndash;Winters add.</text><rect x="534" y="96" width="172" height="36" rx="4" fill="#EFEAE1" stroke="#B5471E" stroke-width="1.3"/><text x="620.0" y="111" text-anchor="middle" fill="#98928a" font-size="10" >(A, M)</text><text x="620.0" y="125" text-anchor="middle" fill="#B5471E" font-size="10.5" font-weight="700" >Holt&ndash;Winters mult.</text><text x="160" y="169.0" text-anchor="end" fill="#161513" font-size="10.5" font-weight="700" >Ad damped</text><rect x="174" y="138" width="172" height="36" rx="4" fill="#EFEAE1" stroke="#B5471E" stroke-width="1.3"/><text x="260.0" y="153" text-anchor="middle" fill="#98928a" font-size="10" >(Ad, N)</text><text x="260.0" y="167" text-anchor="middle" fill="#B5471E" font-size="10.5" font-weight="700" >damped Holt</text><rect x="354" y="138" width="172" height="36" rx="4" fill="#EFEAE1" stroke="#B5471E" stroke-width="1.3"/><text x="440.0" y="153" text-anchor="middle" fill="#98928a" font-size="10" >(Ad, A)</text><text x="440.0" y="167" text-anchor="middle" fill="#B5471E" font-size="10.5" font-weight="700" >damped HW add.</text><rect x="534" y="138" width="172" height="36" rx="4" fill="#EFEAE1" stroke="#B5471E" stroke-width="1.3"/><text x="620.0" y="153" text-anchor="middle" fill="#98928a" font-size="10" >(Ad, M)</text><text x="620.0" y="167" text-anchor="middle" fill="#B5471E" font-size="10.5" font-weight="700" >damped HW mult.</text></g></svg>
-      <div class="figrow three">
-        <p class="step"><b>Trend and season make the method</b>Nine combinations, and you have built most of them by hand since Session 15.</p>
-        <p class="step t"><b>The first letter, the error, makes the model</b>A or M in front of each method. <code>ETS(A,A,N)</code> is Holt with additive errors.</p>
-        <p class="step"><b>Read a name left to right</b><code>ETS(M,Ad,M)</code> is multiplicative errors, damped additive trend, multiplicative season: damped Holt&ndash;Winters, multiplicative.</p>
-      </div>
-    </figure>
-    <p class="punch step wide">The final can ask in either direction, from a name to its letters or from the letters to the name.</p>
-  </div>
-  <aside class="notes">Multiplicative trends exist (<code>"M"</code> and <code>"Md"</code> in <code>fable</code>) but fpp3 leaves them out of the grid because they tend to forecast poorly. They are not examined.<br><br>The figure at the end of <code>19_A</code> gives the equations of every cell in state space form; you need the names, not the equations.</aside>
-</section>
-
-<section class="slide" data-section="2" data-title="The error letter">
-  <div class="inner">
-    <a class="nb" href="19_A_ExpSmoothing_Classification.html#notation" target="_blank" rel="noopener" title="Open the notebook at this section">19_A &rsaquo; General notation</a>
-    <p class="kicker">fpp3 8.5 &nbsp;&middot;&nbsp; the letter that changes the intervals</p>
-    <h1 class="sowhat wide">The error letter leaves the forecast alone and reshapes the interval.</h1>
-    <figure>
-      <svg viewBox="0 0 760 192" role="img" aria-label="Two panels with the same rising forecast line. Left, additive errors: a band of constant width around the line. Right, multiplicative errors: a band that widens as the line rises, because the misses are a fixed percentage of the level"><g font-family="SFMono-Regular,Menlo,monospace"><line x1="40" y1="160" x2="360" y2="160" stroke="#98928a" stroke-width="1"/><line x1="40" y1="160" x2="40" y2="34" stroke="#98928a" stroke-width="1"/><text x="200" y="24" text-anchor="middle" fill="#6B665E" font-size="11" font-weight="700" >additive error: misses of the same size</text><polyline points="55.0,120.0 85.0,113.0 115.0,106.0 145.0,99.0 175.0,92.0 205.0,85.0 235.0,78.0 265.0,71.0 295.0,64.0 325.0,57.0" fill="none" stroke="#1F3A4D" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="1"/><polygon points="55.0,106.0 85.0,99.0 115.0,92.0 145.0,85.0 175.0,78.0 205.0,71.0 235.0,64.0 265.0,57.0 295.0,50.0 325.0,43.0 325.0,71.0 295.0,78.0 265.0,85.0 235.0,92.0 205.0,99.0 175.0,106.0 145.0,113.0 115.0,120.0 85.0,127.0 55.0,134.0" fill="#1F3A4D" opacity=".13"/><line x1="400" y1="160" x2="720" y2="160" stroke="#98928a" stroke-width="1"/><line x1="400" y1="160" x2="400" y2="34" stroke="#98928a" stroke-width="1"/><text x="560" y="24" text-anchor="middle" fill="#6B665E" font-size="11" font-weight="700" >multiplicative error: misses of the same percentage</text><polyline points="415.0,120.0 445.0,113.0 475.0,106.0 505.0,99.0 535.0,92.0 565.0,85.0 595.0,78.0 625.0,71.0 655.0,64.0 685.0,57.0" fill="none" stroke="#B5471E" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="1"/><polygon points="415.0,112.8 445.0,104.5 475.0,96.3 505.0,88.0 535.0,79.8 565.0,71.5 595.0,63.2 625.0,55.0 655.0,46.7 685.0,38.5 685.0,75.5 655.0,81.3 625.0,87.0 595.0,92.8 565.0,98.5 535.0,104.2 505.0,110.0 475.0,115.7 445.0,121.5 415.0,127.2" fill="#B5471E" opacity=".13"/><text x="380" y="184" text-anchor="middle" fill="#98928a" font-size="11" >same point forecasts, different bands around them</text></g></svg>
-    </figure>
-    <ul class="build">
-      <li class="step"><b>Additive error:</b> the forecast misses by about the same amount whatever the level. Think of a thermometer that is off by two degrees in winter and summer alike.</li>
-      <li class="step"><b>Multiplicative error:</b> it misses by about the same percentage. A sales forecast that is off by 5% behaves like this, since 5% is more units in a busy month.</li>
-      <li class="step"><b>The point forecasts are the same</b> for both, given the same parameters. The intervals are not, and neither is the likelihood, which is how the data choose between them.</li>
-    </ul>
-    <p class="punch step wide">Nine methods with two error types each give eighteen models, and the referee chooses among them.</p>
-  </div>
-  <aside class="notes">This is why Session 18 paired a multiplicative season with multiplicative errors: when the swings grow with the level, the misses usually do too.<br><br>Behind the scenes <code>fable</code> writes each model in state space form, where every equation is updated by the one-step error. That is also why its <code>beta</code> is &alpha;&beta;*, the point from Session 18.</aside>
-</section>
-
-<section class="slide" data-section="3" data-title="Estimation by likelihood">
-  <div class="inner">
-    <a class="nb" href="19_B_ESmoothing_Model_Selection.html#likelihood" target="_blank" rel="noopener" title="Open the notebook at this section">19_B &rsaquo; Minimizing the SSE vs maximizing the likelihood</a>
-    <p class="kicker">fpp3 8.6 &nbsp;&middot;&nbsp; the reading: <code>19_A_MLE_Informal_Intro.pdf</code></p>
-    <h1 class="sowhat wide">Fit by likelihood: make the data you saw most probable.</h1>
-    <figure>
-      <svg viewBox="0 0 760 190" role="img" aria-label="Six data points on a line. Over them, two bell-shaped curves: one centered among the points, which gives each point a high density, and one centered off to the side, which gives the same points low densities. The likelihood of a model is the product of the heights of its curve above the data points"><g font-family="SFMono-Regular,Menlo,monospace"><line x1="40" y1="160" x2="720" y2="160" stroke="#98928a" stroke-width="1"/><line x1="40" y1="160" x2="40" y2="30" stroke="#98928a" stroke-width="1"/><polyline points="40.0,160.0 44.0,160.0 48.0,160.0 52.0,160.0 56.0,160.0 60.0,160.0 64.0,160.0 68.0,160.0 72.0,160.0 76.0,160.0 80.0,160.0 84.0,160.0 88.0,160.0 92.0,160.0 96.0,160.0 100.0,160.0 104.0,160.0 108.0,159.9 112.0,159.9 116.0,159.9 120.0,159.9 124.0,159.9 128.0,159.8 132.0,159.8 136.0,159.7 140.0,159.7 144.0,159.6 148.0,159.5 152.0,159.5 156.0,159.3 160.0,159.2 164.0,159.1 168.0,158.9 172.0,158.7 176.0,158.4 180.0,158.1 184.0,157.8 188.0,157.4 192.0,157.0 196.0,156.5 200.0,156.0 204.0,155.3 208.0,154.6 212.0,153.8 216.0,152.9 220.0,151.9 224.0,150.8 228.0,149.6 232.0,148.2 236.0,146.7 240.0,145.1 244.0,143.3 248.0,141.4 252.0,139.3 256.0,137.1 260.0,134.7 264.0,132.1 268.0,129.4 272.0,126.5 276.0,123.5 280.0,120.4 284.0,117.0 288.0,113.6 292.0,110.1 296.0,106.5 300.0,102.8 304.0,99.0 308.0,95.2 312.0,91.4 316.0,87.6 320.0,83.8 324.0,80.1 328.0,76.5 332.0,73.0 336.0,69.7 340.0,66.6 344.0,63.6 348.0,60.9 352.0,58.5 356.0,56.3 360.0,54.4 364.0,52.8 368.0,51.6 372.0,50.7 376.0,50.2 380.0,50.0 384.0,50.2 388.0,50.7 392.0,51.6 396.0,52.8 400.0,54.4 404.0,56.3 408.0,58.5 412.0,60.9 416.0,63.6 420.0,66.6 424.0,69.7 428.0,73.0 432.0,76.5 436.0,80.1 440.0,83.8 444.0,87.6 448.0,91.4 452.0,95.2 456.0,99.0 460.0,102.8 464.0,106.5 468.0,110.1 472.0,113.6 476.0,117.0 480.0,120.4 484.0,123.5 488.0,126.5 492.0,129.4 496.0,132.1 500.0,134.7 504.0,137.1 508.0,139.3 512.0,141.4 516.0,143.3 520.0,145.1 524.0,146.7 528.0,148.2 532.0,149.6 536.0,150.8 540.0,151.9 544.0,152.9 548.0,153.8 552.0,154.6 556.0,155.3 560.0,156.0 564.0,156.5 568.0,157.0 572.0,157.4 576.0,157.8 580.0,158.1 584.0,158.4 588.0,158.7 592.0,158.9 596.0,159.1 600.0,159.2 604.0,159.3 608.0,159.5 612.0,159.5 616.0,159.6 620.0,159.7 624.0,159.7 628.0,159.8 632.0,159.8 636.0,159.9 640.0,159.9 644.0,159.9 648.0,159.9 652.0,159.9 656.0,160.0 660.0,160.0 664.0,160.0 668.0,160.0 672.0,160.0 676.0,160.0 680.0,160.0 684.0,160.0 688.0,160.0 692.0,160.0 696.0,160.0 700.0,160.0 704.0,160.0 708.0,160.0 712.0,160.0 716.0,160.0 720.0,160.0" fill="none" stroke="#B5471E" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="1"/><text x="318" y="46" text-anchor="end" fill="#B5471E" font-size="10.5" font-weight="700" >a model that puts the data</text><text x="318" y="60" text-anchor="end" fill="#B5471E" font-size="10.5" font-weight="700" >where they are likely</text><polyline points="40.0,160.0 44.0,160.0 48.0,160.0 52.0,160.0 56.0,160.0 60.0,160.0 64.0,160.0 68.0,160.0 72.0,160.0 76.0,160.0 80.0,160.0 84.0,160.0 88.0,160.0 92.0,160.0 96.0,160.0 100.0,160.0 104.0,160.0 108.0,160.0 112.0,160.0 116.0,160.0 120.0,160.0 124.0,160.0 128.0,160.0 132.0,160.0 136.0,160.0 140.0,160.0 144.0,160.0 148.0,160.0 152.0,160.0 156.0,160.0 160.0,160.0 164.0,160.0 168.0,160.0 172.0,160.0 176.0,160.0 180.0,160.0 184.0,160.0 188.0,160.0 192.0,160.0 196.0,160.0 200.0,160.0 204.0,160.0 208.0,160.0 212.0,160.0 216.0,160.0 220.0,160.0 224.0,160.0 228.0,160.0 232.0,160.0 236.0,160.0 240.0,160.0 244.0,160.0 248.0,160.0 252.0,160.0 256.0,160.0 260.0,160.0 264.0,160.0 268.0,160.0 272.0,160.0 276.0,160.0 280.0,160.0 284.0,160.0 288.0,159.9 292.0,159.9 296.0,159.9 300.0,159.9 304.0,159.9 308.0,159.8 312.0,159.8 316.0,159.7 320.0,159.7 324.0,159.6 328.0,159.5 332.0,159.5 336.0,159.3 340.0,159.2 344.0,159.1 348.0,158.9 352.0,158.7 356.0,158.4 360.0,158.1 364.0,157.8 368.0,157.4 372.0,157.0 376.0,156.5 380.0,156.0 384.0,155.3 388.0,154.6 392.0,153.8 396.0,152.9 400.0,151.9 404.0,150.8 408.0,149.6 412.0,148.2 416.0,146.7 420.0,145.1 424.0,143.3 428.0,141.4 432.0,139.3 436.0,137.1 440.0,134.7 444.0,132.1 448.0,129.4 452.0,126.5 456.0,123.5 460.0,120.4 464.0,117.0 468.0,113.6 472.0,110.1 476.0,106.5 480.0,102.8 484.0,99.0 488.0,95.2 492.0,91.4 496.0,87.6 500.0,83.8 504.0,80.1 508.0,76.5 512.0,73.0 516.0,69.7 520.0,66.6 524.0,63.6 528.0,60.9 532.0,58.5 536.0,56.3 540.0,54.4 544.0,52.8 548.0,51.6 552.0,50.7 556.0,50.2 560.0,50.0 564.0,50.2 568.0,50.7 572.0,51.6 576.0,52.8 580.0,54.4 584.0,56.3 588.0,58.5 592.0,60.9 596.0,63.6 600.0,66.6 604.0,69.7 608.0,73.0 612.0,76.5 616.0,80.1 620.0,83.8 624.0,87.6 628.0,91.4 632.0,95.2 636.0,99.0 640.0,102.8 644.0,106.5 648.0,110.1 652.0,113.6 656.0,117.0 660.0,120.4 664.0,123.5 668.0,126.5 672.0,129.4 676.0,132.1 680.0,134.7 684.0,137.1 688.0,139.3 692.0,141.4 696.0,143.3 700.0,145.1 704.0,146.7 708.0,148.2 712.0,149.6 716.0,150.8 720.0,151.9" fill="none" stroke="#1F3A4D" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="1"/><text x="615" y="46" text-anchor="start" fill="#1F3A4D" font-size="10.5" font-weight="700" >a model that makes</text><text x="615" y="60" text-anchor="start" fill="#1F3A4D" font-size="10.5" font-weight="700" >the same data unlikely</text><circle cx="300" cy="160" r="5" fill="#161513"/><line x1="300" y1="160" x2="300" y2="102.8" stroke="#B5471E" stroke-width="1" stroke-dasharray="2 2"/><circle cx="340" cy="160" r="5" fill="#161513"/><line x1="340" y1="160" x2="340" y2="66.6" stroke="#B5471E" stroke-width="1" stroke-dasharray="2 2"/><circle cx="365" cy="160" r="5" fill="#161513"/><line x1="365" y1="160" x2="365" y2="52.5" stroke="#B5471E" stroke-width="1" stroke-dasharray="2 2"/><circle cx="390" cy="160" r="5" fill="#161513"/><line x1="390" y1="160" x2="390" y2="51.1" stroke="#B5471E" stroke-width="1" stroke-dasharray="2 2"/><circle cx="420" cy="160" r="5" fill="#161513"/><line x1="420" y1="160" x2="420" y2="66.6" stroke="#B5471E" stroke-width="1" stroke-dasharray="2 2"/><circle cx="455" cy="160" r="5" fill="#161513"/><line x1="455" y1="160" x2="455" y2="98.0" stroke="#B5471E" stroke-width="1" stroke-dasharray="2 2"/><text x="380" y="182" text-anchor="middle" fill="#98928a" font-size="10.5" >the data, the dots, stay put; the likelihood is the product of the heights above them</text></g></svg>
-      <div class="figrow three">
-        <p class="step"><b>The likelihood</b>How probable the observed data are if a given model, with given parameters, generated them. More probable means a better fit.</p>
-        <p class="step t"><b>Maximum likelihood</b>Searches for the parameters with the highest likelihood: Session 16&#39;s walk, uphill on the likelihood instead of downhill on the SSE.</p>
-        <p class="step"><b>Additive or multiplicative</b>For additive errors the two give the same parameters. For multiplicative errors they differ, and <code>ETS()</code> always uses the likelihood.</p>
-      </div>
-    </figure>
-    <p class="punch step wide">The reading derives it; the final asks for the idea, not the derivation.</p>
-  </div>
-  <aside class="notes">Why logs: the likelihood is a product of many small densities, which is awkward to compute and to maximize. Its log is a sum, and because the log is strictly increasing, the parameters that maximize one maximize the other. The reading shows that for normal data the maximum-likelihood estimates of &mu; and &sigma; are the sample mean and the uncorrected sample standard deviation.</aside>
-</section>
-
-<section class="slide" data-section="3" data-title="The penalty">
-  <div class="inner">
-    <a class="nb" href="19_B_ESmoothing_Model_Selection.html#aic" target="_blank" rel="noopener" title="Open the notebook at this section">19_B &rsaquo; AIC</a>
-    <p class="kicker">fpp3 8.6 &nbsp;&middot;&nbsp; AIC, AICc, BIC</p>
-    <h1 class="sowhat wide">AIC is the fit, plus a charge for every number the model had to estimate.</h1>
-    <figure>
-      <svg viewBox="0 0 760 198" role="img" aria-label="Three curves against the number of parameters k. The fit term, minus two times the log-likelihood, falls as parameters are added, quickly at first and then slowly. The charge, 2k, rises in a straight line. Their sum, the AIC, falls and then rises, with its lowest point in the middle, marked best here"><g font-family="SFMono-Regular,Menlo,monospace"><line x1="60" y1="170" x2="520" y2="170" stroke="#98928a" stroke-width="1"/><line x1="60" y1="170" x2="60" y2="30" stroke="#98928a" stroke-width="1"/><polyline points="70.0,71.8 118.0,87.7 166.0,97.8 214.0,104.2 262.0,108.2 310.0,110.8 358.0,112.4 406.0,113.5 454.0,114.1 502.0,114.6" fill="none" stroke="#1F3A4D" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="1"/><polyline points="70.0,157.5 118.0,150.1 166.0,142.6 214.0,135.2 262.0,127.7 310.0,120.3 358.0,112.8 406.0,105.3 454.0,97.9 502.0,90.4" fill="none" stroke="#6B7F5E" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="5 4" opacity="1"/><polyline points="70.0,64.3 118.0,72.8 166.0,75.4 214.0,74.3 262.0,70.9 310.0,66.1 358.0,60.3 406.0,53.8 454.0,47.0 502.0,40.0" fill="none" stroke="#B5471E" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" opacity="1"/><circle cx="166" cy="75.4" r="5" fill="#B5471E"/><text x="510" y="118.56354912163573" text-anchor="start" fill="#1F3A4D" font-size="10.5" font-weight="700" >&minus;2 log L: fit</text><text x="510" y="94.43645087836425" text-anchor="start" fill="#6B7F5E" font-size="10.5" font-weight="700" >2k: the charge</text><text x="510" y="44.0" text-anchor="start" fill="#B5471E" font-size="10.5" font-weight="700" >AIC: the sum</text><text x="166" y="63.398025352436804" text-anchor="middle" fill="#B5471E" font-size="10.5" font-weight="700" >best here</text><text x="290" y="190" text-anchor="middle" fill="#98928a" font-size="10.5" >number of parameters k</text></g></svg>
-    </figure>
-    <div class="console tight">AIC  = &minus;2 log(L) + 2k        <span class="dim">k: parameters and initial states, residual variance included</span>
-AICc = AIC + 2k(k + 1) / (T &minus; k &minus; 1)        <span class="dim">corrects for short series; what ETS() uses</span>
-BIC  = AIC + k [log(T) &minus; 2]          <span class="dim">charges more per parameter once T &ge; 8</span></div>
-    <ul class="build">
-      <li class="step"><b>More parameters always fit the training data better,</b> so the first term alone would always choose the biggest model. The charge stops that by putting a price on Session 18&#39;s elephant.</li>
-      <li class="step"><b>Lower is better, for all three.</b> The numbers mean nothing on their own; only differences between models fitted to the same data do.</li>
-      <li class="step"><b>By hand:</b> China&#39;s population model has 4 parameters and initial states plus the residual variance, so k = 5, and AIC = &minus;2 &times; log L + 10. The notebook checks it against <code>glance()</code>.</li>
-    </ul>
-    <p class="punch step wide">Given two log-likelihoods and two k, choosing by AIC is two multiplications and a comparison.</p>
-  </div>
-  <aside class="notes">The inherited notebook defined k without the residual variance; fpp3 8.6 includes it, and the notebook&#39;s own China example used k = 4 + 1. Corrected in this build.<br><br>Why the BIC threshold is T = 8: its extra charge per parameter is log(T) &minus; 2, which is positive once T exceeds e&sup2;, about 7.4.</aside>
-</section>
-
-<section class="slide" data-section="3" data-title="Criteria or cross-validation">
-  <div class="inner">
-    <a class="nb" href="19_B_ESmoothing_Model_Selection.html#ic-vs-cv" target="_blank" rel="noopener" title="Open the notebook at this section">19_B &rsaquo; Information criteria vs cross-validation</a>
-    <p class="kicker">Two referees &nbsp;&middot;&nbsp; when each one is allowed on the pitch</p>
-    <h1 class="sowhat wide">AICc compares models of one class on one response, and anything else needs cross-validation.</h1>
-    <table class="traps compact">
-      <tr><td class="os">Comparison</td><td><b>AICc?</b></td><td class="fix"><b>Cross-validation?</b></td></tr>
-      <tr><td class="os">ETS(A,A,N) vs ETS(A,Ad,N), both on y</td><td>yes: same class, same response</td><td class="fix">yes</td></tr>
-      <tr><td class="os">ETS on y vs ETS on log(y)</td><td>no: different responses</td><td class="fix">yes</td></tr>
-      <tr><td class="os">ETS vs seasonal naive, or vs ARIMA</td><td>no: different classes</td><td class="fix">yes</td></tr>
-    </table>
-    <ul class="build">
-      <li class="step"><b>Why the restriction.</b> A likelihood is a probability density of one particular variable under one particular kind of model. Two likelihoods of different variables, or from different kinds of model, are not on the same scale.</li>
-      <li class="step"><b>The trade-off.</b> AICc is free: one fit per model, and it uses the whole series. Cross-validation costs hundreds of fits, but it tests forecasts directly and compares anything with anything.</li>
-      <li class="step"><b>In practice:</b> let AICc choose within ETS, then let cross-validation judge the winner against the benchmarks. Group Assignment 2 is designed this way.</li>
-    </ul>
-    <p class="punch step wide">AICc referees within the ETS family and cross-validation can referee any comparison, so check which kind of comparison you are making.</p>
-  </div>
-  <aside class="notes">ARIMA is the model class of the follow-up course, Forecasting for Time Series; it appears here only as an example of "another class". The same AICc machinery chooses ARIMA orders there, within the ARIMA family.</aside>
-</section>
-
-<section class="slide" data-section="3" data-title="Excluded, and zeros">
-  <div class="inner">
-    <a class="nb" href="19_B_ESmoothing_Model_Selection.html#excluded" target="_blank" rel="noopener" title="Open the notebook at this section">19_B &rsaquo; Model combinations that are excluded</a>
-    <p class="kicker">The fine print</p>
-    <h1 class="sowhat wide">Three combinations are off the menu, and multiplicative errors need positive data.</h1>
-    <ul class="build">
-      <li class="step"><b><code>ETS(A,N,M)</code>, <code>ETS(A,A,M)</code>, <code>ETS(A,Ad,M)</code> are excluded:</b> additive errors with a multiplicative season can divide by values close to zero and blow up. That leaves 15 of the 18 models for <code>ETS()</code> to choose from.</li>
-      <li class="step"><b>Multiplicative errors are only for strictly positive series.</b> With zeros or negative values <code>ETS()</code> does not consider them at all.</li>
-      <li class="step"><b>Zeros in a series that needs a log:</b> Session 11&#39;s <code>log1p()</code> is one way around, at the cost of a transformation to undo.</li>
-    </ul>
-    <p class="punch step wide">This is why Session 18 wrote <code>error("M")</code> next to every <code>season("M")</code>.</p>
-  </div>
-  <aside class="notes">fpp3 8.6 gives the reason as division by values potentially close to zero in the state equations. You need the list and the reason in one sentence, not the algebra.</aside>
-</section>
-
-<section class="slide" data-section="3" data-title="Residuals under multiplicative errors">
-  <div class="inner">
-    <a class="nb" href="19_B_ESmoothing_Model_Selection.html#residuals" target="_blank" rel="noopener" title="Open the notebook at this section">19_B &rsaquo; Residuals and multiplicative errors</a>
-    <p class="kicker">Session 8&#39;s two residual columns, one last time</p>
-    <h1 class="sowhat wide">With multiplicative errors, the residual you diagnose is a percentage.</h1>
-    <div class="console">.resid   y<sub>t</sub> &minus; y&#770;<sub>t|t&minus;1</sub>                         <span class="dim">in the units of the series</span>
-.innov   (y<sub>t</sub> &minus; y&#770;<sub>t|t&minus;1</sub>) / y&#770;<sub>t|t&minus;1</sub>              <span class="dim">multiplicative error: a relative miss</span>
-.innov   y<sub>t</sub> &minus; y&#770;<sub>t|t&minus;1</sub>                         <span class="dim">additive error: the same as .resid</span></div>
-    <ul class="build">
-      <li class="step"><b>In HW09 the two columns differed because of a log.</b> Here they differ with no transformation at all, because the model&#39;s error is relative.</li>
-      <li class="step"><b>Run Session 9&#39;s diagnostics on <code>.innov</code>.</b> It is the error the model assumes to be white noise; <code>.resid</code> will show a spread that grows with the level even when the model is right.</li>
-      <li class="step"><b>Homework Exercise 2 checks this</b> on the total of Australian holiday trips.</li>
-    </ul>
-    <p class="punch step wide">Diagnose the error the model actually assumes. For multiplicative models that is a percentage miss.</p>
-  </div>
-  <aside class="notes"><code>gg_tsresiduals()</code> uses the innovation residuals by default, so the three-panel plot is already the right one. The difference matters when you compute residual statistics yourself from <code>augment()</code>.</aside>
-</section>
-
-<section class="slide" data-section="4" data-title="Switch: ETS(y)">
-  <div class="inner">
-    <a class="nb" href="19_B_ESmoothing_Model_Selection.html#example-1" target="_blank" rel="noopener" title="Open the notebook at this section">19_B &rsaquo; Example 1: national populations</a>
-    <p class="kicker">Now we compute &nbsp;&middot;&nbsp; let <code>ETS()</code> choose</p>
-    <h1 class="sowhat wide">Leave the formula empty and <code>ETS()</code> tries all fifteen, keeping the lowest AICc.</h1>
-    <div class="console tight">fit &lt;- global_economy |&gt; mutate(Pop = Population / 1e6) |&gt; model(ets = ETS(Pop))
-fit |&gt; filter(Country == "China") |&gt; glance()      <span class="dim"># log_lik, AIC, AICc, BIC</span>
--2 * log_lik + 2 * (4 + 1)                           <span class="dim"># 395.77: the AIC, rebuilt by hand</span>
-
-aus_holidays |&gt; model(ETS(Trips))                    <span class="dim"># ETS(M,N,A)</span>
-<span class="dim">#  MNA  AICc 227.8      MNM  AICc 228.3      ANA  AICc 230.1</span></div>
-    <ul class="build">
-      <li class="step"><b>One line fits a separate model to each of 263 countries.</b> One country has missing values, which <code>ETS()</code> refuses, so it warns and moves on.</li>
-      <li class="step"><b>China&#39;s AIC rebuilt by hand matches <code>glance()</code>:</b> this is slide 6&#39;s formula applied to real output.</li>
-      <li class="step"><b>Holiday trips are a near tie.</b> M,N,A and M,N,M are about half a point apart, and measuring the series in thousands instead of millions flips the choice. When the referee cannot separate two models, either is defensible.</li>
-    </ul>
-    <p class="punch step wide">An automatic choice is a recommendation with a margin. Look at the margin before you trust the choice.</p>
-  </div>
-  <aside class="notes">To restrict the search, fix any letter: <code>ETS(y ~ season(c("A", "M")))</code> searches only seasonal models, which Exercise 1&#39;s extra check uses on Brisbane.<br><br>Argentina&#39;s population gets <code>ETS(A,A,N)</code> with &alpha; and &beta; near 1: a smooth series whose latest level and slope are nearly all you need.</aside>
-</section>
-
-<section class="slide" data-section="4" data-title="Switch: forecasting with ETS">
-  <div class="inner">
-    <a class="nb" href="19_B_ESmoothing_Model_Selection.html#forecasting" target="_blank" rel="noopener" title="Open the notebook at this section">19_B &rsaquo; Forecasting with ETS models</a>
-    <p class="kicker">fpp3 8.7 &nbsp;&middot;&nbsp; the payoff of the block</p>
-    <h1 class="sowhat wide">The chosen model forecasts with Session 12&#39;s intervals. The block ends where it started: a forecast and a range.</h1>
-    <div class="console tight">fit |&gt; forecast(h = 8) |&gt; autoplot(aus_holidays)
-fit |&gt; forecast(h = 8) |&gt; hilo(level = 95)
-
-<span class="dim">#  Quarter  .mean   95%
-#  2018 Q1   12.7   [11.5, 13.9]
-#  2018 Q2   10.9   [ 9.8, 12.0]</span></div>
-    <ul class="build">
-      <li class="step"><b>Point forecasts are the means of the forecast distributions,</b> except for models with a multiplicative season. This one&#39;s season is additive.</li>
-      <li class="step"><b>The intervals depend on the error letter:</b> with multiplicative errors they widen with the level, as slide 4 drew.</li>
-      <li class="step"><b>When there is no formula for the variance,</b> <code>forecast()</code> simulates thousands of future paths and takes their percentiles: Session 12&#39;s bootstrap idea, with simulated errors.</li>
-    </ul>
-    <p class="punch step wide">This is the last step of the workflow the block has followed: name the model, fit it, check its residuals, compare it, and forecast with a range.</p>
-  </div>
-  <aside class="notes">Before quoting these intervals, the Session 9 checks still apply: the residuals (<code>.innov</code>) should look like white noise with a stable spread. The chosen model is the best of the family by AICc; it is not automatically a good model.</aside>
-</section>
-
-<section class="slide" data-section="5" data-title="Homework">
-  <div class="inner">
-    <a class="nb" href="19_B_ESmoothing_Model_Selection.html#exercise-1" target="_blank" rel="noopener" title="Open the notebook at this section">19_B &rsaquo; Exercise 1</a>
-    <p class="kicker">Due date in this session&#39;s announcements &nbsp;&middot;&nbsp; the last homework</p>
-    <h1 class="sowhat">Homework: read letters, compare residuals, referee two models.</h1>
-    <ul class="build">
-      <li><b><code>19_B</code> Exercise 1:</b> automatic ETS for every holiday region; Brisbane&#39;s model read letter by letter; its components and forecasts plotted.</li>
-      <li><b>Exercise 2:</b> the total of holiday trips; do <code>.resid</code> and <code>.innov</code> match, and why?</li>
-      <li><b>Exercise 3:</b> corticosteroid costs; the automatic model against <code>ETS(A,A,A)</code>, by AICc and by cross-validation; one sentence on when each referee applies; one AIC by hand.</li>
-    </ul>
-  </div>
-  <aside class="notes">Exercise 3&#39;s cross-validation fits a few hundred models and takes a minute or two.</aside>
-</section>
-
-<section class="slide" data-section="5" data-title="Check yourself">
-  <div class="inner">
-    <p class="kicker">One line per session since the midterm &nbsp;&middot;&nbsp; Sessions 1 to 8 are in the Session 10 deck</p>
-    <h1 class="sowhat wide">For every line: can you explain it, and can you compute it by hand?</h1>
-    <table class="traps compact">
-      <tr><td class="os"></td><td><b>Explain</b></td><td class="fix"><b>Compute by hand</b></td></tr>
-      <tr><td class="os">S9</td><td>The four properties of good residuals, which fix each failure needs; why many ACF bars need a portmanteau test.</td><td class="fix">read a Ljung&ndash;Box p-value; the lag 2m</td></tr>
-      <tr><td class="os">S11</td><td>When a transformation helps; log vs Box&ndash;Cox; reading lambda; the caveat.</td><td class="fix">a log or Box&ndash;Cox value; a log change as a percentage</td></tr>
-      <tr><td class="os">S12</td><td>A forecast as a distribution; why intervals widen; back-transformed intervals, mean vs median.</td><td class="fix">y&#770; &plusmn; c &sigma;&#770;; &sigma;&#770; from residuals; naive &sigma;&#770;&radic;h</td></tr>
-      <tr><td class="os">S13</td><td>Residuals vs forecast errors; train/test; which metrics keep units and which do not.</td><td class="fix">MAE, RMSE, MAPE, MASE from a small table</td></tr>
-      <tr><td class="os">S14</td><td>Why k-fold is wrong for time series; the expanding window; error by horizon.</td><td class="fix">how many training sets and models</td></tr>
-      <tr><td class="os">S15&ndash;16</td><td>SES as weighted average and recursion; what &alpha; does; fitting as a search.</td><td class="fix">weights &alpha;(1&minus;&alpha;)<sup>j</sup>; a few rows of levels and fitted values; an SSE</td></tr>
-      <tr><td class="os">S17</td><td>Holt&#39;s two equations; what &beta;* and &phi; do; why damping flattens.</td><td class="fix">one row of Holt; a damped forecast &#8467; + (&phi; + &phi;&sup2;)b</td></tr>
-      <tr><td class="os">S18</td><td>Additive vs multiplicative season; the k subindex.</td><td class="fix">one row of Holt&ndash;Winters; a forecast with the right season&#39;s index</td></tr>
-      <tr><td class="os">S19</td><td>The three letters; likelihood; AICc vs cross-validation; the excluded models.</td><td class="fix">an AIC from log L and k; pick the lower</td></tr>
-    </table>
-    <p class="punch step wide">Mark the lines you cannot explain out loud or work on paper. Those are your questions for office hours.</p>
-  </div>
-  <aside class="notes">The final covers the whole course, Sessions 1 to 19, in the same format as the midterm: concept questions and short calculations by hand with a non-programmable calculator. Nothing on the paper asks you to write or read R; the code is examined in the group assignments.<br><br>The calculations are the ones in the right-hand column and in the Session 10 deck&#39;s table. Practise them on rows taken from the notebooks and the three workbooks, and check each number against R.</aside>
-</section>
-
-<section class="slide" data-section="5" data-title="Close">
-  <div class="inner">
-    <p class="kicker">What comes next</p>
-    <h1 class="sowhat">That is the course. The final covers all of it.</h1>
-    <p class="lead wide">The course went from a tsibble and a time plot in Session 2 to a model that names itself and forecasts with a range in Session 19. The follow-up course, Forecasting for Time Series, starts exactly here: it assumes ETS, the diagnostics, the metrics and cross-validation, and adds regression, ARIMA and more.</p>
-    <p class="punch step wide">Name it, fit it, check it, compare it, forecast with a range. You can now do every step, and explain why.</p>
-    <p class="url" style="font-size:clamp(0.95rem,1.7vw,1.9rem)">aberrizbeitia@faculty.ie.edu</p>
-  </div>
-  <aside class="notes">Office hours before the final are for concrete questions: a line of the check table you cannot do, a homework comment you do not understand. Times and the exam&#39;s date and room are in the announcements.</aside>
-</section>
+<style>
+.smoothing > .inner {max-width:1200px}
+.smoothing h1.sowhat, .smoothing h1.sowhat.wide {font-size:clamp(2rem,3.1vw,3.4rem);max-width:38ch;line-height:1.12;margin-bottom:1rem}
+.smoothing figure {margin:1rem 0}
+.smoothing figure svg {max-height:32vh}
+.smoothing .console {font-size:clamp(1rem,1.35vw,1.55rem);line-height:1.55;margin:1rem 0;padding:1rem;white-space:pre-wrap}
+.smoothing li {margin-bottom:.65rem;line-height:1.4}
+.smoothing .lead {font-size:clamp(1.1rem,1.55vw,1.7rem);line-height:1.45}
+.smoothing .small {line-height:1.45}
+.smoothing table {font-size:clamp(1rem,1.35vw,1.5rem)}
+@media(max-height:950px){.smoothing {padding-top:1.2rem;padding-bottom:1.2rem}.smoothing h1.sowhat{font-size:clamp(1.8rem,2.7vw,2.8rem)}.smoothing figure svg{max-height:32vh}.smoothing .console{margin:.6rem 0}}
+</style>
+<section class="slide smoothing" data-section="1" data-title="Choose a model you can explain and evaluate."><div class="inner"><p class="kicker">Session 19 &middot; One workflow</p><h1 class="sowhat wide">Choose a model you can explain and evaluate.</h1><p class="lead">Use Australian holiday trips to connect ETS names, uncertainty, fitting, selection and forecasts.</p><p class="small">Alejandro Berrizbeitia &middot; aberrizbeitia@faculty.ie.edu</p></div></section>
+<section class="slide smoothing" data-section="2" data-title="Read ETS from left to right."><div class="inner"><a class="nb" href="19_A_ExpSmoothing_Classification.html#notation" target="_blank" rel="noopener">ETS classification</a><p class="kicker">Session 19 &middot; Name and model</p><h1 class="sowhat wide">Read ETS from left to right.</h1><figure><svg viewBox="0 0 760 145" role="img" aria-label="Error: A or MThen Trend: N, A or AdThen Season: N, A or M"><g font-family="SFMono-Regular,Menlo,monospace"><rect x="20" y="28" width="220" height="90" rx="7" fill="#EFEAE1" stroke="#1F3A4D"/><text x="130" y="61" text-anchor="middle" fill="#1F3A4D" font-size="18" font-weight="700" >Error</text><text x="130" y="89" text-anchor="middle" fill="#161513" font-size="16" >A or M</text><text x="255" y="80" text-anchor="middle" fill="#B5471E" font-size="20" >&#8594;</text><rect x="270" y="28" width="220" height="90" rx="7" fill="#EFEAE1" stroke="#1F3A4D"/><text x="380" y="61" text-anchor="middle" fill="#1F3A4D" font-size="18" font-weight="700" >Trend</text><text x="380" y="89" text-anchor="middle" fill="#161513" font-size="16" >N, A or Ad</text><text x="505" y="80" text-anchor="middle" fill="#B5471E" font-size="20" >&#8594;</text><rect x="520" y="28" width="220" height="90" rx="7" fill="#EFEAE1" stroke="#1F3A4D"/><text x="630" y="61" text-anchor="middle" fill="#1F3A4D" font-size="18" font-weight="700" >Season</text><text x="630" y="89" text-anchor="middle" fill="#161513" font-size="16" >N, A or M</text></g></svg></figure><div class="console">ETS(M,Ad,M): relative errors, damped additive trend, multiplicative season</div><p class="lead">The last two letters describe the method. The error letter supplies a model for uncertainty.</p></div></section>
+<section class="slide smoothing" data-section="2" data-title="A statistical model describes observations and updates."><div class="inner"><a class="nb" href="19_B_ESmoothing_Model_Selection.html#state-space" target="_blank" rel="noopener">From update rule to statistical model</a><p class="kicker">Session 19 &middot; Name and model</p><h1 class="sowhat wide">A statistical model describes observations and updates.</h1><div class="console">SES with additive errors:
+y<sub>t</sub> = &#8467;<sub>t&minus;1</sub> + e<sub>t</sub>
+&#8467;<sub>t</sub> = &#8467;<sub>t&minus;1</sub> + &alpha;e<sub>t</sub></div><p class="lead">The same unpredictable shock produces an observation and changes the state. A shock distribution gives likelihoods and forecast uncertainty.</p></div></section>
+<section class="slide smoothing" data-section="2" data-title="Error scale is a modeling choice."><div class="inner"><a class="nb" href="19_B_ESmoothing_Model_Selection.html#residuals" target="_blank" rel="noopener">Response and innovation residuals</a><p class="kicker">Session 19 &middot; Name and model</p><h1 class="sowhat wide">Error scale is a modeling choice.</h1><div class="console">Additive innovation: y<sub>t</sub> &minus; y&#770;<sub>t|t&minus;1</sub>
+Multiplicative innovation: (y<sub>t</sub> &minus; y&#770;<sub>t|t&minus;1</sub>) / y&#770;<sub>t|t&minus;1</sub></div><ul class="build"><li class="step">Additive errors describe surprises in units; multiplicative errors describe relative surprises.</li><li class="step">Changing the error model changes the likelihood. Refitting can change point forecasts as well as intervals.</li></ul></div></section>
+<section class="slide smoothing" data-section="3" data-title="Likelihood scores the observed sequence under a model."><div class="inner"><a class="nb" href="19_B_ESmoothing_Model_Selection.html#likelihood" target="_blank" rel="noopener">Likelihood and SSE</a><p class="kicker">Session 19 &middot; Fit and select</p><h1 class="sowhat wide">Likelihood scores the observed sequence under a model.</h1><figure><svg viewBox="0 0 760 145" role="img" aria-label="Predict a distribution: Using the pastThen Observe the value: Evaluate its densityThen Accumulate evidence: Add log densities"><g font-family="SFMono-Regular,Menlo,monospace"><rect x="20" y="28" width="220" height="90" rx="7" fill="#EFEAE1" stroke="#1F3A4D"/><text x="130" y="61" text-anchor="middle" fill="#1F3A4D" font-size="18" font-weight="700" >Predict a distribution</text><text x="130" y="89" text-anchor="middle" fill="#161513" font-size="16" >Using the past</text><text x="255" y="80" text-anchor="middle" fill="#B5471E" font-size="20" >&#8594;</text><rect x="270" y="28" width="220" height="90" rx="7" fill="#EFEAE1" stroke="#1F3A4D"/><text x="380" y="61" text-anchor="middle" fill="#1F3A4D" font-size="18" font-weight="700" >Observe the value</text><text x="380" y="89" text-anchor="middle" fill="#161513" font-size="16" >Evaluate its density</text><text x="505" y="80" text-anchor="middle" fill="#B5471E" font-size="20" >&#8594;</text><rect x="520" y="28" width="220" height="90" rx="7" fill="#EFEAE1" stroke="#1F3A4D"/><text x="630" y="61" text-anchor="middle" fill="#1F3A4D" font-size="18" font-weight="700" >Accumulate evidence</text><text x="630" y="89" text-anchor="middle" fill="#161513" font-size="16" >Add log densities</text></g></svg></figure><ul class="build"><li class="step">The observations stay fixed; fitting searches parameter values.</li><li class="step">For additive independent Gaussian errors, maximizing likelihood corresponds to minimizing SSE.</li></ul></div></section>
+<section class="slide smoothing" data-section="3" data-title="AIC balances fit against the number estimated."><div class="inner"><a class="nb" href="19_B_ESmoothing_Model_Selection.html#aic" target="_blank" rel="noopener">Information criteria</a><p class="kicker">Session 19 &middot; Fit and select</p><h1 class="sowhat wide">AIC balances fit against the number estimated.</h1><div class="console">AIC = &minus;2 log L + 2k
+One extra parameter costs 2 AIC units.</div><ul class="build"><li class="step">Lower is preferred when likelihoods are comparable.</li><li class="step">For nested models, added flexibility cannot worsen the best training likelihood; it still needs to earn its penalty.</li></ul></div></section>
+<section class="slide smoothing" data-section="3" data-title="AICc is a referee within a valid comparison."><div class="inner"><p class="kicker">Session 19 &middot; Fit and select</p><h1 class="sowhat wide">AICc is a referee within a valid comparison.</h1><ul class="build"><li class="step">Compare ETS candidates on the same observations and response scale with compatible likelihood definitions.</li><li class="step">Use rolling-origin evaluation for the horizon and loss you care about, or when likelihoods are not comparable.</li></ul><p class="lead">Do not directly compare reported AICc for y and log(y). A tiny AICc gap is weak evidence for choosing one candidate.</p></div></section>
+<section class="slide smoothing" data-section="4" data-title="Let ETS choose, then inspect its choice."><div class="inner"><a class="nb" href="19_B_ESmoothing_Model_Selection.html#example-1" target="_blank" rel="noopener">Selection for holiday trips</a><p class="kicker">Session 19 &middot; Holiday trips in R</p><h1 class="sowhat wide">Let ETS choose, then inspect its choice.</h1><div class="console">fit &lt;- aus_holidays |&gt; model(auto = ETS(Trips))
+report(fit)
+tidy(fit)
+glance(fit)
+components(fit) |&gt; autoplot()</div><p class="lead">Read the selected model, its states and the close alternatives. Data frequency and positivity restrict the candidate set.</p></div></section>
+<section class="slide smoothing" data-section="4" data-title="The selected model still needs diagnostics."><div class="inner"><a class="nb" href="19_B_ESmoothing_Model_Selection.html#diagnostics" target="_blank" rel="noopener">Check the selected model</a><p class="kicker">Session 19 &middot; Holiday trips in R</p><h1 class="sowhat wide">The selected model still needs diagnostics.</h1><div class="console">fit |&gt; gg_tsresiduals()
+augment(fit) |&gt; features(.innov, ljung_box, lag = 8)</div><p class="lead">AICc ranks candidates. Remaining predictable residual patterns can justify revising those candidates.</p></div></section>
+<section class="slide smoothing" data-section="5" data-title="Interpret the forecast distribution for the decision."><div class="inner"><a class="nb" href="19_B_ESmoothing_Model_Selection.html#forecasting" target="_blank" rel="noopener">Forecasting with ETS</a><p class="kicker">Session 19 &middot; Forecast and decide</p><h1 class="sowhat wide">Interpret the forecast distribution for the decision.</h1><div class="console">fit |&gt; forecast(h = 8) |&gt; autoplot(aus_holidays)
+fit |&gt; forecast(h = 8) |&gt; hilo(level = 95)</div><ul class="build"><li class="step">The returned .mean is the mean of the forecast distribution.</li><li class="step">Intervals reflect the fitted model's assumptions. Some models require simulation to obtain them.</li></ul></div></section>
+<section class="slide smoothing" data-section="6" data-title="Homework: evaluate the whole selection procedure."><div class="inner"><a class="nb" href="19_B_ESmoothing_Model_Selection.html#exercise-3" target="_blank" rel="noopener">Cross-validation and AIC practice</a><p class="kicker">Session 19 &middot; Close</p><h1 class="sowhat wide">Homework: evaluate the whole selection procedure.</h1><ul class="build"><li class="step">Complete the three exercises in 19_B and the two-model AIC calculator comparison.</li><li class="step">For cross-validation, rerun automatic selection in each fold. Use origins with twelve observed future months; pool errors across horizons 1 to 12.</li></ul><p class="lead">A model chosen using the full series has already seen the future of earlier folds.</p></div></section>
+<section class="slide smoothing" data-section="6" data-title="Check the reasoning behind each calculation."><div class="inner"><p class="kicker">Session 19 &middot; Close</p><h1 class="sowhat wide">Check the reasoning behind each calculation.</h1><ul class="build"><li class="step">Can you distinguish a fitted value from an updated state, and select the right seasonal index?</li><li class="step">Can you compute weights, updates, damped forecasts, intervals and AIC, then explain what each calculation supports?</li></ul><p class="lead">Choose a horizon, compare honest forecast errors, inspect residuals, and state the assumptions behind your recommendation.</p></div></section>
 <!-- lives inside the stage so it is positioned against it, not the viewport,
      and therefore never covers the rail -->
 <div id="notepane"><h4>Going further</h4><div class="body"></div></div>
@@ -671,7 +464,7 @@ fit |&gt; forecast(h = 8) |&gt; hilo(level = 95)
 </div>
 
 <div id="hud">
-  <span id="count">1 / 14</span>
+  <span id="count">1 / 12</span>
   <button id="prev" title="Previous">&larr;</button>
   <button id="next" title="Next">&rarr;</button>
 </div>
@@ -680,7 +473,7 @@ fit |&gt; forecast(h = 8) |&gt; hilo(level = 95)
 (function(){
   "use strict";
 
-  var SECTIONS = [{"name":"Where we are","from":1,"to":2},{"name":"Names","from":3,"to":4},{"name":"The referee","from":5,"to":9},{"name":"Choose and forecast","from":10,"to":11,"live":true},{"name":"Close","from":12,"to":14}];
+  var SECTIONS = [{"name":"One workflow","from":1,"to":1},{"name":"Name and model","from":2,"to":4},{"name":"Fit and select","from":5,"to":7},{"name":"Holiday trips in R","from":8,"to":9},{"name":"Forecast and decide","from":10,"to":10},{"name":"Close","from":11,"to":12}];
 var slides = Array.prototype.slice.call(document.querySelectorAll(".slide"));
   var toc    = document.getElementById("toc");
   var ovlist = document.getElementById("ovlist");

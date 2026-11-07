@@ -2403,7 +2403,7 @@ window.Quarto = {
 </tbody>
 </table>
 <p>The table leaves out <strong>multiplicative trends</strong> (a trend that grows with the level of the series), because they tend to produce poor forecasts (fpp3 8.4).</p>
-<p>Each method becomes two <strong>models</strong> once the error is specified: additive (A) or multiplicative (M) errors give the same point forecasts but different prediction intervals. So <span class="math inline">\(ETS(A,A,N)\)</span> is Holt’s linear method with additive errors, and <span class="math inline">\(ETS(M,A,N)\)</span> the same method with multiplicative errors.</p>
+<p>Each method becomes two <strong>models</strong> once the error is specified: additive (A) or multiplicative (M) errors specify different uncertainty and likelihoods. For suitable paired models, the familiar point recursions coincide when states and parameters are held fixed. Refitting can change those estimates and the point forecasts as well as the intervals. So <span class="math inline">\(ETS(A,A,N)\)</span> is Holt’s linear method with additive errors, and <span class="math inline">\(ETS(M,A,N)\)</span> the same method with multiplicative errors.</p>
 <table class="caption-top table">
 <caption>Models names. From ref [1]</caption>
 <thead>

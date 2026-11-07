@@ -9,47 +9,16 @@ library(fpp3)
 
 # Automatic ETS model selection ----
 
-## Example 1: national populations ----
-fit <- global_economy |>
-  mutate(Pop = Population / 1e6) |>
-  model(ets = ETS(Pop))
-
-fit
-
-fit |> glance()
-
-fit |> filter(Country == "China") |> tidy()
-
-log_lik <- fit |> glance() |> filter(Country == "China") |> pull(log_lik)
-
-# k = 4 parameters and initial states + 1 residual variance
--2 * log_lik + 2 * (4 + 1)
-
-fit |> glance() |> filter(Country == "China") |> pull(AIC)
-
-fit |>
-  filter(Country == "Argentina") |>
-  report()
-
-fit |>
-  filter(Country == "Argentina") |>
-  components() |>
-  autoplot()
-
-fc <- fit |>
-  forecast(h = 5)
-
-fc
-
-# Forecasting with ETS models ----
+## Continuing example: Australian holiday trips ----
 aus_holidays <- tourism |>
   filter(Purpose == "Holiday") |>
   summarise(Trips = sum(Trips) / 1e3)
 
-fit <- aus_holidays |>
-  model(ETS(Trips))
-
+fit <- aus_holidays |> model(auto = ETS(Trips))
 report(fit)
+fit |> tidy()
+fit |> glance() |> select(.model, log_lik, AIC, AICc, BIC)
+fit |> components() |> autoplot()
 
 aus_holidays |>
   model(
@@ -59,6 +28,11 @@ aus_holidays |>
   glance() |>
   select(.model, AICc)
 
+## Check the selected model ----
+fit |> gg_tsresiduals()
+augment(fit) |> features(.innov, ljung_box, lag = 8)
+
+# Forecasting with ETS models ----
 fit |>
   forecast(h = 8) |>
   autoplot(aus_holidays) +
