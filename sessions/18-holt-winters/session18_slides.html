@@ -417,219 +417,40 @@ body.ov-on #overview{display:block}
 </nav>
 
 <main id="stage">
-<section class="slide title-slide" data-section="1" data-title="Title">
-  <div class="inner">
-    <p class="kicker">IE University · Dual Degree BBA &amp; Data and Business Analytics</p>
-    <h1>Level, slope,<br>and the season.</h1>
-    <div class="rule"></div>
-    <p class="who"><b>Session 18.</b> Holt&ndash;Winters seasonal methods.<br>
-    Alejandro Berrizbeitia · aberrizbeitia@faculty.ie.edu</p>
-  </div>
-  <aside class="notes">The deck is self-contained: press <b>N</b> at any time to open or close this panel, and <b>O</b> for a list of every slide.<br><br>Today is fpp3 section 8.3, notebook <code>18_A</code> and the Excel workbook <code>18_B</code> in this folder. Before Session 19, read <code>19_A_MLE_Informal_Intro.pdf</code> in the Session 19 folder.</aside>
-</section>
-
-<section class="slide" data-section="1" data-title="Level, slope, season">
-  <div class="inner">
-    <a class="nb" href="18_A_ExpSmoothing_Seasonal.html#motivation" target="_blank" rel="noopener" title="Open the notebook at this section">18_A &rsaquo; Motivation</a>
-    <p class="kicker">Where we are &nbsp;&middot;&nbsp; Session 7&#39;s components, updated one observation at a time</p>
-    <h1 class="sowhat wide">Holt&ndash;Winters is Holt plus a seasonal index for each period of the year.</h1>
-    <figure>
-      <svg viewBox="0 0 760 184" role="img" aria-label="Three stacked traces. Top, a seasonal quarterly series with a gentle upward trend. Middle, its level and slope, which is what Holt's method tracks. Bottom, the repeating seasonal index, one value per quarter, which is what Holt-Winters adds"><g font-family="SFMono-Regular,Menlo,monospace"><polyline points="50.0,48.8 66.0,58.4 82.0,60.0 98.0,57.2 114.0,45.0 130.0,54.7 146.0,56.2 162.0,53.4 178.0,41.2 194.0,50.9 210.0,52.5 226.0,49.7 242.0,37.5 258.0,47.2 274.0,48.8 290.0,45.9 306.0,33.7 322.0,43.4 338.0,45.0 354.0,42.2 370.0,30.0 386.0,39.7 402.0,41.2 418.0,38.4 434.0,26.2 450.0,35.9 466.0,37.5 482.0,34.7" fill="none" stroke="#1F3A4D" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="1"/><text x="505" y="49.0" text-anchor="start" fill="#1F3A4D" font-size="11" font-weight="700" >the series</text><polyline points="50.0,115.3 66.0,114.3 82.0,113.3 98.0,112.3 114.0,111.3 130.0,110.3 146.0,109.3 162.0,108.3 178.0,107.3 194.0,106.3 210.0,105.3 226.0,104.3 242.0,103.3 258.0,102.3 274.0,101.3 290.0,100.3 306.0,99.3 322.0,98.3 338.0,97.3 354.0,96.3 370.0,95.3 386.0,94.3 402.0,93.3 418.0,92.3 434.0,91.3 450.0,90.3 466.0,89.3 482.0,88.3" fill="none" stroke="#B5471E" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="1"/><text x="505" y="106.0" text-anchor="start" fill="#B5471E" font-size="11" font-weight="700" >level and slope: Holt</text><polyline points="50.0,137.1 66.0,163.2 82.0,169.4 98.0,164.8 114.0,137.1 130.0,163.2 146.0,169.4 162.0,164.8 178.0,137.1 194.0,163.2 210.0,169.4 226.0,164.8 242.0,137.1 258.0,163.2 274.0,169.4 290.0,164.8 306.0,137.1 322.0,163.2 338.0,169.4 354.0,164.8 370.0,137.1 386.0,163.2 402.0,169.4 418.0,164.8 434.0,137.1 450.0,163.2 466.0,169.4 482.0,164.8" fill="none" stroke="#6B7F5E" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="1"/><text x="505" y="158.0" text-anchor="start" fill="#6B7F5E" font-size="11" font-weight="700" >seasonal index, one per quarter: new</text></g></svg>
-    </figure>
-    <ul class="build">
-      <li class="step"><b>Session 7 split a series into trend, season and remainder,</b> once, looking at the whole series at the same time.</li>
-      <li class="step"><b>Holt&ndash;Winters keeps the same three pieces</b> but updates them one observation at a time, so it can forecast: a level, a slope, and an index for every quarter or month of the year.</li>
-      <li class="step"><b>Three dials:</b> &alpha; for the level, &beta;* for the slope, and a new one, &gamma;, for the seasonal indices.</li>
-    </ul>
-    <p class="punch step wide">Holt&ndash;Winters turns Session 7&#39;s decomposition into a forecasting machine.</p>
-  </div>
-  <aside class="notes">m is the length of the season: 4 for quarterly data with a yearly pattern, 12 for monthly, 7 for daily data with a weekly pattern. Every seasonal term in today&#39;s equations looks back m steps.</aside>
-</section>
-
-<section class="slide" data-section="2" data-title="Add or multiply">
-  <div class="inner">
-    <a class="nb" href="18_A_ExpSmoothing_Seasonal.html#additive-multiplicative" target="_blank" rel="noopener" title="Open the notebook at this section">18_A &rsaquo; Additive vs multiplicative</a>
-    <p class="kicker">Session 5&#39;s question, with a consequence</p>
-    <h1 class="sowhat wide">If the swings stay the same size, add the season; if they grow with the level, multiply.</h1>
-    <figure>
-      <svg viewBox="0 0 760 190" role="img" aria-label="Two seasonal series with the same rising trend. Left, additive: the seasonal swings stay the same size, and the seasonal indices are in the units of the series and sum to about zero over a year. Right, multiplicative: the swings grow with the level, and the seasonal indices are factors that sum to about m over a year"><g font-family="SFMono-Regular,Menlo,monospace"><line x1="40" y1="160" x2="360" y2="160" stroke="#98928a" stroke-width="1"/><line x1="40" y1="160" x2="40" y2="36" stroke="#98928a" stroke-width="1"/><text x="200" y="24" text-anchor="middle" fill="#6B665E" font-size="11" font-weight="700" >additive: the swings stay the same size</text><polyline points="50.0,123.4 59.7,130.6 69.4,132.2 79.0,124.0 88.7,115.8 98.4,123.1 108.1,124.7 117.7,116.5 127.4,108.3 137.1,115.5 146.8,117.1 156.5,108.9 166.1,100.7 175.8,107.9 185.5,109.6 195.2,101.3 204.8,93.1 214.5,100.4 224.2,102.0 233.9,93.8 243.5,85.6 253.2,92.8 262.9,94.4 272.6,86.2 282.3,78.0 291.9,85.3 301.6,86.9 311.3,78.7 321.0,70.5 330.6,77.7 340.3,79.3 350.0,71.1" fill="none" stroke="#1F3A4D" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" opacity="1"/><line x1="400" y1="160" x2="720" y2="160" stroke="#98928a" stroke-width="1"/><line x1="400" y1="160" x2="400" y2="36" stroke="#98928a" stroke-width="1"/><text x="560" y="24" text-anchor="middle" fill="#6B665E" font-size="11" font-weight="700" >multiplicative: the swings grow with the level</text><polyline points="410.0,123.9 419.7,130.5 429.4,132.2 439.0,124.0 448.7,115.5 458.4,123.2 468.1,125.3 477.7,116.4 487.4,107.0 497.1,115.9 506.8,118.5 516.5,108.7 526.1,98.5 535.8,108.7 545.5,111.7 555.2,101.1 564.8,90.1 574.5,101.4 584.2,104.8 593.9,93.4 603.5,81.6 613.2,94.1 622.9,98.0 632.6,85.8 642.3,73.1 651.9,86.8 661.6,91.2 671.3,78.1 681.0,64.6 690.6,79.5 700.3,84.3 710.0,70.5" fill="none" stroke="#B5471E" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" opacity="1"/><text x="200" y="182" text-anchor="middle" fill="#98928a" font-size="10.5" >season in units; indices sum to about 0</text><text x="560" y="182" text-anchor="middle" fill="#98928a" font-size="10.5" >season as a factor; indices sum to about m</text></g></svg>
-    </figure>
-    <ul class="build">
-      <li class="step"><b>Additive:</b> the season adds a fixed amount, "Q1 is 1.5 million trips above the level". The indices add up to about zero over a year.</li>
-      <li class="step"><b>Multiplicative:</b> the season scales the level, "Q1 is 16% above the level". The indices add up to about m over a year, 4 for quarterly data.</li>
-      <li class="step"><b>The eye test is Session 5&#39;s:</b> if the envelope opens like a funnel, multiply. Alternatively, log the series first, as in Session 11, and add.</li>
-    </ul>
-    <p class="punch step wide">It is the same choice as in Session 5, except that now the forecasts depend on it.</p>
-  </div>
-  <aside class="notes">Why the sums: an additive seasonal component is a deviation from the level, so over a full year the deviations cancel; a multiplicative one is a ratio to the level, so over a year the ratios average to one. Session 7&#39;s centering step enforces the same thing in a classical decomposition.</aside>
-</section>
-
-<section class="slide" data-section="2" data-title="Four equations">
-  <div class="inner">
-    <a class="nb" href="18_A_ExpSmoothing_Seasonal.html#component-form" target="_blank" rel="noopener" title="Open the notebook at this section">18_A &rsaquo; Component form of the equations</a>
-    <p class="kicker">fpp3 8.3 &nbsp;&middot;&nbsp; the additive method</p>
-    <h1 class="sowhat wide">Every seasonal term looks back one full year: s<sub>t&minus;m</sub>.</h1>
-    <div class="console">forecast   y&#770;<sub>t+h|t</sub> = &#8467;<sub>t</sub> + h b<sub>t</sub> + s<sub>t+h&minus;m(k+1)</sub>
-level      &#8467;<sub>t</sub> = &alpha; (y<sub>t</sub> &minus; s<sub>t&minus;m</sub>) + (1 &minus; &alpha;)(&#8467;<sub>t&minus;1</sub> + b<sub>t&minus;1</sub>)
-           <span class="dim">deseasonalized observation vs non-seasonal forecast</span>
-trend      b<sub>t</sub> = &beta;*(&#8467;<sub>t</sub> &minus; &#8467;<sub>t&minus;1</sub>) + (1 &minus; &beta;*) b<sub>t&minus;1</sub>
-           <span class="dim">Holt&#39;s, unchanged</span>
-season     s<sub>t</sub> = &gamma; (y<sub>t</sub> &minus; &#8467;<sub>t&minus;1</sub> &minus; b<sub>t&minus;1</sub>) + (1 &minus; &gamma;) s<sub>t&minus;m</sub>
-           <span class="dim">this year&#39;s surprise vs last year&#39;s index</span></div>
-    <ul class="build">
-      <li class="step"><b>The level now sees the observation with its season taken out,</b> so that a strong Q1 does not look like a jump in the level.</li>
-      <li class="step"><b>The seasonal index for this quarter</b> is a weighted average of what this quarter just showed, above the old level and slope, and what the same quarter showed one year ago.</li>
-      <li class="step"><b>Fitted value:</b> &#8467;<sub>t&minus;1</sub> + b<sub>t&minus;1</sub> + s<sub>t&minus;m</sub>. This is Holt&#39;s fitted value plus last year&#39;s index for this quarter.</li>
-    </ul>
-    <p class="punch step wide">All three smoothing equations follow the same sentence, and only the bookkeeping of seasons is new.</p>
-  </div>
-  <aside class="notes">The inherited notebook wrote the first fitted value with s<sub>1+1&minus;m</sub>; it is s<sub>1&minus;m</sub>, the index of the same quarter in the year before the data. Corrected in this build.<br><br>Starting values: &#8467;<sub>0</sub>, b<sub>0</sub>, and m seasonal indices for the year before the data, s<sub>1&minus;m</sub> to s<sub>0</sub>. For quarterly data that is six starting values plus three smoothing parameters.</aside>
-</section>
-
-<section class="slide" data-section="2" data-title="The k subindex">
-  <div class="inner">
-    <a class="nb" href="18_A_ExpSmoothing_Seasonal.html#k-index" target="_blank" rel="noopener" title="Open the notebook at this section">18_A &rsaquo; The k subindex in the seasonal component</a>
-    <p class="kicker">The easiest thing to get wrong &nbsp;&middot;&nbsp; take it slowly</p>
-    <h1 class="sowhat wide">k only makes sure every forecast uses its season&#39;s index from the last observed year.</h1>
-    <figure>
-      <svg viewBox="0 0 760 186" role="img" aria-label="Sixteen quarter boxes: two observed years, the second shaded as the last observed year, then two forecast years. Arrows run from the last observed year's Q1 to the Q1 of the first forecast year, h equals 1, and to the Q1 of the second forecast year, h equals 5. Both forecasts use the same index"><g font-family="SFMono-Regular,Menlo,monospace"><rect x="40" y="50" width="38" height="34" rx="3" fill="#FAF8F5" stroke="#1F3A4D" stroke-width="1.4"/><text x="59" y="72" text-anchor="middle" fill="#1F3A4D" font-size="11" font-weight="700" >Q1</text><rect x="84" y="50" width="38" height="34" rx="3" fill="#FAF8F5" stroke="#1F3A4D" stroke-width="1.4"/><text x="103" y="72" text-anchor="middle" fill="#1F3A4D" font-size="11" font-weight="700" >Q2</text><rect x="128" y="50" width="38" height="34" rx="3" fill="#FAF8F5" stroke="#1F3A4D" stroke-width="1.4"/><text x="147" y="72" text-anchor="middle" fill="#1F3A4D" font-size="11" font-weight="700" >Q3</text><rect x="172" y="50" width="38" height="34" rx="3" fill="#FAF8F5" stroke="#1F3A4D" stroke-width="1.4"/><text x="191" y="72" text-anchor="middle" fill="#1F3A4D" font-size="11" font-weight="700" >Q4</text><rect x="216" y="50" width="38" height="34" rx="3" fill="#EFEAE1" stroke="#1F3A4D" stroke-width="1.4"/><text x="235" y="72" text-anchor="middle" fill="#1F3A4D" font-size="11" font-weight="700" >Q1</text><rect x="260" y="50" width="38" height="34" rx="3" fill="#EFEAE1" stroke="#1F3A4D" stroke-width="1.4"/><text x="279" y="72" text-anchor="middle" fill="#1F3A4D" font-size="11" font-weight="700" >Q2</text><rect x="304" y="50" width="38" height="34" rx="3" fill="#EFEAE1" stroke="#1F3A4D" stroke-width="1.4"/><text x="323" y="72" text-anchor="middle" fill="#1F3A4D" font-size="11" font-weight="700" >Q3</text><rect x="348" y="50" width="38" height="34" rx="3" fill="#EFEAE1" stroke="#1F3A4D" stroke-width="1.4"/><text x="367" y="72" text-anchor="middle" fill="#1F3A4D" font-size="11" font-weight="700" >Q4</text><rect x="392" y="50" width="38" height="34" rx="3" fill="#FAF8F5" stroke="#B5471E" stroke-width="1.4"/><text x="411" y="72" text-anchor="middle" fill="#B5471E" font-size="11" font-weight="700" >Q1</text><rect x="436" y="50" width="38" height="34" rx="3" fill="#FAF8F5" stroke="#B5471E" stroke-width="1.4"/><text x="455" y="72" text-anchor="middle" fill="#B5471E" font-size="11" font-weight="700" >Q2</text><rect x="480" y="50" width="38" height="34" rx="3" fill="#FAF8F5" stroke="#B5471E" stroke-width="1.4"/><text x="499" y="72" text-anchor="middle" fill="#B5471E" font-size="11" font-weight="700" >Q3</text><rect x="524" y="50" width="38" height="34" rx="3" fill="#FAF8F5" stroke="#B5471E" stroke-width="1.4"/><text x="543" y="72" text-anchor="middle" fill="#B5471E" font-size="11" font-weight="700" >Q4</text><rect x="568" y="50" width="38" height="34" rx="3" fill="#FAF8F5" stroke="#B5471E" stroke-width="1.4"/><text x="587" y="72" text-anchor="middle" fill="#B5471E" font-size="11" font-weight="700" >Q1</text><rect x="612" y="50" width="38" height="34" rx="3" fill="#FAF8F5" stroke="#B5471E" stroke-width="1.4"/><text x="631" y="72" text-anchor="middle" fill="#B5471E" font-size="11" font-weight="700" >Q2</text><rect x="656" y="50" width="38" height="34" rx="3" fill="#FAF8F5" stroke="#B5471E" stroke-width="1.4"/><text x="675" y="72" text-anchor="middle" fill="#B5471E" font-size="11" font-weight="700" >Q3</text><rect x="700" y="50" width="38" height="34" rx="3" fill="#FAF8F5" stroke="#B5471E" stroke-width="1.4"/><text x="719" y="72" text-anchor="middle" fill="#B5471E" font-size="11" font-weight="700" >Q4</text><text x="128" y="40" text-anchor="middle" fill="#98928a" font-size="10" >observed, year 1</text><text x="304" y="40" text-anchor="middle" fill="#1F3A4D" font-size="10" font-weight="700" >observed, last year</text><text x="480" y="40" text-anchor="middle" fill="#B5471E" font-size="10" font-weight="700" >forecast h = 1 to 4</text><text x="656" y="40" text-anchor="middle" fill="#B5471E" font-size="10" font-weight="700" >forecast h = 5 to 8</text><defs><marker id="ar5" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z" fill="#B5471E"/></marker></defs><path d="M235 86 Q 323.0 130 411 86" fill="none" stroke="#B5471E" stroke-width="1.4" marker-end="url(#ar5)"/><path d="M235 86 Q 411.0 154 587 86" fill="none" stroke="#B5471E" stroke-width="1.4" marker-end="url(#ar5)"/><text x="380" y="172" text-anchor="middle" fill="#161513" font-size="11" font-weight="700" >both Q1 forecasts, h = 1 and h = 5, use the Q1 index of the last observed year</text></g></svg>
-    </figure>
-    <div class="console tight">k = int( (h &minus; 1) / m )        index used: s<sub>T+h&minus;m(k+1)</sub>
-
-<span class="dim">m = 4, h = 1:  k = 0   T + 1 &minus; 4 = T &minus; 3   last year&#39;s Q1</span>
-<span class="dim">m = 4, h = 5:  k = 1   T + 5 &minus; 8 = T &minus; 3   last year&#39;s Q1 again</span></div>
-    <ul class="build">
-      <li class="step"><b>k counts the complete years</b> between the last observed year and the forecast. int( ) drops everything after the decimal point.</li>
-      <li class="step"><b>Its only job</b> is to step back the right number of years, so the index always comes from data the model has seen. Without it, h = 5 would ask for an index from the future.</li>
-      <li class="step"><b>Session 8&#39;s seasonal naive did exactly this lookup.</b> Holt&ndash;Winters adds the level and slope on top.</li>
-    </ul>
-    <p class="punch step wide">In words, a forecast for a Q1 uses the latest Q1 index there is, and the formula says the same thing in symbols.</p>
-  </div>
-  <aside class="notes">The notebook draws the monthly version, m = 12: the forecast for any January, however far ahead, uses the January index of the last observed year.</aside>
-</section>
-
-<section class="slide" data-section="2" data-title="By hand">
-  <div class="inner">
-    <a class="nb" href="18_A_ExpSmoothing_Seasonal.html#excel" target="_blank" rel="noopener" title="Open the notebook at this section">18_A &rsaquo; Exercise: reproduce the additive table in Excel</a>
-    <p class="kicker">Holiday trips, millions &nbsp;&middot;&nbsp; <span style="text-transform:none"><span style="text-transform:none">&alpha;</span></span> = 0.262, <span style="text-transform:none"><span style="text-transform:none">&beta;*</span></span> = 0.1646, <span style="text-transform:none"><span style="text-transform:none">&gamma;</span></span> = 0.0001, <span style="text-transform:none"><span style="text-transform:none">&#8467;<sub>0</sub></span></span> = 9.8, <span style="text-transform:none">b<sub>0</sub></span> = 0</p>
-    <h1 class="sowhat wide">Each row takes four lines, computed in the order fitted value, level, slope, season.</h1>
-    <table class="traps compact">
-      <tr><td class="os" style="text-transform:none">t</td><td>y<sub>t</sub></td><td>fitted = &#8467; + b + s<sub>t&minus;4</sub></td><td>&#8467;<sub>t</sub></td><td>b<sub>t</sub></td><td class="fix">s<sub>t</sub></td></tr>
-      <tr><td class="os" style="text-transform:none">&minus;3 to 0</td><td></td><td></td><td>9.8</td><td>0</td><td class="fix">1.5, &minus;0.3, &minus;0.7, &minus;0.5</td></tr>
-      <tr><td class="os">1 (Q1)</td><td>11.81</td><td>9.8 + 0 + 1.5 = <b>11.30</b></td><td>0.262 (11.81 &minus; 1.5) + 0.738 &times; 9.8 = <b>9.93</b></td><td><b>0.02</b></td><td class="fix"><b>1.50</b></td></tr>
-      <tr><td class="os">2 (Q2)</td><td>9.28</td><td>9.93 + 0.02 &minus; 0.3 = <b>9.65</b></td><td>...</td><td></td><td class="fix"></td></tr>
-      <tr><td class="os" style="text-transform:none">h = 1 (2018 Q1)</td><td></td><td colspan="4">&#8467;<sub>T</sub> + 1 &times; b<sub>T</sub> + s<sub>2017 Q1</sub> &asymp; 11.3 + 0.1 + 1.5 = 12.9</td></tr>
-    </table>
-    <ul class="build">
-      <li class="step"><b>The fitted value reaches back four rows</b> for its seasonal index: the same quarter, one year earlier.</li>
-      <li class="step"><b>The season barely moves</b> because &gamma; = 0.0001: the seasonal pattern of holiday trips has been the same for twenty years.</li>
-      <li class="step"><b>The forecast picks the 2017 index of the same quarter</b>, which is the k subindex of the previous slide at work.</li>
-    </ul>
-    <p class="punch step wide">The final&#39;s Holt&ndash;Winters question asks for one row of this and one forecast with the right quarter&#39;s index. The homework is every row.</p>
-  </div>
-  <aside class="notes">The workbook <code>18_B</code> has this layout, sheet "Additive": four rows of starting seasonal indices labeled &minus;3 to 0, then one row per quarter. Its &beta;* of 0.1646 is not the <code>beta</code> that <code>tidy()</code> prints; slide 8 explains.</aside>
-</section>
-
-<section class="slide" data-section="2" data-title="Multiplicative, briefly">
-  <div class="inner">
-    <a class="nb" href="18_A_ExpSmoothing_Seasonal.html#multiplicative" target="_blank" rel="noopener" title="Open the notebook at this section">18_A &rsaquo; Holt-Winters multiplicative method</a>
-    <p class="kicker">The other variant</p>
-    <h1 class="sowhat wide">Multiplicative: divide where you subtracted, multiply where you added.</h1>
-    <div class="console">forecast   y&#770;<sub>t+h|t</sub> = (&#8467;<sub>t</sub> + h b<sub>t</sub>) &middot; s<sub>t+h&minus;m(k+1)</sub>
-level      &#8467;<sub>t</sub> = &alpha; y<sub>t</sub> / s<sub>t&minus;m</sub> + (1 &minus; &alpha;)(&#8467;<sub>t&minus;1</sub> + b<sub>t&minus;1</sub>)
-trend      b<sub>t</sub> = &beta;*(&#8467;<sub>t</sub> &minus; &#8467;<sub>t&minus;1</sub>) + (1 &minus; &beta;*) b<sub>t&minus;1</sub>
-season     s<sub>t</sub> = &gamma; y<sub>t</sub> / (&#8467;<sub>t&minus;1</sub> + b<sub>t&minus;1</sub>) + (1 &minus; &gamma;) s<sub>t&minus;m</sub></div>
-    <ul class="build">
-      <li class="step"><b>The level and slope still add;</b> only the season multiplies. Deseasonalizing is a division instead of a subtraction.</li>
-      <li class="step"><b>Use multiplicative errors with it.</b> Additive errors with a multiplicative season are numerically unstable; in <code>ETS()</code>, write <code>error("M")</code> with <code>season("M")</code>. Session 19 lists the combinations that are excluded and why.</li>
-      <li class="step"><b>The fitted-value equation is yours to derive:</b> set h = 1 and shift back one step, as for the additive case. The notebook has the multiplicative table to check against.</li>
-    </ul>
-    <p class="punch step wide">The machine and the order of operations stay the same; the only question is whether the season is an amount or a percentage.</p>
-  </div>
-  <aside class="notes">fpp3 8.3 gives both variants. The exercise plots the prediction intervals of the additive and the multiplicative model one after the other: compare how the width of each behaves as the series grows, and ask which one suits a series whose swings grow with its level.</aside>
-</section>
-
-<section class="slide" data-section="3" data-title="Switch: holiday trips">
-  <div class="inner">
-    <a class="nb" href="18_A_ExpSmoothing_Seasonal.html#code" target="_blank" rel="noopener" title="Open the notebook at this section">18_A &rsaquo; Code</a>
-    <p class="kicker">Now we compute &nbsp;&middot;&nbsp; Australian holiday trips, millions</p>
-    <h1 class="sowhat wide">AAA and MAM fit almost equally well, but <code>tidy()</code> hides one catch.</h1>
-    <div class="console tight">fit &lt;- aus_holidays |&gt; model(
-  additive       = ETS(Trips ~ error("A") + trend("A") + season("A")),
-  multiplicative = ETS(Trips ~ error("M") + trend("A") + season("M")))
-accuracy(fit)      <span class="dim"># RMSE 0.417 vs 0.412</span>
-tidy(fit)          <span class="dim"># additive: alpha 0.262   beta 0.0431   gamma 0.0001   l[0] 9.79   b[0] 0.02   s[0]...s[-3]</span></div>
-    <ul class="build">
-      <li class="step"><b>The two fits are close:</b> training RMSE 0.417 against 0.412. Holiday trips are only mildly multiplicative.</li>
-      <li class="step"><b><code>components()</code></b> shows level, slope and season for each; the panel titles in this build say <code>ETS(A,A,A)</code> and <code>ETS(M,A,M)</code>.</li>
-      <li class="step"><b>The catch:</b> <code>tidy()</code> prints <code>beta</code> = &alpha; &times; &beta;*, here 0.262 &times; 0.1646 = 0.0431. The workbook&#39;s 0.1646 is &beta;*. Both are right; they are different numbers.</li>
-    </ul>
-    <p class="punch step wide">That makes nine numbers estimated for one quarterly series, three dials and six starting values, and the next slide comes back to that count.</p>
-  </div>
-  <aside class="notes">Why <code>fable</code> reports &alpha;&beta;*: it fits the model in Session 19&#39;s state space form, where the slope is updated by the one-step error times a parameter called &beta;. Rewriting the component form shows that &beta; = &alpha;&beta;*. The same holds for Holt&#39;s method in Session 17, where &alpha; was almost 1 and the two looked the same.<br><br>Small &gamma; and small &beta; both say the same thing about this series: the seasonal pattern and the trend have been stable for twenty years.</aside>
-</section>
-
-<section class="slide" data-section="3" data-title="Many parameters">
-  <div class="inner">
-    <a class="nb" href="18_A_ExpSmoothing_Seasonal.html#code" target="_blank" rel="noopener" title="Open the notebook at this section">18_A &rsaquo; Code</a>
-    <p class="kicker">A warning that comes with the season</p>
-    <h1 class="sowhat wide">Every season adds m starting values, and each extra parameter makes a good fit harder to trust.</h1>
-    <table class="traps compact">
-      <tr><td class="os">Quarterly, m = 4</td><td>3 dials + level + slope + 4 seasons</td><td class="fix">9 numbers</td></tr>
-      <tr><td class="os">Monthly, m = 12</td><td>3 dials + level + slope + 12 seasons</td><td class="fix">17 numbers</td></tr>
-      <tr><td class="os">Weekly, yearly season</td><td>3 dials + level + slope + 52 seasons</td><td class="fix">57 numbers</td></tr>
-    </table>
-    <ul class="build">
-      <li class="step"><b>Every one of them is fitted to the same data,</b> and every extra one makes it easier to fit the training set and harder to forecast well: Session 13&#39;s overfitting.</li>
-      <li class="step"><b>"With four parameters I can fit an elephant, and with five I can make him wiggle his trunk."</b> John von Neumann, as quoted by Enrico Fermi and told by Freeman Dyson in <i>Nature</i> in 2004.</li>
-      <li class="step"><b>Session 19&#39;s criteria, AIC and its cousins,</b> exist to charge a model for each parameter it uses. Today&#39;s models are why they are needed.</li>
-    </ul>
-    <p class="punch step wide">A better fit is not a better model until it has paid for its parameters.</p>
-  </div>
-  <aside class="notes">Strictly, the m seasonal starting values are constrained to sum to zero (additive) or m (multiplicative), so one of them is not free. The point stands: the count grows with m.</aside>
-</section>
-
-<section class="slide" data-section="3" data-title="Damped Holt-Winters">
-  <div class="inner">
-    <a class="nb" href="18_A_ExpSmoothing_Seasonal.html#damped" target="_blank" rel="noopener" title="Open the notebook at this section">18_A &rsaquo; Holt-Winters damped method</a>
-    <p class="kicker">Session 17&#39;s damping, with a season</p>
-    <h1 class="sowhat wide">Damped trend with a multiplicative season is often the best single method for seasonal data.</h1>
-    <div class="console tight">ETS(Count ~ error("M") + trend("Ad") + season("M"))      <span class="dim"># Southern Cross pedestrians, daily, m = 7</span></div>
-    <ul class="build">
-      <li class="step"><b>The trend is damped exactly as in Session 17:</b> &phi; multiplies every slope carried forward, and the forecast stops climbing.</li>
-      <li class="step"><b>The season is a weekly one:</b> daily data, m = 7. That means seven starting indices, one per weekday.</li>
-      <li class="step"><b>The notebook fits one month and forecasts two weeks;</b> the forecasts follow the held-out weeks closely, weekday pattern and rising trend included.</li>
-    </ul>
-    <p class="punch step wide">With a level, a damped slope and a season, this is the most complete model of the block, and it is still just three smoothing sentences and a lookup.</p>
-  </div>
-  <aside class="notes">fpp3 8.3 calls damped multiplicative Holt&ndash;Winters "often the single most accurate forecasting method for seasonal data". Session 19 lets <code>ETS()</code> decide whether it is for a given series.</aside>
-</section>
-
-<section class="slide" data-section="4" data-title="Homework">
-  <div class="inner">
-    <a class="nb" href="18_A_ExpSmoothing_Seasonal.html#exercise" target="_blank" rel="noopener" title="Open the notebook at this section">18_A &rsaquo; Exercise: seasonal exponential smoothing</a>
-    <p class="kicker">Due date in this session&#39;s announcements</p>
-    <h1 class="sowhat">Homework: one quarter at a time by hand, then three models on New Zealand arrivals.</h1>
-    <ul class="build">
-      <li><b>The workbook <code>18_B</code>, sheet "Additive":</b> fitted value, level, slope and season for every quarter, as formulas, in that order, then the forecasts with the right quarter&#39;s index.</li>
-      <li><b><code>18_A</code> exercise, questions 1 to 6:</b> time plot, three Holt&ndash;Winters models on a training set, 8 forecasts, the plots, your conclusion, and the accuracy of the three on the 8 held-out quarters.</li>
-      <li><b>The traps:</b> the seasonal index from four rows up; the <i>previous</i> level and slope in the season equation; the forecast&#39;s index from the same quarter of the last year.</li>
-    </ul>
-    <p class="small">The cross-validation questions after question 6 are not assigned.</p>
-  </div>
-  <aside class="notes">If you check your workbook against <code>tidy()</code>, remember that its <code>beta</code> is &alpha; times the workbook&#39;s &beta;*.</aside>
-</section>
-
-<section class="slide" data-section="4" data-title="Next session">
-  <div class="inner">
-    <p class="kicker">What comes next</p>
-    <h1 class="sowhat">Session 19 names every model with three letters and lets <code>ETS()</code> choose.</h1>
-    <p class="lead wide">The three letters stand for error, trend and season, and each is additive, multiplicative or none, damped or not. Every model of Sessions 15 to 18 has a three-letter name. Session 19 shows how they are estimated by maximum likelihood, how AIC charges each for its parameters, how <code>ETS()</code> picks the best automatically, and how to forecast from the winner with intervals. It is the last content session.</p>
-    <p class="punch step wide">Read <code>19_A_MLE_Informal_Intro.pdf</code> before next session. The session relies on it.</p>
-    <p class="url" style="font-size:clamp(0.95rem,1.7vw,1.9rem)">aberrizbeitia@faculty.ie.edu</p>
-  </div>
-  <aside class="notes">The MLE primer is fifteen handwritten pages: the normal density, the joint density of independent normals, the log-likelihood, and the link to AIC. Session 19 covers the idea in two slides and assumes you have read the rest.</aside>
-</section>
+<style>
+.smoothing > .inner {max-width:1200px}
+.smoothing h1.sowhat, .smoothing h1.sowhat.wide {font-size:clamp(2rem,3.1vw,3.4rem);max-width:38ch;line-height:1.12;margin-bottom:1rem}
+.smoothing figure {margin:1rem 0}
+.smoothing figure svg {max-height:32vh}
+.smoothing .console {font-size:clamp(1rem,1.35vw,1.55rem);line-height:1.55;margin:1rem 0;padding:1rem;white-space:pre-wrap}
+.smoothing li {margin-bottom:.65rem;line-height:1.4}
+.smoothing .lead {font-size:clamp(1.1rem,1.55vw,1.7rem);line-height:1.45}
+.smoothing .small {line-height:1.45}
+.smoothing table {font-size:clamp(1rem,1.35vw,1.5rem)}
+@media(max-height:950px){.smoothing {padding-top:1.2rem;padding-bottom:1.2rem}.smoothing h1.sowhat{font-size:clamp(1.8rem,2.7vw,2.8rem)}.smoothing figure svg{max-height:32vh}.smoothing .console{margin:.6rem 0}}
+</style>
+<section class="slide smoothing" data-section="1" data-title="Keep the calendar inside the forecast."><div class="inner"><p class="kicker">Session 18 &middot; Add seasonality</p><h1 class="sowhat wide">Keep the calendar inside the forecast.</h1><p class="lead">Holt-Winters adds a seasonal index to the level and slope. The central question is which season belongs to the observation or forecast date.</p><p class="small">Alejandro Berrizbeitia &middot; aberrizbeitia@faculty.ie.edu</p></div></section>
+<section class="slide smoothing" data-section="1" data-title="Do the seasonal swings add units or multiply the level?"><div class="inner"><p class="kicker">Session 18 &middot; Add seasonality</p><h1 class="sowhat wide">Do the seasonal swings add units or multiply the level?</h1><figure><svg viewBox="0 0 760 225" role="img" aria-label="Two illustrative seasonal series on common scales: fixed-sized seasonal swings and swings growing with the level."><g font-family="SFMono-Regular,Menlo,monospace"><polyline points="35.0,130.0 45.0,146.0 55.0,151.2 65.0,133.5 75.0,122.8 85.0,140.4 95.0,145.4 105.0,126.6 115.0,117.0 125.0,133.6 135.0,137.0 145.0,120.8 155.0,109.3 165.0,126.6 175.0,131.2 185.0,114.9 195.0,103.2 205.0,119.4 215.0,124.9 225.0,107.3 235.0,96.7 245.0,114.4 255.0,117.9 265.0,101.0 275.0,90.9 285.0,108.0 295.0,111.2 305.0,94.8 315.0,83.6 325.0,99.8 335.0,105.0 345.0,87.4" fill="none" stroke="#1F3A4D" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" opacity="1"/><text x="190" y="22" text-anchor="middle" fill="#1F3A4D" font-size="18" font-weight="700" >Fixed units</text><polyline points="415.0,130.5 425.0,146.0 435.0,152.1 445.0,133.0 455.0,121.2 465.0,142.1 475.0,148.4 485.0,125.0 495.0,115.0 505.0,135.5 515.0,138.5 525.0,119.8 535.0,104.4 545.0,128.4 555.0,134.8 565.0,114.6 575.0,97.6 585.0,120.2 595.0,130.1 605.0,104.5 615.0,89.5 625.0,118.9 635.0,123.3 645.0,98.4 655.0,83.9 665.0,113.3 675.0,117.2 685.0,92.3 695.0,73.4 705.0,101.8 715.0,112.8 725.0,82.3" fill="none" stroke="#1F3A4D" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" opacity="1"/><text x="570" y="22" text-anchor="middle" fill="#1F3A4D" font-size="18" font-weight="700" >Proportional swings</text><text x="380" y="205" text-anchor="middle" fill="#6B665E" font-size="15" >Illustrative data: same level trend and common vertical scale</text></g></svg></figure><ul class="build"><li class="step">Additive seasonality: subtract an index measured in the data's units.</li><li class="step">Multiplicative seasonality: divide by an index expressed as a factor.</li></ul></div></section>
+<section class="slide smoothing" data-section="2" data-title="Remove the old seasonal effect before updating the level."><div class="inner"><p class="kicker">Session 18 &middot; One additive update</p><h1 class="sowhat wide">Remove the old seasonal effect before updating the level.</h1><div class="console">Adjusted observation = y<sub>t</sub> &minus; s<sub>t&minus;m</sub>
+Prior nonseasonal prediction = &#8467;<sub>t&minus;1</sub> + b<sub>t&minus;1</sub>
+&#8467;<sub>t</sub> = &alpha; &times; adjusted observation + (1&minus;&alpha;) &times; prior prediction
+Slope update: b<sub>t</sub> = &beta;*(&#8467;<sub>t</sub>&minus;&#8467;<sub>t&minus;1</sub>) + (1&minus;&beta;*)b<sub>t&minus;1</sub></div><p class="lead">The level and slope describe the nonseasonal part. For quarterly data, m = 4.</p></div></section>
+<section class="slide smoothing" data-section="2" data-title="Update this season using what surprised the model."><div class="inner"><p class="kicker">Session 18 &middot; One additive update</p><h1 class="sowhat wide">Update this season using what surprised the model.</h1><div class="console">New seasonal estimate = y<sub>t</sub> &minus; (&#8467;<sub>t&minus;1</sub> + b<sub>t&minus;1</sub>)
+s<sub>t</sub> = &gamma; &times; new seasonal estimate + (1&minus;&gamma;)s<sub>t&minus;m</sub></div><ul class="build"><li class="step">Blend this quarter's estimated seasonal effect with its previous index.</li><li class="step">This form uses the previous level and slope. Do not mix it with a differently parameterized seasonal equation.</li></ul></div></section>
+<section class="slide smoothing" data-section="2" data-title="Trace a surprise through all three states."><div class="inner"><p class="kicker">Session 18 &middot; One additive update</p><h1 class="sowhat wide">Trace a surprise through all three states.</h1><div class="console">Old level = 30, slope = 1, season = &minus;2; actual = 33
+&alpha; = 0.5, &beta;* = 0.2, &gamma; = 0.25
+Prediction = 30 + 1 &minus; 2 = 29
+Level = 0.5(33+2) + 0.5(31) = 33
+Slope = 0.2(33&minus;30) + 0.8(1) = 1.4
+Season = 0.25(33&minus;30&minus;1) + 0.75(&minus;2) = &minus;1</div></div></section>
+<section class="slide smoothing" data-section="3" data-title="Restore the season matching the forecast date."><div class="inner"><a class="nb" href="18_A_ExpSmoothing_Seasonal.html#forecasts" target="_blank" rel="noopener">Forecast indexing</a><p class="kicker">Session 18 &middot; Forecast calendar</p><h1 class="sowhat wide">Restore the season matching the forecast date.</h1><figure><svg viewBox="0 0 760 145" role="img" aria-label="Last observed quarter: Suppose T is Q2Then Target date: h = 5 means Q3Then Season to reuse: Most recent observed Q3"><g font-family="SFMono-Regular,Menlo,monospace"><rect x="20" y="28" width="220" height="90" rx="7" fill="#EFEAE1" stroke="#1F3A4D"/><text x="130" y="61" text-anchor="middle" fill="#1F3A4D" font-size="18" font-weight="700" >Last observed quarter</text><text x="130" y="89" text-anchor="middle" fill="#161513" font-size="16" >Suppose T is Q2</text><text x="255" y="80" text-anchor="middle" fill="#B5471E" font-size="20" >&#8594;</text><rect x="270" y="28" width="220" height="90" rx="7" fill="#EFEAE1" stroke="#1F3A4D"/><text x="380" y="61" text-anchor="middle" fill="#1F3A4D" font-size="18" font-weight="700" >Target date</text><text x="380" y="89" text-anchor="middle" fill="#161513" font-size="16" >h = 5 means Q3</text><text x="505" y="80" text-anchor="middle" fill="#B5471E" font-size="20" >&#8594;</text><rect x="520" y="28" width="220" height="90" rx="7" fill="#EFEAE1" stroke="#1F3A4D"/><text x="630" y="61" text-anchor="middle" fill="#1F3A4D" font-size="18" font-weight="700" >Season to reuse</text><text x="630" y="89" text-anchor="middle" fill="#161513" font-size="16" >Most recent observed Q3</text></g></svg></figure><div class="console">y&#770;<sub>T+h|T</sub> = &#8467;<sub>T</sub> + hb<sub>T</sub> + s<sub>T+h-m(k+1)</sub>
+k = floor((h&minus;1)/m)</div><p class="lead">Name the target quarter first. The index formula retrieves it from the last observed cycle.</p></div></section>
+<section class="slide smoothing" data-section="4" data-title="Multiplicative seasonality changes the units of the adjustment."><div class="inner"><a class="nb" href="18_A_ExpSmoothing_Seasonal.html#multiplicative" target="_blank" rel="noopener">Multiplicative equations</a><p class="kicker">Session 18 &middot; Fit and compare</p><h1 class="sowhat wide">Multiplicative seasonality changes the units of the adjustment.</h1><div class="console">Remove season: y<sub>t</sub> / s<sub>t&minus;m</sub>
+Restore season: (&#8467;<sub>T</sub> + hb<sub>T</sub>) &times; matching seasonal factor</div><p class="lead">A factor of 1.2 means 20% above the nonseasonal path. The full update equations are supporting reading.</p></div></section>
+<section class="slide smoothing" data-section="4" data-title="Fit both seasonal forms to holiday trips."><div class="inner"><a class="nb" href="18_A_ExpSmoothing_Seasonal.html#code" target="_blank" rel="noopener">Holiday trips in R</a><p class="kicker">Session 18 &middot; Fit and compare</p><h1 class="sowhat wide">Fit both seasonal forms to holiday trips.</h1><div class="console">additive = ETS(Trips ~ error("A") + trend("A") + season("A"))
+multiplicative = ETS(Trips ~ error("M") + trend("A") + season("M"))</div><ul class="build"><li class="step">Inspect the seasonal states and forecast paths.</li><li class="step">In tidy(), beta = alpha &times; beta-star. Keep parameter conventions consistent with the workbook.</li></ul></div></section>
+<section class="slide smoothing" data-section="4" data-title="The plot suggests a model; forecast evidence tests it."><div class="inner"><p class="kicker">Session 18 &middot; Fit and compare</p><h1 class="sowhat wide">The plot suggests a model; forecast evidence tests it.</h1><p class="lead">Compare held-out errors at the required horizon, inspect innovation residuals, and interpret the intervals.</p><ul class="build"><li class="step">A lower training RMSE measures fit to known observations.</li><li class="step">A narrower interval can reflect stronger assumptions. It needs credible coverage.</li></ul></div></section>
+<section class="slide smoothing" data-section="5" data-title="Homework: a seasonal update and two forecast plots."><div class="inner"><a class="nb" href="../19-ets-mle-model-selection/19_B_ESmoothing_Model_Selection.html#before-class" target="_blank" rel="noopener">Likelihood preparation</a><p class="kicker">Session 18 &middot; Close</p><h1 class="sowhat wide">Homework: a seasonal update and two forecast plots.</h1><ul class="build"><li class="step">Complete the additive sheet of 18_B, the moderate-gamma calculator row, and a forecast beyond one cycle.</li><li class="step">For New Zealand arrivals, make two forecast plots: all point forecasts, then one model with intervals. Compare held-out accuracy and explain your recommendation.</li></ul><p class="lead">Before Session 19, read the short likelihood guide in 19_B. The handwritten MLE primer is optional background.</p></div></section>
 <!-- lives inside the stage so it is positioned against it, not the viewport,
      and therefore never covers the rail -->
 <div id="notepane"><h4>Going further</h4><div class="body"></div></div>
@@ -643,7 +464,7 @@ tidy(fit)          <span class="dim"># additive: alpha 0.262   beta 0.0431   gam
 </div>
 
 <div id="hud">
-  <span id="count">1 / 12</span>
+  <span id="count">1 / 10</span>
   <button id="prev" title="Previous">&larr;</button>
   <button id="next" title="Next">&rarr;</button>
 </div>
@@ -652,7 +473,7 @@ tidy(fit)          <span class="dim"># additive: alpha 0.262   beta 0.0431   gam
 (function(){
   "use strict";
 
-  var SECTIONS = [{"name":"Where we are","from":1,"to":2},{"name":"The equations","from":3,"to":7},{"name":"Holiday trips in R","from":8,"to":10,"live":true},{"name":"Close","from":11,"to":12}];
+  var SECTIONS = [{"name":"Add seasonality","from":1,"to":2},{"name":"One additive update","from":3,"to":5},{"name":"Forecast calendar","from":6,"to":6},{"name":"Fit and compare","from":7,"to":9},{"name":"Close","from":10,"to":10}];
 var slides = Array.prototype.slice.call(document.querySelectorAll(".slide"));
   var toc    = document.getElementById("toc");
   var ovlist = document.getElementById("ovlist");

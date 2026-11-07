@@ -11,20 +11,16 @@
 [`18_B`](18_B_ExpSmoothing_Seasonal_students2.xlsx). Script: [`session18_code.R`](session18_code.R),
 the notebook's R code in notebook order.
 
-**Focus:** Holt's method plus a seasonal index for each period of the year, with its own smoothing
-parameter gamma; additive versus multiplicative seasonality, Session 5's question again; the four
-equations and how each is a weighted average; the `k` subindex, which always picks the same season
-of the last observed year; the fitted values by hand, with a whole year of starting values; why
-multiplicative seasonality goes with multiplicative errors; the holiday-trips example fitted both
-ways, the number of parameters, and why `fable` reports `beta` as alpha times beta*; damped
-Holt–Winters and the daily pedestrian example.
+**Focus:** Remove seasonality, update the states, and restore the season matching the forecast date. Compare additive and multiplicative candidates using held-out evidence. Full multiplicative arithmetic and the daily example are supporting reading.
 
 **R:** `ETS(y ~ error("A") + trend("A") + season("A"))`, `ETS(y ~ error("M") + trend("A") + season("M"))`,
 `trend("Ad")`, `components()`, `tidy()`
+
+**Calculator practice:** use the moderate-gamma row and forecast beyond one cycle in [18_A](18_A_ExpSmoothing_Seasonal.html#calculator).
 
 **Homework:** the `18_B` workbook (Holt–Winters additive by hand) plus the notebook's exercise on
 arrivals from New Zealand, questions 1 to 6. Due date in the announcements.
 
 **Outcome:** Student chooses and fits the right Holt–Winters variant and justifies it.
 
-> The `k` subindex in the seasonal component is the easiest thing to get wrong here. Take it slowly.
+**Before Session 19:** read the [short likelihood guide](../19-ets-mle-model-selection/19_B_ESmoothing_Model_Selection.html#before-class). The handwritten primer is optional. The New Zealand exercise now requires two forecast plots.
