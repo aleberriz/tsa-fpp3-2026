@@ -2364,7 +2364,7 @@ window.Quarto = {
   <li><a href="#aic" id="toc-aic" class="nav-link" data-scroll-target="#aic">AIC: Akaike’s Information Criterion</a></li>
   <li><a href="#aicc" id="toc-aicc" class="nav-link" data-scroll-target="#aicc">AICc: the bias-corrected AIC</a></li>
   <li><a href="#bic" id="toc-bic" class="nav-link" data-scroll-target="#bic">Reference: BIC, the Bayesian Information Criterion</a></li>
-  <li><a href="#excluded" id="toc-excluded" class="nav-link" data-scroll-target="#excluded">Model combinations that are excluded</a></li>
+  <li><a href="#excluded" id="toc-excluded" class="nav-link" data-scroll-target="#excluded">Reference: model combinations that are excluded</a></li>
   <li><a href="#multiplicative-errors" id="toc-multiplicative-errors" class="nav-link" data-scroll-target="#multiplicative-errors">Models with multiplicative errors</a></li>
   <li><a href="#residuals" id="toc-residuals" class="nav-link" data-scroll-target="#residuals">Residuals and multiplicative errors</a></li>
   </ul></li>
@@ -2414,7 +2414,7 @@ window.Quarto = {
 <li>Hyndman, R. J., Koehler, A. B., Ord, J. K., &amp; Snyder, R. D. (2008). <em>Forecasting with exponential smoothing: The state space approach</em>. Springer-Verlag.</li>
 <li>Akaike, H. (1974). A new look at the statistical model identification. <em>IEEE Transactions on Automatic Control</em>, 19, 716-723.</li>
 </ol>
-<p>This notebook is not original material. It expands reference 1 with the professor’s notes. It is the source of the notebook distributed in 2025 as <code>06_5_B</code>, rewritten for this course.</p>
+<p>This notebook follows reference 1, with additional explanations of likelihood, model selection and forecast evaluation.</p>
 </section>
 <section id="libraries" class="level1">
 <h1>Libraries</h1>
@@ -2437,7 +2437,7 @@ window.Quarto = {
 </section>
 <section id="state-space" class="level1">
 <h1>From an update rule to a statistical model</h1>
-<p>For SES with additive errors, let <span class="math inline">\(e_t\)</span> be an unpredictable shock with mean zero and variance <span class="math inline">\(\sigma^2\)</span>:</p>
+<p>In simple exponential smoothing (SES), <span class="math inline">\(y_t\)</span> is the observation and <span class="math inline">\(\ell_{t-1}\)</span> the preceding level estimate. Let <span class="math inline">\(e_t\)</span> be an unpredictable additive shock with mean zero and variance <span class="math inline">\(\sigma^2\)</span>. The smoothing weight <span class="math inline">\(\alpha\)</span> controls how much it changes the level:</p>
 <p><span class="math display">\[
 y_t=\ell_{t-1}+e_t,\qquad \ell_t=\ell_{t-1}+\alpha e_t.
 \]</span></p>
@@ -2448,10 +2448,10 @@ y_t=\ell_{t-1}+e_t,\qquad \ell_t=\ell_{t-1}+\alpha e_t.
 <h1>The ETS statistical framework and model selection</h1>
 <section id="likelihood" class="level2">
 <h2 class="anchored" data-anchor-id="likelihood">Minimizing the SSE vs maximizing the likelihood</h2>
-<p>Writing exponential smoothing as a statistical model (fpp3 8.5) makes it possible to compute the <strong>likelihood</strong> of a model: how probable the observed data are if that model generated them. The likelihood is a joint probability density, evaluated at the data. A larger likelihood means a model that fits the data better. The short guide above is the preparation for class; the handwritten primer gives optional detail.</p>
+<p>The <strong>likelihood</strong> evaluates the model’s joint density at the observed data. Keep those observations fixed and vary the parameters: a larger likelihood indicates a closer fit under that probability model. For continuous observations, density is a curve height, not the probability of an exact value. The preparation guide explains this distinction; the handwritten primer provides optional detail.</p>
 <ul>
 <li><strong>For an additive error model</strong>, maximizing the likelihood (assuming normally distributed errors) gives the same parameters as minimizing the sum of squared errors, as in SES and the additive-error examples in the preceding sessions. The multiplicative-error examples already used likelihood.</li>
-<li><strong>For a multiplicative error model</strong>, the two give different results. Maximizing the likelihood is what <code>ETS()</code> does in both cases.</li>
+<li><strong>For a multiplicative error model</strong>, the two give different results. <code>ETS()</code> maximizes likelihood by default in both cases.</li>
 </ul>
 </section>
 <section id="information-criteria" class="level2">
@@ -2476,7 +2476,7 @@ y_t=\ell_{t-1}+e_t,\qquad \ell_t=\ell_{t-1}+\alpha e_t.
 <li><span class="math inline">\(L\)</span> is the likelihood of the model.</li>
 <li><span class="math inline">\(k\)</span> is the total number of parameters and initial states that have been estimated, <strong>including the residual variance</strong>. It measures the complexity of the model.</li>
 </ul>
-<p>The lower the AIC, the better. The first term falls as the fit improves; the second rises with every parameter.</p>
+<p>Among comparable candidates, prefer the smaller AIC. Improving fit lowers its first term, while every additional estimated parameter adds to the penalty. Here <span class="math inline">\(k\)</span> includes variance, unlike the <span class="math inline">\(K\)</span> used in the residual-scale correction in Session 16 on fitting SES.</p>
 </section>
 <section id="aicc" class="level2">
 <h2 class="anchored" data-anchor-id="aicc">AICc: the bias-corrected AIC</h2>
@@ -2491,10 +2491,10 @@ y_t=\ell_{t-1}+e_t,\qquad \ell_t=\ell_{t-1}+\alpha e_t.
 <p><span class="math display">\[
 \text{BIC} = \text{AIC} + k[\log(T)-2]
 \]</span></p>
-<p>The BIC penalizes each parameter more heavily than the AIC once <span class="math inline">\(T\)</span> is 8 or more (<span class="math inline">\(\log T &gt; 2\)</span>), so it chooses either the same model as the AIC or one with fewer parameters.</p>
+<p>For <span class="math inline">\(T\geq8\)</span>, <span class="math inline">\(\log T&gt;2\)</span>, so BIC puts more weight on the parameter penalty than AIC. Use the same comparable candidate set when interpreting that difference; the formula is supporting reading.</p>
 </section>
 <section id="excluded" class="level2">
-<h2 class="anchored" data-anchor-id="excluded">Model combinations that are excluded</h2>
+<h2 class="anchored" data-anchor-id="excluded">Reference: model combinations that are excluded</h2>
 <p>Three combinations of (Error, Trend, Season) can be numerically unstable, because their state equations divide by values that may be close to zero:</p>
 <ul>
 <li><span class="math inline">\(ETS(A, N, M)\)</span></li>
@@ -2522,7 +2522,7 @@ y_t=\ell_{t-1}+e_t,\qquad \ell_t=\ell_{t-1}+\alpha e_t.
 <li>multiplicative error model: <span class="math inline">\(\hat{\varepsilon}_t = \dfrac{y_t - \hat{y}_{t|t-1}}{\hat{y}_{t|t-1}}\)</span>, a relative error.</li>
 </ul></li>
 </ul>
-<p>So for a multiplicative error model, run Session 9’s residual diagnostics on <code>.innov</code>, which is the error the model assumes to be white noise.</p>
+<p>For multiplicative errors, apply the checks from Session 9 on residual diagnostics to <code>.innov</code>, because this is the relative error assumed by the model.</p>
 </section>
 </section>
 <section id="automatic" class="level1">
@@ -2533,7 +2533,7 @@ y_t=\ell_{t-1}+e_t,\qquad \ell_t=\ell_{t-1}+\alpha e_t.
 </section>
 <section id="example-1" class="level2">
 <h2 class="anchored" data-anchor-id="example-1">Continuing example: Australian holiday trips</h2>
-<p>Use the quarterly series from the session on Holt-Winters throughout selection, diagnostics and forecasting.</p>
+<p>The <code>tourism</code> dataset records quarterly domestic overnight trips in Australia. As in Session 18 on Holt-Winters, aggregate holiday trips across regions and convert thousands to millions. The resulting <code>aus_holidays</code> dataset is used for selection, diagnostics and forecasting.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>aus_holidays <span class="ot">&lt;-</span> tourism <span class="sc">|&gt;</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Purpose <span class="sc">==</span> <span class="st">&quot;Holiday&quot;</span>) <span class="sc">|&gt;</span></span>
@@ -2590,7 +2590,7 @@ Model: ETS(M,N,A)
 </div>
 </div>
 </div>
-<p>Read the three letters before interpreting the parameters. AICc ranks the candidates fitted; it does not certify the winner’s adequacy.</p>
+<p>Read the three letters before interpreting the parameters. The corrected Akaike information criterion (AICc) ranks the fitted candidates, while residual checks and forecast evaluation assess their usefulness.</p>
 <p><code>ETS()</code> chose <span class="math inline">\(ETS(M,N,A)\)</span>: multiplicative errors, no trend, additive seasonality. It was a close call:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>aus_holidays <span class="sc">|&gt;</span></span>
@@ -2675,7 +2675,7 @@ Model: ETS(M,N,A)
 </section>
 <section id="exercise-1" class="level1">
 <h1>Exercise 1</h1>
-<p>From the dataset <code>tourism</code>, keep the trips with purpose <code>Holiday</code>. The result has one series for each combination of <code>Region</code> and <code>State</code> (check the key of the tsibble).</p>
+<p>The <code>tourism</code> dataset measures quarterly Australian domestic overnight trips in thousands. Keep the rows with purpose <code>Holiday</code>. The result has one series for each combination of <code>Region</code> and <code>State</code> (check the key of the tsibble).</p>
 <ol type="1">
 <li>Fit an automatic ETS model to every series, chosen by <span class="math inline">\(AIC_c\)</span>.</li>
 <li>Report the model chosen for the region of Brisbane, and say in one sentence what each of its three letters means for this series.</li>
@@ -2716,7 +2716,7 @@ Model: ETS(M,N,A)
 </section>
 <section id="exercise-3" class="level1">
 <h1>Exercise 3</h1>
-<p>From the dataset <code>PBS</code>, keep the prescriptions with <code>ATC2 == &quot;H02&quot;</code> (corticosteroids) and sum the cost over all the other keys, month by month.</p>
+<p>The <code>PBS</code> dataset records Australian pharmaceutical prescriptions and costs by month. Select corticosteroids with <code>ATC2 == &quot;H02&quot;</code>, then sum <code>Cost</code> across the other categories for each month. Costs are measured in Australian dollars.</p>
 <ol type="1">
 <li>Fit an automatic ETS model and say which model was chosen.</li>
 <li>Fit <span class="math inline">\(ETS(A,A,A)\)</span> as well, and compare the two by <span class="math inline">\(AIC_c\)</span>.</li>

@@ -7,8 +7,8 @@ library(fpp3)
 
 ### Test your code ----
 # Load time series to test the method
-algerian_exports <- global_economy |> 
-  filter(Country == "Algeria") |> 
+algerian_exports <- global_economy |>
+  filter(Country == "Algeria") |>
   select(Year, Exports)
 
 ## 2. Function `SSE_func` ----
@@ -64,7 +64,7 @@ manual_levels <- ses_levels(algerian_exports$Exports, opt$par[1], opt$par[2])
 c(manual_forecast = tail(manual_levels, 1),
   fable_forecast = forecast(fit, h = 1)$.mean[1])
 
-## 5. Fitting SES to Argentinian exports ----
+## 5. Practice extension: fit the Argentina exports dataset ----
 arg_exports <- global_economy |>
                   filter(Country == "Argentina") |>
                   select(Year, Exports)

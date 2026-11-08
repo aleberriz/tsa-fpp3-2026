@@ -34,14 +34,14 @@ fc |>
 
 fit |> accuracy() |> select(.model, RMSE) |> mutate(RMSE = round(RMSE, 4))
 
-fig_additive <- fit |> 
-  select("additive") |> 
+fig_additive <- fit |>
+  select("additive") |>
   components() |>
   autoplot() +
   labs(title = "ETS(A, A, A) components")
 
-fig_multiplicative <- fit |> 
-  select("multiplicative") |> 
+fig_multiplicative <- fit |>
+  select("multiplicative") |>
   components() |>
   autoplot() +
   labs(title = "ETS(M, A, M) components")
@@ -66,12 +66,12 @@ fit <- sth_cross_ped |>
   filter(Date <= "2016-07-31") |>
   model(
     hw = ETS(Count ~ error("M") + trend("Ad") + season("M"))
-  ) 
+  )
 
 fc <- fit |>
   forecast(h = "2 weeks")
 
-fc |> 
+fc |>
   autoplot(sth_cross_ped |> filter(Date <= "2016-08-14")) +
   labs(title = "Daily traffic: Southern Cross",
        y="Pedestrians ('000)")

@@ -2396,7 +2396,7 @@ window.Quarto = {
 <h1>SES exercise</h1>
 <section id="timeplot" class="level3">
 <h3 class="anchored" data-anchor-id="timeplot">1. Argentina’s exports</h3>
-<p>Select the rows for Argentina from the dataset <code>global_economy</code>, keeping the exports column. Produce a readable time plot. State whether a flat forecast is plausible for this series.</p>
+<p>The <code>global_economy</code> dataset includes annual exports as a percentage of GDP. Select Argentina and retain <code>Year</code> and <code>Exports</code>. Make a time plot and explain whether a level-only forecast is plausible.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>arg_exports <span class="ot">&lt;-</span> global_economy <span class="sc">|&gt;</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">filter</span>(Country <span class="sc">==</span> <span class="st">&quot;Argentina&quot;</span>) <span class="sc">|&gt;</span></span>
@@ -2423,14 +2423,14 @@ window.Quarto = {
 </section>
 <section id="fit" class="level3">
 <h3 class="anchored" data-anchor-id="fit">2. Fitting the model</h3>
-<p>Fit simple exponential smoothing, <code>ETS(A,N,N)</code>, to the series. Plot the forecasts together with the fitted values.</p>
+<p>Fit SES with additive errors, no trend and no seasonality: <code>ETS(A,N,N)</code>. Forecast eight years ahead and plot the forecasts together with the fitted values.</p>
 <section id="is-simple-exponential-smoothing-appropriate-for-this-data-why-or-why-not" class="level4">
 <h4 class="anchored" data-anchor-id="is-simple-exponential-smoothing-appropriate-for-this-data-why-or-why-not">Is simple exponential smoothing appropriate for this data? Why, or why not?</h4>
 </section>
 </section>
 <section id="parameters" class="level3">
 <h3 class="anchored" data-anchor-id="parameters">3. Model parameters</h3>
-<p>How many parameters does the model have? Extract their values, and interpret the value of alpha.</p>
+<p>How many smoothing parameters and initial states does SES estimate? Extract them with <code>tidy()</code> and explain how alpha determines the weight on new observations. This count excludes the innovation variance, which is estimated separately.</p>
 </section>
 <section id="sigma" class="level3">
 <h3 class="anchored" data-anchor-id="sigma">4. Standard deviation of the residuals</h3>
@@ -2438,13 +2438,11 @@ window.Quarto = {
 <p><span class="math display">\[\begin{equation}
   \hat{\sigma} = \sqrt{\frac{1}{T-K}\sum_{t=1}^T e_t^2}
 \end{equation}\]</span></p>
-<ul>
-<li><span class="math inline">\(K\)</span> is the number of parameters estimated in the forecasting method</li>
-</ul>
+<p>Here <span class="math inline">\(e_t\)</span> is the one-step residual at time <span class="math inline">\(t\)</span>, and <span class="math inline">\(T\)</span> counts the residuals used. <span class="math inline">\(K\)</span> counts estimated smoothing parameters and initial states, excluding the variance itself. This is the residual-variance correction used in Session 12 on prediction intervals. Session 19 on ETS estimation and model selection uses a different count for AIC, which also includes the estimated variance.</p>
 </section>
 <section id="interval" class="level3">
 <h3 class="anchored" data-anchor-id="interval">5. 95% prediction interval</h3>
-<p>Compute a 95% prediction interval for the first forecast as <span class="math inline">\(\hat{y} \pm 1.96s\)</span>, where <span class="math inline">\(s\)</span> is the standard deviation of the residuals from the previous point. See notebook <code>12</code> for guidance.</p>
+<p>Assuming normal errors, construct the first 95% prediction interval as <span class="math inline">\(\hat{y}_{T+1|T} \pm 1.96\hat{\sigma}\)</span>. Here the point forecast is one year beyond the training data and <span class="math inline">\(\hat{\sigma}\)</span> is the residual scale you just calculated. Session 12 on prediction intervals explains why this scale applies at horizon one.</p>
 </section>
 <section id="compare" class="level3">
 <h3 class="anchored" data-anchor-id="compare">6. Comparing prediction intervals</h3>
@@ -2453,7 +2451,7 @@ window.Quarto = {
 <section id="calculator" class="level3">
 <h3 class="anchored" data-anchor-id="calculator">7. Calculator checks</h3>
 <p>Use the fitted alpha rounded to two decimals. Calculate the weights on the three most recent observations, their sum, and the remaining weight. Explain why that remainder includes the initial level as well as older observations. Small differences from calculations with the unrounded alpha are expected.</p>
-<p>For the first five fitted values, write the residuals and add their squares by hand. For an arithmetic rehearsal only, treat these five rounded residuals as the complete series with <span class="math inline">\(K=2\)</span>: divide their SSE by <span class="math inline">\(5-2\)</span>, take the square root, and build a 95% interval around the first point forecast. Check each step against R. This artificial five-residual scale is not an estimate of the full model’s forecast uncertainty.</p>
+<p>For the first five fitted values, round the residuals to two decimals and add their squares by hand. For an arithmetic rehearsal only, treat these five rounded residuals as the complete series with <span class="math inline">\(K=2\)</span>: divide their SSE by <span class="math inline">\(5-2\)</span>, take the square root, and build a 95% interval around the first point forecast. Check each step against R. This artificial five-residual scale is not an estimate of the full model’s forecast uncertainty.</p>
 </section>
 <section id="decision" class="level3">
 <h3 class="anchored" data-anchor-id="decision">8. Decision</h3>

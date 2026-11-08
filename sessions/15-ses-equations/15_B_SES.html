@@ -2355,9 +2355,9 @@ window.Quarto = {
   <li><a href="#intro" id="toc-intro" class="nav-link" data-scroll-target="#intro">Intro</a></li>
   <li><a href="#ses" id="toc-ses" class="nav-link" data-scroll-target="#ses">Simple exponential smoothing (SES)</a>
   <ul>
-  <li><a href="#three-methods" id="toc-three-methods" class="nav-link" data-scroll-target="#three-methods">Naïve vs. mean vs. simple exponential smoothing</a>
+  <li><a href="#three-methods" id="toc-three-methods" class="nav-link" data-scroll-target="#three-methods">Naive vs. mean vs. simple exponential smoothing</a>
   <ul>
-  <li><a href="#naïve" id="toc-naïve" class="nav-link" data-scroll-target="#naïve">Naïve</a></li>
+  <li><a href="#naive" id="toc-naive" class="nav-link" data-scroll-target="#naive">Naive</a></li>
   <li><a href="#mean-method" id="toc-mean-method" class="nav-link" data-scroll-target="#mean-method">Mean method</a></li>
   </ul></li>
   <li><a href="#weighted-average" id="toc-weighted-average" class="nav-link" data-scroll-target="#weighted-average">Simple exponential smoothing</a>
@@ -2365,14 +2365,14 @@ window.Quarto = {
   <li><a href="#flat" id="toc-flat" class="nav-link" data-scroll-target="#flat">Flat forecasts of simple exponential smoothing</a></li>
   <li><a href="#component-form" id="toc-component-form" class="nav-link" data-scroll-target="#component-form">Component form of the equations</a></li>
   <li><a href="#fitted-values" id="toc-fitted-values" class="nav-link" data-scroll-target="#fitted-values">Equations for the fitted values</a></li>
-  <li><a href="#fitting" id="toc-fitting" class="nav-link" data-scroll-target="#fitting">Finding the best values for <span class="math inline">\(l_0\)</span> and <span class="math inline">\(\alpha\)</span>, that is, fitting the model</a></li>
+  <li><a href="#fitting" id="toc-fitting" class="nav-link" data-scroll-target="#fitting">Finding the best values for <span class="math inline">\(\ell_0\)</span> and <span class="math inline">\(\alpha\)</span>, that is, fitting the model</a></li>
   </ul></li>
   <li><a href="#in-r" id="toc-in-r" class="nav-link" data-scroll-target="#in-r">Model specification in <code>fable</code>: an example</a>
   <ul>
   <li><a href="#fit" id="toc-fit" class="nav-link" data-scroll-target="#fit">1. Fitting the model</a></li>
   <li><a href="#augment" id="toc-augment" class="nav-link" data-scroll-target="#augment">2. Computing the fitted values</a></li>
   <li><a href="#parameters" id="toc-parameters" class="nav-link" data-scroll-target="#parameters">3. Interpreting the parameters</a></li>
-  <li><a href="#reconstruct" id="toc-reconstruct" class="nav-link" data-scroll-target="#reconstruct">4. Reconstructing the fitted values from <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(l_0\)</span></a>
+  <li><a href="#reconstruct" id="toc-reconstruct" class="nav-link" data-scroll-target="#reconstruct">4. Reconstructing the fitted values from <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\ell_0\)</span></a>
   <ul>
   <li><a href="#exercise" id="toc-exercise" class="nav-link" data-scroll-target="#exercise">Exercise</a></li>
   </ul></li>
@@ -2411,7 +2411,7 @@ window.Quarto = {
 <ol type="1">
 <li>Hyndman, R.J., &amp; Athanasopoulos, G., 2021. <em>Forecasting: principles and practice</em>. 3rd edition.</li>
 <li>Associated PDF <em>15_A_SES_Equations.pdf</em>, for the full geometric-series derivation.</li>
-<li>Associated video lesson explaining the .pdf file (<a href="https://youtu.be/zlfbuwgfsq4">Link</a>)</li>
+<li>Associated video lesson: <a href="https://youtu.be/zlfbuwgfsq4">a walkthrough of the SES equations</a>.</li>
 <li>Fable package documentation</li>
 </ol>
 <ul>
@@ -2421,7 +2421,7 @@ window.Quarto = {
 </section>
 <section id="note" class="level1">
 <h1>Note</h1>
-<p>This notebook is not original material, but rather based on ref. 1 with notes expanding on some of the concepts contained in the book.</p>
+<p>This notebook follows reference 1 and adds explanations of the updating equations and their use.</p>
 </section>
 <section id="libraries" class="level1">
 <h1>Libraries</h1>
@@ -2432,21 +2432,19 @@ window.Quarto = {
 </section>
 <section id="intro" class="level1">
 <h1>Intro</h1>
-<p><strong>Reading route.</strong> Start with the updating rule and follow its weights back through two observations. The full geometric-series proof is supporting reading. In class, explain each term, work a short update, and decide when a slowly changing level is a sensible forecast.</p>
+<p><strong>Reading route.</strong> Follow the level through two observations, calculate an update by hand, and explain how past observations contribute to the next forecast. Use that reasoning to judge whether a flat forecast suits the series and the decision. The full geometric-series proof in the PDF is supporting reading.</p>
 <p><strong>Exponential smoothing forecasts: the main idea</strong></p>
+<p>These three methods all forecast a constant future level. They differ in the information that determines that level.</p>
 <ul>
-<li><strong>Mean method</strong>: constant forecasts. Every observation gets the same weight.</li>
-<li><strong>Naive method</strong>: constant forecasts. All the weight goes to the last observation.</li>
-<li><strong>Simple exponential smoothing</strong>: also constant forecasts, but from a weighted average of the past observations and an initial level, with observation weights that decay exponentially as the observations get older.
-<ul>
-<li>The more recent the observation, the larger its weight.</li>
-</ul></li>
+<li><strong>Mean method:</strong> every observation has equal weight.</li>
+<li><strong>Naive method:</strong> the latest observation receives all the weight.</li>
+<li><strong>Simple exponential smoothing:</strong> the forecast combines past observations with an initial level. Observation weights decline exponentially with age, so recent data contribute more.</li>
 </ul>
 </section>
 <section id="ses" class="level1">
 <h1>Simple exponential smoothing (SES)</h1>
-<p>It produces <strong>constant forecasts</strong>, so it suits data with <strong>no clear trend or seasonal pattern</strong>.</p>
-<p>Example:</p>
+<p>SES produces <strong>constant point forecasts</strong>, making it a candidate for data without a persistent trend or seasonal pattern.</p>
+<p>The Algerian exports dataset contains annual exports of goods and services as a percentage of GDP. Select it from <code>global_economy</code> and inspect the time plot:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>algeria_economy <span class="ot">&lt;-</span> global_economy <span class="sc">|&gt;</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Country <span class="sc">==</span> <span class="st">&quot;Algeria&quot;</span>)</span>
@@ -2462,39 +2460,33 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>The data above has no clear trend or seasonality. Among the benchmark methods, the <strong>naïve or the mean method</strong> would suit it.</p>
+<p>The series has no seasonal pattern or persistent trend, although its recent decline deserves attention. Compare level-only methods such as the naive method, the mean method and SES, then judge their forecasts on later observations.</p>
 <section id="three-methods" class="level2">
-<h2 class="anchored" data-anchor-id="three-methods">Naïve vs. mean vs. simple exponential smoothing</h2>
-<section id="naïve" class="level3">
-<h3 class="anchored" data-anchor-id="naïve">Naïve</h3>
-<p>All future forecasts equal the last observed value. <strong>Only the most recent observation matters.</strong></p>
+<h2 class="anchored" data-anchor-id="three-methods">Naive vs. mean vs. simple exponential smoothing</h2>
+<section id="naive" class="level3">
+<h3 class="anchored" data-anchor-id="naive">Naive</h3>
+<p>Let <span class="math inline">\(T\)</span> be the last observed time and <span class="math inline">\(h\)</span> the number of periods ahead. For every <span class="math inline">\(h = 1, 2, \dots\)</span>, the naive forecast equals the last observation <span class="math inline">\(y_T\)</span>, because it receives all the weight:</p>
 <p><span class="math display">\[
 \hat{y}_{T+h|T} = y_{T}
 \]</span></p>
-<ul>
-<li>for <span class="math inline">\(h = 1, 2, \dots\)</span></li>
-</ul>
 </section>
 <section id="mean-method" class="level3">
 <h3 class="anchored" data-anchor-id="mean-method">Mean method</h3>
-<p>All future forecasts equal the simple average of the observed data. <strong>Every observation matters equally: all get the same weight.</strong></p>
+<p>The mean method gives each observation <span class="math inline">\(y_t\)</span> equal weight. After <span class="math inline">\(T\)</span> observations, every forecast at horizon <span class="math inline">\(h = 1, 2, \dots\)</span> is therefore the same sample average:</p>
 <p><span class="math display">\[
 \hat{y}_{T+h|T} = \frac1T \sum_{t=1}^T y_t
 \]</span></p>
-<ul>
-<li>for <span class="math inline">\(h = 1, 2, \dots\)</span></li>
-</ul>
 </section>
 </section>
 <section id="weighted-average" class="level2">
 <h2 class="anchored" data-anchor-id="weighted-average">Simple exponential smoothing</h2>
-<p>Start with a practical question: how much should a new observation change our estimate of the level? With the previous level <span class="math inline">\(\ell_{t-1}\)</span>, the observation <span class="math inline">\(y_t\)</span>, and a weight <span class="math inline">\(\alpha\)</span>, the update is</p>
+<p>Start with a practical question: how much should a new observation change our estimate of the level? At time <span class="math inline">\(t\)</span>, combine the previous level <span class="math inline">\(\ell_{t-1}\)</span> with observation <span class="math inline">\(y_t\)</span>, using a smoothing weight <span class="math inline">\(0\leq\alpha\leq1\)</span>. The revised level is <span class="math inline">\(\ell_t\)</span>:</p>
 <p><span class="math display">\[
 \ell_t = \alpha y_t + (1-\alpha)\ell_{t-1}
        = \ell_{t-1} + \alpha\underbrace{(y_t-\ell_{t-1})}_{\text{one-step error}}.
 \]</span></p>
-<p>Read the second form as <strong>previous estimate plus a fraction of the surprise</strong>. If the observation is above the prediction, the level rises. A larger <span class="math inline">\(\alpha\)</span> makes a larger correction. This can track a genuine change faster, but also responds more to temporary noise.</p>
-<p>Unfold the recursion twice:</p>
+<p>The second form adds a fraction of the <strong>one-step forecast error</strong>, the surprise, to the previous estimate. An observation above the forecast raises the level. A larger <span class="math inline">\(\alpha\)</span> therefore follows a change faster, while also responding more to temporary noise.</p>
+<p>Starting from the initial level <span class="math inline">\(\ell_0\)</span>, substitute the first update into the second:</p>
 <p><span class="math display">\[
 \begin{aligned}
 \ell_1 &amp;= \alpha y_1+(1-\alpha)\ell_0,\\
@@ -2507,14 +2499,13 @@ window.Quarto = {
 =\sum_{j=0}^{T-1}\alpha(1-\alpha)^j y_{T-j}+(1-\alpha)^T\ell_0.
 \]</span></p>
 <p>The observation weights sum to <span class="math inline">\(1-(1-\alpha)^T\)</span>; the initial-level weight is the remaining <span class="math inline">\((1-\alpha)^T\)</span>. <strong>Together they sum to exactly one.</strong> For <span class="math inline">\(0&lt;\alpha\leq1\)</span>, the initial-level weight tends to zero as <span class="math inline">\(T\)</span> grows. With small <span class="math inline">\(\alpha\)</span> and a short series it can still matter.</p>
-<p>The geometric sum follows by writing <span class="math inline">\(S_T=\alpha+\alpha r+\cdots+\alpha r^{T-1}\)</span>, with <span class="math inline">\(r=1-\alpha\)</span>, and subtracting <span class="math inline">\(rS_T\)</span>: <span class="math inline">\(S_T(1-r)=\alpha(1-r^T)\)</span>, hence <span class="math inline">\(S_T=1-r^T\)</span>. The handwritten PDF expands this argument. Be able to explain the declining weights and calculate a few of them; the general proof is reference material.</p>
-<p>At <span class="math inline">\(\alpha=1\)</span>, SES is the naive method. At <span class="math inline">\(\alpha=0\)</span>, the level stays at <span class="math inline">\(\ell_0\)</span>. If that constant initial level is estimated by least squares, it is the sample mean. <strong>Small <span class="math inline">\(\alpha\)</span> means slow adaptation; it does not by itself make SES the sample-mean method.</strong></p>
+<p>The geometric sum follows by writing <span class="math inline">\(S_T=\alpha+\alpha r+\cdots+\alpha r^{T-1}\)</span>, with <span class="math inline">\(r=1-\alpha\)</span>, and subtracting <span class="math inline">\(rS_T\)</span>: <span class="math inline">\(S_T(1-r)=\alpha(1-r^T)\)</span>, hence <span class="math inline">\(S_T=1-r^T\)</span>. The handwritten PDF <code>15_A</code> develops the general proof as reference material. The working skill is to explain the declining weights and calculate their contributions.</p>
+<p>At <span class="math inline">\(\alpha=1\)</span>, SES gives the naive forecast. At <span class="math inline">\(\alpha=0\)</span>, every forecast stays at <span class="math inline">\(\ell_0\)</span>, which equals the sample mean if least squares estimates that constant. <strong>A small positive <span class="math inline">\(\alpha\)</span> means slow adaptation, with unequal weights on observations.</strong></p>
 <section id="flat" class="level3">
 <h3 class="anchored" data-anchor-id="flat">Flat forecasts of simple exponential smoothing</h3>
-<p>By design, Simple Exponential Smoothing has a “flat” forecast function. <strong>All forecasts beyond the training data take the same value.</strong></p>
-<p>If <span class="math inline">\(t=T\)</span> is the last point in time of the training data, this means that:</p>
+<p>After the last training observation at time <span class="math inline">\(T\)</span>, <strong>every SES point forecast equals the final level <span class="math inline">\(\ell_T\)</span></strong>. For a horizon <span class="math inline">\(h\)</span> periods ahead:</p>
 <p><span class="math display">\[
-\hat{y}_{T+h|T} = \hat{y}_{T+1|T} = \ell_T \qquad h=2,3,\dots.
+\hat{y}_{T+h|T} = \hat{y}_{T+1|T} = \ell_T \qquad h=1,2,\dots.
 \]</span></p>
 <p>SES has no trend or seasonal component to project beyond the current level. That assumption produces the flat point forecasts; the absence of future observations alone does not imply flat forecasts for every method. Forecast uncertainty can still grow with the horizon.</p>
 <p>The <strong>fitted values</strong>, on the other hand, are not constant. Each is a <em>one-step-ahead forecast</em> based on all the preceding observations.</p>
@@ -2527,12 +2518,7 @@ window.Quarto = {
   \text{Forecast equation}  &amp;&amp; \hat{y}_{T+h|T} &amp; = \ell_{T}\\
   \text{Smoothing equation} &amp;&amp; \ell_{t}        &amp; = \alpha y_{t} + (1 - \alpha)\ell_{t-1},
 \end{align*}
-\]</span> where:</p>
-<ul>
-<li><span class="math inline">\(\hat{y}_{T+h|T}\)</span> is the forecast at <span class="math inline">\(T+h\)</span> given everything occurred up to <span class="math inline">\(T\)</span>, with <span class="math inline">\(T\)</span> being the last point in the training data.</li>
-<li><span class="math inline">\(\alpha\)</span> is the smoothing parameter of the model.</li>
-<li><span class="math inline">\(l_t\)</span> is the level of the time series at time <span class="math inline">\(t\)</span>.</li>
-</ul>
+\]</span> Here <span class="math inline">\(\hat{y}_{T+h|T}\)</span> forecasts time <span class="math inline">\(T+h\)</span> using observations through <span class="math inline">\(T\)</span>, the end of the training data. The smoothing parameter <span class="math inline">\(\alpha\)</span> lies between zero and one, and <span class="math inline">\(\ell_t\)</span> estimates the level at time <span class="math inline">\(t\)</span>.</p>
 </section>
 <section id="fitted-values" class="level3">
 <h3 class="anchored" data-anchor-id="fitted-values">Equations for the fitted values</h3>
@@ -2540,44 +2526,38 @@ window.Quarto = {
 <p>To get the equations for the fitted values from the component form, set <span class="math inline">\(h=1\)</span>:</p>
 <p><span class="math display">\[
 \begin{align*}
-  \text{Forecast equation at t=T+1 (with h=1)}  &amp;&amp; \hat{y}_{T+1|T} &amp; = \ell_{T}\\
+  \text{Forecast at } t=T+1 \text{ (so } h=1\text{)}  &amp;&amp; \hat{y}_{T+1|T} &amp; = \ell_{T}\\
   \text{Smoothing equation at t=t} &amp;&amp; \ell_{t}        &amp; = \alpha y_{t} + (1 - \alpha)\ell_{t-1},
 \end{align*}
 \]</span></p>
-<p>To apply both equations at a generic point in time <span class="math inline">\(t\)</span>, both must refer to that point. So we make the <strong>change of variable</strong> <span class="math inline">\(t=T+1 \rightarrow T=t-1\)</span> in the forecast equation: replace <span class="math inline">\(T\)</span> with <span class="math inline">\(t-1\)</span>. The equations become:</p>
+<p>To align the forecast with the observation at time <span class="math inline">\(t\)</span>, replace <span class="math inline">\(T\)</span> by <span class="math inline">\(t-1\)</span> in the forecast equation:</p>
 <p><span class="math display">\[
 \begin{align*}
   \text{Forecast equation at t=t (with h=1)}  &amp;&amp; \hat{y}_{t|t-1} &amp; = \ell_{t-1}\\
   \text{Smoothing equation at t=t} &amp;&amp; \ell_{t}        &amp; = \alpha y_{t} + (1 - \alpha)\ell_{t-1},
 \end{align*}
 \]</span></p>
-<p>Together, these two equations give the <strong>fitted values</strong>: given <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(l_0\)</span>, they compute the fitted value at every point <span class="math inline">\(t=1, 2, \cdots, T\)</span>.</p>
+<p>Together, these two equations give the <strong>fitted values</strong>: given <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\ell_0\)</span>, they compute the fitted value at every point <span class="math inline">\(t=1, 2, \cdots, T\)</span>.</p>
 <p><span class="math display">\[
 \begin{align*}
   \text{Equation for fitted value at t=t}  &amp;&amp; \hat{y}_{t|t-1} &amp; = \ell_{t-1}\\
   \text{Smoothing equation at t=t} &amp;&amp; \ell_{t}        &amp; = \alpha y_{t} + (1 - \alpha)\ell_{t-1},
 \end{align*}
 \]</span></p>
-<p>For further details, see <code>15_A</code> and the explanations given in class.</p>
+<p>The handwritten PDF <code>15_A</code> and the session slides explain the same timing.</p>
 </section>
 <section id="fitting" class="level3">
-<h3 class="anchored" data-anchor-id="fitting">Finding the best values for <span class="math inline">\(l_0\)</span> and <span class="math inline">\(\alpha\)</span>, that is, fitting the model</h3>
+<h3 class="anchored" data-anchor-id="fitting">Finding the best values for <span class="math inline">\(\ell_0\)</span> and <span class="math inline">\(\alpha\)</span>, that is, fitting the model</h3>
 <p>To apply simple exponential smoothing, two values must be chosen:</p>
 <ul>
-<li><span class="math inline">\(\alpha\)</span>: the smoothing parameter</li>
-<li><span class="math inline">\(l_0\)</span>: the initial value of <span class="math inline">\(l_t\)</span></li>
+<li><span class="math inline">\(\alpha\)</span>: the smoothing weight, between zero and one</li>
+<li><span class="math inline">\(\ell_0\)</span>: the initial level</li>
 </ul>
 <p>More complex exponential smoothing methods have more than one smoothing parameter and more than one initial component.</p>
 <p><strong>Choice of parameters</strong></p>
 <ul>
 <li>Sometimes past experience guides the choice.</li>
-<li>Usually the observed data is used to estimate them:
-<ul>
-<li>the parameters are chosen to minimize the <strong>sum of squared residuals</strong>.
-<ul>
-<li>NOTE: the <strong>sum of squared residuals</strong> is usually called the <strong>sum of squared errors (SSE)</strong>, although residuals <span class="math inline">\(\neq\)</span> errors, strictly speaking (see the session on benchmark methods and fitted values).</li>
-</ul></li>
-</ul></li>
+<li>Usually fitting estimates them by minimizing the <strong>sum of squared residuals</strong>, conventionally called the <strong>sum of squared errors (SSE)</strong>. Residuals measure training fit, while errors on future observations measure forecast performance, as in Session 8 on benchmark methods, fitted values and forecasting.</li>
 </ul>
 <p><span class="math display">\[
   \text{Residuals} = e_t=y_t - \hat{y}_{t|t-1}
@@ -2585,7 +2565,7 @@ window.Quarto = {
 <p><span class="math display">\[
 \text{SSE} = \sum_{t=1}^T(y_t - \hat{y}_{t|t-1})^2=\sum_{t=1}^Te_t^2.
 \]</span></p>
-<p>For simple exponential smoothing this optimization problem has no explicit solution, so it is solved numerically: an iterative search for the values of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(l_0\)</span> that minimize the SSE. In outline:</p>
+<p>For simple exponential smoothing this optimization problem has no explicit solution, so it is solved numerically: an iterative search for the values of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\ell_0\)</span> that minimize the SSE. The diagram shows how each trial pair produces fitted values and an error score:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -2596,18 +2576,18 @@ window.Quarto = {
 </div>
 </div>
 <p>You may recall that linear regression has explicit formulas for the values that minimize the SSE. SES does not.</p>
-<p><strong>Step 2 of the fitting process</strong> is <strong>computing the fitted values from <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(l_0\)</span> with the component equations.</strong> The Excel workbook <code>15_C</code> in this session’s folder walks through this step by hand; filling it in is the homework.</p>
+<p>The highlighted part of the fitting process <strong>calculates fitted values from a trial <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\ell_0\)</span></strong>. Workbook <code>15_C</code> lets you perform this calculation with cell formulas, then compare the result with R.</p>
 </section>
 </section>
 <section id="in-r" class="level2">
 <h2 class="anchored" data-anchor-id="in-r">Model specification in <code>fable</code>: an example</h2>
-<p>As forecasters, we want to use this model in R, specifically with the <code>fpp3</code> packages. It is simple.</p>
+<p>Use <code>fable</code>, loaded with <code>fpp3</code>, to fit SES in R.</p>
 <section id="fit" class="level3">
 <h3 class="anchored" data-anchor-id="fit">1. Fitting the model</h3>
 <p>Exponential smoothing methods are fitted with the <code>ETS()</code> function of the <code>fable</code> package. <code>ETS</code> stands for two things:</p>
 <ol type="1">
 <li><em>E</em>xponen<em>T</em>ial <em>S</em>moothing.</li>
-<li><em>Error</em>, <em>Trend</em>, <em>Season</em>: the three parts of the model formula, as the examples show. The later forms of exponential smoothing add <code>trend</code> and <code>seasonality</code>.</li>
+<li><em>Error</em>, <em>Trend</em>, <em>Season</em>: the three parts of the model formula, as the examples show. Later methods add a trend component and a seasonal component.</li>
 </ol>
 <p>Two functions fit an <code>ETS()</code> model:</p>
 <ul>
@@ -2615,7 +2595,7 @@ window.Quarto = {
 <li><strong><code>ETS()</code></strong> returns the model definition given by its formula.</li>
 </ul>
 <p>The details are in <code>?ETS</code> and <code>?model</code>, but an example is the best way in.</p>
-<p>We return to the Algerian exports from before. For <strong>simple exponential smoothing</strong> use <strong>“A”, “N” and “N” for <code>error()</code>, <code>trend()</code> and <code>season()</code></strong>.</p>
+<p>For the annual Algerian exports dataset, specify <code>error(&quot;A&quot;) + trend(&quot;N&quot;) + season(&quot;N&quot;)</code>: additive errors, no trend and no seasonality. This is SES with additive errors.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Estimate parameters</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> algeria_economy <span class="sc">|&gt;</span></span>
@@ -2626,7 +2606,7 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="augment">2. Computing the fitted values</h3>
 <p>Once the model is fitted, <code>augment()</code> gives the fitted values and the residuals, as usual:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>fitted_vals <span class="ot">&lt;-</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>fitted_vals <span class="ot">&lt;-</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  fit <span class="sc">|&gt;</span> <span class="fu">augment</span>() <span class="sc">|&gt;</span> <span class="fu">select</span>(Year, Exports, .fitted)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>fitted_vals</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -2650,7 +2630,7 @@ window.Quarto = {
 </section>
 <section id="parameters" class="level3">
 <h3 class="anchored" data-anchor-id="parameters">3. Interpreting the parameters</h3>
-<p>Remember that fitting the model chose the values of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(l_{0}\)</span> (the initial level) by minimizing the sum of squared errors. These are the parameters of simple exponential smoothing, and <code>tidy()</code> returns them:</p>
+<p>Remember that fitting the model chose the values of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\ell_{0}\)</span> (the initial level) by minimizing the sum of squared errors. These are the parameters of simple exponential smoothing, and <code>tidy()</code> returns them:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Print out the model parameters</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>ses_params <span class="ot">&lt;-</span> <span class="fu">tidy</span>(fit)</span>
@@ -2665,8 +2645,8 @@ window.Quarto = {
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Store alpha</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> ses_params<span class="sc">$</span>estimate[<span class="dv">1</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>In this case we have <span class="math inline">\(\alpha = 0.84\)</span> and <span class="math inline">\(l_{0} = 39.54\)</span>.</p>
-<p>With <span class="math inline">\(\alpha\)</span> we can look at the weights of the different observations. Remember the weighted average form, equation <span class="math inline">\((1)\)</span>:</p>
+<p>The rounded estimates are <span class="math inline">\(\alpha \approx 0.84\)</span> and <span class="math inline">\(\ell_0 \approx 39.54\)</span>.</p>
+<p>The fitted smoothing weight <span class="math inline">\(\alpha\)</span> determines each observation’s contribution. With <span class="math inline">\(T\)</span> training observations, <span class="math inline">\(y_{T-j}\)</span> is the observation <span class="math inline">\(j\)</span> periods before the end of the series, and <span class="math inline">\(\ell_0\)</span> is the initial level:</p>
 <p><span class="math display">\[
     \hat{y}_{T+1|T} = \sum_{j=0}^{T-1} \alpha(1-\alpha)^j y_{T-j}+(1-\alpha)^T\ell_0 \tag{1}
 \]</span></p>
@@ -2684,8 +2664,8 @@ window.Quarto = {
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Add this column to the fitted values</span></span>
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>fitted_vals<span class="sc">$</span>weight <span class="ot">=</span> <span class="fu">rev</span>(weights)</span>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Reverse the order of the dataframe to depict it more clearly</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>fitted_vals <span class="ot">&lt;-</span> </span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Reverse the tibble so the newest year appears first</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>fitted_vals <span class="ot">&lt;-</span></span>
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  fitted_vals <span class="sc">|&gt;</span> <span class="fu">arrange</span>(<span class="fu">desc</span>(Year))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: Current temporal ordering may yield unexpected results.
@@ -2709,19 +2689,15 @@ window.Quarto = {
 # ℹ 48 more rows</code></pre>
 </div>
 </div>
-<p>The most recent observation gets a weight of <span class="math inline">\(\alpha = 0.8399\)</span>. The 2016 observation gets <span class="math inline">\(\alpha(1-\alpha)=0.1344\)</span>, the 2015 observation <span class="math inline">\(\alpha(1-\alpha)^2 = 0.0215\)</span>, and so on.</p>
-<p>Together, these three observations get a weight of:</p>
+<p>The most recent observation (2017) gets a weight of <span class="math inline">\(\alpha = 0.8399\)</span>. The 2016 observation gets <span class="math inline">\(\alpha(1-\alpha)=0.1344\)</span>, the 2015 observation <span class="math inline">\(\alpha(1-\alpha)^2 = 0.0215\)</span>, and so on.</p>
+<p>Add the weights for 2017, 2016 and 2015 to find their combined contribution:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(fitted_vals<span class="sc">$</span>weight[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(fitted_vals<span class="sc">$</span>weight[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.995903</code></pre>
 </div>
 </div>
-<p>The remaining weight belongs to the older observations and the initial level together. As expected:</p>
-<ul>
-<li>More recent observations get more weight.</li>
-<li>Observations further in the past get weights that shrink exponentially.</li>
-</ul>
+<p>The remainder belongs to earlier observations and the initial level <span class="math inline">\(\ell_0\)</span>. Each step back multiplies an observation’s weight by <span class="math inline">\(1-\alpha\)</span>, which explains the exponential decline.</p>
 <p>The observation weights alone are close to one for this fitted alpha and series length. Including the initial-level weight gives exactly one, up to numerical rounding:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(fitted_vals<span class="sc">$</span>weight)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -2735,8 +2711,8 @@ window.Quarto = {
 </div>
 </section>
 <section id="reconstruct" class="level3">
-<h3 class="anchored" data-anchor-id="reconstruct">4. Reconstructing the fitted values from <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(l_0\)</span></h3>
-<p>With the component form and the estimates of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(l_0\)</span> returned by the model, we can compute the fitted values ourselves. This is step 2 of the last iteration of the SSE minimization. Look at the diagram again:</p>
+<h3 class="anchored" data-anchor-id="reconstruct">4. Reconstructing the fitted values from <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\ell_0\)</span></h3>
+<p>Use the fitted <span class="math inline">\(\alpha\)</span> and initial level <span class="math inline">\(\ell_0\)</span> to reproduce the model’s fitted values. This repeats the level-and-prediction calculation with the parameter pair selected by the SSE search:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -2746,12 +2722,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>Since</p>
-<ul>
-<li>fitted values are one-step forecasts on the training data, <span class="math inline">\(\hat{y}_{t|t-1}\)</span>, and</li>
-<li>the initial level <span class="math inline">\(l_0\)</span> was chosen by minimizing the sum of squared errors,</li>
-</ul>
-<p>we can set <span class="math inline">\(h=1\)</span> in the component form and compute the fitted values in the table that follows:</p>
+<p>A fitted value predicts an observation from the preceding level. At row <span class="math inline">\(t\)</span>, the table therefore places <span class="math inline">\(\ell_{t-1}\)</span> in the Forecast column. The level <span class="math inline">\(\ell_t\)</span> calculated on that row forecasts the next observation:</p>
 <p><span class="math display">\[
 \begin{align*}
   \text{Forecast equation}  &amp;&amp; \hat{y}_{t+1|t} &amp; = \ell_{t}\\
@@ -2773,7 +2744,7 @@ window.Quarto = {
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><span class="math inline">\(t\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(y_t\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(l_t\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\ell_t\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\hat{y}_{t|t-1}\)</span></td>
 </tr>
 <tr class="even">
@@ -2878,7 +2849,7 @@ window.Quarto = {
 </table>
 <section id="exercise" class="level4">
 <h4 class="anchored" data-anchor-id="exercise">Exercise</h4>
-<p>Use the Excel workbook <code>15_C</code> in this session’s folder to compute this table. That is the homework.</p>
+<p>Complete the Level and Forecast columns in workbook <code>15_C</code> with cell formulas, using the supplied parameters. Compare your results with this table as part of the homework.</p>
 </section>
 </section>
 <section id="forecast" class="level3">
@@ -2904,7 +2875,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>A similar table for the forecasts:</p>
+<p>For the same Algerian exports dataset, the five annual point forecasts are:</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -2960,7 +2931,7 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<p>Beyond the training data, the forecasts of simple exponential smoothing are flat. That is by design.</p>
+<p>Each forecast equals the last estimated level, <span class="math inline">\(\ell_T = 22.44\)</span>, so the projected path is flat.</p>
 </section>
 </section>
 </section>
@@ -2972,7 +2943,7 @@ window.Quarto = {
 <li><strong>Response to surprise:</strong> <span class="math inline">\(\ell_t=\ell_{t-1}+\alpha(y_t-\ell_{t-1})\)</span>.</li>
 <li><strong>Weights:</strong> the observations carry <span class="math inline">\(1-(1-\alpha)^T\)</span> in total; the initial level carries the remaining <span class="math inline">\((1-\alpha)^T\)</span>. Together they sum to one.</li>
 <li><strong>Endpoints:</strong> <span class="math inline">\(\alpha=1\)</span> gives the naive forecast; <span class="math inline">\(\alpha=0\)</span> keeps the initial level. It gives the sample mean only if that constant is estimated by minimizing SSE.</li>
-<li><strong>Fitting:</strong> choose <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\ell_0\)</span> by training SSE. A smaller training SSE alone does not establish better future forecasts.</li>
+<li><strong>Fitting:</strong> choose <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\ell_0\)</span> by minimizing training SSE, then use held-out observations to judge forecast accuracy.</li>
 <li><strong>Forecasting:</strong> every future point forecast is <span class="math inline">\(\ell_T\)</span>. A flat point forecast does not mean constant uncertainty.</li>
 </ul>
 <p>Before using SES, explain why a flat forecast is reasonable for the decision and horizon at hand.</p>

@@ -20,7 +20,7 @@ fit <- algeria_economy |>
   model(ETS(Exports ~ error("A") + trend("N") + season("N")))
 
 ### 2. Computing the fitted values ----
-fitted_vals <- 
+fitted_vals <-
   fit |> augment() |> select(Year, Exports, .fitted)
 
 fitted_vals
@@ -42,13 +42,13 @@ for (i in seq_len(nrow(fitted_vals))) {
 # Add this column to the fitted values
 fitted_vals$weight = rev(weights)
 
-# Reverse the order of the dataframe to depict it more clearly
-fitted_vals <- 
+# Reverse the tibble so the newest year appears first
+fitted_vals <-
   fitted_vals |> arrange(desc(Year))
 
 fitted_vals
 
-sum(fitted_vals$weight[1:3]) 
+sum(fitted_vals$weight[1:3])
 
 sum(fitted_vals$weight)
 sum(fitted_vals$weight) + (1 - alpha)^nrow(fitted_vals)
