@@ -1,5 +1,7 @@
 # Session 11 announcements
 
+**Date:** Monday, 19 October 2026, 9:00–10:20 — IE Tower, room T-05.02
+
 - **Homework due Sunday 25 October 2026, 23:59.** Short on purpose: Group Assignment 1 is due
   five days later.
 - **Group Assignment 1 is now due Friday 30 October 2026, 23:59.** The deadline has moved from

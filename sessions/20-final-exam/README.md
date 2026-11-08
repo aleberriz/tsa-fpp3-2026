@@ -1,21 +1,13 @@
 # Session 20 — Final exam
 
-**Date:** Monday, 14 December 2026, 9:00–10:20 — IE Tower, room T-14.03
+**Coverage:** The whole course, Sessions 1–19.
 
-**Coverage:** the whole course, S1–S19.
+**Format:** 20 multiple-choice questions, with four options on concept questions and five on calculations. Bring a **non-programmable, non-graphing calculator**. Notes and formula sheets are not allowed; formulas that are unreasonable to memorize will be supplied in the question.
 
-**Format:** 20 multiple-choice questions: four options on concept questions, five on calculation
-questions.
+**Preparation:** Review the rendered notebooks for concepts. Redo the homework calculations on paper with your calculator, then check them in R. Practice explaining the method and interpreting the result, including when you would use it. The exam uses new numbers and may combine steps practiced separately.
 
-**How to prepare:** every question on the exams practices something you have done in the homework.
-Some ask you to apply it to a case you have not seen: different numbers, or a combination of steps
-you have practiced separately. That is deliberate. The exam checks that you understand the method
-well enough to use it on a new case, not that you remember a particular exercise. This is why there
-is no question bank. Practicing on near-copies of the exam questions would train you to recognize a
-template, which is not the skill being tested. Redo the homework calculations by hand, check them
-against R, and you are prepared.
+See [announcements](announcements.md) for this class's preparation materials and exam updates.
 
-Office hours are open to anyone who brings a concrete question; email to arrange a time.
+**Office hours:** Email aberrizbeitia@faculty.ie.edu to arrange a time and bring a specific question.
 
-> Students scoring below 3.5 / 10 on the final go to the retake, regardless of performance elsewhere.
-> See [`SYLLABUS.md`](../../SYLLABUS.md).
+A final-exam score below **3.5/10** requires a retake regardless of other grades. See the [syllabus](../../SYLLABUS.md) for the assessment and retake rules. Check Blackboard for exam updates.

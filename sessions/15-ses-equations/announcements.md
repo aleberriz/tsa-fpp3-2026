@@ -1,5 +1,7 @@
 # Session 15 announcements
 
+**Date:** Wednesday, 11 November 2026, 9:00–10:20 — IE Tower, room T-05.02
+
 - **Homework due Sunday 15 November 2026, 23:59.** The Excel workbook `15_C`, filled in, plus the
   R check and two sentences.
 - **The common-errors note on this homework** goes up on Blackboard after the due date.

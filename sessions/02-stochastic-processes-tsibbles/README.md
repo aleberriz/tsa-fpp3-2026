@@ -1,25 +1,13 @@
-# Session 02 — Time series as a stochastic process + the tsibble
+# Session 02 — Stochastic processes and tsibbles
 
-**Date:** Monday, 7 September 2026, 9:00–10:20 — IE Tower, room T-05.02
+**Reading:** [fpp3 2.1](https://otexts.com/fpp3/graphics.html#sec-tsibbles). For the stochastic-process theory, read Shumway & Stoffer, *Time Series: A Data Analysis Approach Using R* (2019), Chapter 1.
 
-**[fpp3](https://otexts.com/fpp3/index.html):** 2.1 (tsibbles)
+**Materials:** [Slides](session02_slides.html), [stochastic-process notes](02_B_StochasticProcesses.pdf), [dates and times](02_A_Dates_Times_R.html), [tsibbles](02_B_tsibbles.html), and [R script](session02_code.R).
 
-**Also:** Shumway & Stoffer, *Time Series: A Data Analysis Approach Using R* (2019), Ch. 1 — the
-stochastic-process framing. This is the compulsory-text citation for the course; the framing is not in
-[fpp3](https://otexts.com/fpp3/index.html) at all.
+**In class:** Distinguish a process, written with uppercase random variables, from the observed realization, written in lowercase. Discuss why dependence and changing distributions require care with assumptions from earlier statistics courses. Then parse dates, choose a time index and build a tsibble with the right key. Use `index_by()` to aggregate to a coarser interval.
 
-**Focus:** A time series as a collection of random variables `{Y_t}` indexed over time; uppercase
-(process) vs lowercase (realization); past values as realized random variables, future values as
-unrealized; why the variables are correlated and therefore not independent, and in general not
-identically distributed, so the IID hypothesis behind the CLT does not apply. Then the mechanics:
-lubridate parsing, `yearmonth`/`yearquarter`/`yearweek`, `tsibble()`, `as_tsibble()`, `index_by()`.
+**R:** `ymd()`, `make_date()`, `make_datetime()`, `as_datetime()`, `yearmonth()`, `yearquarter()`, `yearweek()`, `tsibble()`, `as_tsibble()`, `index_by()`.
 
-**R:** `ymd()`, `make_date()`, `as_datetime()`, `yearmonth()`, `tsibble()`, `as_tsibble()`,
-`index_by()`, `scale_x_yearmonth()`
+**Homework:** Complete all 15 exercises in [the `00_C` primer](../../self-study/00-r-basics/00_C_basic_tibbles_dplyr_exercises.html), with code and output. Also build a tsibble from a table of your choice and include its printed header showing the index, interval and key. Submit both in one `.R` or `.qmd` file on Blackboard.
 
-**Homework:** `00_C_basic_tibbles_dplyr_exercises`, in
-[`self-study/00-r-basics/`](../../self-study/00-r-basics/). No solutions are published for the
-primer — work through it on your own.
-
-**Outcome:** Student can state why forecasts are random variables, and can build a valid tsibble with
-the right index and key.
+**Announcements:** See [announcements](announcements.md) for this class's schedule and deadlines.

@@ -1,21 +1,13 @@
-# Session 01 — Course intro, what forecasting is, local install day
+# Session 01 — Introduction to forecasting and setup
 
-**Date:** Wednesday, 2 September 2026, 9:00–10:20 — IE Tower, room T-05.02
+**Reading:** [fpp3 1.1–1.7](https://otexts.com/fpp3/intro.html).
 
-**Announcements:** this session's dates and deadlines are in [`announcements.md`](announcements.md).
+**Materials:** [Slides](session01_slides.html), [introductory notebook](01_Introduction_UseCase.html), [R script](session01.R), and [setup guide](../../setup/SETUP.md).
 
-**[fpp3](https://otexts.com/fpp3/index.html):** 1.1–1.7
+**In class:** We introduce forecasting, the course schedule and assessment rules, then set up R and RStudio. The population example shows how one workflow can forecast many series and return distributions as well as point forecasts. ARIMA appears in the demonstration as a preview of the follow-up course.
 
-**Focus:** Course logistics, assessment, attendance and the AI/library policy; what a time series is;
-what can and cannot be forecast and the basic steps in a forecasting task; the automated-forecast use
-case (population by country); then §3 of the notebook, which is the install walkthrough.
+**Setup:** Follow the setup guide's full package list, including `urca` for the population demonstration. Run `session01.R` to check the packages, plot Australian beer production and try the forecasting example.
 
-**Environment:** R + RStudio Desktop per OS (Windows: R + version-matched Rtools; macOS: correct
-arm64/Intel build + Command Line Tools; Fedora: `dnf install R` then the RStudio `.rpm`),
-`install.packages("fpp3")`, clone the repo, finish on `library(fpp3)` and a first `autoplot()`. The
-written setup guide in [`setup/SETUP.md`](../../setup/SETUP.md) goes out before class.
+**Homework:** Work through `00_A_1`–`00_A_4` and `00_B_1` in the [R primer](../../self-study/00-r-basics/). Submit a PDF or Word document on Blackboard with a screenshot of `library(fpp3)` loading and the beer-production plot from section 4 of `session01.R`.
 
-**Homework:** Work through [`self-study/00-r-basics/`](../../self-study/00-r-basics/), `00_A_1`–`00_A_4`
-and `00_B_1`. Confirm `library(fpp3)` loads.
-
-**Outcome:** Working local environment; student can plot a first series.
+**Announcements:** See [announcements](announcements.md) for this class's schedule and deadlines.

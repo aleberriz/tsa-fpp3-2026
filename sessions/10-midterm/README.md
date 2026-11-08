@@ -1,44 +1,13 @@
 # Session 10 — Midterm
 
-**Date:** Wednesday, 14 October 2026, 9:00–10:20 — IE Tower, room T-05.02
+**Coverage:** Sessions 1–8: R basics, stochastic processes, tsibbles, graphics, autocorrelation, decomposition, benchmark methods, fitted values and forecasting through a decomposition. Session 9 on residual diagnostics is examined in the final.
 
-**Announcements:** this session's dates and deadlines are in [`announcements.md`](announcements.md).
+**Materials:** [Midterm revision slides](session10_slides.html) and [exam rules](session10_exam_rules.html).
 
-**Coverage:** S1–S8 — R basics, the stochastic-process framing, tsibbles, graphics and the ACF,
-decomposition (classical and STL), benchmark methods, fitted values, and forecasting with a
-decomposition.
+**Format:** 20 multiple-choice questions, with four options on concept questions and five on calculations. See [announcements](announcements.md) for this class's question split. Calculations cover moving averages, classical decomposition and benchmark forecasts. Round each calculation step to two decimals.
 
-**Not examined here:** residual diagnostics (Session 9). It is examined in the **final**, which covers
-the whole course, Sessions 1 to 19.
+Bring a **non-programmable, non-graphing calculator** and a black or dark blue pen. Fill one circle per question on the answer sheet. Wrong answers carry no penalty. No phones, watches or other devices are allowed. No questions are answered during the exam, and you may not leave and re-enter the room.
 
-**Format:** 20 multiple-choice questions.
+**Preparation:** Use the revision slides' checks, redo the homework and notebook calculations by hand, and verify them in R. Expect different numbers and combinations of familiar steps. There is no question bank.
 
-- 13 concept questions, four options each. Nothing asks you to write or read R.
-- 7 calculation questions by hand, five options each, most of them on one small quarterly table: the
-  steps of a classical decomposition, moving averages and benchmark forecasts. Round every step to
-  two decimals.
-- Bring a **non-programmable, non-graphing calculator**. No phones, watches or other devices.
-- Answers go on the answer sheet at the back of the booklet: fill in one circle per question with a
-  black or dark blue pen. Wrong answers cost nothing.
-
-**How to prepare:** every question on the exams practices something you have done in the homework or
-the notebooks. Some ask you to apply it to a case you have not seen: different numbers, or a
-combination of steps you have practiced separately. That is deliberate. The exam checks that you
-understand the method well enough to use it on a new case, not that you remember a particular
-exercise. This is why there is no question bank. Practicing on near-copies of the exam questions
-would train you to recognize a template, which is not the skill being tested. Redo the homework and
-notebook calculations by hand, check them against R, and you are prepared.
-
-**Slides:** [`session10_slides.html`](session10_slides.html): midterm revision for your own study
-and office hours. How the exam works, what is on it, and a one-line check of each session: what to
-explain and what to compute by hand.
-
-**Homework review, for self-study:** the most useful lessons from HW07 and HW08, written to be
-read on your own. See [`homework-review-hw07-hw08.md`](homework-review-hw07-hw08.md).
-
-**Exam rules:** [`session10_exam_rules.html`](session10_exam_rules.html) is on screen for the whole exam.
-No questions are answered during the exam, and you may not leave the room and come back, not even
-to go to the bathroom.
-
-> There is **no retake for the midterm.** If a student cannot attend for personal or work reasons, the
-> final exam carries 60 % instead of 30 %. See [`SYLLABUS.md`](../../SYLLABUS.md).
+See [announcements](announcements.md) for logistics. There is no midterm retake; if you cannot attend, the final carries 60% of the course grade. See the [syllabus](../../SYLLABUS.md).

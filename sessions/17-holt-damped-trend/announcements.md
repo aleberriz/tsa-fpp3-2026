@@ -1,5 +1,7 @@
 # Session 17 announcements
 
+**Date:** Monday, 23 November 2026, 9:00–10:20 — IE Tower, room T-05.02
+
 - **Group Assignment 2 is released today**, Monday 23 November 2026. The assignment file and its
   data are in the `assignments/` folder of the repo; pull before you start. **Due Sunday 6 December
   2026, 23:59.**

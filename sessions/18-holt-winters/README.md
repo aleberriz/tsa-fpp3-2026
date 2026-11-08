@@ -1,26 +1,13 @@
 # Session 18 — Holt–Winters seasonal methods
 
-**Date:** Wednesday, 25 November 2026, 9:00–10:20 — IE Tower, room T-05.02
+**Reading:** [fpp3 8.3](https://otexts.com/fpp3/exponential-smoothing.html#sec-holt-winters).
 
-**Announcements:** this session's dates and deadlines are in [`announcements.md`](announcements.md).
+**Materials:** [Slides](session18_slides.html), [notebook](18_A_ExpSmoothing_Seasonal.html), [workbook](18_B_ExpSmoothing_Seasonal_students2.xlsx), and [R script](session18_code.R).
 
-**[fpp3](https://otexts.com/fpp3/index.html):** 8.3
+**In class:** Add seasonality to the level and slope. Remove the old seasonal effect, update the components, then restore the season matching the forecast date. Work through an additive update and a forecast beyond one seasonal cycle. Compare additive and multiplicative candidates using held-out errors, alongside the visual evidence.
 
-**Slides:** [`session18_slides.html`](session18_slides.html). Notebook:
-[`18_A`](18_A_ExpSmoothing_Seasonal.html). Workbook for the homework:
-[`18_B`](18_B_ExpSmoothing_Seasonal_students2.xlsx). Script: [`session18_code.R`](session18_code.R),
-the notebook's R code in notebook order.
+**R:** `ETS(y ~ error("A") + trend("A") + season("A"))`, `ETS(y ~ error("M") + trend("A") + season("M"))`, `trend("Ad")`, `components()`, `tidy()`.
 
-**Focus:** Remove seasonality, update the states, and restore the season matching the forecast date. Compare additive and multiplicative candidates using held-out evidence. Full multiplicative arithmetic and the daily example are supporting reading.
+**Homework:** Complete the workbook's **Additive** sheet and the notebook's [calculator update and beyond-cycle check](18_A_ExpSmoothing_Seasonal.html#calculator). Complete the New Zealand arrivals exercise, questions 1–6: three models, eight-quarter forecasts, two plots, interpretation and held-out accuracy. Submit on Blackboard; see [announcements](announcements.md) for this class's deadline. The full multiplicative arithmetic, daily example and cross-validation extension are supporting reading.
 
-**R:** `ETS(y ~ error("A") + trend("A") + season("A"))`, `ETS(y ~ error("M") + trend("A") + season("M"))`,
-`trend("Ad")`, `components()`, `tidy()`
-
-**Calculator practice:** use the moderate-gamma row and forecast beyond one cycle in [18_A](18_A_ExpSmoothing_Seasonal.html#calculator).
-
-**Homework:** the `18_B` workbook (Holt–Winters additive by hand) plus the notebook's exercise on
-arrivals from New Zealand, questions 1 to 6. Due date in the announcements.
-
-**Outcome:** Student chooses and fits the right Holt–Winters variant and justifies it.
-
-**Before Session 19:** read the [short likelihood guide](../19-ets-mle-model-selection/19_B_ESmoothing_Model_Selection.html#before-class). The handwritten primer is optional. The New Zealand exercise now requires two forecast plots.
+**Before Session 19 on ETS and model selection:** Read the [short likelihood guide](../19-ets-mle-model-selection/19_B_ESmoothing_Model_Selection.html#before-class). The handwritten maximum-likelihood primer is optional.

@@ -1,30 +1,13 @@
-# Session 07 — Classical decomposition, from scratch and by algorithm; STL
+# Session 07 — Classical decomposition and STL
 
-**Date:** Monday, 28 September 2026, 9:00–10:20 — IE Tower, room T-05.02
+**Reading:** [fpp3 3.4](https://otexts.com/fpp3/decomposition.html#sec-classical-decomposition) and [3.6](https://otexts.com/fpp3/decomposition.html#sec-stl).
 
-**Announcements:** this session's dates and deadlines are in [`announcements.md`](announcements.md).
+**Materials:** [Slides](session07_slides.html), [classical decomposition from scratch](07_D_ClassicalDecomposition_fromScratch.html), [decomposition algorithms and STL](07_E_TSDecomposition_Algorithms.html), and [R script](session07_code.R).
 
-**[fpp3](https://otexts.com/fpp3/index.html):** 3.4, 3.6
+**In class:** Build classical decomposition for additive and multiplicative series: estimate the trend, detrend, estimate and normalize the seasonal component, then compute the remainder. Compare with the library result. Judge decompositions by their components and remaining structure, then tune STL's trend and seasonal windows.
 
-**Focus:** The four steps of classical decomposition (trend by MA → detrend → seasonal component →
-remainder) for both schemes, built by hand and then reproduced by `classical_decomposition()`; the
-criteria for a good decomposition; STL — advantages, disadvantages, the trend and season windows, and
-tuning them on three worked examples.
+**R:** `classical_decomposition()`, `STL()`, `trend()`, `season()`, `components()`.
 
-**R:** `classical_decomposition()`, `STL(y ~ trend() + season())`, `components()`
+**Homework:** Complete `07_D` Exercise 1, the gas-production outlier experiment. In `07_E`, complete *STL Example 3*, items 1.1–1.2 on `labour`, and *Exercise 2*, item 2.1 on daily electricity demand. Report the STL settings you tried. The electricity task asks for a diagnosis; item 2.2 is not assigned. Submit on Blackboard; see [announcements](announcements.md) for the deadline.
 
-**Homework:** `07_D` Exercise 1, then two tasks in `07_E`: *STL - Example 3*
-(items 1.1–1.2) and *Exercise 2 - STL* (item 2.1 only — a diagnosis; item 2.2 is not assigned
-this term).
-
-**Outcome:** Student decomposes a series both ways, interprets every component, and knows when to
-prefer STL.
-
-**→ Group Assignment 1 launches** — due **Friday 30 October 2026, 23:59** (moved from Sunday 25 October). See
-[`assignments/`](../../assignments/).
-
-> **Part 3 of 3.** Sessions 5, 6 and 7 are one topic, time series decomposition. Session 5 chose
-> the scheme, Session 6 estimated the trend, and this session assembles the whole algorithm and
-> adds STL. The three are examined together.
-
-> The heaviest session in the decomposition block. [fpp3](https://otexts.com/fpp3/index.html) 3.5 (X-11 / SEATS) is not covered.
+**Group Assignment 1:** The [classical-decomposition assignment](../../assignments/) launches here. See [announcements](announcements.md) for this class's release date and deadline.

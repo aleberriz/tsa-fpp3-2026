@@ -1,21 +1,15 @@
 # Session 04 — Lag plots, autocorrelation, white noise
 
-**Date:** Monday, 14 September 2026, 9:00–10:20 — IE Tower, room T-05.02
+**Reading:** [fpp3 2.7–2.9](https://otexts.com/fpp3/graphics.html#lag-plots).
 
-**[fpp3](https://otexts.com/fpp3/index.html):** 2.7–2.9
+**Materials:** [Slides](session04_slides.html), [lag plots and autocorrelation](04_C_TSGraphs_Graphs_Lagplots_Autocorrelation.html), [aggregation exercises](04_D_TSGraphs_MoreExercises.html), and [R script](session04_code.R).
 
-**Data:** `Beijing_Pollution_TSeries.csv`, `Weekly Fuel Prices.xlsx` (homework)
+**In class:** Compare a series with its own past using lag plots and the autocorrelation function (ACF). Explain how the ACF differs from Pearson's correlation, choose how many lags to display, and recognize trend and seasonality in a correlogram. Use white noise as a reference and distinguish an isolated crossing of the bounds from a pattern.
 
-**Focus:** Lagged variables on time plots and on scatterplots; autocorrelation vs Pearson's
-coefficient; computing the ACF in R; the correlogram and how many lags to show; how trend and
-seasonality show up in an ACF; white noise as the reference case.
+**R:** `gg_lag()`, `ACF()`, `autoplot()`, `index_by()`, `summarise()`.
 
-**R:** `gg_lag()`, `ACF() |> autoplot()`
+**Data:** [Beijing pollution](../../data/Beijing_Pollution_TSeries.csv) and [weekly fuel prices](../../data/Weekly%20Fuel%20Prices.xlsx).
 
-**Homework:** `04_C` Exercises 1–4, then all of `04_D_TSGraphs_MoreExercises` (Beijing pollution
-weekly/monthly aggregation; fuel prices quarterly aggregation).
+**Homework:** Complete `04_C` Exercises 1–4 and both sections of `04_D`: weekly and monthly Beijing pollution, then quarterly fuel prices. Include code, plots and one sentence per exercise explaining the result. Submit on Blackboard.
 
-**Outcome:** Student reads an ACF, connects it back to trend/seasonality, and recognizes white noise.
-
-> **One of the three hardest topics in the course.** Expect to spend extra time here, and get the
-> intuition solid before you lean on the formula.
+**Announcements:** See [announcements](announcements.md) for this class's schedule and deadlines.

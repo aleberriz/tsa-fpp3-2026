@@ -1,30 +1,13 @@
 # Session 09 — Residual diagnostics
 
-**Date:** Monday, 5 October 2026, 9:00–10:20 — IE Tower, room T-05.02
+**Reading:** [fpp3 5.4](https://otexts.com/fpp3/toolbox.html#sec-diagnostics).
 
-**Announcements:** this session's dates and deadlines are in [`announcements.md`](announcements.md).
+**Materials:** [Slides](session09_slides.html), [residual-diagnostics summary](09_A_ResidualsDiagnostics_Summary.md) ([handwritten version](09_A_ResidualsDiagnostics_Summary.pdf)), [notebook](09_B_ResidualsAnalysis.html), and [R script](session09_code.R).
 
-**[fpp3](https://otexts.com/fpp3/index.html):** 5.4
+**In class:** Check residual autocorrelation, mean, spread and shape, and explain what each failure implies. Use time plots, an ACF, QQ plots and boxplots on the bricks and stock examples. Explain why testing many ACF bars separately is misleading and use the Ljung–Box test to assess the correlations jointly.
 
-**Focus:** The properties good residuals must have and what to do when each fails (the 1-page summary
-sheet, [`09_A`](09_A_ResidualsDiagnostics_Summary.md), is the spine; the handwritten
-[PDF original](09_A_ResidualsDiagnostics_Summary.pdf) is alongside); worked diagnostics on the bricks and stock examples — residual mean, ACF,
-qq-plots, boxplots, boxplots-by-year; why checking each ACF bar individually is multiple hypothesis
-testing, and hence portmanteau tests; Ljung–Box.
+**R:** `gg_tsresiduals()`, `augment()`, `features(.innov, ljung_box, lag = ...)`.
 
-**R:** `gg_tsresiduals()`, `features(.innov, ljung_box)`
+**Homework:** Complete `09_B` Exercise 1 on the supplied retail decomposition model: assess all four residual properties, justify the test lag, run Ljung–Box and compare response and innovation residuals. Exercise 2 is optional. Submit on Blackboard; the deadline is in [announcements](announcements.md).
 
-**Homework:** `09_B` Exercise 1. Due after the midterm; the date is in the announcements.
-
-**Outcome:** Student runs a full residual diagnosis and judges whether a model has captured the
-signal.
-
-**Homework review, for self-study:** the most useful lessons from HW05 and HW06, written to be
-read on your own rather than covered in class. See
-[`homework-review-hw05-hw06.md`](homework-review-hw05-hw06.md).
-
-> The midterm revision deck is in the [Session 10 folder](../10-midterm/), for office hours and
-> your own revision. This session's deck is diagnostics only.
-
-> **This session is not on the midterm.** Residual diagnostics is examined in the final, which covers
-> the whole course. Revise it for the final, not for the midterm.
+**Revision:** The [midterm revision deck](../10-midterm/session10_slides.html) is for self-study and office hours. Residual diagnostics is examined in the final. See [announcements](announcements.md) for cohort feedback.

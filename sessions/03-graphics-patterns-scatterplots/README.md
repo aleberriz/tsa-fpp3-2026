@@ -1,22 +1,15 @@
 # Session 03 — Time series graphics: plots, patterns, scatterplots
 
-**Date:** Wednesday, 9 September 2026, 9:00–10:20 — IE Tower, room T-05.02
+**Reading:** [fpp3 2.2–2.6](https://otexts.com/fpp3/graphics.html#time-plots).
 
-**[fpp3](https://otexts.com/fpp3/index.html):** 2.2–2.6
+**Materials:** [Slides](session03_slides.html), [notebook](03_A_TSGraphs_Timeplots_Scatterplots_Seasonalplots.html), [pattern examples](03_E_TSPatterns_Examples.pdf), and [R script](session03_code.R).
 
-**Data:** `soi_recruitment.csv`
+**In class:** Use time plots, seasonal plots and subseries plots to identify trend, seasonality and cycles. Match the axis scale to the time index. Use scatterplots and a scatterplot matrix to examine relationships, including relationships that a correlation coefficient misses. Introduce lagged variables with the SOI and fish-recruitment example.
 
-**Focus:** Time plots and the `scale_x_*` helpers for each index type; trend, seasonality and
-cyclicity, and telling seasonal from cyclic; `gg_season()` and `gg_subseries()`; multiple seasonality;
-then scatterplots of two variables, careful interpretation of the correlation coefficient, the
-scatterplot matrix, and the lagged-variable exercise.
+**R:** `autoplot()`, `gg_season()`, `gg_subseries()`, `GGally::ggpairs()`, `scale_x_yearquarter()`, `scale_x_continuous()`, `scale_x_datetime()`, `scale_x_date()`.
 
-**R:** `autoplot()`, `gg_season()`, `gg_subseries()`, `GGally::ggpairs()`,
-`scale_x_yearquarter()/continuous()/datetime()/date()`
+**Data:** [SOI and recruitment](../../data/soi_recruitment.csv).
 
-**Homework:** The in-notebook exercises of `03_A` (Examples 2, 4, 5, 7, 8 and the
-scatterplot-matrix/lagged-variable exercise). For each exercise, submit the code, the plot,
-and one sentence naming the patterns you see.
+**Homework:** Complete notebook Examples 2, 4, 5, 7 and 8, then the scatterplot-matrix exercise with SOI lags 1–8. Include the code, plots and one sentence per exercise explaining what you see. Submit on Blackboard.
 
-**Outcome:** Given a plot, student names the patterns and justifies seasonal-vs-cyclic; reads a
-scatterplot matrix.
+**Announcements:** See [announcements](announcements.md) for this class's schedule and deadlines.

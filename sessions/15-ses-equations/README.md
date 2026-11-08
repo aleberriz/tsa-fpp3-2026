@@ -1,29 +1,13 @@
 # Session 15 — Simple exponential smoothing: the equations
 
-**Date:** Wednesday, 11 November 2026, 9:00–10:20 — IE Tower, room T-05.02
+**Reading:** [fpp3 8.1](https://otexts.com/fpp3/exponential-smoothing.html#sec-ses).
 
-**Announcements:** this session's dates and deadlines are in [`announcements.md`](announcements.md).
+**Materials:** [Slides](session15_slides.html), [handwritten equations](15_A_SES_Equations.pdf), [notebook](15_B_SES.html), [workbook](15_C_SES_excel_fittedvals_exercise.xlsx), and [R script](session15_code.R).
 
-**[fpp3](https://otexts.com/fpp3/index.html):** 8.1
+**In class:** Compare the weights used by naive, mean and simple exponential smoothing (SES). Predict from the previous level, observe the error, then update the level. Expand the recursion into finite weights, retaining the initial level's contribution. Explain alpha, flat forecasts and the difference between fitting by training sum of squared errors (SSE) and evaluating future forecasts. The example uses Algerian exports as a percentage of GDP.
 
-**Slides:** [`session15_slides.html`](session15_slides.html). Theory deck, handwritten:
-[`15_A`](15_A_SES_Equations.pdf). Notebook: [`15_B`](15_B_SES.html). Workbook for the homework:
-[`15_C`](15_C_SES_excel_fittedvals_exercise.xlsx). Script: [`session15_code.R`](session15_code.R),
-the notebook's R code in notebook order.
+**R:** `ETS(y ~ error("A") + trend("N") + season("N"))`, `tidy()`, `augment()`, `forecast()`.
 
-**Focus:** Predict before observing, update the level from the surprise, unfold the recursion into finite weights including the initial level, and judge when a flat forecast is useful.
+**Homework:** Trace the first two workbook observations with a calculator, separating each prior prediction from the updated level. Fill the level and fitted-value columns with formulas, calculate SSE and compare with R. Change alpha to 0.2 and write two sentences about fit, weights and the evidence needed to judge forecasting. Submit the workbook, calculator working, R check and sentences on Blackboard; see [announcements](announcements.md) for the deadline.
 
-**R:** `ETS(y ~ error("A") + trend("N") + season("N"))`, `tidy()`, `augment()`, `forecast()`
-
-**Calculator practice:** trace the first two workbook rows before filling down. Explain why a smaller training SSE alone cannot establish better forecasts.
-
-**Homework:** the `15_C` workbook: the level and fitted-value columns from the given alpha and
-initial level, the SSE, a check against R, and two sentences after changing alpha. Due date in
-the announcements.
-
-**Outcome:** Student writes the SES recursion, interprets alpha, and reproduces `fable`'s fitted
-values from the parameters.
-
-> First of five sessions on exponential smoothing, the model family that uses every tool from
-> Sessions 9 to 14. Built by hand first, in a spreadsheet today and in R next session, then with
-> `ETS()`.
+The handwritten deck gives the longer derivation. Before Session 16 on fitting SES in R, review functions and `for` loops.

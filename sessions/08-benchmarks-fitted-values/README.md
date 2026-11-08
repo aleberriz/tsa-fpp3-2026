@@ -1,33 +1,13 @@
 # Session 08 — Benchmark methods, fitted values, and forecasting with decomposition
 
-**Date:** Wednesday, 30 September 2026, 9:00–10:20 — IE Tower, room T-05.02
+**Reading:** [fpp3 5.1–5.3](https://otexts.com/fpp3/toolbox.html#a-tidy-forecasting-workflow) and [5.7](https://otexts.com/fpp3/toolbox.html#sec-forecasting-decomposition).
 
-**Announcements:** this session's dates and deadlines are in [`announcements.md`](announcements.md).
+**Materials:** [Slides](session08_slides.html), [notebook](08_A_Benchmark_Methods_FittedVals.html), and [R script](session08_code.R).
 
-**[fpp3](https://otexts.com/fpp3/index.html):** 5.1–5.3, 5.7
+**In class:** Distinguish fitted values, residuals and future forecasts. Fit the mean, naive, seasonal naive and drift benchmarks, and explain the assumptions behind each forecast path. Then forecast a decomposed series by forecasting its adjusted and seasonal components separately and recombining them.
 
-**Focus:** Fitted values vs forecasts — `ŷ_{t|t-1}` against `ŷ_{T+h|T}` — starting from the
-linear-regression analogy; point forecast vs forecast distribution; innovation residuals; then the
-four benchmarks (mean, naïve, seasonal naïve, drift), each with its model definition, fitted values,
-forecasts and parameter estimates. Close with **forecasting with a decomposition** (5.7): forecast the
-seasonally adjusted component and the seasonal component separately, then recombine.
+**R:** `model()`, `MEAN()`, `NAIVE()`, `SNAIVE()`, `RW(y ~ drift())`, `forecast()`, `augment()`, `decomposition_model()`.
 
-**R:** `model()`, `MEAN()`, `NAIVE()`, `SNAIVE()`, `RW(y ~ drift())`, `forecast(h = ...)`,
-`augment()`, `decomposition_model()`
+**Homework:** Choose a seasonal series from `fpp3`. Fit all four benchmarks in one `model()` call, forecast at least two full seasons and plot the forecasts over the data. Write one sentence defending a method from the series' features. No tuning or accuracy metrics are required. Submit on Blackboard; the deadline is in [announcements](announcements.md).
 
-**Homework:** Fit all four benchmarks to a series of your choice and plot the forecasts. Deliberately
-short — Group Assignment 1 is running this week and midterm revision starts now.
-
-**Outcome:** Student produces and plots benchmark forecasts for any series, can say precisely what a
-fitted value is, and can forecast a series through its decomposition.
-
-**Homework review, for self-study:** the three difficulties that came up most often in HW02 to
-HW04, plus how to write your work in a `.qmd`. See
-[`homework-review-hw02-hw04.md`](homework-review-hw02-hw04.md).
-
-> 5.7 closes the loop from the decomposition block: it is what makes decomposition a *forecasting*
-> tool rather than only a descriptive one. It is also the ancestor of the STL + ETS approach the
-> follow-up course uses.
-
-> **This is the last session on the midterm.** Coverage runs S1–S8; Session 9 opens the evaluation arc
-> and is examined in the final instead.
+**Exam coverage:** This is the last session covered by the midterm. Session 9 on residual diagnostics is examined in the final. See [announcements](announcements.md) for cohort feedback and revision notices.

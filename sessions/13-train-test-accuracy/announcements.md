@@ -1,5 +1,7 @@
 # Session 13 announcements
 
+**Date:** Monday, 26 October 2026, 9:00–10:20 — IE Tower, room T-05.02
+
 - **Homework due Sunday 1 November 2026, 23:59.** Three parts; there is no session on Wednesday.
 - **The Session 12 homework** goes up on Blackboard today as well, due the same day. It is short.
 - **Group Assignment 1 is due Friday 30 October 2026, 23:59.**

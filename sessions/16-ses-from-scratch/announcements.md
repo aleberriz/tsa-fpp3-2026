@@ -1,5 +1,7 @@
 # Session 16 announcements
 
+**Date:** Monday, 16 November 2026, 9:00–10:20 — IE Tower, room T-05.02
+
 - **Homework due Sunday 22 November 2026, 23:59.** Notebook `16_E` in full.
 - **The common-errors note on this homework** goes up on Blackboard after the due date.
 - **Session 17** is Monday 23 November. Group Assignment 2 is released that day; its file and data

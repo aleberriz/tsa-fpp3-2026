@@ -1,5 +1,7 @@
 # Session 14 announcements
 
+**Date:** Wednesday, 4 November 2026, 9:00–10:20 — IE Tower, room T-05.02
+
 - **Homework due Sunday 8 November 2026, 23:59.**
 - **The common-errors note on this homework** goes up on Blackboard after the due date.
 - **Session 15** is Wednesday 11 November. Monday 9 November is a holiday in Madrid, so there is no

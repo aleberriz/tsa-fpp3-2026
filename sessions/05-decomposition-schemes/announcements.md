@@ -1,9 +1,10 @@
 # Course admin update: Session 05
 
+**Date:** Monday, 21 September 2026, 9:00–10:20 — IE Tower, room T-05.02
+
 **Monday 21 September 2026**
 
-Three adjustments to the calendar, the midterm scope, and the homework deadlines, and the
-reasoning behind each. The syllabus ([`../../SYLLABUS.md`](../../SYLLABUS.md)) is the authority;
+Course calendar, assessment updates and homework arrangements for Fall 2026. Later deadline changes are noted below. The syllabus ([`../../SYLLABUS.md`](../../SYLLABUS.md)) is the authority;
 this note explains why it reads the way it does.
 
 ---
@@ -39,7 +40,7 @@ deadline: there is no spare Monday later to spread them onto.
 | 06 | Wed 23 Sep | moving averages |
 | 07 | Mon 28 Sep | classical decomposition and STL (Group Assignment 1 released) |
 | 08 | Wed 30 Sep | benchmark methods, fitted values |
-| 09 | Mon 5 Oct | residual diagnostics (also midterm revision) |
+| 09 | Mon 5 Oct | residual diagnostics; revision deck available separately |
 | 10 | Wed 14 Oct | **midterm** (Mon 12 Oct is a holiday) |
 | 11 | Mon 19 Oct | transformations, Box–Cox |
 | 12 | Wed 21 Oct | prediction intervals |
@@ -59,15 +60,12 @@ deadline: there is no spare Monday later to spread them onto.
 
 ### 1. The midterm covers Sessions 1–8
 
-Was Sessions 1–9. The exam is 20 multiple-choice questions, four options each, on Wednesday 14
-October. Session 9 (residual diagnostics) moves to the final exam, where it sits with train/test
+Was Sessions 1–9. The exam is 20 multiple-choice questions, with four options on concept questions and five on calculations, on Wednesday 14 October. Session 9 (residual diagnostics) moves to the final exam, where it sits with train/test
 accuracy (Session 13) and cross-validation (Session 14). The three sessions that answer "is this
 model believable?" are now examined together rather than split across two exams.
 
 Session 9 still matters. It is the most-used skill in the second half of the course, and Group
-Assignment 2 depends on it. It is deferred, not dropped. It also becomes a revision session for the
-midterm: the first half teaches diagnostics, the second half is a sweep of Sessions 1 to 8 driven by
-your questions. Bring questions rather than notes.
+Assignment 2 depends on it. It is deferred, not dropped. Session 9 teaches residual diagnostics throughout. Use the [Session 10 revision deck](../10-midterm/session10_slides.html) for self-study and office hours.
 
 ### 2. Homework is due on Sundays
 
@@ -83,16 +81,14 @@ Two September weeks have a Monday and a Wednesday session sharing one Sunday dea
 | Wed 23 Sep | 06 · moving averages | Sun 27 Sep |
 | Mon 28 Sep | 07 · classical decomposition and STL | Sun 4 Oct |
 | Wed 30 Sep | 08 · benchmark methods | Sun 4 Oct |
-| Mon 5 Oct | 09 · residual diagnostics | Sun 11 Oct |
+| Mon 5 Oct | 09 · residual diagnostics | Sun 18 Oct (extended from 11 Oct) |
 
 Both shorter assignments in the shared-deadline weeks were trimmed on purpose so the combined load
 stays manageable.
 
 ### 3. Group Assignment 1 is due after the midterm
 
-Released Session 07 (Mon 28 Sep), due Sunday 25 Oct. Four weeks, after the midterm, so exam revision
-and a from-scratch implementation do not compete for the same fortnight. Start reading the brief the
-week it is released: choosing your series is half the work.
+Released in Session 7 on Monday 28 September. Originally due Sunday 25 October, it is now due **Friday 30 October 2026, 23:59**, as announced in Session 11. The assignment specifies Victorian liquor retailing; read the brief before starting.
 
 ### 4. Feedback, not published solutions
 
@@ -127,8 +123,8 @@ concern, and no separate preparation is expected if the work reflects your own u
 ## The five-line version
 
 - **Midterm covers Sessions 1–8**, Wednesday 14 October. No retake.
-- **Session 9 is examined in the final** and doubles as midterm revision.
+- **Session 9 on residual diagnostics is examined in the final.** Midterm revision is available separately in the Session 10 deck.
 - **From Session 05 on, homework is due 23:59 on the Sunday of its teaching week.** Two September
   weeks share one deadline. Sessions 01–04 keep the dates already posted.
-- **Group Assignment 1 is due Sunday 25 October**, after the midterm.
+- **Group Assignment 1 is now due Friday 30 October**, extended from Sunday 25 October.
 - **No solutions are published.** Cohort note and rotating individual comments.

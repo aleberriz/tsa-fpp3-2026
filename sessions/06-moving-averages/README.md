@@ -1,20 +1,13 @@
 # Session 06 — Moving averages and trend estimation
 
-**Date:** Wednesday, 23 September 2026, 9:00–10:20 — IE Tower, room T-05.02
+**Reading:** [fpp3 3.3](https://otexts.com/fpp3/decomposition.html#sec-moving-averages).
 
-**Announcements:** this session's dates and deadlines are in [`announcements.md`](announcements.md).
+**Materials:** [Slides](session06_slides.html), [notebook](06_B_MovingAverages_TrendEstimation.html), and [R script](session06_code.R).
 
-**[fpp3](https://otexts.com/fpp3/index.html):** 3.3
+**In class:** Estimate a trend by averaging a moving window. Compare neighboring windows, explain the effect of window size and the missing values at the ends, and center an even-order moving average using a 2×m-MA.
 
-**Focus:** What a moving average is; neighboring windows at t and t+1; the limitation of centered
-windows; odd-order windows; the effect of window size; even-order windows and the 2×m case.
+**R:** `slider::slide_dbl()`, `mutate()`, `autoplot()`.
 
-**Homework:** `06_B` Exercises 1, 3 and 4. Exercise 2 is optional practice, not assigned.
+**Homework:** Complete notebook Exercises 1, 3 and 4: compute a 2×12-MA of retail employment in R, then derive the 3×7-MA and 2×8-MA weights on paper. Check symmetry, total weight and window length. Submit the code and plot plus a scan or photograph of the derivations on Blackboard. Exercise 2 is optional. The deadline is in [announcements](announcements.md).
 
-**Outcome:** Student explains what an MA of order m does and computes centered MAs for odd and even m.
-
-> **Part 2 of 3.** Sessions 5, 6 and 7 are one topic, time series decomposition. Session 5 chose
-> the scheme, this session estimates the trend, and Session 7 assembles the whole algorithm.
-
-> Exercises 3 and 4 are derivations on paper, not code. Photographed handwriting is a fine
-> submission.
+This continues Session 5 on decomposition schemes and prepares the trend estimate used in Session 7 on classical decomposition and STL.
