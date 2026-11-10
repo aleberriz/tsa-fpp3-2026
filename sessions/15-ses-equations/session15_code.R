@@ -35,14 +35,14 @@ alpha <- ses_params$estimate[1]
 
 weights <- vector("double")
 for (i in seq_len(nrow(fitted_vals))) {
-  # Weight of the observation i steps before the forecast origin
+  # Weight of the observation i - 1 periods before the forecast origin
   weights[[i]] <- alpha * (1 - alpha)^(i - 1)
 }
 
-# Add this column to the fitted values
+# Match newest-first weights to the table's oldest-first observations
 fitted_vals$weight = rev(weights)
 
-# Reverse the tibble so the newest year appears first
+# Sort complete rows so the newest year appears first
 fitted_vals <-
   fitted_vals |> arrange(desc(Year))
 

@@ -2485,12 +2485,14 @@ window.Quarto = {
 \ell_t = \alpha y_t + (1-\alpha)\ell_{t-1}
        = \ell_{t-1} + \alpha\underbrace{(y_t-\ell_{t-1})}_{\text{one-step error}}.
 \]</span></p>
-<p>The second form adds a fraction of the <strong>one-step forecast error</strong>, the surprise, to the previous estimate. An observation above the forecast raises the level. A larger <span class="math inline">\(\alpha\)</span> therefore follows a change faster, while also responding more to temporary noise.</p>
-<p>Starting from the initial level <span class="math inline">\(\ell_0\)</span>, substitute the first update into the second:</p>
+<p>The formula is <strong>recursive</strong>: each new level <span class="math inline">\(\ell_t\)</span> uses the previously calculated level <span class="math inline">\(\ell_{t-1}\)</span>. Once <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\ell_0\)</span> are chosen, the same update processes the observations in time order. Predict <span class="math inline">\(y_t\)</span> with <span class="math inline">\(\ell_{t-1}\)</span>, observe <span class="math inline">\(y_t\)</span>, then update to <span class="math inline">\(\ell_t\)</span>.</p>
+<p>The second form adds a fraction of the <strong>one-step forecast error</strong>, the surprise, to the previous estimate. An observation above the forecast raises the level. A larger <span class="math inline">\(\alpha\)</span> therefore follows a change faster, while also responding more to temporary noise. Expanding the brackets gives the first form: the same update expressed as a weighted average.</p>
+<p>Starting from the initial level <span class="math inline">\(\ell_0\)</span>, repeatedly substitute the preceding update into the next:</p>
 <p><span class="math display">\[
 \begin{aligned}
 \ell_1 &amp;= \alpha y_1+(1-\alpha)\ell_0,\\
-\ell_2 &amp;= \alpha y_2+\alpha(1-\alpha)y_1+(1-\alpha)^2\ell_0.
+\ell_2 &amp;= \alpha y_2+\alpha(1-\alpha)y_1+(1-\alpha)^2\ell_0,\\
+\ell_3 &amp;= \alpha y_3+\alpha(1-\alpha)y_2+\alpha(1-\alpha)^2y_1+(1-\alpha)^3\ell_0.
 \end{aligned}
 \]</span></p>
 <p>Each update multiplies the weights already in the level by <span class="math inline">\(1-\alpha\)</span>. After <span class="math inline">\(T\)</span> observations, the exact finite-history expression is</p>
@@ -2500,7 +2502,8 @@ window.Quarto = {
 \]</span></p>
 <p>The observation weights sum to <span class="math inline">\(1-(1-\alpha)^T\)</span>; the initial-level weight is the remaining <span class="math inline">\((1-\alpha)^T\)</span>. <strong>Together they sum to exactly one.</strong> For <span class="math inline">\(0&lt;\alpha\leq1\)</span>, the initial-level weight tends to zero as <span class="math inline">\(T\)</span> grows. With small <span class="math inline">\(\alpha\)</span> and a short series it can still matter.</p>
 <p>The geometric sum follows by writing <span class="math inline">\(S_T=\alpha+\alpha r+\cdots+\alpha r^{T-1}\)</span>, with <span class="math inline">\(r=1-\alpha\)</span>, and subtracting <span class="math inline">\(rS_T\)</span>: <span class="math inline">\(S_T(1-r)=\alpha(1-r^T)\)</span>, hence <span class="math inline">\(S_T=1-r^T\)</span>. The handwritten PDF <code>15_A</code> develops the general proof as reference material. The working skill is to explain the declining weights and calculate their contributions.</p>
-<p>At <span class="math inline">\(\alpha=1\)</span>, SES gives the naive forecast. At <span class="math inline">\(\alpha=0\)</span>, every forecast stays at <span class="math inline">\(\ell_0\)</span>, which equals the sample mean if least squares estimates that constant. <strong>A small positive <span class="math inline">\(\alpha\)</span> means slow adaptation, with unequal weights on observations.</strong></p>
+<p>At <span class="math inline">\(\alpha=1\)</span>, the recursion becomes <span class="math inline">\(\ell_t=1\times y_t+0\times\ell_{t-1}=y_t\)</span>. The final level is therefore <span class="math inline">\(y_T\)</span>, and every future point forecast equals the latest observation: the naive forecast.</p>
+<p>At <span class="math inline">\(\alpha=0\)</span>, every forecast stays at <span class="math inline">\(\ell_0\)</span>, which equals the sample mean if least squares estimates that constant. For any fixed <span class="math inline">\(0&lt;\alpha&lt;1\)</span>, observation weights remain unequal: each step into the past multiplies the weight by <span class="math inline">\(1-\alpha\)</span>. <strong>A smaller positive <span class="math inline">\(\alpha\)</span> makes both the weight decay and the level’s adaptation slower.</strong></p>
 <section id="flat" class="level3">
 <h3 class="anchored" data-anchor-id="flat">Flat forecasts of simple exponential smoothing</h3>
 <p>After the last training observation at time <span class="math inline">\(T\)</span>, <strong>every SES point forecast equals the final level <span class="math inline">\(\ell_T\)</span></strong>. For a horizon <span class="math inline">\(h\)</span> periods ahead:</p>
@@ -2553,7 +2556,7 @@ window.Quarto = {
 <li><span class="math inline">\(\alpha\)</span>: the smoothing weight, between zero and one</li>
 <li><span class="math inline">\(\ell_0\)</span>: the initial level</li>
 </ul>
-<p>More complex exponential smoothing methods have more than one smoothing parameter and more than one initial component.</p>
+<p>Methods with trend or seasonality add smoothing parameters and initial components. Session 17 on Holt and damped trend adds a trend estimate; Session 18 on Holt-Winters adds seasonal estimates. They extend the same updating idea.</p>
 <p><strong>Choice of parameters</strong></p>
 <ul>
 <li>Sometimes past experience guides the choice.</li>
@@ -2565,7 +2568,8 @@ window.Quarto = {
 <p><span class="math display">\[
 \text{SSE} = \sum_{t=1}^T(y_t - \hat{y}_{t|t-1})^2=\sum_{t=1}^Te_t^2.
 \]</span></p>
-<p>For simple exponential smoothing this optimization problem has no explicit solution, so it is solved numerically: an iterative search for the values of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\ell_0\)</span> that minimize the SSE. The diagram shows how each trial pair produces fitted values and an error score:</p>
+<p>Linear regression has direct least-squares formulas because its SSE is quadratic in the coefficients, and setting the derivatives to zero gives linear equations. In SES, the unknown <span class="math inline">\(\alpha\)</span> appears in products and increasing powers as the recursion unfolds. The SSE therefore depends nonlinearly on the parameters. Fitting SES generally has no simple closed-form solution for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\ell_0\)</span> jointly; special cases can simplify.</p>
+<p>A <strong>numerical optimizer</strong> uses results from previous evaluations to choose further parameter values and search for a lower SSE. Numerical optimization does not require trying every pair on a predefined grid: that would be a grid search. Session 16 on fitting SES implements the recurrence and SSE, then passes them to <code>optim()</code> for the search. The diagram shows how each trial pair produces fitted values and an error score:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -2575,7 +2579,6 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>You may recall that linear regression has explicit formulas for the values that minimize the SSE. SES does not.</p>
 <p>The highlighted part of the fitting process <strong>calculates fitted values from a trial <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\ell_0\)</span></strong>. Workbook <code>15_C</code> lets you perform this calculation with cell formulas, then compare the result with R.</p>
 </section>
 </section>
@@ -2653,18 +2656,20 @@ window.Quarto = {
 <p>The weight of the observation <span class="math inline">\(y_{T-j}\)</span> is therefore:</p>
 <p><span class="math display">\[
 \alpha(1-\alpha)^j
-\]</span> With this formula, a <code>for</code> loop over the length of the series computes the weight of each observation:</p>
+\]</span> <strong>Purpose of the weight calculation.</strong> Fitting the model estimated <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\ell_0\)</span>. The following calculation makes the observation weights implied by that fitted <span class="math inline">\(\alpha\)</span> visible, so we can interpret how much recent and distant observations contribute to the final forecast. These weights are implicit in the recursive updates; <code>fable</code> does not need to construct this entire vector to calculate the levels. Reconstructing fitted values and SSE is a separate task.</p>
+<p>Every weight below belongs to the <strong>same forecast at the end of the training series</strong>, <span class="math inline">\(\hat y_{T+1|T}\)</span>. The new <code>weight</code> column describes each observation’s contribution to that final forecast, rather than to its own row’s fitted value.</p>
+<p><code>vector(&quot;double&quot;)</code> creates an empty numeric vector. <code>nrow(fitted_vals)</code> counts the observations, and <code>seq_len()</code> supplies the indices <span class="math inline">\(i=1,\ldots,T\)</span>. Because R starts indexing at 1 while the latest observation has age <span class="math inline">\(j=0\)</span>, the exponent is <span class="math inline">\(i-1\)</span>:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>weights <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">&quot;double&quot;</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(fitted_vals))) {</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Weight of the observation i steps before the forecast origin</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Weight of the observation i - 1 periods before the forecast origin</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  weights[[i]] <span class="ot">&lt;-</span> alpha <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> alpha)<span class="sc">^</span>(i <span class="sc">-</span> <span class="dv">1</span>)</span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Add this column to the fitted values</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Match newest-first weights to the table&#39;s oldest-first observations</span></span>
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>fitted_vals<span class="sc">$</span>weight <span class="ot">=</span> <span class="fu">rev</span>(weights)</span>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Reverse the tibble so the newest year appears first</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Sort complete rows so the newest year appears first</span></span>
 <span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>fitted_vals <span class="ot">&lt;-</span></span>
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  fitted_vals <span class="sc">|&gt;</span> <span class="fu">arrange</span>(<span class="fu">desc</span>(Year))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
@@ -2689,6 +2694,7 @@ window.Quarto = {
 # ℹ 48 more rows</code></pre>
 </div>
 </div>
+<p>The loop generates weights newest first. <code>rev(weights)</code> reverses their order to match the table’s original oldest-first observations, and <code>$weight</code> adds the column. Then <code>arrange(desc(Year))</code> sorts complete rows by descending year for display; each observation keeps its attached weight. The pipe <code>|&gt;</code> passes the table into <code>arrange()</code>.</p>
 <p>The most recent observation (2017) gets a weight of <span class="math inline">\(\alpha = 0.8399\)</span>. The 2016 observation gets <span class="math inline">\(\alpha(1-\alpha)=0.1344\)</span>, the 2015 observation <span class="math inline">\(\alpha(1-\alpha)^2 = 0.0215\)</span>, and so on.</p>
 <p>Add the weights for 2017, 2016 and 2015 to find their combined contribution:</p>
 <div class="cell">
@@ -2698,7 +2704,13 @@ window.Quarto = {
 </div>
 </div>
 <p>The remainder belongs to earlier observations and the initial level <span class="math inline">\(\ell_0\)</span>. Each step back multiplies an observation’s weight by <span class="math inline">\(1-\alpha\)</span>, which explains the exponential decline.</p>
-<p>The observation weights alone are close to one for this fitted alpha and series length. Including the initial-level weight gives exactly one, up to numerical rounding:</p>
+<p>The observation weights alone exclude the initial-level contribution. Their total is <span class="math inline">\(1-(1-\alpha)^T\)</span>, so adding the remaining initial-level weight completes the average:</p>
+<p><span class="math display">\[
+\underbrace{\sum_{j=0}^{T-1}\alpha(1-\alpha)^j}_{1-(1-\alpha)^T\text{: observation weights}}
++\underbrace{(1-\alpha)^T}_{\text{initial-level weight}}=1.
+\]</span></p>
+<p>For example, with <span class="math inline">\(\alpha=0.5\)</span> and two observations, the observation weights are <span class="math inline">\(0.50\)</span> and <span class="math inline">\(0.25\)</span>, and the initial-level weight is <span class="math inline">\(0.25\)</span>. Their combined total is <span class="math inline">\(0.75+0.25=1\)</span>.</p>
+<p>For the Algerian exports dataset, the fitted alpha and long history make the initial-level weight tiny. R may already display the observation-weight sum as <code>1</code> because of rounding. The second line adds the tiny remaining weight, giving one up to numerical precision:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(fitted_vals<span class="sc">$</span>weight)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
