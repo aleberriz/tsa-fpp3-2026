@@ -2540,7 +2540,8 @@ window.Quarto = {
 </section>
 <section id="equivalent-forms" class="level3">
 <h3 class="anchored" data-anchor-id="equivalent-forms">The same SES calculation in four forms</h3>
-<p>The equations below all calculate <strong>the same level <span class="math inline">\(\ell_t\)</span> after observing <span class="math inline">\(y_t\)</span></strong>, using the same <span class="math inline">\(\alpha\)</span>, initial level <span class="math inline">\(\ell_0\)</span> and observations <span class="math inline">\(y_1,\ldots,y_t\)</span>. They express one calculation in four useful forms:</p>
+<p>Our goal is to <strong>forecast future observations</strong>. SES summarizes the available history in an estimated current level, which becomes its point forecast at every future horizon: <span class="math inline">\(\hat y_{t+h|t}=\ell_t\)</span> for <span class="math inline">\(h\geq1\)</span>. The future observation <span class="math inline">\(y_{t+h}\)</span> remains unknown and can differ from that prediction. Here <span class="math inline">\(\ell_t\)</span> is calculated from observations already available through time <span class="math inline">\(t\)</span>.</p>
+<p>The four expressions below calculate <strong>that same level <span class="math inline">\(\ell_t\)</span></strong>, using the same <span class="math inline">\(\alpha\)</span>, initial level <span class="math inline">\(\ell_0\)</span> and observations <span class="math inline">\(y_1,\ldots,y_t\)</span>. They offer different ways to compute or understand the quantity used for forecasting:</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 15%">
