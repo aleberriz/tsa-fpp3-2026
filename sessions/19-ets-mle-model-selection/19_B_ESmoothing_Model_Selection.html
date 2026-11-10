@@ -2441,11 +2441,44 @@ window.Quarto = {
 <p><span class="math display">\[
 y_t=\ell_{t-1}+e_t,\qquad \ell_t=\ell_{t-1}+\alpha e_t.
 \]</span></p>
-<p>The first equation describes a possible observation; the second says how the same surprise updates the state. If the shocks are independent normal variables, these equations specify conditional normal distributions, a likelihood, and forecast distributions. They also explain why uncertainty can grow while the point forecast stays flat.</p>
+<p>The level equation is the <strong>SES error-correction form</strong> from Session 15 on SES equations: <span class="math inline">\(\ell_t=\ell_{t-1}+\alpha(y_t-\ell_{t-1})\)</span>. The new ingredient is the probabilistic observation equation and the distribution of its shock.</p>
+<p>Before observing <span class="math inline">\(y_t\)</span>, <span class="math inline">\(e_t\)</span> is a random innovation describing possible surprises. After fitting to the training data, reconstruct the <strong>fitted innovation residual</strong> <span class="math inline">\(\hat e_t=y_t-\hat y_{t|t-1}\)</span>. This is a calculated difference at estimated settings. It estimates a realized shock; it is not itself a new random draw or a held-out forecast error. If the shocks are independent normal variables, these equations specify conditional normal distributions, a likelihood, and forecast distributions. They also explain why uncertainty can grow while the point forecast stays flat.</p>
 <p>With multiplicative errors the observation equation is <span class="math inline">\(y_t=\ell_{t-1}(1+\varepsilon_t)\)</span>: the innovation is a relative surprise. Refitting with a different error type can change parameter estimates and point forecasts as well as intervals. For suitable paired models, the familiar point recursions coincide when their states and parameters are held fixed; that is not a promise that separately fitted models forecast identically.</p>
 </section>
 <section id="framework" class="level1">
 <h1>The ETS statistical framework and model selection</h1>
+<p>A <strong>specification</strong> is a model form, such as additive errors, an additive trend and no seasonality. Keep four tasks distinct:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Task</th>
+<th>What changes or is judged?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Choose a form</td>
+<td>Decide which error, trend and seasonal components are allowed.</td>
+</tr>
+<tr class="even">
+<td>Fit</td>
+<td>Estimate parameters and initial states within each chosen form, using training data.</td>
+</tr>
+<tr class="odd">
+<td>Select</td>
+<td>Rank eligible fitted forms using AICc on comparable likelihoods.</td>
+</tr>
+<tr class="even">
+<td>Evaluate</td>
+<td>Inspect diagnostics and test forecasts on later data at the relevant horizons.</td>
+</tr>
+</tbody>
+</table>
+<p>For automatic selection, repeat fitting and selection inside each cross-validation training fold. Full-series selection would give earlier folds information from their future.</p>
 <section id="likelihood" class="level2">
 <h2 class="anchored" data-anchor-id="likelihood">Minimizing the SSE vs maximizing the likelihood</h2>
 <p>The <strong>likelihood</strong> evaluates the model’s joint density at the observed data. Keep those observations fixed and vary the parameters: a larger likelihood indicates a closer fit under that probability model. For continuous observations, density is a curve height, not the probability of an exact value. The preparation guide explains this distinction; the handwritten primer provides optional detail.</p>
@@ -2513,7 +2546,7 @@ y_t=\ell_{t-1}+e_t,\qquad \ell_t=\ell_{t-1}+\alpha e_t.
 </section>
 <section id="residuals" class="level2">
 <h2 class="anchored" data-anchor-id="residuals">Residuals and multiplicative errors</h2>
-<p>With multiplicative errors, the residuals and the innovation residuals differ, even without a transformation. <code>augment()</code> returns both:</p>
+<p>The random innovation belongs to the stochastic model; an innovation residual is reconstructed after fitting. With multiplicative errors, response and innovation residuals differ even without a transformation. <code>augment()</code> returns both:</p>
 <ul>
 <li><strong>Response residuals</strong> (<code>.resid</code>): <span class="math inline">\(\hat{e}_t = y_t - \hat{y}_{t|t-1}\)</span>.</li>
 <li><strong>Innovation residuals</strong> (<code>.innov</code>):
@@ -2591,7 +2624,7 @@ Model: ETS(M,N,A)
 </div>
 </div>
 <p>Read the three letters before interpreting the parameters. The corrected Akaike information criterion (AICc) ranks the fitted candidates, while residual checks and forecast evaluation assess their usefulness.</p>
-<p><code>ETS()</code> chose <span class="math inline">\(ETS(M,N,A)\)</span>: multiplicative errors, no trend, additive seasonality. It was a close call:</p>
+<p>Read the selected form in the <code>report(fit)</code> output above; a future run can differ with software and optimization. For this example, compare two eligible forms, <span class="math inline">\(ETS(M,N,A)\)</span> (multiplicative errors, no trend, additive seasonality) and <span class="math inline">\(ETS(M,N,M)\)</span>:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>aus_holidays <span class="sc">|&gt;</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">model</span>(</span>
