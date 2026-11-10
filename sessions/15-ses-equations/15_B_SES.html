@@ -2365,6 +2365,7 @@ window.Quarto = {
   <li><a href="#flat" id="toc-flat" class="nav-link" data-scroll-target="#flat">Flat forecasts of simple exponential smoothing</a></li>
   <li><a href="#component-form" id="toc-component-form" class="nav-link" data-scroll-target="#component-form">Component form of the equations</a></li>
   <li><a href="#fitted-values" id="toc-fitted-values" class="nav-link" data-scroll-target="#fitted-values">Equations for the fitted values</a></li>
+  <li><a href="#equivalent-forms" id="toc-equivalent-forms" class="nav-link" data-scroll-target="#equivalent-forms">The same SES calculation in four forms</a></li>
   <li><a href="#fitting" id="toc-fitting" class="nav-link" data-scroll-target="#fitting">Estimating <span class="math inline">\(\alpha\)</span> and the initial level (fitting the model)</a></li>
   </ul></li>
   <li><a href="#in-r" id="toc-in-r" class="nav-link" data-scroll-target="#in-r">Model specification in <code>fable</code>: an example</a>
@@ -2536,6 +2537,53 @@ window.Quarto = {
 <p>Given <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\ell_0\)</span>, the first fitted value is <span class="math inline">\(\hat y_{1|0}=\ell_0\)</span>. Observation <span class="math inline">\(y_1\)</span> then updates the level to <span class="math inline">\(\ell_1\)</span>, which predicts <span class="math inline">\(y_2\)</span>. Repeating this sequence produces every fitted value through time <span class="math inline">\(T\)</span>.</p>
 <p>The parameters used to calculate these fitted values are estimated using the training sample as a whole. These in-sample predictions measure training fit; evaluating forecast accuracy requires observations held out of estimation.</p>
 <p>The handwritten PDF <code>15_A</code> and the session slides explain the same timing.</p>
+</section>
+<section id="equivalent-forms" class="level3">
+<h3 class="anchored" data-anchor-id="equivalent-forms">The same SES calculation in four forms</h3>
+<p>The equations below all calculate <strong>the same level <span class="math inline">\(\ell_t\)</span> after observing <span class="math inline">\(y_t\)</span></strong>, using the same <span class="math inline">\(\alpha\)</span>, initial level <span class="math inline">\(\ell_0\)</span> and observations <span class="math inline">\(y_1,\ldots,y_t\)</span>. They express one calculation in four useful forms:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 15%">
+<col style="width: 30%">
+<col style="width: 53%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Form</th>
+<th style="text-align: left;">Expression</th>
+<th style="text-align: left;">What it helps us do</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Recursive weighted average</strong></td>
+<td style="text-align: left;"><span class="math inline">\(\ell_t=\alpha y_t+(1-\alpha)\ell_{t-1}\)</span></td>
+<td style="text-align: left;">Update efficiently from the previous level and new observation. Used in the workbook and the level-updating loop in Session 16 on fitting SES.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Error correction</strong></td>
+<td style="text-align: left;"><span class="math inline">\(\ell_t=\ell_{t-1}+\alpha(y_t-\ell_{t-1})\)</span></td>
+<td style="text-align: left;">Explain the update: retain the previous estimate and add a fraction of the forecast error.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Expanded weighted sum</strong></td>
+<td style="text-align: left;"><span class="math inline">\(\begin{aligned}\ell_t={}&amp;\alpha y_t+\alpha(1-\alpha)y_{t-1}+\cdots\\&amp;+\alpha(1-\alpha)^{t-1}y_1+(1-\alpha)^t\ell_0\end{aligned}\)</span></td>
+<td style="text-align: left;">See how every observation and the initial level contribute. The calculations for <span class="math inline">\(\ell_1\)</span>, <span class="math inline">\(\ell_2\)</span> and <span class="math inline">\(\ell_3\)</span> above unfold this pattern.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Summation notation</strong></td>
+<td style="text-align: left;"><span class="math inline">\(\ell_t=\sum_{j=0}^{t-1}\alpha(1-\alpha)^j y_{t-j}+(1-\alpha)^t\ell_0\)</span></td>
+<td style="text-align: left;">Write the expanded sum compactly, identify a weight by its age <span class="math inline">\(j\)</span>, and calculate total weights.</td>
+</tr>
+</tbody>
+</table>
+<p>Expanding the brackets connects the two recursive forms. Repeatedly substituting for the previous level gives the expanded weighted sum. The summation symbol abbreviates that same sum. The initial-level contribution stays in both finite-history expressions.</p>
+<p><strong>How the forecast notation connects.</strong> In SES, <span class="math inline">\(\hat y_{t+1|t}=\ell_t\)</span> and <span class="math inline">\(\hat y_{t|t-1}=\ell_{t-1}\)</span>. Replacing the levels with these equivalent forecast labels rewrites the recursive weighted average as</p>
+<p><span class="math display">\[
+\hat y_{t+1|t}=\alpha y_t+(1-\alpha)\hat y_{t|t-1}.
+\]</span></p>
+<p>This is the recursive weighted-average form with the predictions named explicitly. It makes the connection between the previous one-step prediction and the next one visible.</p>
+<p>The <strong>forecast rule</strong> <span class="math inline">\(\hat y_{t+h|t}=\ell_t\)</span>, for <span class="math inline">\(h\geq1\)</span>, uses the calculated level to predict future observations. Applying it at origin <span class="math inline">\(t-1\)</span> and horizon 1 gives the fitted value <span class="math inline">\(\hat y_{t|t-1}=\ell_{t-1}\)</span>. The name <strong>component form</strong> refers to pairing this forecast rule with a level-update equation. Fitting the model is the separate task of choosing <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\ell_0\)</span>; all four level expressions above use a given pair.</p>
 </section>
 <section id="fitting" class="level3">
 <h3 class="anchored" data-anchor-id="fitting">Estimating <span class="math inline">\(\alpha\)</span> and the initial level (fitting the model)</h3>
