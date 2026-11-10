@@ -14,8 +14,8 @@ algerian_exports <- global_economy |>
 ## 2. Function `SSE_func` ----
 # Test
 y <- algerian_exports$Exports
-alpha <- 0.8399875 # Initial estimates for the test
-l_0 <- 39.5389994 # Initial estimates for the test
+alpha <- 0.8399875 # Fixed comparison value from the earlier fit
+l_0 <- 39.5389994 # Fixed comparison value from the earlier fit
 n <- length(y)
 yhat <- ses_levels(y = y, alpha = alpha, l_0 = l_0)
 yhat_fvals <- yhat[1:n] # Exclude the last value, which is the SES forecast

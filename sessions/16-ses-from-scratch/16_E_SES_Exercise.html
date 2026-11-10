@@ -2431,6 +2431,7 @@ window.Quarto = {
 <section id="parameters" class="level3">
 <h3 class="anchored" data-anchor-id="parameters">3. Model parameters</h3>
 <p>How many smoothing parameters and initial states does SES estimate? Extract them with <code>tidy()</code> and explain how alpha determines the weight on new observations. This count excludes the innovation variance, which is estimated separately.</p>
+<p>For any observation-weight column, fix the forecast origin at the final training time <span class="math inline">\(T\)</span>. The weight of <span class="math inline">\(y_t\)</span> in <span class="math inline">\(\ell_T\)</span> (and the flat forecast from <span class="math inline">\(T\)</span>) is <span class="math inline">\(\alpha(1-\alpha)^{T-t}\)</span>. It is not the weight used to calculate that row’s own fitted value, which precedes <span class="math inline">\(y_t\)</span>. Computing these weights interprets an already fitted alpha; it does not estimate alpha. The initial level contributes <span class="math inline">\((1-\alpha)^T\)</span>, completing the finite weight total of one.</p>
 </section>
 <section id="sigma" class="level3">
 <h3 class="anchored" data-anchor-id="sigma">4. Standard deviation of the residuals</h3>

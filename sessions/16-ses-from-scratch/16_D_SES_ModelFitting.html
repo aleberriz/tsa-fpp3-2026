@@ -2454,7 +2454,56 @@ window.Quarto = {
 \in \mathbb{R}^{T+1}
 \]</span></p>
 <p>The first <span class="math inline">\(T\)</span> entries, <span class="math inline">\(\ell_0\)</span> through <span class="math inline">\(\ell_{T-1}\)</span>, are the fitted values for observations <span class="math inline">\(y_1\)</span> through <span class="math inline">\(y_T\)</span>. Each prediction precedes its observation. The final entry, <span class="math inline">\(\ell_T\)</span>, already uses <span class="math inline">\(y_T\)</span>, so it forecasts the next period and every later horizon under SES.</p>
-<p>Below is the template for the function. Complete the lines marked TODO.</p>
+<p>The spreadsheet stores the initial state before the first observed row. R stores that same state at position 1. For example, <code>15_C</code> Sheet1 has its initial level in D4; the first observation is C5, its revised level D5, and its fitted value E5 refers back to D4.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Model time of stored level</th>
+<th>Spreadsheet level cell</th>
+<th>R position</th>
+<th>Stored state</th>
+<th>Observation it predicts</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(0\)</span></td>
+<td>D4</td>
+<td><code>1</code></td>
+<td><span class="math inline">\(\ell_0\)</span></td>
+<td><span class="math inline">\(y_1\)</span>, spreadsheet E5</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(1\)</span></td>
+<td>D5</td>
+<td><code>2</code></td>
+<td><span class="math inline">\(\ell_1\)</span></td>
+<td><span class="math inline">\(y_2\)</span>, spreadsheet E6</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(t\)</span></td>
+<td>D<span class="math inline">\((t+4)\)</span></td>
+<td><code>t + 1</code></td>
+<td><span class="math inline">\(\ell_t\)</span></td>
+<td><span class="math inline">\(y_{t+1}\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(T\)</span></td>
+<td>Last updated level</td>
+<td><code>T + 1</code></td>
+<td><span class="math inline">\(\ell_T\)</span></td>
+<td>Future <span class="math inline">\(y_{T+1}\)</span>, outside the fitted-value vector</td>
+</tr>
+</tbody>
+</table>
+<p>The recurrence is the same weighted average as in Session 15 on SES equations; only the storage labels change. Below is the template for the function. Complete the lines marked TODO.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ses_levels <span class="ot">&lt;-</span> <span class="cf">function</span>(y, alpha, l_0) {</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -2505,11 +2554,12 @@ window.Quarto = {
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Year, Exports)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The code below tests that the level equation is implemented correctly. The file <code>yhat_SES_test</code> is in the <code>data/</code> folder at the repository root, and the path below reaches it from this session’s folder. The check should evaluate to <code>TRUE</code>.</p>
+<p>The supplied alpha and initial level are fixed comparison values from the earlier Algeria fit. They test the recurrence at known settings; they are not the optimizer’s starting guesses.</p>
 <p><code>levels_test</code> is the correct output of <code>ses_levels()</code> on <code>algerian_exports</code> with the given <code>alpha</code> and <code>l_0</code>; <code>all.equal()</code> compares it with yours:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> algerian_exports<span class="sc">$</span>Exports</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.8399875</span> <span class="co"># Initial estimates for the test</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>l_0 <span class="ot">&lt;-</span> <span class="fl">39.5389994</span> <span class="co"># Initial estimates for the test</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.8399875</span> <span class="co"># Fixed comparison value from the earlier fit</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>l_0 <span class="ot">&lt;-</span> <span class="fl">39.5389994</span> <span class="co"># Fixed comparison value from the earlier fit</span></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the levels with your function</span></span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>levels_function <span class="ot">&lt;-</span> <span class="fu">ses_levels</span>(<span class="at">y =</span> y, <span class="at">alpha =</span> alpha, <span class="at">l_0 =</span> l_0)</span>
@@ -2525,7 +2575,7 @@ window.Quarto = {
 </section>
 <section id="sse" class="level2">
 <h2 class="anchored" data-anchor-id="sse">2. Function <code>SSE_func</code></h2>
-<p>Write a function that computes the sum of squared errors from <span class="math inline">\(y_t\)</span> (the series) and <span class="math inline">\(\hat{y}_t\)</span> (the fitted values).</p>
+<p>SSE keeps its usual name, sum of squared errors; here those errors are training residuals. Write a function that computes it from <span class="math inline">\(y_t\)</span> (the series) and <span class="math inline">\(\hat{y}_t\)</span> (the fitted values).</p>
 <p>INPUTS:</p>
 <ul>
 <li><code>y</code> (the time series) - of length <span class="math inline">\(T\)</span> (goes from <span class="math inline">\(t=1\)</span> to <span class="math inline">\(t=T\)</span>)</li>
@@ -2561,8 +2611,8 @@ window.Quarto = {
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> algerian_exports<span class="sc">$</span>Exports</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.8399875</span> <span class="co"># Initial estimates for the test</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>l_0 <span class="ot">&lt;-</span> <span class="fl">39.5389994</span> <span class="co"># Initial estimates for the test</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.8399875</span> <span class="co"># Fixed comparison value from the earlier fit</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>l_0 <span class="ot">&lt;-</span> <span class="fl">39.5389994</span> <span class="co"># Fixed comparison value from the earlier fit</span></span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(y)</span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>yhat <span class="ot">&lt;-</span> <span class="fu">ses_levels</span>(<span class="at">y =</span> y, <span class="at">alpha =</span> alpha, <span class="at">l_0 =</span> l_0)</span>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>yhat_fvals <span class="ot">&lt;-</span> yhat[<span class="dv">1</span><span class="sc">:</span>n] <span class="co"># Exclude the last value, which is the SES forecast</span></span>
@@ -2607,7 +2657,7 @@ window.Quarto = {
 <section id="optim" class="level2">
 <h2 class="anchored" data-anchor-id="optim">4. Understanding <code>optim()</code></h2>
 <p>Read this section carefully: <code>optim()</code> is the general-purpose optimizer that fits the SES model.</p>
-<p><code>optim()</code>, from the <code>stats</code> package, minimizes a function numerically. How it does so is beyond the scope of this course, but it lets us minimize the SSE and close the loop of fitting simple exponential smoothing.</p>
+<p><code>optim()</code>, from the <code>stats</code> package, minimizes a function numerically. The search uses previous objective evaluations to choose new candidate values; it need not exhaustively try every point on a grid. Algorithm details are outside this course. Our task is to supply the recurrence and training residual SSE that it evaluates.</p>
 <p>The function to minimize must have this signature:</p>
 <p><code>target_function(par, ...)</code> where:</p>
 <ul>
