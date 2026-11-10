@@ -2762,13 +2762,14 @@ window.Quarto = {
 <section id="reconstruct" class="level3">
 <h3 class="anchored" data-anchor-id="reconstruct">4. Reconstructing the fitted values from <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\ell_0\)</span></h3>
 <p>The model has already selected <span class="math inline">\(\alpha\)</span> and the initial level <span class="math inline">\(\ell_0\)</span>. <strong>Keep those estimates fixed</strong> and use the recursive equations to reproduce its fitted values. This repeats the fitted-value calculation within the <a href="#fitting">earlier fitting process</a>; the parameter search is already complete.</p>
-<p>A fitted value predicts an observation from the preceding level. At row <span class="math inline">\(t\)</span>, the table therefore places <span class="math inline">\(\ell_{t-1}\)</span> in the Forecast column. The level <span class="math inline">\(\ell_t\)</span> calculated on that row forecasts the next observation:</p>
+<p>A fitted value predicts an observation from the preceding level. At row <span class="math inline">\(t\)</span>, the table therefore places <span class="math inline">\(\ell_{t-1}\)</span> in the Fitted value column. The level <span class="math inline">\(\ell_t\)</span> calculated on that row forecasts the next observation:</p>
 <p><span class="math display">\[
 \begin{align*}
   \text{Fitted value for the current row} &amp;&amp; \hat{y}_{t|t-1} &amp; = \ell_{t-1}\\
   \text{Updated level for the next prediction} &amp;&amp; \ell_{t}        &amp; = \alpha y_{t} + (1 - \alpha)\ell_{t-1},
 \end{align*}
 \]</span></p>
+<p>The sample begins in 1960, at <span class="math inline">\(t=1\)</span>. The 1959 row, <span class="math inline">\(t=0\)</span>, is an <strong>initialization row</strong> that stores the estimated starting level <span class="math inline">\(\ell_0=39.54\)</span>. No observation for 1959 is used, and the prediction sequence begins at <span class="math inline">\(t=1\)</span>, so the observation and fitted-value entries for <span class="math inline">\(t=0\)</span> are marked <strong>N/A</strong>. These entries are neither zeros nor values to fill in. The initial level predicts the first observation: <span class="math inline">\(\hat y_{1|0}=\ell_0=39.54\)</span>. Residuals and SSE start with the 1960 observation.</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -2776,7 +2777,7 @@ window.Quarto = {
 <th style="text-align: left;">Time</th>
 <th style="text-align: left;">Observation</th>
 <th style="text-align: left;">Level</th>
-<th style="text-align: left;">Forecast</th>
+<th style="text-align: left;">Fitted value</th>
 </tr>
 </thead>
 <tbody>
@@ -2790,9 +2791,9 @@ window.Quarto = {
 <tr class="even">
 <td style="text-align: left;">1959</td>
 <td style="text-align: left;">0</td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;">N/A</td>
 <td style="text-align: left;">39.54</td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;">N/A</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">1960</td>
@@ -2889,7 +2890,7 @@ window.Quarto = {
 </table>
 <section id="exercise" class="level4">
 <h4 class="anchored" data-anchor-id="exercise">Exercise</h4>
-<p>Complete the Level and Forecast columns in workbook <code>15_C</code> with cell formulas, using the supplied parameters. Compare your results with this table as part of the homework.</p>
+<p>Complete the <code>level</code> and <code>fitted_val</code> columns in workbook <code>15_C</code> with cell formulas, using the supplied parameters. Start with the first observed year, 1960 (<span class="math inline">\(t=1\)</span>), and keep the initialization row as supplied. Compare your results with this table as part of the homework; calculate residuals and SSE only for observed years.</p>
 </section>
 </section>
 <section id="forecast" class="level3">
