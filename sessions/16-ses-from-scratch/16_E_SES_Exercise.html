@@ -2356,13 +2356,14 @@ window.Quarto = {
   <ul>
   <li><a href="#is-simple-exponential-smoothing-appropriate-for-this-data-why-or-why-not" id="toc-is-simple-exponential-smoothing-appropriate-for-this-data-why-or-why-not" class="nav-link" data-scroll-target="#is-simple-exponential-smoothing-appropriate-for-this-data-why-or-why-not">Is simple exponential smoothing appropriate for this data? Why, or why not?</a></li>
   </ul></li>
-  <li><a href="#parameters" id="toc-parameters" class="nav-link" data-scroll-target="#parameters">3. Model parameters</a></li>
+  <li><a href="#parameters" id="toc-parameters" class="nav-link" data-scroll-target="#parameters">3. Model parameters and recent weights</a></li>
   <li><a href="#sigma" id="toc-sigma" class="nav-link" data-scroll-target="#sigma">4. Standard deviation of the residuals</a></li>
   <li><a href="#interval" id="toc-interval" class="nav-link" data-scroll-target="#interval">5. 95% prediction interval</a></li>
   <li><a href="#compare" id="toc-compare" class="nav-link" data-scroll-target="#compare">6. Comparing prediction intervals</a></li>
-  <li><a href="#calculator" id="toc-calculator" class="nav-link" data-scroll-target="#calculator">7. Calculator checks</a></li>
-  <li><a href="#decision" id="toc-decision" class="nav-link" data-scroll-target="#decision">8. Decision</a></li>
+  <li><a href="#calculator" id="toc-calculator" class="nav-link" data-scroll-target="#calculator">7. Calculator check: a separate short series</a></li>
+  <li><a href="#decision" id="toc-decision" class="nav-link" data-scroll-target="#decision">8. Decision: what does the evidence establish?</a></li>
   </ul></li>
+  <li><a href="#appendix" id="toc-appendix" class="nav-link" data-scroll-target="#appendix">Appendix: optional weights for the complete history</a></li>
   </ul>
 </nav>
 </div>
@@ -2394,6 +2395,7 @@ window.Quarto = {
 </div>
 <section id="exercise" class="level1">
 <h1>SES exercise</h1>
+<p>Complete parts 1 to 8. Use <code>fable</code> for the Argentina fit; there is no second from-scratch implementation to submit. Parts 1 to 6 use the full Argentina series. Use R for calculations over all its residuals, and show the formula and interpretation beside the output. Part 7 is a separate small example to calculate by hand. Part 8 asks you to distinguish numerical completion, training fit and predictive evidence. The appendix is optional and is not assessed in homework, group assignments or exams.</p>
 <section id="timeplot" class="level3">
 <h3 class="anchored" data-anchor-id="timeplot">1. Argentina’s exports</h3>
 <p>The <code>global_economy</code> dataset includes annual exports as a percentage of GDP. Select Argentina and retain <code>Year</code> and <code>Exports</code>. Make a time plot and explain whether a level-only forecast is plausible.</p>
@@ -2429,9 +2431,10 @@ window.Quarto = {
 </section>
 </section>
 <section id="parameters" class="level3">
-<h3 class="anchored" data-anchor-id="parameters">3. Model parameters</h3>
-<p>How many smoothing parameters and initial states does SES estimate? Extract them with <code>tidy()</code> and explain how alpha determines the weight on new observations. This count excludes the innovation variance, which is estimated separately.</p>
-<p>For any observation-weight column, fix the forecast origin at the final training time <span class="math inline">\(T\)</span>. The weight of <span class="math inline">\(y_t\)</span> in <span class="math inline">\(\ell_T\)</span> (and the flat forecast from <span class="math inline">\(T\)</span>) is <span class="math inline">\(\alpha(1-\alpha)^{T-t}\)</span>. It is not the weight used to calculate that row’s own fitted value, which precedes <span class="math inline">\(y_t\)</span>. Computing these weights interprets an already fitted alpha; it does not estimate alpha. The initial level contributes <span class="math inline">\((1-\alpha)^T\)</span>, completing the finite weight total of one.</p>
+<h3 class="anchored" data-anchor-id="parameters">3. Model parameters and recent weights</h3>
+<p>How many smoothing parameters and initial states does SES estimate? Extract them with <code>tidy()</code> and explain how alpha determines the weight on new observations. Exclude the separately estimated innovation variance from this count.</p>
+<p>Use the fitted alpha rounded to two decimals. With a calculator, calculate the weights on the three most recent observations, their sum, and the remaining weight. Check your arithmetic in R. Explain why the remainder includes older observations and the initial level. Small differences from the unrounded-alpha calculation are expected. This is the only required recent-weight calculation in this notebook.</p>
+<p>At the final training time <span class="math inline">\(T\)</span>, the weight on <span class="math inline">\(y_{T-j}\)</span> in the next forecast is <span class="math inline">\(\alpha(1-\alpha)^j\)</span>. These weights interpret the fitted alpha; they do not estimate it. They belong to one forecast origin, rather than each observation’s own prior prediction.</p>
 </section>
 <section id="sigma" class="level3">
 <h3 class="anchored" data-anchor-id="sigma">4. Standard deviation of the residuals</h3>
@@ -2439,6 +2442,7 @@ window.Quarto = {
 <p><span class="math display">\[\begin{equation}
   \hat{\sigma} = \sqrt{\frac{1}{T-K}\sum_{t=1}^T e_t^2}
 \end{equation}\]</span></p>
+<p>Use R to sum the squared residuals across the complete fit, then apply the displayed formula. State your values of <span class="math inline">\(T\)</span> and <span class="math inline">\(K\)</span> and check the result against the first forecast distribution. You do not need to square every full-series residual on paper.</p>
 <p>Here <span class="math inline">\(e_t\)</span> is the one-step residual at time <span class="math inline">\(t\)</span>, and <span class="math inline">\(T\)</span> counts the residuals used. <span class="math inline">\(K\)</span> counts estimated smoothing parameters and initial states, excluding the variance itself. This is the residual-variance correction used in Session 12 on prediction intervals. Session 19 on ETS estimation and model selection uses a different count for AIC, which also includes the estimated variance.</p>
 </section>
 <section id="interval" class="level3">
@@ -2450,14 +2454,40 @@ window.Quarto = {
 <p>Extract the prediction interval that <code>fable</code> gives for h = 1. How does your interval compare with it?</p>
 </section>
 <section id="calculator" class="level3">
-<h3 class="anchored" data-anchor-id="calculator">7. Calculator checks</h3>
-<p>Use the fitted alpha rounded to two decimals. Calculate the weights on the three most recent observations, their sum, and the remaining weight. Explain why that remainder includes the initial level as well as older observations. Small differences from calculations with the unrounded alpha are expected.</p>
-<p>For the first five fitted values, round the residuals to two decimals and add their squares by hand. For an arithmetic rehearsal only, treat these five rounded residuals as the complete series with <span class="math inline">\(K=2\)</span>: divide their SSE by <span class="math inline">\(5-2\)</span>, take the square root, and build a 95% interval around the first point forecast. Check each step against R. This artificial five-residual scale is not an estimate of the full model’s forecast uncertainty.</p>
+<h3 class="anchored" data-anchor-id="calculator">7. Calculator check: a separate short series</h3>
+<p>A separate illustrative five-observation series has been fitted with additive-error SES, estimating alpha and the initial level (<span class="math inline">\(K=2\)</span>). Its residuals, rounded to one decimal place, are <span class="math inline">\(1.1, -2.2, 2.2, -2.2, 1.1\)</span>, and its next-period point forecast is <span class="math inline">\(27.4\)</span>. These quantities belong only to this small example.</p>
+<p>With a calculator, add the five squared residuals, divide by <span class="math inline">\(5-2\)</span>, and take the square root to estimate the one-step forecast standard deviation. Assuming normal forecast errors, construct a 95% first prediction interval around the supplied forecast. Show each step and check the arithmetic in R. This calculation is separate from the Argentina fit and its uncertainty.</p>
 </section>
 <section id="decision" class="level3">
-<h3 class="anchored" data-anchor-id="decision">8. Decision</h3>
-<p>What would you check if <code>optim()</code> and <code>fable</code> differed materially? Does the lower training SSE establish that this model will forecast better than the naive method? Name the evidence you would use and the forecast horizon your comparison would target.</p>
+<h3 class="anchored" data-anchor-id="decision">8. Decision: what does the evidence establish?</h3>
+<p>Two numerical runs fit the same additive-error SES model to the same training observations, using the same objective and parameter bounds. They start from different guesses and return:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Run</th>
+<th>Final training SSE</th>
+<th>Convergence status</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>A</td>
+<td>73.6</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>B</td>
+<td>71.9</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>Explain what the two zero statuses establish and which run has the better training score. Does either result establish a global minimum or better forecasts than the naive method? Name the held-out evidence and forecast horizon you would use. Finally, name checks you would make if a numerical fit and <code>fable</code> differed materially. Different starts can affect numerical results, but need not produce different final estimates.</p>
 </section>
+</section>
+<section id="appendix" class="level1">
+<h1>Appendix: optional weights for the complete history</h1>
+<p>This appendix is not required for homework, group assignments or exams. Part 3 already supplies the required calculator task. If you are curious about displaying every historical weight, use the exact fitted alpha in <span class="math inline">\(\alpha(1-\alpha)^{T-t}\)</span>, and include the initial-state weight <span class="math inline">\((1-\alpha)^T\)</span>. Their finite total is one. An R loop or an extra column of historical weights is optional programming practice.</p>
 </section>
 
 </main>

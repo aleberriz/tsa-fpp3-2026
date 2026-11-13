@@ -4,12 +4,14 @@
 
 **Materials:** [Slides](session16_slides.html), [fitting notebook](16_D_SES_ModelFitting.html), [exercise notebook](16_E_SES_Exercise.html), and [R script](session16_code.R).
 
-**In class:** Write the SES level recursion and sum-of-squared-errors function. Read the supplied wrapper and run a bounded search with `optim()`. Check convergence, starting values and agreement with `fable`. Use Argentina's exports to connect parameter weights, residual variation and a first prediction interval.
+**In class:** Score two candidate fits, then complete the SES recurrence and squared-error expressions in supplied R templates. Run the supplied search and distinguish parameter estimates, training SSE, numerical completion and held-out forecast evidence. The wrapper, loop and storage scaffolding are provided.
 
 **R:** functions, `for` loops, `dget()`, `optim()`, `tidy()`, `distributional::parameters()`, `hilo()`.
 
+**Using the R script:** Copy the incomplete [level template](16_D_SES_ModelFitting.html#levels) and [SSE template](16_D_SES_ModelFitting.html#sse) into your working R file and complete their expressions before running the supplied checks and later script blocks.
+
 **Data:** [Reference levels](../../data/yhat_SES_test) for checking your level function in `16_D`.
 
-**Homework:** Complete all eight parts of `16_E`: plot the series, fit SES and forecast eight years, interpret parameters and recent weights, calculate residual standard deviation and a 95% first interval, and compare with `fable`. Include the five-residual calculator rehearsal and the judgments about numerical fitting and forecast evaluation. The rehearsal is an arithmetic exercise, separate from the full-data uncertainty estimate. Submit on Blackboard; see [announcements](announcements.md) for the deadline.
+**Homework:** Complete all eight parts of `16_E`: plot the series, fit SES and forecast eight years, interpret parameters and recent weights, calculate residual standard deviation and a 95% first interval, and compare with `fable`. Calculate recent weights once in part 3. Use R for full-series residual sums, showing the formula and counts. Part 7 supplies a separate five-observation series and forecast for calculation by hand; part 8 asks you to interpret numerical results and identify predictive evidence. Submit on Blackboard; see [announcements](announcements.md) for the deadline.
 
-The Argentina fitting extension in `16_D` is additional practice; `16_E` is the required submission.
+The appendices in both notebooks are optional, outside homework, group assignments and exams. This includes the repeated from-scratch Argentina fit and full-history weight display. The required submission is `16_E` parts 1 to 8, using `fable` for Argentina. Optimizer internals and R argument syntax are outside examination scope.
