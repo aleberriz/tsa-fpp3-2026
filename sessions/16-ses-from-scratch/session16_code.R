@@ -1,6 +1,6 @@
-# R code from the 16_D_SES_ModelFitting, 16_E_SES_Exercise notebooks, in notebook order.
+# R code from the 16_A_SES_ModelFitting, 16_B_SES_Exercise notebooks, in notebook order.
 
-# 16_D_SES_ModelFitting ====
+# 16_A_SES_ModelFitting ====
 library(fpp3)
 
 # What this workshop teaches ----
@@ -55,7 +55,7 @@ arg_exports <- global_economy |>
   filter(Country == "Argentina") |>
   select(Year, Exports)
 
-# 16_E_SES_Exercise ====
+# 16_B_SES_Exercise ====
 library(fpp3)
 
 # SES exercise ----

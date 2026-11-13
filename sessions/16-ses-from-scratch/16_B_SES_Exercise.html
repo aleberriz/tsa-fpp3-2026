@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>16_D_SES_ModelFitting</title>
+<title>16_B_SES_Exercise</title>
 <style>
 
 span.smallcaps{font-variant: small-caps;}
@@ -2349,29 +2349,21 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#workshop" id="toc-workshop" class="nav-link active" data-scroll-target="#workshop">What this workshop teaches</a>
+  <li><a href="#exercise" id="toc-exercise" class="nav-link active" data-scroll-target="#exercise">SES exercise</a>
   <ul>
-  <li><a href="#candidate-fits" id="toc-candidate-fits" class="nav-link" data-scroll-target="#candidate-fits">Before the code: score two candidate fits</a></li>
-  <li><a href="#levels" id="toc-levels" class="nav-link" data-scroll-target="#levels">1. Complete the level recurrence</a>
+  <li><a href="#timeplot" id="toc-timeplot" class="nav-link" data-scroll-target="#timeplot">1. Argentina’s exports</a></li>
+  <li><a href="#fit" id="toc-fit" class="nav-link" data-scroll-target="#fit">2. Fitting the model</a>
   <ul>
-  <li><a href="#test-levels" id="toc-test-levels" class="nav-link" data-scroll-target="#test-levels">Check the recurrence</a></li>
+  <li><a href="#is-simple-exponential-smoothing-appropriate-for-this-data-why-or-why-not" id="toc-is-simple-exponential-smoothing-appropriate-for-this-data-why-or-why-not" class="nav-link" data-scroll-target="#is-simple-exponential-smoothing-appropriate-for-this-data-why-or-why-not">Is simple exponential smoothing appropriate for this data? Why, or why not?</a></li>
   </ul></li>
-  <li><a href="#sse" id="toc-sse" class="nav-link" data-scroll-target="#sse">2. Complete the squared-error score</a></li>
-  <li><a href="#compose" id="toc-compose" class="nav-link" data-scroll-target="#compose">3. Read the supplied wrapper</a>
-  <ul>
-  <li><a href="#test-compose" id="toc-test-compose" class="nav-link" data-scroll-target="#test-compose">Check the connection</a></li>
+  <li><a href="#parameters" id="toc-parameters" class="nav-link" data-scroll-target="#parameters">3. Model parameters and recent weights</a></li>
+  <li><a href="#sigma" id="toc-sigma" class="nav-link" data-scroll-target="#sigma">4. Standard deviation of the residuals</a></li>
+  <li><a href="#interval" id="toc-interval" class="nav-link" data-scroll-target="#interval">5. 95% prediction interval</a></li>
+  <li><a href="#compare" id="toc-compare" class="nav-link" data-scroll-target="#compare">6. Comparing prediction intervals</a></li>
+  <li><a href="#calculator" id="toc-calculator" class="nav-link" data-scroll-target="#calculator">7. Calculator check: a separate short series</a></li>
+  <li><a href="#decision" id="toc-decision" class="nav-link" data-scroll-target="#decision">8. Decision: what does the evidence establish?</a></li>
   </ul></li>
-  <li><a href="#optim" id="toc-optim" class="nav-link" data-scroll-target="#optim">4. Run the search and interpret the evidence</a>
-  <ul>
-  <li><a href="#compare-fit" id="toc-compare-fit" class="nav-link" data-scroll-target="#compare-fit">Compare with the library</a></li>
-  </ul></li>
-  </ul></li>
-  <li><a href="#appendix" id="toc-appendix" class="nav-link" data-scroll-target="#appendix">Appendix: optional practice and interface reference</a>
-  <ul>
-  <li><a href="#storage-reference" id="toc-storage-reference" class="nav-link" data-scroll-target="#storage-reference">A. Spreadsheet and R labels</a></li>
-  <li><a href="#interface-reference" id="toc-interface-reference" class="nav-link" data-scroll-target="#interface-reference">B. More about the supplied interface</a></li>
-  <li><a href="#argentina" id="toc-argentina" class="nav-link" data-scroll-target="#argentina">C. Practice extension: fit Argentina from scratch</a></li>
-  </ul></li>
+  <li><a href="#appendix" id="toc-appendix" class="nav-link" data-scroll-target="#appendix">Appendix: optional weights for the complete history</a></li>
   </ul>
 </nav>
 </div>
@@ -2381,7 +2373,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">16_D_SES_ModelFitting</h1>
+<h1 class="title">16_B_SES_Exercise</h1>
 </div>
 
 
@@ -2400,301 +2392,102 @@ window.Quarto = {
 
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fpp3)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>── Attaching packages ──────────────────────────────────────────── fpp3 1.0.3 ──</code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>✔ tibble      3.3.1     ✔ tsibble     1.2.0
-✔ dplyr       1.2.1     ✔ tsibbledata 0.4.1
-✔ tidyr       1.3.2     ✔ ggtime      1.0.0
-✔ lubridate   1.9.5     ✔ feasts      0.5.0
-✔ ggplot2     4.0.3     ✔ fable       0.5.0</code></pre>
+<section id="exercise" class="level1">
+<h1>SES exercise</h1>
+<p>Complete parts 1 to 8. Use <code>fable</code> for the Argentina fit; there is no second from-scratch implementation to submit. Parts 1 to 6 use the full Argentina series. Use R for calculations over all its residuals, and show the formula and interpretation beside the output. Part 7 is a separate small example to calculate by hand. Part 8 asks you to distinguish numerical completion, training fit and predictive evidence. The appendix is optional and is not assessed in homework, group assignments or exams.</p>
+<section id="timeplot" class="level3">
+<h3 class="anchored" data-anchor-id="timeplot">1. Argentina’s exports</h3>
+<p>The <code>global_economy</code> dataset includes annual exports as a percentage of GDP. Select Argentina and retain <code>Year</code> and <code>Exports</code>. Make a time plot and explain whether a level-only forecast is plausible.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>arg_exports <span class="ot">&lt;-</span> global_economy <span class="sc">|&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">filter</span>(Country <span class="sc">==</span> <span class="st">&quot;Argentina&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">select</span>(Year, Exports)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>arg_exports</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tsibble: 58 x 2 [1Y]
+    Year Exports
+   &lt;dbl&gt;   &lt;dbl&gt;
+ 1  1960    7.60
+ 2  1961    5.99
+ 3  1962    4.69
+ 4  1963    7.89
+ 5  1964    5.56
+ 6  1965    6.23
+ 7  1966    6.65
+ 8  1967    7.50
+ 9  1968    6.48
+10  1969    6.40
+# ℹ 48 more rows</code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>── Conflicts ───────────────────────────────────────────────── fpp3_conflicts ──
-✖ lubridate::date()    masks base::date()
-✖ dplyr::filter()      masks stats::filter()
-✖ tsibble::intersect() masks base::intersect()
-✖ tsibble::interval()  masks lubridate::interval()
-✖ dplyr::lag()         masks stats::lag()
-✖ tsibble::setdiff()   masks base::setdiff()
-✖ tsibble::union()     masks base::union()</code></pre>
 </div>
-</div>
-<section id="workshop" class="level1">
-<h1>What this workshop teaches</h1>
-<p>Session 15 on SES equations showed how an observation revises the estimated level. Here we estimate the smoothing weight <span class="math inline">\(\alpha\)</span> and the initial level <span class="math inline">\(\ell_0\)</span>. Each candidate pair generates predictions, those predictions receive a sum-of-squared-errors score, and a numerical search seeks a smaller score.</p>
-<p>The required workshop is sections 1 to 4. Complete the initial-state assignment, level update, residuals and SSE in the supplied templates. The vector allocation, loop, wrapper and optimizer call are supplied. Explain what the fitted parameters, objective and convergence report tell you. R argument syntax and the optimizer’s algorithm are not examination topics.</p>
-<p>The required homework is <a href="16_E_SES_Exercise.html#exercise">16_E</a>. The <a href="#appendix">appendix</a> contains optional interface reference and another fitting practice: neither is required for homework, the group assignment or exams. No prior machine-learning course is needed for this workshop.</p>
-<section id="candidate-fits" class="level2">
-<h2 class="anchored" data-anchor-id="candidate-fits">Before the code: score two candidate fits</h2>
-<p>For illustrative observations <span class="math inline">\(8, 12, 10\)</span>, each prediction uses the preceding level. After scoring that prediction, update the level using the observation. Recalculate the whole sequence whenever either candidate parameter changes.</p>
+</section>
+<section id="fit" class="level3">
+<h3 class="anchored" data-anchor-id="fit">2. Fitting the model</h3>
+<p>Fit SES with additive errors, no trend and no seasonality: <code>ETS(A,N,N)</code>. Forecast eight years ahead and plot the forecasts together with the fitted values.</p>
+<section id="is-simple-exponential-smoothing-appropriate-for-this-data-why-or-why-not" class="level4">
+<h4 class="anchored" data-anchor-id="is-simple-exponential-smoothing-appropriate-for-this-data-why-or-why-not">Is simple exponential smoothing appropriate for this data? Why, or why not?</h4>
+</section>
+</section>
+<section id="parameters" class="level3">
+<h3 class="anchored" data-anchor-id="parameters">3. Model parameters and recent weights</h3>
+<p>How many smoothing parameters and initial states does SES estimate? Extract them with <code>tidy()</code> and explain how alpha determines the weight on new observations. Exclude the separately estimated innovation variance from this count.</p>
+<p>Use the fitted alpha rounded to two decimals. With a calculator, calculate the weights on the three most recent observations, their sum, and the remaining weight. Check your arithmetic in R. Explain why the remainder includes older observations and the initial level. Small differences from the unrounded-alpha calculation are expected. This is the only required recent-weight calculation in this notebook.</p>
+<p>At the final training time <span class="math inline">\(T\)</span>, the weight on <span class="math inline">\(y_{T-j}\)</span> in the next forecast is <span class="math inline">\(\alpha(1-\alpha)^j\)</span>. These weights interpret the fitted alpha; they do not estimate it. They belong to one forecast origin, rather than each observation’s own prior prediction.</p>
+</section>
+<section id="sigma" class="level3">
+<h3 class="anchored" data-anchor-id="sigma">4. Standard deviation of the residuals</h3>
+<p>Compute the standard deviation of the residuals as:</p>
+<p><span class="math display">\[\begin{equation}
+  \hat{\sigma} = \sqrt{\frac{1}{T-K}\sum_{t=1}^T e_t^2}
+\end{equation}\]</span></p>
+<p>Use R to sum the squared residuals across the complete fit, then apply the displayed formula. State your values of <span class="math inline">\(T\)</span> and <span class="math inline">\(K\)</span> and check the result against the first forecast distribution. You do not need to square every full-series residual on paper.</p>
+<p>Here <span class="math inline">\(e_t\)</span> is the one-step residual at time <span class="math inline">\(t\)</span>, and <span class="math inline">\(T\)</span> counts the residuals used. <span class="math inline">\(K\)</span> counts estimated smoothing parameters and initial states, excluding the variance itself. This is the residual-variance correction used in Session 12 on prediction intervals. Session 19 on ETS estimation and model selection uses a different count for AIC, which also includes the estimated variance.</p>
+</section>
+<section id="interval" class="level3">
+<h3 class="anchored" data-anchor-id="interval">5. 95% prediction interval</h3>
+<p>Assuming normal errors, construct the first 95% prediction interval as <span class="math inline">\(\hat{y}_{T+1|T} \pm 1.96\hat{\sigma}\)</span>. Here the point forecast is one year beyond the training data and <span class="math inline">\(\hat{\sigma}\)</span> is the residual scale you just calculated. Session 12 on prediction intervals explains why this scale applies at horizon one.</p>
+</section>
+<section id="compare" class="level3">
+<h3 class="anchored" data-anchor-id="compare">6. Comparing prediction intervals</h3>
+<p>Extract the prediction interval that <code>fable</code> gives for h = 1. How does your interval compare with it?</p>
+</section>
+<section id="calculator" class="level3">
+<h3 class="anchored" data-anchor-id="calculator">7. Calculator check: a separate short series</h3>
+<p>A separate illustrative five-observation series has been fitted with additive-error SES, estimating alpha and the initial level (<span class="math inline">\(K=2\)</span>). Its residuals, rounded to one decimal place, are <span class="math inline">\(1.1, -2.2, 2.2, -2.2, 1.1\)</span>, and its next-period point forecast is <span class="math inline">\(27.4\)</span>. These quantities belong only to this small example.</p>
+<p>With a calculator, add the five squared residuals, divide by <span class="math inline">\(5-2\)</span>, and take the square root to estimate the one-step forecast standard deviation. Assuming normal forecast errors, construct a 95% first prediction interval around the supplied forecast. Show each step and check the arithmetic in R. This calculation is separate from the Argentina fit and its uncertainty.</p>
+</section>
+<section id="decision" class="level3">
+<h3 class="anchored" data-anchor-id="decision">8. Decision: what does the evidence establish?</h3>
+<p>Two numerical runs fit the same additive-error SES model to the same training observations, using the same objective and parameter bounds. They start from different guesses and return:</p>
 <table class="caption-top table">
-<colgroup>
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
-</colgroup>
 <thead>
 <tr class="header">
-<th>Candidate</th>
-<th><span class="math inline">\(\alpha\)</span></th>
-<th><span class="math inline">\(\ell_0\)</span></th>
-<th>Predictions for the three observations</th>
-<th>Residuals</th>
-<th>SSE</th>
+<th>Run</th>
+<th>Final training SSE</th>
+<th>Convergence status</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>A</td>
-<td>0.2</td>
-<td>8</td>
-<td>8, 8, 8.8</td>
-<td>0, 4, 1.2</td>
-<td>17.44</td>
+<td>73.6</td>
+<td>0</td>
 </tr>
 <tr class="even">
 <td>B</td>
-<td>0.6</td>
-<td>9</td>
-<td>9, 8.4, 10.56</td>
-<td>-1, 3.6, -0.56</td>
-<td>14.2736</td>
+<td>71.9</td>
+<td>0</td>
 </tr>
 </tbody>
 </table>
-<p>For example, candidate B predicts the first observation with 9, then updates its level to <span class="math inline">\(0.6\times8+0.4\times9=8.4\)</span>. That updated level predicts the second observation. Candidate B has the smaller training score among these two trials. This comparison neither establishes a global minimum nor shows which candidate forecasts later observations better.</p>
-</section>
-<section id="levels" class="level2">
-<h2 class="anchored" data-anchor-id="levels">1. Complete the level recurrence</h2>
-<p><code>ses_levels(y, alpha, l_0)</code> returns the initial level and every update. The statistical sequence is:</p>
-<p><span class="math display">\[
-\hat y_{t|t-1}=\ell_{t-1},\qquad
-e_t=y_t-\ell_{t-1},\qquad
-\ell_t=\alpha y_t+(1-\alpha)\ell_{t-1}.
-\]</span></p>
-<p>The loop below uses <code>t</code> for observation time. R position <code>t</code> stores <span class="math inline">\(\ell_{t-1}\)</span>, and position <code>t + 1</code> stores <span class="math inline">\(\ell_t\)</span>. With <span class="math inline">\(T\)</span> observations, the first <span class="math inline">\(T\)</span> entries are their predictions; the final entry is the level after the last observation and supplies the flat future forecast.</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Observation time</th>
-<th>Level used to predict it</th>
-<th>Where the supplied code stores that level</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1</td>
-<td><span class="math inline">\(\ell_0\)</span></td>
-<td><code>levels[1]</code></td>
-</tr>
-<tr class="even">
-<td>2</td>
-<td><span class="math inline">\(\ell_1\)</span></td>
-<td><code>levels[2]</code></td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\(T\)</span></td>
-<td><span class="math inline">\(\ell_{T-1}\)</span></td>
-<td><code>levels[T]</code></td>
-</tr>
-<tr class="even">
-<td>Future <span class="math inline">\(T+1\)</span></td>
-<td><span class="math inline">\(\ell_T\)</span></td>
-<td><code>levels[T + 1]</code></td>
-</tr>
-</tbody>
-</table>
-<p>Complete the two TODO expressions. Use the supplied loop and storage positions to express the initial level and the smoothing equation.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ses_levels <span class="ot">&lt;-</span> <span class="cf">function</span>(y, alpha, l_0) {</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  levels <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="fu">length</span>(y) <span class="sc">+</span> <span class="dv">1</span>)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  levels[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="co"># </span><span class="al">TODO</span><span class="co">: initial level</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (t <span class="cf">in</span> <span class="fu">seq_along</span>(y)) {</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    levels[t <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="co"># </span><span class="al">TODO</span><span class="co">: smoothing equation, using y[t] and levels[t]</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  levels</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<section id="test-levels" class="level3">
-<h3 class="anchored" data-anchor-id="test-levels">Check the recurrence</h3>
-<p>Use Algeria’s annual exports, measured as a percentage of GDP. Run the supplied check after completing the function. The fixed alpha and initial level below check your recurrence; they are separate from the starting guesses used by the optimizer later.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>algerian_exports <span class="ot">&lt;-</span> global_economy <span class="sc">|&gt;</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Country <span class="sc">==</span> <span class="st">&quot;Algeria&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Year, Exports)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> algerian_exports<span class="sc">$</span>Exports</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>levels_function <span class="ot">&lt;-</span> <span class="fu">ses_levels</span>(y, <span class="at">alpha =</span> <span class="fl">0.8399875</span>, <span class="at">l_0 =</span> <span class="fl">39.5389994</span>)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>levels_test <span class="ot">&lt;-</span> <span class="fu">dget</span>(<span class="st">&quot;../../data/yhat_SES_test&quot;</span>)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(levels_function, levels_test)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>The check should return <code>TRUE</code>. If it fails, check that the first prediction is the initial level and that each prediction precedes its observation. The file path assumes that your working directory is this session’s folder. The appendix explains the spreadsheet labels and interface details if you need them.</p>
-</section>
-</section>
-<section id="sse" class="level2">
-<h2 class="anchored" data-anchor-id="sse">2. Complete the squared-error score</h2>
-<p><code>SSE_func(y, yhat)</code> compares equally long vectors of observations and one-step predictions. Write the subtraction and the sum of squared residuals:</p>
-<p><span class="math display">\[
-\operatorname{SSE}(\alpha,\ell_0)=\sum_{t=1}^{T}(y_t-\ell_{t-1})^2.
-\]</span></p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>SSE_func <span class="ot">&lt;-</span> <span class="cf">function</span>(y, yhat) {</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  residuals <span class="ot">&lt;-</span> <span class="co"># </span><span class="al">TODO</span><span class="co">: observed minus predicted</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  SSE <span class="ot">&lt;-</span> <span class="co"># </span><span class="al">TODO</span><span class="co">: sum of squared residuals</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  SSE</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>Run the supplied check. The first <code>length(y)</code> levels predict the observations; the final updated level forecasts beyond the training sample and is excluded from the score.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> algerian_exports<span class="sc">$</span>Exports</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>fixed_levels <span class="ot">&lt;-</span> <span class="fu">ses_levels</span>(y, <span class="at">alpha =</span> <span class="fl">0.8399875</span>, <span class="at">l_0 =</span> <span class="fl">39.5389994</span>)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>SSE_test <span class="ot">&lt;-</span> <span class="fu">SSE_func</span>(y, fixed_levels[<span class="fu">seq_along</span>(y)])</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(<span class="fl">1995.285</span>, <span class="fu">round</span>(SSE_test, <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] TRUE</code></pre>
-</div>
-</div>
-</section>
-<section id="compose" class="level2">
-<h2 class="anchored" data-anchor-id="compose">3. Read the supplied wrapper</h2>
-<p>For a candidate pair, this function runs your recurrence and returns its training SSE. <code>par[1]</code> is alpha and <code>par[2]</code> is the initial level. The data stay in the separate argument <code>y</code>. The wrapper is supplied; explain the calculation it connects.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>my_ses_sse <span class="ot">&lt;-</span> <span class="cf">function</span>(par, y) {</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  levels <span class="ot">&lt;-</span> <span class="fu">ses_levels</span>(y, <span class="at">alpha =</span> par[<span class="dv">1</span>], <span class="at">l_0 =</span> par[<span class="dv">2</span>])</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  predictions <span class="ot">&lt;-</span> levels[<span class="fu">seq_along</span>(y)]</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">SSE_func</span>(y, predictions)</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<section id="test-compose" class="level3">
-<h3 class="anchored" data-anchor-id="test-compose">Check the connection</h3>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(SSE_test, <span class="fu">my_ses_sse</span>(<span class="fu">c</span>(<span class="fl">0.8399875</span>, <span class="fl">39.5389994</span>), y))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>A numerical search can successfully minimize the wrong function. These fixed-input checks help establish that the score actually compares each observation with its preceding prediction.</p>
-</section>
-</section>
-<section id="optim" class="level2">
-<h2 class="anchored" data-anchor-id="optim">4. Run the search and interpret the evidence</h2>
-<p>The supplied call asks <code>optim()</code> to vary alpha and the initial level. Starting at alpha 0.1 and the first observation launches the search; it does not fix either estimate. The bounds keep alpha slightly inside zero and one, with no bounds on the initial level.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>opt <span class="ot">&lt;-</span> <span class="fu">optim</span>(<span class="at">par =</span> <span class="fu">c</span>(<span class="fl">0.1</span>, y[<span class="dv">1</span>]),</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">fn =</span> my_ses_sse, <span class="at">y =</span> y,</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">method =</span> <span class="st">&quot;L-BFGS-B&quot;</span>,</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">lower =</span> <span class="fu">c</span>(<span class="fl">0.0001</span>, <span class="sc">-</span><span class="cn">Inf</span>), <span class="at">upper =</span> <span class="fu">c</span>(<span class="fl">0.9999</span>, <span class="cn">Inf</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>The numerical algorithm uses objective evaluations to choose new candidate pairs. Algorithm names, update rules and argument syntax are outside the assessed material. Read the result through these three outputs:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>opt<span class="sc">$</span>par</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1]  0.8397832 39.5381573</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>opt<span class="sc">$</span>value</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 1995.285</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>opt<span class="sc">$</span>convergence</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0</code></pre>
-</div>
-</div>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Output</th>
-<th>Meaning</th>
-<th>Limit of the evidence</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>par</code></td>
-<td>Estimated alpha and initial level</td>
-<td>Their practical effect appears in predictions and forecasts.</td>
-</tr>
-<tr class="even">
-<td><code>value</code></td>
-<td>Training SSE at those estimates</td>
-<td>A smaller score on matching data establishes better training fit.</td>
-</tr>
-<tr class="odd">
-<td><code>convergence</code></td>
-<td>Search completion status; zero reports successful completion here</td>
-<td>It does not certify a global minimum, correct code or useful future forecasts.</td>
-</tr>
-</tbody>
-</table>
-<p>Starting guesses, bounds and stopping rules can affect the numerical result. Two implementations can therefore return slightly different estimates without either being incorrectly coded. Compare the objective, fitted values and forecasts, rather than demanding the same parameter digits.</p>
-<section id="compare-fit" class="level3">
-<h3 class="anchored" data-anchor-id="compare-fit">Compare with the library</h3>
-<p>Fit the same additive-error SES model on the same data. For additive normal errors, maximizing likelihood gives the same fitted parameters as minimizing SSE; Session 19 on ETS estimation and model selection explains that connection.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> algerian_exports <span class="sc">|&gt;</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">model</span>(<span class="fu">ETS</span>(Exports <span class="sc">~</span> <span class="fu">error</span>(<span class="st">&quot;A&quot;</span>) <span class="sc">+</span> <span class="fu">trend</span>(<span class="st">&quot;N&quot;</span>) <span class="sc">+</span> <span class="fu">season</span>(<span class="st">&quot;N&quot;</span>)))</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 2 × 3
-  .model                                                       term  estimate
-  &lt;chr&gt;                                                        &lt;chr&gt;    &lt;dbl&gt;
-1 &quot;ETS(Exports ~ error(\&quot;A\&quot;) + trend(\&quot;N\&quot;) + season(\&quot;N\&quot;))&quot; alpha    0.840
-2 &quot;ETS(Exports ~ error(\&quot;A\&quot;) + trend(\&quot;N\&quot;) + season(\&quot;N\&quot;))&quot; l[0]    39.5  </code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">convergence =</span> opt<span class="sc">$</span>convergence,</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">manual_SSE =</span> opt<span class="sc">$</span>value,</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">fable_SSE =</span> <span class="fu">sum</span>(<span class="fu">residuals</span>(fit)<span class="sc">$</span>.resid<span class="sc">^</span><span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>convergence  manual_SSE   fable_SSE 
-      0.000    1995.285    1995.285 </code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>manual_levels <span class="ot">&lt;-</span> <span class="fu">ses_levels</span>(y, opt<span class="sc">$</span>par[<span class="dv">1</span>], opt<span class="sc">$</span>par[<span class="dv">2</span>])</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">manual_forecast =</span> <span class="fu">tail</span>(manual_levels, <span class="dv">1</span>),</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">fable_forecast =</span> <span class="fu">forecast</span>(fit, <span class="at">h =</span> <span class="dv">1</span>)<span class="sc">$</span>.mean[<span class="dv">1</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>manual_forecast  fable_forecast 
-       22.44460        22.44468 </code></pre>
-</div>
-</div>
-<p>If the fits disagree materially, check the data, model, objective and bounds, inspect the completion status, and try another starting pair. Residual diagnostics examine what structure remains. Held-out forecasts at a stated horizon provide evidence about predictive performance. Each rolling-origin training set must fit its own parameters using only its available past.</p>
-<p>This completes the workshop. Use <a href="16_E_SES_Exercise.html#exercise">16_E</a> for the required individual work.</p>
-</section>
+<p>Explain what the two zero statuses establish and which run has the better training score. Does either result establish a global minimum or better forecasts than the naive method? Name the held-out evidence and forecast horizon you would use. Finally, name checks you would make if a numerical fit and <code>fable</code> differed materially. Different starts can affect numerical results, but need not produce different final estimates.</p>
 </section>
 </section>
 <section id="appendix" class="level1">
-<h1>Appendix: optional practice and interface reference</h1>
-<p>This appendix is optional. Its additional programming details and repeated Argentina fit are not required in homework, group assignments or exams. The core ideas about fitting and predictive evidence remain in sections 1 to 4 above.</p>
-<section id="storage-reference" class="level2">
-<h2 class="anchored" data-anchor-id="storage-reference">A. Spreadsheet and R labels</h2>
-<p>The Session 15 SES workbook stores the initial state in D4, before its first observed row. The first observation is C5, its prediction E5 refers back to D4, and its revised level is D5. In <code>ses_levels()</code>, those two states are stored at positions 1 and 2. The initial state and each update produce <span class="math inline">\(T+1\)</span> stored levels for <span class="math inline">\(T\)</span> predictions.</p>
-</section>
-<section id="interface-reference" class="level2">
-<h2 class="anchored" data-anchor-id="interface-reference">B. More about the supplied interface</h2>
-<p><code>optim()</code> expects a function whose first argument is the candidate vector <code>par</code>; other arguments follow it. The same parameter order must be used in the wrapper, starting guesses, bounds and returned estimates. The <code>counts</code> component records function and gradient evaluations, rather than elapsed time. <code>all.equal()</code> allows small floating-point differences when checking calculated vectors.</p>
-<p>For software reference, see <a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/optim.html">R’s optim documentation</a>. The mathematical fitting criterion is from <a href="https://otexts.com/fpp3/exponential-smoothing.html#optimisation">fpp3 section 8.1</a>.</p>
-</section>
-<section id="argentina" class="level2">
-<h2 class="anchored" data-anchor-id="argentina">C. Practice extension: fit Argentina from scratch</h2>
-<p>Repeat the Algeria workflow on annual Argentina exports as a percentage of GDP. Inspect whether a level-only forecast is plausible, fit with your functions and <code>optim()</code>, then compare the training SSE and forecasts with <code>fable</code>. This repeats the workshop as optional coding practice; required homework <code>16_E</code> uses <code>fable</code> directly.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>arg_exports <span class="ot">&lt;-</span> global_economy <span class="sc">|&gt;</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Country <span class="sc">==</span> <span class="st">&quot;Argentina&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Year, Exports)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</section>
+<h1>Appendix: optional weights for the complete history</h1>
+<p>This appendix is not required for homework, group assignments or exams. Part 3 already supplies the required calculator task. If you are curious about displaying every historical weight, use the exact fitted alpha in <span class="math inline">\(\alpha(1-\alpha)^{T-t}\)</span>, and include the initial-state weight <span class="math inline">\((1-\alpha)^T\)</span>. Their finite total is one. An R loop or an extra column of historical weights is optional programming practice.</p>
 </section>
 
 </main>
