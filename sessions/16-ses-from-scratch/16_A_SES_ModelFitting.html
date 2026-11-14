@@ -2714,14 +2714,46 @@ e_t=y_t-\ell_{t-1},\qquad
 </section>
 <section id="search" class="level3">
 <h3 class="anchored" data-anchor-id="search">Then, search both parameters</h3>
-<p>The supplied call asks <code>optim()</code> to vary alpha and the initial level. Starting at alpha 0.1 and the first observation launches the search; it does not fix either estimate. The bounds keep alpha slightly inside zero and one, with no bounds on the initial level.</p>
+<p>A grid only scores candidates we listed in advance. To search <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\ell_0\)</span> together we would also need a range and a spacing for <span class="math inline">\(\ell_0\)</span>, and the best pair could still fall between grid points. The models in later sessions have more parameters, and the list grows quickly with each one.</p>
+<p>A <strong>numerical optimizer</strong> needs no list. It starts from one candidate fit and scores it. It then uses the scores it has seen so far to choose the next candidate in a direction where the SSE falls, and stops when further moves no longer lower the score noticeably. Picture a walker in fog looking for the bottom of a valley. They cannot see the whole landscape, as the grid curve above does, but they can feel which way the ground slopes and keep stepping downhill until it is flat. Like that walker, the search can also stop in a small dip that is not the lowest point, which is why its report needs careful reading below.</p>
+<p>R’s general-purpose optimizer is <code>optim()</code>. It knows nothing about SES: it minimizes any function that turns a vector of parameters into one number. That is why <code>my_ses_sse()</code> takes the candidate as one vector <code>par</code> and returns one SSE. The <code>ETS()</code> function in <code>fable</code> runs the same kind of search internally when it estimates a model; here each piece is visible.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Argument</th>
+<th>What it is here</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>fn = my_ses_sse</code></td>
+<td>The function to minimize: one candidate fit in, its SSE out</td>
+</tr>
+<tr class="even">
+<td><code>par = c(0.1, y[1])</code></td>
+<td>Where the search starts: <span class="math inline">\(\alpha=0.1\)</span> and <span class="math inline">\(\ell_0=y_1\)</span>. These are starting guesses, not fixed values; the search changes both</td>
+</tr>
+<tr class="odd">
+<td><code>y = y</code></td>
+<td>The data, passed on to <code>my_ses_sse()</code> unchanged</td>
+</tr>
+<tr class="even">
+<td><code>method</code>, <code>lower</code>, <code>upper</code></td>
+<td>A search method that accepts limits, keeping <span class="math inline">\(\alpha\)</span> between 0.0001 and 0.9999 and leaving <span class="math inline">\(\ell_0\)</span> unrestricted</td>
+</tr>
+</tbody>
+</table>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>opt <span class="ot">&lt;-</span> <span class="fu">optim</span>(<span class="at">par =</span> <span class="fu">c</span>(<span class="fl">0.1</span>, y[<span class="dv">1</span>]),</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">fn =</span> my_ses_sse, <span class="at">y =</span> y,</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">method =</span> <span class="st">&quot;L-BFGS-B&quot;</span>,</span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">lower =</span> <span class="fu">c</span>(<span class="fl">0.0001</span>, <span class="sc">-</span><span class="cn">Inf</span>), <span class="at">upper =</span> <span class="fu">c</span>(<span class="fl">0.9999</span>, <span class="cn">Inf</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>The numerical algorithm uses objective evaluations to choose new candidate fits. Algorithm names, update rules and argument syntax are outside the assessed material. Read the result through these three outputs:</p>
+<p>How the method chooses each next candidate, its name and the argument syntax are outside the assessed material. Read the result through these three outputs:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>opt<span class="sc">$</span>par</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
