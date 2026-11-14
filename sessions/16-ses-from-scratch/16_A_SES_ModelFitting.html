@@ -2456,7 +2456,7 @@ window.Quarto = {
 <th>Candidate fit</th>
 <th><span class="math inline">\(\alpha\)</span></th>
 <th><span class="math inline">\(\ell_0\)</span></th>
-<th>Predictions of <span class="math inline">\(y_1, y_2, y_3\)</span></th>
+<th>Predictions <span class="math inline">\(\ell_0, \ell_1, \ell_2\)</span> of <span class="math inline">\(y_1, y_2, y_3\)</span></th>
 <th>Residuals</th>
 <th>SSE</th>
 </tr>
@@ -2480,9 +2480,10 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
+<p>Each prediction is the level before that observation arrives.</p>
 <p>For example, candidate fit B predicts <span class="math inline">\(y_1\)</span> with <span class="math inline">\(\ell_0=9\)</span>. Once <span class="math inline">\(y_1=8\)</span> is observed, it updates its level with the SES level equation:</p>
 <p><span class="math display">\[
-\ell_1=\alpha y_1+(1-\alpha)\ell_0=0.6\times8+0.4\times9=8.4.
+\ell_1=\alpha y_1+(1-\alpha)\ell_0=0.6\times8+(1-0.6)\times9=8.4.
 \]</span></p>
 <p>That updated level predicts <span class="math inline">\(y_2\)</span>. Candidate fit B has the smaller training score among these two trials. This comparison neither establishes a global minimum nor shows which candidate fit forecasts later observations better.</p>
 <section id="hand-grid" class="level3">
