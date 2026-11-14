@@ -2435,7 +2435,8 @@ window.Quarto = {
 </div>
 <section id="workshop" class="level1">
 <h1>What this workshop teaches</h1>
-<p>Session 15 on SES equations showed how an observation revises the estimated level. Here we estimate the smoothing weight <span class="math inline">\(\alpha\)</span> and the initial level <span class="math inline">\(\ell_0\)</span>. Each candidate pair generates predictions, those predictions receive a sum-of-squared-errors score, and a numerical search seeks a smaller score.</p>
+<p>This workshop teaches you how to <strong>fit a simple exponential smoothing (SES) model</strong>: estimate the smoothing weight <span class="math inline">\(\alpha\)</span> and the initial level <span class="math inline">\(\ell_0\)</span> from observed data. Session 15 on SES equations showed how to update the level when these values are given. Here we learn how to choose them.</p>
+<p>A <strong>candidate fit</strong> is a trial pair of values for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\ell_0\)</span> being considered as the fitted model’s estimates. Each pair generates its own sequence of predictions for the same observations. We compare these trial fits using the sum of squared prediction errors (SSE), with a smaller score indicating a closer fit to the training data. A numerical search tries new pairs to seek a smaller score.</p>
 <p>The required workshop is sections 1 to 5. Score candidates by hand, read and check the supplied functions, run a grid and a numerical search, then compare forecasts on held-out observations. Explain what the fitted parameters, objective and convergence report tell you. R argument syntax and the optimizer’s algorithm are not examination topics.</p>
 <p>The required homework is <a href="16_B_SES_Exercise.html#exercise">16_B</a>. The <a href="#appendix">appendix</a> contains optional interface reference and another fitting practice: neither is required for homework, the group assignment or exams. No prior machine-learning course is needed for this workshop.</p>
 <section id="candidate-fits" class="level2">
@@ -2452,7 +2453,7 @@ window.Quarto = {
 </colgroup>
 <thead>
 <tr class="header">
-<th>Candidate</th>
+<th>Candidate fit</th>
 <th><span class="math inline">\(\alpha\)</span></th>
 <th><span class="math inline">\(\ell_0\)</span></th>
 <th>Predictions for the three observations</th>
