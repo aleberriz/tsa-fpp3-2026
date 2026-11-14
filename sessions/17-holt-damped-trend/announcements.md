@@ -10,8 +10,8 @@
 - **The common-errors note on this homework** goes up on Blackboard after the due date.
 - **Midterm calculations, worked on new numbers.** As promised,
   [`midterm_calculations_review.md`](midterm_calculations_review.md) has the seven calculation
-  questions of the midterm on a new table, without answer options. Do them by hand first, then
-  watch the short video on Blackboard in which I solve each one.
+  questions of the midterm on a new table, without answer options. Do them by hand first. A video
+  walkthrough will follow on Blackboard.
 - **Session 18** is Wednesday 25 November.
 - **Office hours** on request, for concrete questions: email aberrizbeitia@faculty.ie.edu.
 

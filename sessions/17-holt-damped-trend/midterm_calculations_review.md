@@ -1,8 +1,9 @@
 # Midterm calculations: practice on new numbers
 
 These are the seven kinds of calculation the midterm asked for, on a new table. There are no answer
-options: work each one out by hand with your calculator, then watch the video in which each one is
-solved step by step. The final covers the whole course, so this algorithm can come back.
+options: work each one out by hand with your calculator. A video walkthrough that solves each one
+step by step will follow on Blackboard. The final covers the whole course, so this algorithm can
+come back.
 
 **How to work.** The decomposition is additive. Keep one decimal place at every step, rounding
 as you go, and give each answer with one decimal place too.
@@ -49,8 +50,8 @@ not have enough neighbors to be computed.
    trend is estimated with a $2\times24$ moving average. For how many hours at the start of the
    series is there no trend value, and for how many at the end?
 
-## Before you watch
+## Check your own work
 
 - Check yourself: the four adjusted seasonal values of Question 2 must add up to zero.
-- Every answer here can also be checked in R: build the tsibble, run
+- Questions 2, 3, 4 and 6 can also be checked in R: build the tsibble, run
   `classical_decomposition()` and `SNAIVE()`, and compare.
