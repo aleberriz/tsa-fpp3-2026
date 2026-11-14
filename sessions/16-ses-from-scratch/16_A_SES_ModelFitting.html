@@ -2549,7 +2549,7 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<p>On the grid, <span class="math inline">\(\alpha=0.4\)</span> and <span class="math inline">\(\alpha=0.6\)</span> share the smallest score, 16.16. Neither is better than the other. The value <span class="math inline">\(\alpha=0.5\)</span>, between them, scores 16, lower than every grid point. A grid only compares the candidates on it; a finer grid or a numerical search can find better values between its points.</p>
+<p>On the grid, <span class="math inline">\(\alpha=0.4\)</span> and <span class="math inline">\(\alpha=0.6\)</span> share the smallest score, 16.16. The score cannot choose between them. A tie tells us the grid is too coarse, so we search between the two: <span class="math inline">\(\alpha=0.5\)</span> makes <span class="math inline">\(2-4\alpha=0\)</span> and scores 16, the lowest possible with <span class="math inline">\(\ell_0\)</span> fixed at 8. A grid only compares the candidates on it; a finer grid or a numerical search can find better values between its points.</p>
 </div>
 </div>
 </div>
