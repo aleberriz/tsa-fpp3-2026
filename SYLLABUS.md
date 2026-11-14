@@ -297,7 +297,7 @@ for the stochastic-process framing.
 
 **Reading:** fpp3 8.1
 
-### Session 16 — Fitting simple exponential smoothing from scratch
+### Session 16 — Simple exponential smoothing: fitting, then checking the forecasts
 
 - Review of the manual computation of fitted values
 - Scoring candidate parameters by hand and checking supplied level-recursion and squared-error functions in R

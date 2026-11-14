@@ -1,4 +1,4 @@
-# Session 16 — Fitting simple exponential smoothing from scratch
+# Session 16 — Simple exponential smoothing: fitting, then checking the forecasts
 
 **Reading:** [fpp3 8.1, optimization](https://otexts.com/fpp3/exponential-smoothing.html#optimisation).
 
