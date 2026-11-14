@@ -78,15 +78,37 @@ opt$convergence
 ### Compare with the library ----
 fit <- algerian_exports |>
   model(ETS(Exports ~ error("A") + trend("N") + season("N")))
-tidy(fit)
 
-c(convergence = opt$convergence,
-  manual_SSE = opt$value,
-  fable_SSE = sum(residuals(fit)$.resid^2))
+# Parameters: fable's estimates next to ours from optim()
+tidy(fit) |>
+  select(term, fable = estimate) |>
+  mutate(optim = opt$par)
 
 manual_levels <- ses_levels(y, opt$par[1], opt$par[2])
-c(manual_forecast = tail(manual_levels, 1),
-  fable_forecast = forecast(fit, h = 1)$.mean[1])
+
+fitted_compare <- augment(fit) |>
+  select(Year, Exports, .fitted, .resid) |>
+  mutate(manual_fitted = manual_levels[seq_along(y)])
+
+fitted_compare |> head(3)
+fitted_compare |> tail(3)
+
+# Training SSE: ours, then fable's from the augment() residuals
+c(manual_SSE = opt$value,
+  fable_SSE = sum(fitted_compare$.resid^2))
+
+fc <- fit |> forecast(h = 5)
+fc$.mean
+tail(manual_levels, 1)
+
+fc |>
+  autoplot(algerian_exports, level = NULL) +
+  geom_line(aes(y = .fitted), data = augment(fit), colour = "#D55E00") +
+  geom_line(aes(y = manual_fitted), data = fitted_compare,
+            colour = "black", linetype = "dotted") +
+  labs(title = "Algeria: SES fitted with fable and with optim()",
+       subtitle = "Black: data; orange: fable fitted values, ours dotted on top; blue: fable forecasts",
+       y = "Exports (% of GDP)", x = "Year")
 
 ## 5. Compare forecasts on held-out observations ----
 training <- algerian_exports |> filter(Year <= 2012)
