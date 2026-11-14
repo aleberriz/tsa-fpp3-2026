@@ -121,6 +121,7 @@ heldout_forecasts |>
   annotate("segment", x = 2012, xend = 2017,
            y = grid_forecast, yend = grid_forecast,
            linetype = "dotted", color = "#B45D3D") +
+  scale_x_continuous(breaks = 2005:2017, minor_breaks = NULL) +
   labs(title = "Algeria: forecasts issued at the end of 2012",
        subtitle = "Dotted line: grid SES; point forecasts only",
        y = "Exports (% of GDP)", x = "Year",
