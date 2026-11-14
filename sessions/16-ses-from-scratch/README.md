@@ -4,13 +4,13 @@
 
 **Materials:** [Slides](session16_slides.html), [fitting notebook](16_A_SES_ModelFitting.html), [exercise notebook](16_B_SES_Exercise.html), and [R script](session16_code.R).
 
-**In class:** Score two candidate fits, then complete the SES recurrence and squared-error expressions in supplied R templates. Run the supplied search and distinguish parameter estimates, training SSE, numerical completion and held-out forecast evidence. The wrapper, loop and storage scaffolding are provided.
+**In class:** Score candidate fits by hand, read and check the supplied functions, then run an alpha grid and a numerical search. Compare SES and naive forecasts on held-out observations, inspect residuals, and distinguish parameter estimates, training scores and completion status.
 
-**R:** functions, `for` loops, `dget()`, `optim()`, `tidy()`, `distributional::parameters()`, `hilo()`.
+**R:** functions, `for` loops, `dget()`, `sapply()`, `optim()`, `tidy()`, `NAIVE()`, `accuracy()`, `gg_tsresiduals()`, `distributional::parameters()`, `hilo()`.
 
-**Using the R script:** Copy the incomplete [level template](16_A_SES_ModelFitting.html#levels) and [SSE template](16_A_SES_ModelFitting.html#sse) into your working R file and complete their expressions before running the supplied checks and later script blocks.
+**Using the R script:** Run the supplied functions and subsequent workshop blocks in order from this session folder. The [optional coding templates](16_A_SES_ModelFitting.html#coding-practice) let you practice writing the functions afterward in a separate working file; compare them with the supplied versions.
 
-**Data:** [Reference levels](../../data/yhat_SES_test) for checking your level function in `16_A`.
+**Data:** [Reference levels](../../data/yhat_SES_test) for checking the supplied level function in `16_A`.
 
 **Homework:** Complete all eight parts of `16_B`: plot the series, fit SES and forecast eight years, interpret parameters and recent weights, calculate residual standard deviation and a 95% first interval, and compare with `fable`. Calculate recent weights once in part 3. Use R for full-series residual sums, showing the formula and counts. Part 7 supplies a separate five-observation series and forecast for calculation by hand; part 8 asks you to interpret numerical results and identify predictive evidence. Submit on Blackboard; see [announcements](announcements.md) for the deadline.
 

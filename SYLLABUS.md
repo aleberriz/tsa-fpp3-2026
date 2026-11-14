@@ -300,10 +300,11 @@ for the stochastic-process framing.
 ### Session 16 — Fitting simple exponential smoothing from scratch
 
 - Review of the manual computation of fitted values
-- Writing the level recursion and a sum-of-squared-errors function in R
+- Scoring candidate parameters by hand and checking supplied level-recursion and squared-error functions in R
 - Numerical optimization with `optim()`; recovering the smoothing parameter and the initial level
 - Comparing the from-scratch estimates against the library implementation, and explaining why they
   differ slightly
+- Comparing held-out SES and naive forecasts and inspecting training residuals
 
 **Reading:** fpp3 8.1 (estimation)
 
