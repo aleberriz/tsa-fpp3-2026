@@ -69,7 +69,7 @@ tsa-fpp3-2026/
 
 Slides and notebooks for a session live **inside that session's folder**, so everything you need for a given class is in one place.
 
-Open **`tsa.Rproj`** in RStudio first (File → Open Project). Working inside the project sets the working directory correctly, so the materials' code runs.
+Open **`tsa.Rproj`** in RStudio first (File → Open Project). The project starts R in the repo's top folder. A session script that reads a file from `data/` needs its own session folder as the working directory instead: open the script, then choose Session → Set Working Directory → To Source File Location. Most such scripts repeat this in a comment at the top.
 
 ## Course data files
 

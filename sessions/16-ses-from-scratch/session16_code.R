@@ -1,4 +1,7 @@
 # R code from the 16_A_SES_ModelFitting, 16_B_SES_Exercise notebooks, in notebook order.
+# Set the working directory to this file's folder before you start.
+#   RStudio:  Session > Set Working Directory > To Source File Location
+#   console:  setwd("<repo>/sessions/16-ses-from-scratch")
 
 # 16_A_SES_ModelFitting ====
 library(fpp3)

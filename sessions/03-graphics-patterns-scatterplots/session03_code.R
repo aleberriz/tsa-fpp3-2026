@@ -1,5 +1,9 @@
 # ============================================================
 # Source: 03_A_TSGraphs_Timeplots_Scatterplots_Seasonalplots.qmd
+#
+# Set the working directory to this file's folder before you start.
+#   RStudio:  Session > Set Working Directory > To Source File Location
+#   console:  setwd("<repo>/sessions/03-graphics-patterns-scatterplots")
 # ============================================================
 
 library(fpp3)

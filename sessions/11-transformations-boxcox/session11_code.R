@@ -1,4 +1,7 @@
 # R code from the 11_A_TS_BoxCox_Transformation notebook, in notebook order.
+# Set the working directory to this file's folder before you start.
+#   RStudio:  Session > Set Working Directory > To Source File Location
+#   console:  setwd("<repo>/sessions/11-transformations-boxcox")
 
 # Libraries ----
 library(fpp3)
