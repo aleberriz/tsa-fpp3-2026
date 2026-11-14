@@ -2438,10 +2438,10 @@ window.Quarto = {
 <p>This workshop teaches you how to <strong>fit a simple exponential smoothing (SES) model</strong>: estimate the smoothing weight <span class="math inline">\(\alpha\)</span> and the initial level <span class="math inline">\(\ell_0\)</span> from observed data. In Session 15 on SES equations, we updated the level using given values of these quantities, but here we learn how to choose them.</p>
 <p>A <strong>candidate fit</strong> is a trial pair of values for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\ell_0\)</span> that we might choose as our parameter estimates. Each pair generates its own predictions for the same observations, so we can compare candidate fits by the sum of squared prediction errors (SSE): the smaller the score, the closer the fit to the training data. Since we cannot score every possible pair by hand, a numerical optimizer searches for a lower SSE.</p>
 <p>The required workshop is sections 1 to 5. Score candidate fits by hand, read and check the supplied functions, run a grid and a numerical search, then compare forecasts on held-out observations. Explain what the fitted parameters, objective and convergence report tell you. R argument syntax and the optimizer’s algorithm are not examination topics.</p>
-<p>The required homework is <a href="16_B_SES_Exercise.html#exercise">16_B</a>. The <a href="#appendix">appendix</a> contains optional interface reference and another fitting practice: neither is required for homework, the group assignment or exams. No prior machine-learning course is needed for this workshop.</p>
+<p>The required homework is <a href="16_B_SES_Exercise.html#exercise">16_B</a>. The <a href="#appendix">appendix</a> contains optional interface reference and another fitting practice: neither is required for homework, the group assignment or exams.</p>
 <section id="candidate-fits" class="level2">
 <h2 class="anchored" data-anchor-id="candidate-fits">Before the code: score two candidate fits</h2>
-<p>For illustrative observations <span class="math inline">\(8, 12, 10\)</span>, each prediction uses the preceding level. After scoring that prediction, update the level using the observation. Recalculate the whole sequence whenever either parameter changes.</p>
+<p>Take a tiny made-up series with three consecutive observations, <span class="math inline">\(y_1=8\)</span>, <span class="math inline">\(y_2=12\)</span> and <span class="math inline">\(y_3=10\)</span>. These numbers are the data values, not positions in a longer series. Each prediction uses the preceding level. After scoring that prediction, update the level using the observation. Recalculate the whole sequence whenever either parameter changes.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 16%">
@@ -2456,7 +2456,7 @@ window.Quarto = {
 <th>Candidate fit</th>
 <th><span class="math inline">\(\alpha\)</span></th>
 <th><span class="math inline">\(\ell_0\)</span></th>
-<th>Predictions for the three observations</th>
+<th>Predictions of <span class="math inline">\(y_1, y_2, y_3\)</span></th>
 <th>Residuals</th>
 <th>SSE</th>
 </tr>
@@ -2480,10 +2480,10 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<p>For example, candidate fit B predicts the first observation with 9, then updates its level to <span class="math inline">\(0.6\times8+0.4\times9=8.4\)</span>. That updated level predicts the second observation. Candidate fit B has the smaller training score among these two trials. This comparison neither establishes a global minimum nor shows which candidate fit forecasts later observations better.</p>
+<p>For example, candidate fit B predicts <span class="math inline">\(y_1\)</span> with <span class="math inline">\(\ell_0=9\)</span>. Once <span class="math inline">\(y_1=8\)</span> is observed, it updates its level to <span class="math inline">\(0.6\times8+0.4\times9=8.4\)</span>. That updated level predicts <span class="math inline">\(y_2\)</span>. Candidate fit B has the smaller training score among these two trials. This comparison neither establishes a global minimum nor shows which candidate fit forecasts later observations better.</p>
 <section id="hand-grid" class="level3">
 <h3 class="anchored" data-anchor-id="hand-grid">Check: fit on a small grid</h3>
-<p>Keep the observations <span class="math inline">\(8, 12, 10\)</span> and fix the initial level at <span class="math inline">\(8\)</span>. Calculate the predictions and SSE for <span class="math inline">\(\alpha=0.2, 0.4, 0.6, 0.8\)</span>. Which candidate fits share the smallest score? After comparing answers in class, try <span class="math inline">\(\alpha=0.5\)</span>: does the best candidate fit on the original grid exhaust the possible choices?</p>
+<p>Keep the same series, <span class="math inline">\(y_1=8\)</span>, <span class="math inline">\(y_2=12\)</span>, <span class="math inline">\(y_3=10\)</span>, and fix the initial level at <span class="math inline">\(8\)</span>. Calculate the predictions and SSE for <span class="math inline">\(\alpha=0.2, 0.4, 0.6, 0.8\)</span>. Which candidate fits share the smallest score? After comparing answers in class, try <span class="math inline">\(\alpha=0.5\)</span>: does the best candidate fit on the original grid exhaust the possible choices?</p>
 </section>
 </section>
 <section id="levels" class="level2">
