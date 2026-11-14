@@ -8,7 +8,7 @@ library(fpp3)
 
 # What this workshop teaches ----
 
-## 1. Read and check the supplied level recurrence ----
+## 1. Read and check the function that computes the levels ----
 ses_levels <- function(y, alpha, l_0) {
   levels <- numeric(length(y) + 1)
   levels[1] <- l_0
@@ -18,7 +18,7 @@ ses_levels <- function(y, alpha, l_0) {
   levels
 }
 
-### Check the recurrence ----
+### Check the levels against a reference file ----
 algerian_exports <- global_economy |>
   filter(Country == "Algeria") |>
   select(Year, Exports)
@@ -40,14 +40,14 @@ fixed_levels <- ses_levels(y, alpha = 0.8399875, l_0 = 39.5389994)
 SSE_test <- SSE_func(y, fixed_levels[seq_along(y)])
 all.equal(1995.285, round(SSE_test, 3))
 
-## 3. Read the supplied wrapper ----
+## 3. Combine the two functions into one score ----
 my_ses_sse <- function(par, y) {
   levels <- ses_levels(y, alpha = par[1], l_0 = par[2])
   predictions <- levels[seq_along(y)]
   SSE_func(y, predictions)
 }
 
-### Check the connection ----
+### Check it against the score from section 2 ----
 all.equal(SSE_test, my_ses_sse(c(0.8399875, 39.5389994), y))
 
 ## 4. Run the search and interpret the evidence ----
@@ -81,15 +81,37 @@ opt$convergence
 ### Compare with the library ----
 fit <- algerian_exports |>
   model(ETS(Exports ~ error("A") + trend("N") + season("N")))
-tidy(fit)
 
-c(convergence = opt$convergence,
-  manual_SSE = opt$value,
-  fable_SSE = sum(residuals(fit)$.resid^2))
+# Parameters: fable's estimates next to ours from optim()
+tidy(fit) |>
+  select(term, fable = estimate) |>
+  mutate(optim = opt$par)
 
 manual_levels <- ses_levels(y, opt$par[1], opt$par[2])
-c(manual_forecast = tail(manual_levels, 1),
-  fable_forecast = forecast(fit, h = 1)$.mean[1])
+
+fitted_compare <- augment(fit) |>
+  select(Year, Exports, .fitted, .resid) |>
+  mutate(manual_fitted = manual_levels[seq_along(y)])
+
+fitted_compare |> head(3)
+fitted_compare |> tail(3)
+
+# Training SSE: ours, then fable's from the augment() residuals
+c(manual_SSE = opt$value,
+  fable_SSE = sum(fitted_compare$.resid^2))
+
+fc <- fit |> forecast(h = 5)
+fc$.mean
+tail(manual_levels, 1)
+
+fc |>
+  autoplot(algerian_exports, level = NULL) +
+  geom_line(aes(y = .fitted), data = augment(fit), colour = "#D55E00") +
+  geom_line(aes(y = manual_fitted), data = fitted_compare,
+            colour = "black", linetype = "dotted") +
+  labs(title = "Algeria: SES fitted with fable and with optim()",
+       subtitle = "Black: data; orange: fable fitted values, ours dotted on top; blue: fable forecasts",
+       y = "Exports (% of GDP)", x = "Year")
 
 ## 5. Compare forecasts on held-out observations ----
 training <- algerian_exports |> filter(Year <= 2012)
@@ -121,12 +143,13 @@ heldout_comparison
 
 heldout_forecasts |>
   autoplot(algerian_exports |> filter(Year >= 2005), level = NULL) +
-  annotate("segment", x = 2012, xend = 2017,
+  annotate("segment", x = 2013, xend = 2017,
            y = grid_forecast, yend = grid_forecast,
            linetype = "dotted", color = "#B45D3D") +
+  scale_x_continuous(breaks = 2005:2017, minor_breaks = NULL) +
   labs(title = "Algeria: forecasts issued at the end of 2012",
-       subtitle = "Dotted line: grid SES; point forecasts only",
-       y = "Exports (% of GDP)", x = "Year",
+       subtitle = "Grid SES (dotted) overlaps library SES; point forecasts only",
+       y = "Exports (% of GDP)", x = "Year", colour = "Method",
        caption = "Source: global_economy; no observations after 2012 used in fitting")
 
 training_comparison <- training_fit |>
