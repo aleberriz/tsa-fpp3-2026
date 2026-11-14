@@ -8,6 +8,10 @@
 - **Homework due Sunday 29 November 2026, 23:59**, the same day as the Session 18 homework. Both are
   short because Group Assignment 2 is open.
 - **The common-errors note on this homework** goes up on Blackboard after the due date.
+- **Midterm calculations, worked on new numbers.** As promised,
+  [`midterm_calculations_review.md`](midterm_calculations_review.md) has the seven calculation
+  questions of the midterm on a new table, without answer options. Do them by hand first. A video
+  walkthrough will follow on Blackboard.
 - **Session 18** is Wednesday 25 November.
 - **Office hours** on request, for concrete questions: email aberrizbeitia@faculty.ie.edu.
 
