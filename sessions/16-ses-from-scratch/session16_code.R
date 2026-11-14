@@ -118,13 +118,13 @@ heldout_comparison
 
 heldout_forecasts |>
   autoplot(algerian_exports |> filter(Year >= 2005), level = NULL) +
-  annotate("segment", x = 2012, xend = 2017,
+  annotate("segment", x = 2013, xend = 2017,
            y = grid_forecast, yend = grid_forecast,
            linetype = "dotted", color = "#B45D3D") +
   scale_x_continuous(breaks = 2005:2017, minor_breaks = NULL) +
   labs(title = "Algeria: forecasts issued at the end of 2012",
-       subtitle = "Dotted line: grid SES; point forecasts only",
-       y = "Exports (% of GDP)", x = "Year",
+       subtitle = "Grid SES (dotted) overlaps library SES; point forecasts only",
+       y = "Exports (% of GDP)", x = "Year", colour = "Method",
        caption = "Source: global_economy; no observations after 2012 used in fitting")
 
 training_comparison <- training_fit |>
