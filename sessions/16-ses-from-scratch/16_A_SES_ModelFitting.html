@@ -2435,12 +2435,13 @@ window.Quarto = {
 </div>
 <section id="workshop" class="level1">
 <h1>What this workshop teaches</h1>
-<p>Session 15 on SES equations showed how an observation revises the estimated level. Here we estimate the smoothing weight <span class="math inline">\(\alpha\)</span> and the initial level <span class="math inline">\(\ell_0\)</span>. Each candidate pair generates predictions, those predictions receive a sum-of-squared-errors score, and a numerical search seeks a smaller score.</p>
-<p>The required workshop is sections 1 to 5. Score candidates by hand, read and check the supplied functions, run a grid and a numerical search, then compare forecasts on held-out observations. Explain what the fitted parameters, objective and convergence report tell you. R argument syntax and the optimizer’s algorithm are not examination topics.</p>
+<p>This workshop teaches you how to <strong>fit a simple exponential smoothing (SES) model</strong>: estimate the smoothing weight <span class="math inline">\(\alpha\)</span> and the initial level <span class="math inline">\(\ell_0\)</span> from observed data. In Session 15 on SES equations, we updated the level using given values of these quantities, but here we learn how to choose them.</p>
+<p>A <strong>candidate fit</strong> is a trial pair of values for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\ell_0\)</span> that we might choose as our parameter estimates. Each pair generates its own predictions for the same observations, so we can compare candidate fits by the sum of squared prediction errors (SSE): the smaller the score, the closer the fit to the training data. Since we cannot score every possible pair by hand, a numerical optimizer searches for a lower SSE.</p>
+<p>The required workshop is sections 1 to 5. Score candidate fits by hand, read and check the supplied functions, run a grid and a numerical search, then compare forecasts on held-out observations. Explain what the fitted parameters, objective and convergence report tell you. R argument syntax and the optimizer’s algorithm are not examination topics.</p>
 <p>The required homework is <a href="16_B_SES_Exercise.html#exercise">16_B</a>. The <a href="#appendix">appendix</a> contains optional interface reference and another fitting practice: neither is required for homework, the group assignment or exams. No prior machine-learning course is needed for this workshop.</p>
 <section id="candidate-fits" class="level2">
 <h2 class="anchored" data-anchor-id="candidate-fits">Before the code: score two candidate fits</h2>
-<p>For illustrative observations <span class="math inline">\(8, 12, 10\)</span>, each prediction uses the preceding level. After scoring that prediction, update the level using the observation. Recalculate the whole sequence whenever either candidate parameter changes.</p>
+<p>For illustrative observations <span class="math inline">\(8, 12, 10\)</span>, each prediction uses the preceding level. After scoring that prediction, update the level using the observation. Recalculate the whole sequence whenever either parameter changes.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 16%">
@@ -2452,7 +2453,7 @@ window.Quarto = {
 </colgroup>
 <thead>
 <tr class="header">
-<th>Candidate</th>
+<th>Candidate fit</th>
 <th><span class="math inline">\(\alpha\)</span></th>
 <th><span class="math inline">\(\ell_0\)</span></th>
 <th>Predictions for the three observations</th>
@@ -2479,10 +2480,10 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<p>For example, candidate B predicts the first observation with 9, then updates its level to <span class="math inline">\(0.6\times8+0.4\times9=8.4\)</span>. That updated level predicts the second observation. Candidate B has the smaller training score among these two trials. This comparison neither establishes a global minimum nor shows which candidate forecasts later observations better.</p>
+<p>For example, candidate fit B predicts the first observation with 9, then updates its level to <span class="math inline">\(0.6\times8+0.4\times9=8.4\)</span>. That updated level predicts the second observation. Candidate fit B has the smaller training score among these two trials. This comparison neither establishes a global minimum nor shows which candidate fit forecasts later observations better.</p>
 <section id="hand-grid" class="level3">
 <h3 class="anchored" data-anchor-id="hand-grid">Check: fit on a small grid</h3>
-<p>Keep the observations <span class="math inline">\(8, 12, 10\)</span> and fix the initial level at <span class="math inline">\(8\)</span>. Calculate the predictions and SSE for <span class="math inline">\(\alpha=0.2, 0.4, 0.6, 0.8\)</span>. Which candidates share the smallest score? After comparing answers in class, try <span class="math inline">\(\alpha=0.5\)</span>: does the best candidate on the original grid exhaust the possible choices?</p>
+<p>Keep the observations <span class="math inline">\(8, 12, 10\)</span> and fix the initial level at <span class="math inline">\(8\)</span>. Calculate the predictions and SSE for <span class="math inline">\(\alpha=0.2, 0.4, 0.6, 0.8\)</span>. Which candidate fits share the smallest score? After comparing answers in class, try <span class="math inline">\(\alpha=0.5\)</span>: does the best candidate fit on the original grid exhaust the possible choices?</p>
 </section>
 </section>
 <section id="levels" class="level2">
@@ -2587,7 +2588,7 @@ e_t=y_t-\ell_{t-1},\qquad
 </section>
 <section id="compose" class="level2">
 <h2 class="anchored" data-anchor-id="compose">3. Read the supplied wrapper</h2>
-<p>For a candidate pair, this function runs the supplied recurrence and returns its training SSE. <code>par[1]</code> is alpha and <code>par[2]</code> is the initial level. The data stay in the separate argument <code>y</code>. The wrapper is supplied; explain the calculation it connects.</p>
+<p>For a candidate fit, this function runs the supplied recurrence and returns its training SSE. <code>par[1]</code> is alpha and <code>par[2]</code> is the initial level. The data stay in the separate argument <code>y</code>. The wrapper is supplied; explain the calculation it connects.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>my_ses_sse <span class="ot">&lt;-</span> <span class="cf">function</span>(par, y) {</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  levels <span class="ot">&lt;-</span> <span class="fu">ses_levels</span>(y, <span class="at">alpha =</span> par[<span class="dv">1</span>], <span class="at">l_0 =</span> par[<span class="dv">2</span>])</span>
@@ -2650,7 +2651,7 @@ e_t=y_t-\ell_{t-1},\qquad
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">method =</span> <span class="st">&quot;L-BFGS-B&quot;</span>,</span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">lower =</span> <span class="fu">c</span>(<span class="fl">0.0001</span>, <span class="sc">-</span><span class="cn">Inf</span>), <span class="at">upper =</span> <span class="fu">c</span>(<span class="fl">0.9999</span>, <span class="cn">Inf</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>The numerical algorithm uses objective evaluations to choose new candidate pairs. Algorithm names, update rules and argument syntax are outside the assessed material. Read the result through these three outputs:</p>
+<p>The numerical algorithm uses objective evaluations to choose new candidate fits. Algorithm names, update rules and argument syntax are outside the assessed material. Read the result through these three outputs:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>opt<span class="sc">$</span>par</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
