@@ -2674,7 +2674,7 @@ e_t=y_t-\ell_{t-1},\qquad
 <pre><code>[1] TRUE</code></pre>
 </div>
 </div>
-<p>A numerical search can successfully minimize the wrong function. These fixed-input checks help establish that the score actually compares each observation with its preceding prediction.</p>
+<p><code>optim()</code> minimizes whatever function it is given; it cannot tell whether that function is the right one. Suppose <code>my_ses_sse()</code> had an off-by-one slip and compared each observation with the level updated <em>after</em> seeing it, <span class="math inline">\(\ell_t\)</span> instead of <span class="math inline">\(\ell_{t-1}\)</span>. That level already contains the observation, so pushing <span class="math inline">\(\alpha\)</span> toward 1 makes every “prediction” almost equal to its observation. The search would report successful convergence with <span class="math inline">\(\alpha\)</span> near 1 and an SSE near 0, a perfect-looking fit that forecasts nothing. The checks above catch the slip before any search runs: the faulty function gives an SSE of 51.09 for the Session 15 parameters, not 1995.285.</p>
 </section>
 </section>
 <section id="optim" class="level2">
