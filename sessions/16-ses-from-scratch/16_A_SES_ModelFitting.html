@@ -2355,14 +2355,14 @@ window.Quarto = {
   <ul>
   <li><a href="#hand-grid" id="toc-hand-grid" class="nav-link" data-scroll-target="#hand-grid">Check: fit on a small grid</a></li>
   </ul></li>
-  <li><a href="#levels" id="toc-levels" class="nav-link" data-scroll-target="#levels">1. Read and check the supplied level recurrence</a>
+  <li><a href="#levels" id="toc-levels" class="nav-link" data-scroll-target="#levels">1. Read and check the function that computes the levels</a>
   <ul>
-  <li><a href="#test-levels" id="toc-test-levels" class="nav-link" data-scroll-target="#test-levels">Check the recurrence</a></li>
+  <li><a href="#test-levels" id="toc-test-levels" class="nav-link" data-scroll-target="#test-levels">Check the levels against a reference file</a></li>
   </ul></li>
   <li><a href="#sse" id="toc-sse" class="nav-link" data-scroll-target="#sse">2. Read and check the supplied squared-error score</a></li>
-  <li><a href="#compose" id="toc-compose" class="nav-link" data-scroll-target="#compose">3. Read the supplied wrapper</a>
+  <li><a href="#compose" id="toc-compose" class="nav-link" data-scroll-target="#compose">3. Combine the two functions into one score</a>
   <ul>
-  <li><a href="#test-compose" id="toc-test-compose" class="nav-link" data-scroll-target="#test-compose">Check the connection</a></li>
+  <li><a href="#test-compose" id="toc-test-compose" class="nav-link" data-scroll-target="#test-compose">Check it against the score from section 2</a></li>
   </ul></li>
   <li><a href="#optim" id="toc-optim" class="nav-link" data-scroll-target="#optim">4. Run the search and interpret the evidence</a>
   <ul>
@@ -2556,8 +2556,8 @@ window.Quarto = {
 </section>
 </section>
 <section id="levels" class="level2">
-<h2 class="anchored" data-anchor-id="levels">1. Read and check the supplied level recurrence</h2>
-<p><code>ses_levels(y, alpha, l_0)</code> returns the initial level and every update. The statistical sequence is:</p>
+<h2 class="anchored" data-anchor-id="levels">1. Read and check the function that computes the levels</h2>
+<p><code>ses_levels(y, alpha, l_0)</code> applies the SES level equation once per observation, each time starting from the level it has just computed, and returns the initial level and every update. The equations are:</p>
 <p><span class="math display">\[
 \hat y_{t|t-1}=\ell_{t-1},\qquad
 e_t=y_t-\ell_{t-1},\qquad
@@ -2600,7 +2600,7 @@ e_t=y_t-\ell_{t-1},\qquad
 </tr>
 </tbody>
 </table>
-<p>Read the supplied implementation alongside the prediction and update equations, then run its fixed-input check.</p>
+<p>Read the function alongside the prediction and update equations, then check it against the reference file below.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ses_levels <span class="ot">&lt;-</span> <span class="cf">function</span>(y, alpha, l_0) {</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  levels <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="fu">length</span>(y) <span class="sc">+</span> <span class="dv">1</span>)</span>
@@ -2612,8 +2612,8 @@ e_t=y_t-\ell_{t-1},\qquad
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="test-levels" class="level3">
-<h3 class="anchored" data-anchor-id="test-levels">Check the recurrence</h3>
-<p>Use Algeria’s annual exports, measured as a percentage of GDP. Run the supplied check to confirm the function. The fixed alpha and initial level below check the recurrence; they are separate from the starting guesses used by the optimizer later.</p>
+<h3 class="anchored" data-anchor-id="test-levels">Check the levels against a reference file</h3>
+<p>Use Algeria’s annual exports, measured as a percentage of GDP: 58 observations, 1960 to 2017. In Session 15 on SES equations we fitted SES to this series with <code>fable</code> and obtained <span class="math inline">\(\alpha\approx0.84\)</span> and <span class="math inline">\(\ell_0\approx39.54\)</span>. The reference file <code>yhat_SES_test</code> stores the 59 levels <span class="math inline">\(\ell_0, \ell_1, \dots, \ell_{58}\)</span> of that model, computed with those two estimates to seven decimals. If <code>ses_levels()</code> is correct, it reproduces the same 59 levels from the same <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\ell_0\)</span>. These fixed values only test the function; they are separate from the starting guesses the optimizer uses later.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>algerian_exports <span class="ot">&lt;-</span> global_economy <span class="sc">|&gt;</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Country <span class="sc">==</span> <span class="st">&quot;Algeria&quot;</span>) <span class="sc">|&gt;</span></span>
@@ -2644,7 +2644,7 @@ e_t=y_t-\ell_{t-1},\qquad
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  SSE</span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Run the supplied check. The first <code>length(y)</code> levels predict the observations; the final updated level forecasts beyond the training sample and is excluded from the score.</p>
+<p>Now check the score. The Session 15 <code>fable</code> model has a sum of squared residuals of 1995.285, so with the same <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\ell_0\)</span> our two functions should give the same value. Only the first 58 levels, <span class="math inline">\(\ell_0\)</span> to <span class="math inline">\(\ell_{57}\)</span>, predict observations. The last level, <span class="math inline">\(\ell_{58}\)</span>, is the forecast for 2018 onward, so it is left out of the score.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> algerian_exports<span class="sc">$</span>Exports</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>fixed_levels <span class="ot">&lt;-</span> <span class="fu">ses_levels</span>(y, <span class="at">alpha =</span> <span class="fl">0.8399875</span>, <span class="at">l_0 =</span> <span class="fl">39.5389994</span>)</span>
@@ -2656,8 +2656,8 @@ e_t=y_t-\ell_{t-1},\qquad
 </div>
 </section>
 <section id="compose" class="level2">
-<h2 class="anchored" data-anchor-id="compose">3. Read the supplied wrapper</h2>
-<p>For a candidate fit, this function runs the supplied recurrence and returns its training SSE. <code>par[1]</code> is alpha and <code>par[2]</code> is the initial level. The data stay in the separate argument <code>y</code>. The wrapper is supplied; explain the calculation it connects.</p>
+<h2 class="anchored" data-anchor-id="compose">3. Combine the two functions into one score</h2>
+<p><code>my_ses_sse()</code> takes one candidate fit and returns its SSE in a single step: it computes the levels with <code>ses_levels()</code>, keeps the 58 predictions and scores them with <code>SSE_func()</code>. The candidate is passed as one vector, <code>par</code>: <code>par[1]</code> is <span class="math inline">\(\alpha\)</span> and <code>par[2]</code> is <span class="math inline">\(\ell_0\)</span>. The data stay in the separate argument <code>y</code>. The grid and the numerical search below both work by calling this function on many candidates.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>my_ses_sse <span class="ot">&lt;-</span> <span class="cf">function</span>(par, y) {</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  levels <span class="ot">&lt;-</span> <span class="fu">ses_levels</span>(y, <span class="at">alpha =</span> par[<span class="dv">1</span>], <span class="at">l_0 =</span> par[<span class="dv">2</span>])</span>
@@ -2666,7 +2666,8 @@ e_t=y_t-\ell_{t-1},\qquad
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="test-compose" class="level3">
-<h3 class="anchored" data-anchor-id="test-compose">Check the connection</h3>
+<h3 class="anchored" data-anchor-id="test-compose">Check it against the score from section 2</h3>
+<p>With the same <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\ell_0\)</span>, the combined function must return the same SSE as the two-step calculation in section 2, 1995.285.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(SSE_test, <span class="fu">my_ses_sse</span>(<span class="fu">c</span>(<span class="fl">0.8399875</span>, <span class="fl">39.5389994</span>), y))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -2680,7 +2681,7 @@ e_t=y_t-\ell_{t-1},\qquad
 <h2 class="anchored" data-anchor-id="optim">4. Run the search and interpret the evidence</h2>
 <section id="first-fit-on-a-grid" class="level3">
 <h3 class="anchored" data-anchor-id="first-fit-on-a-grid">First, fit on a grid</h3>
-<p>Fix the initial level at Algeria’s first observation. For each candidate alpha, rerun the recurrence over the full series and calculate SSE. Choosing the lowest point on this curve is already a fit, within these candidate values and this fixed initial level.</p>
+<p>Fix the initial level at Algeria’s first observation. For each candidate alpha, recompute the levels over the full series and calculate SSE. Choosing the lowest point on this curve is already a fit, within these candidate values and this fixed initial level.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>alpha_grid <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fl">0.01</span>, <span class="fl">0.99</span>, <span class="at">by =</span> <span class="fl">0.01</span>)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>grid_SSE <span class="ot">&lt;-</span> <span class="fu">sapply</span>(alpha_grid, <span class="cf">function</span>(alpha) {</span>
@@ -2948,7 +2949,7 @@ e_t=y_t-\ell_{t-1},\qquad
 </section>
 <section id="interface-reference" class="level2">
 <h2 class="anchored" data-anchor-id="interface-reference">B. More about the supplied interface</h2>
-<p><code>optim()</code> expects a function whose first argument is the candidate vector <code>par</code>; other arguments follow it. The same parameter order must be used in the wrapper, starting guesses, bounds and returned estimates. The <code>counts</code> component records function and gradient evaluations, rather than elapsed time. <code>all.equal()</code> allows small floating-point differences when checking calculated vectors.</p>
+<p><code>optim()</code> expects a function whose first argument is the candidate vector <code>par</code>; other arguments follow it. The same parameter order must be used in <code>my_ses_sse()</code>, starting guesses, bounds and returned estimates. The <code>counts</code> component records function and gradient evaluations, rather than elapsed time. <code>all.equal()</code> allows small floating-point differences when checking calculated vectors.</p>
 <p>For software reference, see <a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/optim.html">R’s optim documentation</a>. The mathematical fitting criterion is from <a href="https://otexts.com/fpp3/exponential-smoothing.html#optimisation">fpp3 section 8.1</a>.</p>
 </section>
 <section id="argentina" class="level2">

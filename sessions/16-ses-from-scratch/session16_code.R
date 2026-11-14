@@ -5,7 +5,7 @@ library(fpp3)
 
 # What this workshop teaches ----
 
-## 1. Read and check the supplied level recurrence ----
+## 1. Read and check the function that computes the levels ----
 ses_levels <- function(y, alpha, l_0) {
   levels <- numeric(length(y) + 1)
   levels[1] <- l_0
@@ -15,7 +15,7 @@ ses_levels <- function(y, alpha, l_0) {
   levels
 }
 
-### Check the recurrence ----
+### Check the levels against a reference file ----
 algerian_exports <- global_economy |>
   filter(Country == "Algeria") |>
   select(Year, Exports)
@@ -37,14 +37,14 @@ fixed_levels <- ses_levels(y, alpha = 0.8399875, l_0 = 39.5389994)
 SSE_test <- SSE_func(y, fixed_levels[seq_along(y)])
 all.equal(1995.285, round(SSE_test, 3))
 
-## 3. Read the supplied wrapper ----
+## 3. Combine the two functions into one score ----
 my_ses_sse <- function(par, y) {
   levels <- ses_levels(y, alpha = par[1], l_0 = par[2])
   predictions <- levels[seq_along(y)]
   SSE_func(y, predictions)
 }
 
-### Check the connection ----
+### Check it against the score from section 2 ----
 all.equal(SSE_test, my_ses_sse(c(0.8399875, 39.5389994), y))
 
 ## 4. Run the search and interpret the evidence ----
