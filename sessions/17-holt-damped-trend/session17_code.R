@@ -4,15 +4,16 @@
 library(fpp3)
 library(patchwork)
 
-# Holt's linear trend method ----
-
-## R example: Australian population ----
+# Motivation ----
 aus_economy <- global_economy |>
   filter(Code == "AUS") |>
   mutate(Pop = Population / 1e6)
 autoplot(aus_economy, Pop) +
   labs(y = "Millions", title = "Australian population")
 
+# Holt's linear trend method ----
+
+## R example: Australian population ----
 fit <- aus_economy |>
   model(
     AAN = ETS(Pop ~ error("A") + trend("A") + season("N"))
@@ -21,6 +22,13 @@ fit <- aus_economy |>
 fit
 
 tidy(fit)
+
+holt_estimates <- tidy(fit)
+alpha_hat <- holt_estimates$estimate[holt_estimates$term == "alpha"]
+beta_hat <- holt_estimates$estimate[holt_estimates$term == "beta"]
+
+# beta-star, the slope weight in the equations and the workbook
+beta_hat / alpha_hat
 
 fitted_vals <-
   fit |>
@@ -32,15 +40,6 @@ resid <-  fitted_vals$.innov
 SSE <- sum(resid^2)
 SSE
 
-fc <-
-  fit |>
-  forecast(h = 10)
-
-fc |> autoplot(aus_economy, level = NULL) +
-  labs(title = "Australian population",
-       y = "Millions") +
-  guides(colour = guide_legend(title = "Forecast"))
-
 ### Components of the model ----
 holts_components <-
   fit |>
@@ -51,11 +50,11 @@ holts_components
 # Depict the components
 holts_components |> autoplot()
 
-# Use the equation for the fitted values
+# Use the equation for the prior predictions
 holts_components <-
   holts_components |>
   mutate(
-    .fitted = lag(level) + lag(slope) # Equation for the fitted vals
+    .fitted = lag(level) + lag(slope) # Prior prediction: previous level plus slope
   )
 
 # Vector of fitted values computed using augment
@@ -74,10 +73,50 @@ fitted_components <-  fitted_components[!is.na(fitted_components)]
 
 all.equal(fitted_augment, fitted_components)
 
+### Forecasts from the final level and slope ----
+fc <-
+  fit |>
+  forecast(h = 10)
+
+fc |> autoplot(aus_economy, level = NULL) +
+  labs(title = "Australian population",
+       y = "Millions") +
+  guides(colour = guide_legend(title = "Forecast"))
+
+final <- tail(holts_components, 1)
+final$level + (1:3) * final$slope
+
+fc |> head(3) |> pull(.mean)
+
 # Damped trend methods ----
 
-## Damped example 1: a fixed value for $\phi$ ----
-fit_damped_1 <-
+## Damped example: `ETS()` estimates $\phi$ ----
+fit_damped <-
+  aus_economy |>
+      model(
+        holts = ETS(Pop ~ error("A") + trend("A") + season("N")),
+        damped_holts = ETS(Pop ~ error("A") + trend("Ad") + season("N"))
+      )
+
+tidy(fit_damped)
+
+fc_damped <-
+  fit_damped |>
+  forecast(h = 15)
+
+fc_damped |>
+  autoplot(aus_economy, level = NULL) +
+  labs(title = "Australian population",
+       y = "Millions") +
+  guides(colour = guide_legend(title = "Forecast"))
+
+fc_damped |>
+  as_tibble() |>
+  select(Year, .model, .mean) |>
+  pivot_wider(values_from = c(`.mean`), names_from = c(`.model`))
+
+## Optional: fix $\phi$ ----
+fit_phi_fixed <-
   aus_economy |>
     model(
       holts = ETS(Pop ~ error("A") + trend("A") + season("N")),
@@ -86,23 +125,18 @@ fit_damped_1 <-
      damped_holts = ETS(Pop ~ error("A") + trend("Ad", phi = 0.9) + season("N"))
   )
 
-fc_damped_1 <-
-  fit_damped_1 |>
+fc_phi_fixed <-
+  fit_phi_fixed |>
   forecast(h = 15)
 
-fc_damped_1 |>
+fc_phi_fixed |>
   autoplot(aus_economy, level = NULL) +
   labs(title = "Australian population",
        y = "Millions") +
   guides(colour = guide_legend(title = "Forecast"))
 
-fc_damped_1 |>
-  as_tibble() |>
-  select(Year, .model, .mean) |>
-  pivot_wider(values_from = c(`.mean`), names_from = c(`.model`))
-
-## Damped example 2: a range for $\phi$, and `ETS()` picks within it ----
-fit_damped_2 <-
+## Optional: change $\phi$'s range ----
+fit_phi_range <-
   aus_economy |>
       model(
         holts = ETS(Pop ~ error("A") + trend("A") + season("N")),
@@ -114,49 +148,19 @@ fit_damped_2 <-
                       )
     )
 
-tidy(fit_damped_2)
+tidy(fit_phi_range)
 
-fc_damped_2 <-
-  fit_damped_2 |>
+fc_phi_range <-
+  fit_phi_range |>
   forecast(h = 15)
 
-fc_damped_2 |>
-  autoplot(aus_economy, level = NULL) +
-  labs(title = "Australian population",
-       y = "Millions") +
-  guides(colour = guide_legend(title = "Forecast"))
-
-## Damped example 3: no value for $\phi$, and `ETS()` estimates it ----
-fit_damped_3 <-
-  aus_economy |>
-      model(
-        holts = ETS(Pop ~ error("A") + trend("A") + season("N")),
-        damped_holts = ETS(Pop ~ error("A") + trend("Ad") + season("N"))
-      )
-
-tidy(fit_damped_3)
-
-fc_damped_3 <-
-  fit_damped_3 |>
-  forecast(h = 15)
-
-fc_damped_3 |>
+fc_phi_range |>
   autoplot(aus_economy, level = NULL) +
   labs(title = "Australian population",
        y = "Millions") +
   guides(colour = guide_legend(title = "Forecast"))
 
 # Exercise 1: internet usage ----
-# Convert time series object to tsibble object for compatibility with fable methods and tools
-www_usage <- as_tsibble(WWWusage)
-
-# Plot the data
-www_usage |>
-  autoplot(value) +
-  labs(x="Minute", y="Number of users",
-       title = "Internet usage per minute")
-
-# Optional Exercise 2: internet usage, cross-validated ----
 # Convert time series object to tsibble object for compatibility with fable methods and tools
 www_usage <- as_tsibble(WWWusage)
 
