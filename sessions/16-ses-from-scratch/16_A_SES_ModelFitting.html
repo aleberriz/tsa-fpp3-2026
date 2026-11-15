@@ -2366,9 +2366,9 @@ window.Quarto = {
   </ul></li>
   <li><a href="#optim" id="toc-optim" class="nav-link" data-scroll-target="#optim">4. Run the search and interpret the evidence</a>
   <ul>
-  <li><a href="#first-fit-on-a-grid" id="toc-first-fit-on-a-grid" class="nav-link" data-scroll-target="#first-fit-on-a-grid">First, fit on a grid</a></li>
-  <li><a href="#search" id="toc-search" class="nav-link" data-scroll-target="#search">Then, search both parameters</a></li>
-  <li><a href="#the-fitting-criterion-is-a-choice" id="toc-the-fitting-criterion-is-a-choice" class="nav-link" data-scroll-target="#the-fitting-criterion-is-a-choice">The fitting criterion is a choice</a></li>
+  <li><a href="#grid-search" id="toc-grid-search" class="nav-link" data-scroll-target="#grid-search">Automate the hand grid with finer spacing</a></li>
+  <li><a href="#search" id="toc-search" class="nav-link" data-scroll-target="#search">Use a numerical optimizer to search both parameters</a></li>
+  <li><a href="#search-outputs" id="toc-search-outputs" class="nav-link" data-scroll-target="#search-outputs">Interpret the search outputs</a></li>
   <li><a href="#compare-fit" id="toc-compare-fit" class="nav-link" data-scroll-target="#compare-fit">Compare with the library</a></li>
   </ul></li>
   <li><a href="#held-out" id="toc-held-out" class="nav-link" data-scroll-target="#held-out">5. Compare forecasts on held-out observations</a>
@@ -2446,11 +2446,24 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>The required workshop is sections 1 to 5. Score candidate fits by hand, read and check the supplied functions, run a grid and a numerical search, then compare forecasts on held-out observations. Explain what the fitted parameters, objective and convergence report tell you. R argument syntax and the optimizer’s algorithm are not examination topics.</p>
+<p>The required workshop is sections 1 to 5. Score candidate fits by hand, read and check the supplied functions, automate the hand grid, then use a numerical optimizer to search both parameters. Interpret its outputs, compare with the library and check forecasts on held-out observations. Explain what the fitted parameters, objective and convergence report tell you. R argument syntax and the optimizer’s algorithm are not examination topics.</p>
 <p>The required homework is <a href="16_B_SES_Exercise.html#exercise">16_B</a>. The <a href="#appendix">appendix</a> contains optional interface reference and another fitting practice: neither is required for homework, the group assignment or exams.</p>
 <section id="candidate-fits" class="level2">
 <h2 class="anchored" data-anchor-id="candidate-fits">Before the code: score two candidate fits</h2>
 <p>Take a tiny made-up series with three consecutive observations, <span class="math inline">\(y_1=8\)</span>, <span class="math inline">\(y_2=12\)</span> and <span class="math inline">\(y_3=10\)</span>. These numbers are the data values, not positions in a longer series. Each prediction uses the preceding level. After scoring that prediction, update the level using the observation. Recalculate the whole sequence whenever either parameter changes.</p>
+<p><strong>Timing check.</strong> For candidate B, take <span class="math inline">\(\alpha=0.6\)</span> and <span class="math inline">\(\ell_0=9\)</span>. What predicts <span class="math inline">\(y_1\)</span>? After seeing <span class="math inline">\(y_1=8\)</span>, what predicts <span class="math inline">\(y_2\)</span>? Commit to both answers before opening the comparison.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Worked comparison: open after the timing check
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
 <table class="caption-top table">
 <colgroup>
 <col style="width: 16%">
@@ -2495,11 +2508,14 @@ window.Quarto = {
 \ell_1=\alpha y_1+(1-\alpha)\ell_0=0.6\times8+(1-0.6)\times9=8.4.
 \]</span></p>
 <p>That updated level predicts <span class="math inline">\(y_2\)</span>. Candidate fit B has the smaller training score among these two trials. This comparison neither establishes a global minimum (i.e., the best overall candidate) nor shows which candidate fit forecasts later observations better.</p>
+</div>
+</div>
+</div>
 <section id="hand-grid" class="level3">
 <h3 class="anchored" data-anchor-id="hand-grid">Check: fit on a small grid</h3>
 <p>Keep the same series, <span class="math inline">\(y_1=8\)</span>, <span class="math inline">\(y_2=12\)</span>, <span class="math inline">\(y_3=10\)</span>, and fix the initial level at <span class="math inline">\(8\)</span>. Calculate the predictions and SSE for <span class="math inline">\(\alpha=0.2, 0.4, 0.6, 0.8\)</span>. Which candidate fits share the smallest score? After comparing answers in class, try <span class="math inline">\(\alpha=0.5\)</span>: does the best candidate fit on the original grid exhaust the possible choices?</p>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -2508,7 +2524,7 @@ window.Quarto = {
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Because <span class="math inline">\(\ell_0=y_1=8\)</span>, the first residual is <span class="math inline">\(0\)</span> and <span class="math inline">\(\ell_1=\alpha\times8+(1-\alpha)\times8=8\)</span> for every <span class="math inline">\(\alpha\)</span>. So <span class="math inline">\(y_2=12\)</span> is always predicted by <span class="math inline">\(8\)</span>, with residual <span class="math inline">\(4\)</span>. Only the third prediction depends on <span class="math inline">\(\alpha\)</span>:</p>
 <p><span class="math display">\[
@@ -2558,7 +2574,7 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<p>On the grid, <span class="math inline">\(\alpha=0.4\)</span> and <span class="math inline">\(\alpha=0.6\)</span> share the smallest score, 16.16. The score cannot choose between them. A tie tells us the grid is too coarse, so we search between the two: <span class="math inline">\(\alpha=0.5\)</span> makes <span class="math inline">\(2-4\alpha=0\)</span> and scores 16, the lowest possible with <span class="math inline">\(\ell_0\)</span> fixed at 8. A grid only compares the candidates on it; a finer grid or a numerical search can find better values between its points.</p>
+<p>On the grid, <span class="math inline">\(\alpha=0.4\)</span> and <span class="math inline">\(\alpha=0.6\)</span> share the smallest score, 16.16. The score cannot choose between them. Here, trying a value between the tied candidates improves the score: <span class="math inline">\(\alpha=0.5\)</span> makes <span class="math inline">\(2-4\alpha=0\)</span> and scores 16, the lowest possible with <span class="math inline">\(\ell_0\)</span> fixed at 8. A grid only compares the candidates on it; a finer grid or a numerical search can find better values between its points.</p>
 </div>
 </div>
 </div>
@@ -2688,9 +2704,9 @@ e_t=y_t-\ell_{t-1},\qquad
 </section>
 <section id="optim" class="level2">
 <h2 class="anchored" data-anchor-id="optim">4. Run the search and interpret the evidence</h2>
-<section id="first-fit-on-a-grid" class="level3">
-<h3 class="anchored" data-anchor-id="first-fit-on-a-grid">First, fit on a grid</h3>
-<p>Fix the initial level at Algeria’s first observation. For each candidate alpha, recompute the levels over the full series and calculate SSE. Choosing the lowest point on this curve is already a fit, within these candidate values and this fixed initial level.</p>
+<section id="grid-search" class="level3">
+<h3 class="anchored" data-anchor-id="grid-search">Automate the hand grid with finer spacing</h3>
+<p>The hand example was already a grid search: it scored a preset list of alpha values. Now automate the same calculation for Algeria with finer spacing. Fix the initial level at Algeria’s first observation. For each candidate alpha, recompute the levels over the full series and calculate SSE. Choosing the lowest point on this curve is already a fit, within these candidate values and this fixed initial level.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>alpha_grid <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fl">0.01</span>, <span class="fl">0.99</span>, <span class="at">by =</span> <span class="fl">0.01</span>)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>grid_SSE <span class="ot">&lt;-</span> <span class="fu">sapply</span>(alpha_grid, <span class="cf">function</span>(alpha) {</span>
@@ -2719,12 +2735,12 @@ e_t=y_t-\ell_{t-1},\qquad
 </div>
 </div>
 </div>
-<p>A finer grid could find a smaller score between its points. This curve varies only alpha; allowing the initial level to vary changes the search problem too.</p>
+<p>Smaller spacing gives finer coverage, but this grid still leaves gaps between its points and keeps the initial level fixed. Automating a grid does not remove those restrictions. Next, let a numerical optimizer choose new trial values and vary both parameters.</p>
 </section>
 <section id="search" class="level3">
-<h3 class="anchored" data-anchor-id="search">Then, search both parameters</h3>
+<h3 class="anchored" data-anchor-id="search">Use a numerical optimizer to search both parameters</h3>
 <p>A grid only scores candidates we listed in advance. To search <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\ell_0\)</span> together we would also need a range and a spacing for <span class="math inline">\(\ell_0\)</span>, and the best pair could still fall between grid points. The models in later sessions have more parameters, and the list grows quickly with each one.</p>
-<p>A <strong>numerical optimizer</strong> needs no list. It starts from one candidate fit and scores it. It then uses the scores it has seen so far to choose the next candidate in a direction where the SSE falls, and stops when further moves no longer lower the score noticeably. Picture a walker in fog looking for the bottom of a valley. They cannot see the whole landscape, as the grid curve above does, but they can feel which way the ground slopes and keep stepping downhill until it is flat. Like that walker, the search can also stop in a small dip that is not the lowest point, which is why its report needs careful reading below.</p>
+<p>A <strong>numerical optimizer</strong> chooses new trial values as it searches, including values between the earlier grid points. It starts from one candidate fit and scores it. It then uses the scores it has seen so far to choose the next candidate in a direction where the SSE falls, and stops when further moves no longer lower the score noticeably. Picture a walker in fog looking for the bottom of a valley. They cannot see the whole landscape, as the grid curve above does, but they can feel which way the ground slopes and keep stepping downhill until it is flat. Like that walker, the search can also stop in a small dip that is not the lowest point, which is why its report needs careful reading below.</p>
 <p>R’s general-purpose optimizer is <code>optim()</code>. It knows nothing about SES: it minimizes any function that turns a vector of parameters into one number. That is why <code>my_ses_sse()</code> takes the candidate as one vector <code>par</code> and returns one SSE. The <code>ETS()</code> function in <code>fable</code> runs the same kind of search internally when it estimates a model; here each piece is visible.</p>
 <table class="caption-top table">
 <colgroup>
@@ -2762,7 +2778,11 @@ e_t=y_t-\ell_{t-1},\qquad
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">method =</span> <span class="st">&quot;L-BFGS-B&quot;</span>,</span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">lower =</span> <span class="fu">c</span>(<span class="fl">0.0001</span>, <span class="sc">-</span><span class="cn">Inf</span>), <span class="at">upper =</span> <span class="fu">c</span>(<span class="fl">0.9999</span>, <span class="cn">Inf</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>How the method chooses each next candidate, its name and the argument syntax are outside the assessed material. Read the result through these three outputs:</p>
+<p>How the method chooses each next candidate, its name and the argument syntax are outside the assessed material.</p>
+</section>
+<section id="search-outputs" class="level3">
+<h3 class="anchored" data-anchor-id="search-outputs">Interpret the search outputs</h3>
+<p>Read the result through these three outputs:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>opt<span class="sc">$</span>par</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -2809,10 +2829,22 @@ e_t=y_t-\ell_{t-1},\qquad
 </tbody>
 </table>
 <p>Starting guesses, bounds and stopping rules can affect the numerical result. Two implementations can therefore return slightly different estimates without either being incorrectly coded. Compare the objective, fitted values and forecasts, rather than demanding the same parameter digits.</p>
-</section>
-<section id="the-fitting-criterion-is-a-choice" class="level3">
-<h3 class="anchored" data-anchor-id="the-fitting-criterion-is-a-choice">The fitting criterion is a choice</h3>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Supporting reading: a likelihood preview for Session 19
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
 <p>SSE is our chosen fitting criterion. Session 19 on ETS estimation and model selection uses likelihood. For the same additive-normal model, observations and parameter constraints, maximizing the conditional Gaussian likelihood selects the same parameter optima as minimizing SSE. This equivalence does not say that every fitting criterion is SSE, or that numerical searches must return identical parameter digits.</p>
+</div>
+</div>
+</div>
 </section>
 <section id="compare-fit" class="level3">
 <h3 class="anchored" data-anchor-id="compare-fit">Compare with the library</h3>
