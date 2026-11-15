@@ -4,14 +4,20 @@ library(fpp3)
 
 library(patchwork) # to place two plots side by side with p1 + p2
 
-# R example: domestic overnight trips in Australia ----
-
-## Code ----
-# Filter data
+# Motivation ----
+# Total holiday trips in Australia, in millions
 aus_holidays <- tourism |>
   filter(Purpose == "Holiday") |>
   summarise(Trips = sum(Trips)/1e3)
 
+aus_holidays |>
+  autoplot(Trips) +
+  labs(title = "Australian domestic holiday trips",
+       y = "Overnight trips (millions)")
+
+# R example: domestic overnight trips in Australia ----
+
+## Code ----
 # Fit the models: additive and multiplicative seasonality
 # Pay attention to the error terms! (for numerical stability):
   # error("A") for the additive model.
@@ -53,7 +59,7 @@ fit |> tidy()
 
 # Holt-Winters damped method ----
 
-## R example with daily data ----
+## R example with daily data (supporting reading) ----
 sth_cross_ped <- pedestrian |>
   filter(Date >= "2016-07-01",
          Sensor == "Southern Cross Station") |>
