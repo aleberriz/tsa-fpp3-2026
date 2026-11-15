@@ -2360,7 +2360,7 @@ window.Quarto = {
   <li><a href="#test-levels" id="toc-test-levels" class="nav-link" data-scroll-target="#test-levels">Check the levels against a reference file</a></li>
   </ul></li>
   <li><a href="#sse" id="toc-sse" class="nav-link" data-scroll-target="#sse">2. Read and check the supplied squared-error score</a></li>
-  <li><a href="#compose" id="toc-compose" class="nav-link" data-scroll-target="#compose">3. Combine the two functions into one score</a>
+  <li><a href="#compose" id="toc-compose" class="nav-link" data-scroll-target="#compose">3. Pro tip: return a candidate fit’s SSE in a single step</a>
   <ul>
   <li><a href="#test-compose" id="toc-test-compose" class="nav-link" data-scroll-target="#test-compose">Check it against the score from section 2</a></li>
   </ul></li>
@@ -2708,8 +2708,9 @@ e_t=y_t-\ell_{t-1},\qquad
 </div>
 </section>
 <section id="compose" class="level2">
-<h2 class="anchored" data-anchor-id="compose">3. Combine the two functions into one score</h2>
-<p><code>my_ses_sse()</code> takes one candidate fit and returns its SSE in a single step: it computes the levels with <code>ses_levels()</code>, keeps the 58 predictions and scores them with <code>SSE_func()</code>. The candidate is passed as one vector, <code>par</code>: <code>par[1]</code> is <span class="math inline">\(\alpha\)</span> and <code>par[2]</code> is <span class="math inline">\(\ell_0\)</span>. The data stay in the separate argument <code>y</code>. The grid and the numerical search below both work by calling this function on many candidates.</p>
+<h2 class="anchored" data-anchor-id="compose">3. Pro tip: return a candidate fit’s SSE in a single step</h2>
+<p>We have already calculated a candidate’s SSE using <code>ses_levels()</code> and <code>SSE_func()</code>. For convenience, <code>my_ses_sse()</code> puts those same calls into one function, so we can take one candidate fit and return its SSE in a single step. It computes the levels, keeps the 58 predictions and scores them, just as we did in section 2.</p>
+<p>The candidate is passed as one vector, <code>par</code>: <code>par[1]</code> is <span class="math inline">\(\alpha\)</span> and <code>par[2]</code> is <span class="math inline">\(\ell_0\)</span>. The data stay in the separate argument <code>y</code>. The grid and the numerical search below use this shortcut to repeat the calculation for many candidates.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>my_ses_sse <span class="ot">&lt;-</span> <span class="cf">function</span>(par, y) {</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  levels <span class="ot">&lt;-</span> <span class="fu">ses_levels</span>(y, <span class="at">alpha =</span> par[<span class="dv">1</span>], <span class="at">l_0 =</span> par[<span class="dv">2</span>])</span>

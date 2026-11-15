@@ -49,7 +49,7 @@ SSE_test <- SSE_func(y, fixed_levels[seq_along(y)])
 SSE_test
 all.equal(round(reference_SSE, 3), round(SSE_test, 3))
 
-## 3. Combine the two functions into one score ----
+## 3. Pro tip: return a candidate fit's SSE in a single step ----
 my_ses_sse <- function(par, y) {
   levels <- ses_levels(y, alpha = par[1], l_0 = par[2])
   predictions <- levels[seq_along(y)]
