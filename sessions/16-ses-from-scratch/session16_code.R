@@ -52,7 +52,7 @@ all.equal(SSE_test, my_ses_sse(c(0.8399875, 39.5389994), y))
 
 ## 4. Run the search and interpret the evidence ----
 
-### First, fit on a grid ----
+### Automate the hand grid with finer spacing ----
 alpha_grid <- seq(0.01, 0.99, by = 0.01)
 grid_SSE <- sapply(alpha_grid, function(alpha) {
   my_ses_sse(c(alpha, y[1]), y)
@@ -68,12 +68,13 @@ grid_results |>
        x = "Alpha", y = "SSE (squared percentage points)",
        caption = "Source: global_economy, annual exports as a percentage of GDP")
 
-### Then, search both parameters ----
+### Use a numerical optimizer to search both parameters ----
 opt <- optim(par = c(0.1, y[1]),
              fn = my_ses_sse, y = y,
              method = "L-BFGS-B",
              lower = c(0.0001, -Inf), upper = c(0.9999, Inf))
 
+### Interpret the search outputs ----
 opt$par
 opt$value
 opt$convergence
