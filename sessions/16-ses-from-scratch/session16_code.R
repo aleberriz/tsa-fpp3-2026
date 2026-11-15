@@ -37,10 +37,17 @@ SSE_func <- function(y, yhat) {
   SSE
 }
 
+reference_fit <- algerian_exports |>
+  model(ETS(Exports ~ error("A") + trend("N") + season("N")))
+reference_residuals <- augment(reference_fit)$.resid
+reference_SSE <- sum(reference_residuals^2)
+reference_SSE
+
 y <- algerian_exports$Exports
 fixed_levels <- ses_levels(y, alpha = 0.8399875, l_0 = 39.5389994)
 SSE_test <- SSE_func(y, fixed_levels[seq_along(y)])
-all.equal(1995.285, round(SSE_test, 3))
+SSE_test
+all.equal(round(reference_SSE, 3), round(SSE_test, 3))
 
 ## 3. Combine the two functions into one score ----
 my_ses_sse <- function(par, y) {
