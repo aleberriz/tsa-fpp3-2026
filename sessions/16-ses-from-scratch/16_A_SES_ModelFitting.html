@@ -2810,11 +2810,16 @@ e_t=y_t-\ell_{t-1},\qquad
 <td>The data, passed on to <code>my_ses_sse()</code> unchanged</td>
 </tr>
 <tr class="even">
-<td><code>method</code>, <code>lower</code>, <code>upper</code></td>
-<td>A search method that accepts limits, keeping <span class="math inline">\(\alpha\)</span> between 0.0001 and 0.9999 and leaving <span class="math inline">\(\ell_0\)</span> unrestricted</td>
+<td><code>method = &quot;L-BFGS-B&quot;</code></td>
+<td>Which numerical search algorithm to use; this one supports lower and upper limits on the parameters</td>
+</tr>
+<tr class="odd">
+<td><code>lower</code>, <code>upper</code></td>
+<td>The limits for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\ell_0\)</span>, in the same order as <code>par</code>: keep <span class="math inline">\(\alpha\)</span> between 0.0001 and 0.9999 and leave <span class="math inline">\(\ell_0\)</span> unrestricted</td>
 </tr>
 </tbody>
 </table>
+<p>The <code>method</code> argument selects the search algorithm. Here we use <strong>L-BFGS-B</strong>, short for <em>limited-memory BFGS with bounds</em>: it uses local slope information to choose parameter updates and can respect lower and upper limits. The final <strong>B</strong> refers to those <strong>bounds</strong>, which we supply through <code>lower</code> and <code>upper</code>. We choose this method so that the search can vary <span class="math inline">\(\alpha\)</span> within its allowed range while also estimating <span class="math inline">\(\ell_0\)</span>. In the limits below, <code>-Inf</code> and <code>Inf</code> mean that we impose no lower or upper limit on the initial level. See <a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/optim.html">R’s documentation for <code>optim()</code></a> for the algorithm details.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>opt <span class="ot">&lt;-</span> <span class="fu">optim</span>(<span class="at">par =</span> <span class="fu">c</span>(<span class="fl">0.1</span>, y[<span class="dv">1</span>]),</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">fn =</span> my_ses_sse, <span class="at">y =</span> y,</span>
