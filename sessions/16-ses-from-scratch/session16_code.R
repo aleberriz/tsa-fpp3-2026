@@ -25,6 +25,8 @@ algerian_exports <- global_economy |>
 
 y <- algerian_exports$Exports
 levels_function <- ses_levels(y, alpha = 0.8399875, l_0 = 39.5389994)
+head(levels_function)
+
 levels_test <- dget("../../data/yhat_SES_test")
 all.equal(levels_function, levels_test)
 
@@ -35,12 +37,19 @@ SSE_func <- function(y, yhat) {
   SSE
 }
 
+reference_fit <- algerian_exports |>
+  model(ETS(Exports ~ error("A") + trend("N") + season("N")))
+reference_residuals <- augment(reference_fit)$.resid
+reference_SSE <- sum(reference_residuals^2)
+reference_SSE
+
 y <- algerian_exports$Exports
 fixed_levels <- ses_levels(y, alpha = 0.8399875, l_0 = 39.5389994)
 SSE_test <- SSE_func(y, fixed_levels[seq_along(y)])
-all.equal(1995.285, round(SSE_test, 3))
+SSE_test
+all.equal(round(reference_SSE, 3), round(SSE_test, 3))
 
-## 3. Combine the two functions into one score ----
+## 3. Pro tip: return a candidate fit's SSE in a single step ----
 my_ses_sse <- function(par, y) {
   levels <- ses_levels(y, alpha = par[1], l_0 = par[2])
   predictions <- levels[seq_along(y)]
@@ -48,6 +57,7 @@ my_ses_sse <- function(par, y) {
 }
 
 ### Check it against the score from section 2 ----
+my_ses_sse(c(0.8399875, 39.5389994), y)
 all.equal(SSE_test, my_ses_sse(c(0.8399875, 39.5389994), y))
 
 ## 4. Run the search and interpret the evidence ----
@@ -58,11 +68,15 @@ grid_SSE <- sapply(alpha_grid, function(alpha) {
   my_ses_sse(c(alpha, y[1]), y)
 })
 grid_results <- tibble(alpha = alpha_grid, SSE = grid_SSE)
-grid_results |> slice_min(SSE, n = 1)
+grid_best <- grid_results |> slice_min(SSE, n = 1)
+grid_best
 
 grid_results |>
   ggplot(aes(x = alpha, y = SSE)) +
   geom_line(color = "#35576B") +
+  geom_point(data = grid_best, color = "#B5471E", size = 3) +
+  geom_text(data = grid_best, label = "Lowest SSE on this grid",
+            hjust = 1, vjust = -1, color = "#B5471E") +
   labs(title = "Algeria: training score across candidate smoothing weights",
        subtitle = "1960 to 2017; initial level fixed at the first observation",
        x = "Alpha", y = "SSE (squared percentage points)",
@@ -114,44 +128,35 @@ fc |>
        subtitle = "Black: data; orange: fable fitted values, ours dotted on top; blue: fable forecasts",
        y = "Exports (% of GDP)", x = "Year")
 
-## 5. Compare forecasts on held-out observations ----
-training <- algerian_exports |> filter(Year <= 2012)
-holdout <- algerian_exports |> filter(Year >= 2013, Year <= 2017)
-y_train <- training$Exports
+## 5. Compare forecasts on the test set ----
 
+### Split the data before fitting ----
+training <- algerian_exports |> filter(Year <= 2012)
+test_set <- algerian_exports |> filter(Year >= 2013, Year <= 2017)
+head(training, 3)
+test_set
+
+### Refit our SES grid on the training set ----
+y_train <- training$Exports
 training_grid_SSE <- sapply(alpha_grid, function(alpha) {
   my_ses_sse(c(alpha, y_train[1]), y_train)
 })
+training_grid_results <- tibble(alpha = alpha_grid, SSE = training_grid_SSE)
+training_grid_results |> slice_min(SSE, n = 3) |> knitr::kable(digits = 2)
+
 training_alpha <- alpha_grid[which.min(training_grid_SSE)]
 training_levels <- ses_levels(y_train, training_alpha, y_train[1])
 grid_forecast <- tail(training_levels, 1)
+tibble(alpha = training_alpha,
+       initial_level = y_train[1],
+       final_level_and_forecast = grid_forecast) |>
+  knitr::kable(digits = 2)
 
+### Fit the library models and compare training scores ----
 training_fit <- training |>
   model(SES = ETS(Exports ~ error("A") + trend("N") + season("N")),
         Naive = NAIVE(Exports))
-heldout_forecasts <- training_fit |> forecast(h = 5)
-
-heldout_accuracy <- heldout_forecasts |>
-  accuracy(algerian_exports) |>
-  select(.model, RMSE, MAE)
-
-grid_errors <- holdout$Exports - grid_forecast
-grid_accuracy <- tibble(.model = "Grid SES",
-                        RMSE = sqrt(mean(grid_errors^2)),
-                        MAE = mean(abs(grid_errors)))
-heldout_comparison <- bind_rows(heldout_accuracy, grid_accuracy)
-heldout_comparison
-
-heldout_forecasts |>
-  autoplot(algerian_exports |> filter(Year >= 2005), level = NULL) +
-  annotate("segment", x = 2013, xend = 2017,
-           y = grid_forecast, yend = grid_forecast,
-           linetype = "dotted", color = "#B45D3D") +
-  scale_x_continuous(breaks = 2005:2017, minor_breaks = NULL) +
-  labs(title = "Algeria: forecasts issued at the end of 2012",
-       subtitle = "Grid SES (dotted) overlaps library SES; point forecasts only",
-       y = "Exports (% of GDP)", x = "Year", colour = "Method",
-       caption = "Source: global_economy; no observations after 2012 used in fitting")
+training_fit
 
 training_comparison <- training_fit |>
   augment() |>
@@ -163,10 +168,40 @@ training_comparison <- training_fit |>
 grid_training_errors <- y_train - training_levels[seq_along(y_train)]
 training_comparison <- bind_rows(
   training_comparison,
-  tibble(.model = "Grid SES",
+  tibble(.model = "Our SES (grid)",
          training_SSE = sum(grid_training_errors[-1]^2))
 )
-training_comparison
+training_comparison |> knitr::kable(digits = 2)
+
+### Forecast the five test years ----
+test_forecasts <- training_fit |> forecast(h = 5)
+test_forecasts |>
+  as_tibble() |>
+  select(.model, Year, .mean) |>
+  knitr::kable(digits = 2)
+
+### Compare the forecasts with the test observations ----
+test_accuracy <- test_forecasts |>
+  accuracy(test_set) |>
+  select(.model, RMSE, MAE)
+
+grid_errors <- test_set$Exports - grid_forecast
+grid_accuracy <- tibble(.model = "Our SES (grid)",
+                        RMSE = sqrt(mean(grid_errors^2)),
+                        MAE = mean(abs(grid_errors)))
+test_comparison <- bind_rows(test_accuracy, grid_accuracy)
+test_comparison |> knitr::kable(digits = 2)
+
+test_forecasts |>
+  autoplot(algerian_exports |> filter(Year >= 2005), level = NULL) +
+  annotate("segment", x = 2013, xend = 2017,
+           y = grid_forecast, yend = grid_forecast,
+           linetype = "dotted", color = "#B45D3D") +
+  scale_x_continuous(breaks = 2005:2017, minor_breaks = NULL) +
+  labs(title = "Algeria: forecasts issued at the end of 2012",
+       subtitle = "Our SES (grid, dotted) nearly overlaps library SES; point forecasts only",
+       y = "Exports (% of GDP)", x = "Year", colour = "Method",
+       caption = "Source: global_economy; no observations after 2012 used in fitting")
 
 ### Read what the training fit missed ----
 training_fit |> select(SES) |> gg_tsresiduals()

@@ -4,7 +4,7 @@
 
 **Materials:** [Slides](session16_slides.html), [fitting notebook](16_A_SES_ModelFitting.html), [exercise notebook](16_B_SES_Exercise.html), and [R script](session16_code.R).
 
-**In class:** Score candidate fits by hand, read and check the supplied functions, then run an alpha grid and a numerical search. Compare SES and naive forecasts on held-out observations, inspect residuals, and distinguish parameter estimates, training scores and completion status.
+**In class:** Score candidate fits by hand, read and check the supplied functions, then run an alpha grid and a numerical search. Compare our SES grid with the library SES and naive fits on a test set, inspect residuals, and distinguish parameter estimates, training scores and completion status.
 
 **R:** functions, `for` loops, `dget()`, `sapply()`, `optim()`, `tidy()`, `NAIVE()`, `accuracy()`, `gg_tsresiduals()`, `distributional::parameters()`, `hilo()`.
 
