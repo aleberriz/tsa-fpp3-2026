@@ -3071,6 +3071,7 @@ e_t=y_t-\ell_{t-1},\qquad
 <p>On this split, naive has the smallest held-out RMSE and MAE, although both SES fits have smaller training SSE on the matched years. The two SES forecasts are close. All three forecasts remain above the later observations as exports fall. This is evidence for this origin and these horizons, not a claim that naive always wins. The training ranking and the held-out ranking answer different questions; there is no requirement that they disagree. Session 14 on cross-validation repeats evaluation at several origins.</p>
 <section id="residual-check" class="level3">
 <h3 class="anchored" data-anchor-id="residual-check">Read what the training fit missed</h3>
+<p><strong>In-class check.</strong> What do the time plot, ACF and histogram tell us that the test-set error table does not? Discuss your interpretation before opening the worked answer below.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>training_fit <span class="sc">|&gt;</span> <span class="fu">select</span>(SES) <span class="sc">|&gt;</span> <span class="fu">gg_tsresiduals</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -3081,7 +3082,27 @@ e_t=y_t-\ell_{t-1},\qquad
 </div>
 </div>
 </div>
-<p>Read the time plot for unusual errors or changing spread, the ACF for remaining dependence, and the histogram for asymmetry or long tails. These diagnostics describe the training errors. Even uncorrelated residuals would not establish that future errors will be small; the held-out observations provide a separate check.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Worked interpretation: open after discussing in class
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Time plot.</strong> Most residuals are near zero, but the model misses several large changes. In 1962 the residual is about -24.9 percentage points, so the preceding prediction was much too high. In 1974 and 2000, positive residuals of about 14.4 and 14.8 percentage points show that the model predicted too little. The plot locates these misses and shows their direction, which an overall error score cannot do.</li>
+<li><strong>ACF.</strong> Most bars are small and lie within the displayed bands, so there is little evidence of short-lag residual autocorrelation. However, the negative bar at lag 12 crosses the lower band slightly. An isolated crossing among many lags deserves inspection, but does not by itself establish a recurring pattern. We should not conclude that all residual dependence has disappeared. These are annual data, so lag 12 means twelve years.</li>
+<li><strong>Histogram.</strong> Most residuals cluster around zero, but there are a few large errors on either side and a longer negative tail, including the 1962 miss. The distribution is not neatly symmetric, so a normal-error assumption needs more consideration than a quick glance at the central cluster.</li>
+</ul>
+<p>These plots describe the <strong>training residuals</strong>: when the model missed, whether the misses were related over time, and how their sizes were distributed. The test-set RMSE and MAE instead summarize the size of forecast errors on the five later observations. Here, fairly small short-lag residual autocorrelations did not prevent the model from overpredicting the test years as exports fell. We therefore use residual diagnostics and test-set errors together when judging the model.</p>
+</div>
+</div>
+</div>
 </section>
 <section id="takeaways" class="level3">
 <h3 class="anchored" data-anchor-id="takeaways">What to keep</h3>
