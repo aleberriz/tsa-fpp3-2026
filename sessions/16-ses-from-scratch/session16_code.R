@@ -68,11 +68,15 @@ grid_SSE <- sapply(alpha_grid, function(alpha) {
   my_ses_sse(c(alpha, y[1]), y)
 })
 grid_results <- tibble(alpha = alpha_grid, SSE = grid_SSE)
-grid_results |> slice_min(SSE, n = 1)
+grid_best <- grid_results |> slice_min(SSE, n = 1)
+grid_best
 
 grid_results |>
   ggplot(aes(x = alpha, y = SSE)) +
   geom_line(color = "#35576B") +
+  geom_point(data = grid_best, color = "#B5471E", size = 3) +
+  geom_text(data = grid_best, label = "Lowest SSE on this grid",
+            hjust = 1, vjust = -1, color = "#B5471E") +
   labs(title = "Algeria: training score across candidate smoothing weights",
        subtitle = "1960 to 2017; initial level fixed at the first observation",
        x = "Alpha", y = "SSE (squared percentage points)",
