@@ -2641,7 +2641,7 @@ T+5-4(1+1)=T-3.
 </div>
 <section id="example-for-the-additive-case" class="level2">
 <h2 class="anchored" data-anchor-id="example-for-the-additive-case">Example for the additive case</h2>
-<p>The table gives rounded reference values for additive Holt-Winters on quarterly Australian domestic holiday trips in millions. The manual workbook supplies <span class="math inline">\(\alpha=0.262\)</span>, <span class="math inline">\(\beta^*=0.1646\)</span>, <span class="math inline">\(\gamma=0.0001\)</span> and rounded starting states <span class="math inline">\(\ell_0=9.8\)</span>, <span class="math inline">\(b_0=0\)</span>, with seasonal states <span class="math inline">\(1.5,-0.3,-0.7,-0.5\)</span> in quarter order.</p>
+<p>The table gives reference values, rounded to two decimals, for additive Holt-Winters on quarterly Australian domestic holiday trips in millions. The manual workbook supplies <span class="math inline">\(\alpha=0.262\)</span>, <span class="math inline">\(\beta^*=0.1646\)</span>, <span class="math inline">\(\gamma=0.0001\)</span> and rounded starting states <span class="math inline">\(\ell_0=9.8\)</span>, <span class="math inline">\(b_0=0\)</span>, with seasonal states <span class="math inline">\(1.5,-0.3,-0.7,-0.5\)</span> in quarter order.</p>
 <p>These supplied states approximate the fitted states; they are not observations or optimizer starting guesses. In the November 10, 2026 R fit, <code>tidy()</code> gives <span class="math inline">\(\ell_0\approx9.79\)</span>, <span class="math inline">\(b_0\approx0.021\)</span> and seasonal states about <span class="math inline">\(1.498,-0.294,-0.670,-0.534\)</span>. The workbook intentionally reconstructs with its supplied precision, so its later states can differ slightly from full-precision <code>components()</code> output.</p>
 <p>A first-year mean or classical-decomposition indices can provide <strong>heuristic guesses for estimation</strong>. They are not automatically the states returned by fitting. Here the first-year mean is about 9.756; it does not determine the fitted initial level by itself. Before the first observation, the table stores a full cycle of seasonal states, with initial level and slope at <span class="math inline">\(t=0\)</span>.</p>
 <table class="caption-top table">
@@ -2681,7 +2681,7 @@ T+5-4(1+1)=T-3.
 <td>N/A</td>
 <td></td>
 <td></td>
-<td>1.5</td>
+<td>1.50</td>
 <td>N/A</td>
 </tr>
 <tr class="odd">
@@ -2690,7 +2690,7 @@ T+5-4(1+1)=T-3.
 <td>N/A</td>
 <td></td>
 <td></td>
-<td>-0.3</td>
+<td>-0.29</td>
 <td>N/A</td>
 </tr>
 <tr class="even">
@@ -2699,53 +2699,53 @@ T+5-4(1+1)=T-3.
 <td>N/A</td>
 <td></td>
 <td></td>
-<td>-0.7</td>
+<td>-0.67</td>
 <td>N/A</td>
 </tr>
 <tr class="odd">
 <td>1997 Q4</td>
 <td>0</td>
 <td>N/A</td>
-<td>9.8</td>
-<td>0.0</td>
-<td>-0.5</td>
+<td>9.79</td>
+<td>0.02</td>
+<td>-0.53</td>
 <td>N/A</td>
 </tr>
 <tr class="even">
 <td>1998 Q1</td>
 <td>1</td>
-<td>11.8</td>
-<td>9.9</td>
-<td>0.0</td>
-<td>1.5</td>
-<td>11.3</td>
+<td>11.81</td>
+<td>9.94</td>
+<td>0.04</td>
+<td>1.50</td>
+<td>11.31</td>
 </tr>
 <tr class="odd">
 <td>1998 Q2</td>
 <td>2</td>
-<td>9.3</td>
-<td>9.9</td>
-<td>0.0</td>
-<td>-0.3</td>
-<td>9.7</td>
+<td>9.28</td>
+<td>9.88</td>
+<td>0.02</td>
+<td>-0.29</td>
+<td>9.69</td>
 </tr>
 <tr class="even">
 <td>1998 Q3</td>
 <td>3</td>
-<td>8.6</td>
-<td>9.7</td>
-<td>-0.0</td>
-<td>-0.7</td>
-<td>9.2</td>
+<td>8.64</td>
+<td>9.75</td>
+<td>-0.00</td>
+<td>-0.67</td>
+<td>9.23</td>
 </tr>
 <tr class="odd">
 <td>1998 Q4</td>
 <td>4</td>
-<td>9.3</td>
-<td>9.8</td>
-<td>0.0</td>
-<td>-0.5</td>
-<td>9.2</td>
+<td>9.30</td>
+<td>9.77</td>
+<td>0.00</td>
+<td>-0.53</td>
+<td>9.21</td>
 </tr>
 <tr class="even">
 <td></td>
@@ -2759,38 +2759,38 @@ T+5-4(1+1)=T-3.
 <tr class="odd">
 <td>2017 Q1</td>
 <td>77</td>
-<td>12.4</td>
-<td>10.9</td>
-<td>0.1</td>
-<td>1.5</td>
-<td>12.3</td>
+<td>12.41</td>
+<td>10.86</td>
+<td>0.09</td>
+<td>1.50</td>
+<td>12.35</td>
 </tr>
 <tr class="even">
 <td>2017 Q2</td>
 <td>78</td>
-<td>10.5</td>
-<td>10.9</td>
-<td>0.1</td>
-<td>-0.3</td>
-<td>10.7</td>
+<td>10.47</td>
+<td>10.91</td>
+<td>0.09</td>
+<td>-0.29</td>
+<td>10.66</td>
 </tr>
 <tr class="odd">
 <td>2017 Q3</td>
 <td>79</td>
-<td>10.5</td>
-<td>11.0</td>
-<td>0.1</td>
-<td>-0.7</td>
-<td>10.3</td>
+<td>10.50</td>
+<td>11.04</td>
+<td>0.09</td>
+<td>-0.67</td>
+<td>10.32</td>
 </tr>
 <tr class="even">
 <td>2017 Q4</td>
 <td>80</td>
-<td>11.2</td>
-<td>11.3</td>
-<td>0.1</td>
-<td>-0.5</td>
-<td>10.6</td>
+<td>11.21</td>
+<td>11.29</td>
+<td>0.12</td>
+<td>-0.53</td>
+<td>10.60</td>
 </tr>
 </tbody>
 </table>
@@ -2833,7 +2833,7 @@ T+5-4(1+1)=T-3.
 <td></td>
 <td></td>
 <td></td>
-<td>12.9</td>
+<td>12.91</td>
 </tr>
 <tr class="odd">
 <td>2018 Q2</td>
@@ -2842,7 +2842,7 @@ T+5-4(1+1)=T-3.
 <td></td>
 <td></td>
 <td></td>
-<td>11.2</td>
+<td>11.24</td>
 </tr>
 <tr class="even">
 <td>2018 Q3</td>
@@ -2851,7 +2851,7 @@ T+5-4(1+1)=T-3.
 <td></td>
 <td></td>
 <td></td>
-<td>11.0</td>
+<td>10.98</td>
 </tr>
 <tr class="odd">
 <td>2018 Q4</td>
@@ -2860,7 +2860,7 @@ T+5-4(1+1)=T-3.
 <td></td>
 <td></td>
 <td></td>
-<td>11.2</td>
+<td>11.24</td>
 </tr>
 <tr class="even">
 <td>2019 Q1</td>
@@ -2869,7 +2869,7 @@ T+5-4(1+1)=T-3.
 <td></td>
 <td></td>
 <td></td>
-<td>13.4</td>
+<td>13.39</td>
 </tr>
 <tr class="odd">
 <td>2019 Q2</td>
@@ -2878,7 +2878,7 @@ T+5-4(1+1)=T-3.
 <td></td>
 <td></td>
 <td></td>
-<td>11.7</td>
+<td>11.72</td>
 </tr>
 <tr class="even">
 <td>2019 Q3</td>
@@ -2887,7 +2887,7 @@ T+5-4(1+1)=T-3.
 <td></td>
 <td></td>
 <td></td>
-<td>11.5</td>
+<td>11.46</td>
 </tr>
 <tr class="odd">
 <td>2019 Q4</td>
@@ -2896,7 +2896,7 @@ T+5-4(1+1)=T-3.
 <td></td>
 <td></td>
 <td></td>
-<td>11.7</td>
+<td>11.72</td>
 </tr>
 <tr class="even">
 <td>2020 Q1</td>
@@ -2905,7 +2905,7 @@ T+5-4(1+1)=T-3.
 <td></td>
 <td></td>
 <td></td>
-<td>13.9</td>
+<td>13.87</td>
 </tr>
 <tr class="odd">
 <td>2020 Q2</td>
@@ -2914,7 +2914,7 @@ T+5-4(1+1)=T-3.
 <td></td>
 <td></td>
 <td></td>
-<td>12.2</td>
+<td>12.20</td>
 </tr>
 <tr class="even">
 <td>2020 Q3</td>
@@ -2923,7 +2923,7 @@ T+5-4(1+1)=T-3.
 <td></td>
 <td></td>
 <td></td>
-<td>11.9</td>
+<td>11.94</td>
 </tr>
 <tr class="odd">
 <td>2020 Q4</td>
@@ -2932,10 +2932,11 @@ T+5-4(1+1)=T-3.
 <td></td>
 <td></td>
 <td></td>
-<td>12.2</td>
+<td>12.20</td>
 </tr>
 </tbody>
 </table>
+<p>With two decimals the forecasts can be checked by hand: at <span class="math inline">\(h=5\)</span>, <span class="math inline">\(11.29 + 5 \times 0.12 + 1.50 = 13.39\)</span>. The workbook starts from the rounded supplied states above, so its levels and forecasts can differ from this table in the first decimal. Both are correct for their starting values.</p>
 </section>
 <section id="example-for-multiplicative-case" class="level2">
 <h2 class="anchored" data-anchor-id="example-for-multiplicative-case">Example for multiplicative case</h2>
