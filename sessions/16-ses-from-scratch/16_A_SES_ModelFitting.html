@@ -2451,6 +2451,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
+<p>A <strong>candidate</strong> is any given pair of values for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\ell_0\)</span>. Scoring a candidate means computing its predictions and their squared errors.</p>
 <p>The required workshop is sections 1 to 5. Score candidate fits by hand, read and check the supplied functions, automate the hand grid, then use a numerical optimizer to search both parameters. Interpret its outputs, compare with the library and check forecasts on held-out observations. Explain what the fitted parameters, objective and convergence report tell you. R argument syntax and the optimizer’s algorithm are not examination topics.</p>
 <p>The required homework is <a href="16_B_SES_Exercise.html#exercise">16_B</a>. The <a href="#appendix">appendix</a> contains optional interface reference and another fitting practice: neither is required for homework, the group assignment or exams.</p>
 <section id="candidate-fits" class="level2">
@@ -2469,12 +2470,11 @@ window.Quarto = {
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>The prediction for <span class="math inline">\(y_2\)</span> is <span class="math inline">\(\hat y_{2|1}=\ell_1=8.4\)</span>. After observing <span class="math inline">\(y_1=8\)</span>, we update the level using the SES level equation:</p>
+<p>The prediction for <span class="math inline">\(y_1\)</span> uses the initial level, <span class="math inline">\(\hat y_{1|0}=\ell_0=9\)</span>. After observing <span class="math inline">\(y_1=8\)</span>, we update the level using the SES level equation:</p>
 <p><span class="math display">\[
 \ell_1=\alpha y_1+(1-\alpha)\ell_0=0.6\times8+(1-0.6)\times9=8.4.
 \]</span></p>
-<p>The prediction for <span class="math inline">\(y_1\)</span> uses the initial level, <span class="math inline">\(\ell_0=9\)</span>. Each prediction is the level before that observation arrives.</p>
-<p><strong>Note:</strong> A <strong>candidate</strong> is any given pair of values for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\ell_0\)</span>.</p>
+<p>The prediction for <span class="math inline">\(y_2\)</span> is therefore <span class="math inline">\(\hat y_{2|1}=\ell_1=8.4\)</span>. Each prediction is the level before that observation arrives.</p>
 <p>Now let’s add another candidate and compute the SSE for both cases, using the squared prediction errors as in Session 15 on SES equations. The pair from the timing check is labeled B below; the additional pair is A.</p>
 <table class="caption-top table">
 <colgroup>
