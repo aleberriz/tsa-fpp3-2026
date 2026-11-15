@@ -2820,6 +2820,7 @@ e_t=y_t-\ell_{t-1},\qquad
 </tbody>
 </table>
 <p>The <code>method</code> argument selects the search algorithm. Here we use <strong>L-BFGS-B</strong>, short for <em>limited-memory BFGS with bounds</em>: it uses local slope information to choose parameter updates and can respect lower and upper limits. The final <strong>B</strong> refers to those <strong>bounds</strong>, which we supply through <code>lower</code> and <code>upper</code>. We choose this method so that the search can vary <span class="math inline">\(\alpha\)</span> within its allowed range while also estimating <span class="math inline">\(\ell_0\)</span>. In the limits below, <code>-Inf</code> and <code>Inf</code> mean that we impose no lower or upper limit on the initial level. See <a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/optim.html">R’s documentation for <code>optim()</code></a> for the algorithm details.</p>
+<p>Understanding <strong>L-BFGS-B</strong> is not graded in this course.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>opt <span class="ot">&lt;-</span> <span class="fu">optim</span>(<span class="at">par =</span> <span class="fu">c</span>(<span class="fl">0.1</span>, y[<span class="dv">1</span>]),</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">fn =</span> my_ses_sse, <span class="at">y =</span> y,</span>
@@ -2876,44 +2877,7 @@ e_t=y_t-\ell_{t-1},\qquad
 </tr>
 </tbody>
 </table>
-<p>For the <code>L-BFGS-B</code> method used here, the completion codes mean:</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Code</th>
-<th>Interpretation</th>
-<th>What to do with it</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>0</code></td>
-<td>The algorithm reports successful completion because a stopping condition was met.</td>
-<td>Interpret the fitted parameters and SSE, then assess the model’s forecasts separately.</td>
-</tr>
-<tr class="even">
-<td><code>1</code></td>
-<td>The search reached its iteration limit before reporting successful completion.</td>
-<td>Inspect the result and <code>opt$message</code>; it may need more iterations or revised starting values.</td>
-</tr>
-<tr class="odd">
-<td><code>51</code></td>
-<td>The search issued a warning.</td>
-<td>Read <code>opt$message</code> to identify the warning before deciding whether the result is usable.</td>
-</tr>
-<tr class="even">
-<td><code>52</code></td>
-<td>The search encountered an error.</td>
-<td>Read <code>opt$message</code> and investigate the reported problem before treating the result as a completed fit.</td>
-</tr>
-</tbody>
-</table>
-<p><code>opt$message</code> provides more detail about why the search stopped. In this run, it reports that further reductions in SSE became too small under the algorithm’s stopping tolerance. That explains the <code>0</code>; it does not mean that SSE itself is zero. Other search methods can use additional codes, as listed in <a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/optim.html">R’s <code>optim()</code> documentation</a>.</p>
+<p><code>opt$message</code> provides more detail about why the search stopped. In this run, it reports that further reductions in SSE became too small under the algorithm’s stopping tolerance. That explains the <code>0</code>; it does not mean that SSE itself is zero. For a nonzero code, read the message to identify the stopping problem or warning, and consult <a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/optim.html">R’s <code>optim()</code> documentation</a> if needed.</p>
 <p>Starting guesses, bounds and stopping rules can affect the numerical result. Two implementations can therefore return slightly different estimates without either being incorrectly coded. Compare the objective, fitted values and forecasts, rather than demanding the same parameter digits.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
