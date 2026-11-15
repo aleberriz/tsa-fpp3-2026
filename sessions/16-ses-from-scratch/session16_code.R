@@ -57,6 +57,7 @@ my_ses_sse <- function(par, y) {
 }
 
 ### Check it against the score from section 2 ----
+my_ses_sse(c(0.8399875, 39.5389994), y)
 all.equal(SSE_test, my_ses_sse(c(0.8399875, 39.5389994), y))
 
 ## 4. Run the search and interpret the evidence ----
