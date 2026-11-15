@@ -2451,7 +2451,7 @@ window.Quarto = {
 <section id="candidate-fits" class="level2">
 <h2 class="anchored" data-anchor-id="candidate-fits">Before the code: score two candidate fits</h2>
 <p>Take a tiny made-up series with three consecutive observations, <span class="math inline">\(y_1=8\)</span>, <span class="math inline">\(y_2=12\)</span> and <span class="math inline">\(y_3=10\)</span>. These numbers are the data values, not positions in a longer series. Each prediction uses the preceding level. After scoring that prediction, update the level using the observation. Recalculate the whole sequence whenever either parameter changes.</p>
-<p><strong>Timing check.</strong> For candidate B, take <span class="math inline">\(\alpha=0.6\)</span> and <span class="math inline">\(\ell_0=9\)</span>. What predicts <span class="math inline">\(y_1\)</span>? After seeing <span class="math inline">\(y_1=8\)</span>, what predicts <span class="math inline">\(y_2\)</span>? Commit to both answers before opening the comparison.</p>
+<p><strong>Timing check.</strong> Take <span class="math inline">\(\alpha=0.6\)</span> and <span class="math inline">\(\ell_0=9\)</span>. What predicts <span class="math inline">\(y_1\)</span>? After seeing <span class="math inline">\(y_1=8\)</span>, what predicts <span class="math inline">\(y_2\)</span>? Commit to both answers before opening the comparison.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -2464,6 +2464,13 @@ window.Quarto = {
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
+<p>The prediction for <span class="math inline">\(y_2\)</span> is <span class="math inline">\(\hat y_{2|1}=\ell_1=8.4\)</span>. After observing <span class="math inline">\(y_1=8\)</span>, we update the level using the SES level equation:</p>
+<p><span class="math display">\[
+\ell_1=\alpha y_1+(1-\alpha)\ell_0=0.6\times8+(1-0.6)\times9=8.4.
+\]</span></p>
+<p>The prediction for <span class="math inline">\(y_1\)</span> uses the initial level, <span class="math inline">\(\ell_0=9\)</span>. Each prediction is the level before that observation arrives.</p>
+<p><strong>Note:</strong> A <strong>candidate</strong> is any given pair of values for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\ell_0\)</span>.</p>
+<p>Now let’s add another candidate and compute the SSE for both cases, using the squared prediction errors as in Session 15 on SES equations. The pair from the timing check is labeled B below; the additional pair is A.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 16%">
@@ -2502,12 +2509,7 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<p>Each prediction is the level before that observation arrives.</p>
-<p>For example, candidate fit B predicts <span class="math inline">\(y_1\)</span> with <span class="math inline">\(\ell_0=9\)</span>. Once <span class="math inline">\(y_1=8\)</span> is observed, it updates its level with the SES level equation:</p>
-<p><span class="math display">\[
-\ell_1=\alpha y_1+(1-\alpha)\ell_0=0.6\times8+(1-0.6)\times9=8.4.
-\]</span></p>
-<p>That updated level predicts <span class="math inline">\(y_2\)</span>. Candidate fit B has the smaller training score among these two trials. This comparison neither establishes a global minimum (i.e., the best overall candidate) nor shows which candidate fit forecasts later observations better.</p>
+<p>Candidate fit B has the smaller training score among these two trials. This comparison neither establishes a global minimum (i.e., the best overall candidate) nor shows which candidate fit forecasts later observations better.</p>
 </div>
 </div>
 </div>
