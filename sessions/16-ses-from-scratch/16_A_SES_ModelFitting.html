@@ -2736,7 +2736,7 @@ e_t=y_t-\ell_{t-1},\qquad
 <h2 class="anchored" data-anchor-id="optim">4. Run the search and interpret the evidence</h2>
 <section id="grid-search" class="level3">
 <h3 class="anchored" data-anchor-id="grid-search">Automate the hand grid with finer spacing</h3>
-<p>The hand example was already a grid search: it scored a preset list of alpha values. Now automate the same calculation for Algeria with finer spacing. Fix the initial level at Algeria’s first observation. For each candidate alpha, recompute the levels over the full series and calculate SSE. Choosing the lowest point on this curve is already a fit, within these candidate values and this fixed initial level.</p>
+<p>The hand example was already a grid search: it scored a preset list of alpha values. Now automate the same calculation for the Algeria data set with finer spacing. Fix the initial level at Algeria’s first observation. For each candidate alpha, recompute the levels over the full series and calculate SSE. Choosing the lowest point on this curve is already a fit, within these candidate values and this fixed initial level.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>alpha_grid <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fl">0.01</span>, <span class="fl">0.99</span>, <span class="at">by =</span> <span class="fl">0.01</span>)</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>grid_SSE <span class="ot">&lt;-</span> <span class="fu">sapply</span>(alpha_grid, <span class="cf">function</span>(alpha) {</span>
