@@ -23,10 +23,11 @@ fit |> components() |> autoplot()
 aus_holidays |>
   model(
     MNA = ETS(Trips ~ error("M") + trend("N") + season("A")),
-    MNM = ETS(Trips ~ error("M") + trend("N") + season("M"))
+    MAA = ETS(Trips ~ error("M") + trend("A") + season("A"))
   ) |>
   glance() |>
-  select(.model, AICc)
+  select(.model, log_lik, AIC, AICc) |>
+  knitr::kable(digits = 2)
 
 ## Check the selected model ----
 fit |> gg_tsresiduals()
@@ -42,7 +43,8 @@ fit |>
 fit |>
   forecast(h = 8) |>
   hilo(level = 95) |>
-  head(4)
+  as_tibble() |>
+  select(Quarter, .mean, `95%`)
 
 # Exercise 2 ----
 aus_holidays_total <- tourism |>
