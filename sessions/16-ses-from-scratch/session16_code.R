@@ -25,6 +25,8 @@ algerian_exports <- global_economy |>
 
 y <- algerian_exports$Exports
 levels_function <- ses_levels(y, alpha = 0.8399875, l_0 = 39.5389994)
+head(levels_function)
+
 levels_test <- dget("../../data/yhat_SES_test")
 all.equal(levels_function, levels_test)
 
