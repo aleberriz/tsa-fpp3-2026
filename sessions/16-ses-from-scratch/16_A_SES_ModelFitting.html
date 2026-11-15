@@ -2982,6 +2982,7 @@ e_t=y_t-\ell_{t-1},\qquad
 </section>
 <section id="held-out" class="level2">
 <h2 class="anchored" data-anchor-id="held-out">5. Compare forecasts on held-out observations</h2>
+<p>The <strong>holdout set</strong> here is the <strong>test set</strong> from our train/test split: observations kept out of fitting so we can evaluate the forecasts.</p>
 <p>Now move the forecast origin back to the end of 2012. Training uses 1960 to 2012; 2013 to 2017 supply five later outcomes. All three methods forecast horizons one to five from that single origin, without updating on those outcomes. Refit everything using the training data, including the alpha grid and its final level. The full-series estimates above cannot enter this comparison.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>training <span class="ot">&lt;-</span> algerian_exports <span class="sc">|&gt;</span> <span class="fu">filter</span>(Year <span class="sc">&lt;=</span> <span class="dv">2012</span>)</span>
