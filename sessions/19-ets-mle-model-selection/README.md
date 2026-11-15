@@ -4,9 +4,9 @@
 
 **Materials:** [Slides](session19_slides.html), [ETS classification](19_A_ExpSmoothing_Classification.html), [model selection and forecasting notebook](19_B_ESmoothing_Model_Selection.html), and [R script](session19_code.R).
 
-**Before class:** Read the [short likelihood guide](19_B_ESmoothing_Model_Selection.html#before-class). The [handwritten primer](19_A_MLE_Informal_Intro.pdf) is optional.
+**Before class:** Read the [short likelihood guide](19_B_ESmoothing_Model_Selection.html#before-class) and try its check questions; the answers are collapsed below them. The [handwritten primer](19_A_MLE_Informal_Intro.pdf) is optional.
 
-**In class:** Use Australian holiday trips to connect ETS letters, state-space models, likelihood, AICc selection, residual diagnostics and forecast distributions. Compare AIC values using supplied parameter counts. BIC and detailed parameter counting remain reference material.
+**In class:** Follow Australian holiday trips along one route: choose a form (the ETS letters and the state-space model), fit it by likelihood, select by AICc, then evaluate it with residual diagnostics and forecast distributions. Read the selected model letter by letter, see how its parameter count is made, and compare AIC values using supplied parameter counts. BIC remains reference material.
 
 **R:** `ETS(y)`, `report()`, `glance()`, `tidy()`, `components()`, `augment()`, `forecast()`, `hilo()`.
 
