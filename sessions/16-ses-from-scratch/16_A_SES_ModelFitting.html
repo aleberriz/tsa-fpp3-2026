@@ -2584,7 +2584,7 @@ window.Quarto = {
 </section>
 <section id="levels" class="level2">
 <h2 class="anchored" data-anchor-id="levels">1. Read and check the function that computes the levels</h2>
-<p><code>ses_levels(y, alpha, l_0)</code> applies the SES level equation once per observation, each time starting from the level it has just computed, and returns the initial level and every update. The equations are:</p>
+<p><code>ses_levels(y, alpha, l_0)</code> uses the <strong>recursive weighted-average form</strong>, the first of the <a href="../15-ses-equations/15_B_SES.html#equivalent-forms">four equivalent forms in Session 15 on SES equations</a>. It combines the new observation with the previous level, giving them weights <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(1-\alpha\)</span>. The function applies this update once per observation and returns the initial level and every update. The equations are:</p>
 <p><span class="math display">\[
 \hat y_{t|t-1}=\ell_{t-1},\qquad
 e_t=y_t-\ell_{t-1},\qquad
@@ -2638,6 +2638,7 @@ e_t=y_t-\ell_{t-1},\qquad
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  levels</span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<p><code>numeric(length(y) + 1)</code> reserves one position for the initial level and one for each update. With <span class="math inline">\(T\)</span> observations, we therefore store <span class="math inline">\(T+1\)</span> levels, <span class="math inline">\(\ell_0,\ell_1,\ldots,\ell_T\)</span>. For example, three observations produce four stored levels: the first three predict <span class="math inline">\(y_1,y_2,y_3\)</span>, while the fourth is the updated level after observing <span class="math inline">\(y_3\)</span> and supplies the forecast for <span class="math inline">\(y_4\)</span> and later observations.</p>
 <section id="test-levels" class="level3">
 <h3 class="anchored" data-anchor-id="test-levels">Check the levels against a reference file</h3>
 <p>Use Algeria’s annual exports, measured as a percentage of GDP: 58 observations, 1960 to 2017. In Session 15 on SES equations we fitted SES to this series with <code>fable</code> and obtained <span class="math inline">\(\alpha\approx0.84\)</span> and <span class="math inline">\(\ell_0\approx39.54\)</span>. The reference file <code>yhat_SES_test</code> stores the 59 levels <span class="math inline">\(\ell_0, \ell_1, \dots, \ell_{58}\)</span> of that model, computed with those two estimates to seven decimals. If <code>ses_levels()</code> is correct, it reproduces the same 59 levels from the same <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\ell_0\)</span>. These fixed values only test the function. The numerical search in <a href="#search">section 4</a> is a different step: <code>optim()</code> starts from <span class="math inline">\(\alpha=0.1\)</span> and <span class="math inline">\(\ell_0=y_1\)</span> and estimates both parameters itself.</p>
