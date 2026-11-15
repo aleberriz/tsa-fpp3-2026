@@ -2844,6 +2844,7 @@ e_t=y_t-\ell_{t-1},\qquad
 <pre><code>[1] 0</code></pre>
 </div>
 </div>
+<p><code>opt$value</code> prints as 1995.285, matching the score we calculated before using <code>optim()</code>. This agreement reflects how we set up the illustration: the earlier check used rounded parameter estimates from the <code>fable</code> fit, so it was already scoring a fitted model. Our search finds slightly different parameters and an SSE that agrees at the displayed precision; the unrounded scores differ slightly. With arbitrary candidate values, or on another data set, the score before the search need not match the optimized score. The purpose here is to reproduce a known fit while seeing how the search chooses its parameters.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 33%">
@@ -2870,11 +2871,49 @@ e_t=y_t-\ell_{t-1},\qquad
 </tr>
 <tr class="odd">
 <td><code>convergence</code></td>
-<td>Search completion status; zero reports successful completion here</td>
+<td>Search completion status; <code>0</code> reports successful completion, while nonzero codes flag a stopping problem or warning</td>
 <td>It does not certify a global minimum, correct code or useful future forecasts.</td>
 </tr>
 </tbody>
 </table>
+<p>For the <code>L-BFGS-B</code> method used here, the completion codes mean:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Code</th>
+<th>Interpretation</th>
+<th>What to do with it</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>0</code></td>
+<td>The algorithm reports successful completion because a stopping condition was met.</td>
+<td>Interpret the fitted parameters and SSE, then assess the model’s forecasts separately.</td>
+</tr>
+<tr class="even">
+<td><code>1</code></td>
+<td>The search reached its iteration limit before reporting successful completion.</td>
+<td>Inspect the result and <code>opt$message</code>; it may need more iterations or revised starting values.</td>
+</tr>
+<tr class="odd">
+<td><code>51</code></td>
+<td>The search issued a warning.</td>
+<td>Read <code>opt$message</code> to identify the warning before deciding whether the result is usable.</td>
+</tr>
+<tr class="even">
+<td><code>52</code></td>
+<td>The search encountered an error.</td>
+<td>Read <code>opt$message</code> and investigate the reported problem before treating the result as a completed fit.</td>
+</tr>
+</tbody>
+</table>
+<p><code>opt$message</code> provides more detail about why the search stopped. In this run, it reports that further reductions in SSE became too small under the algorithm’s stopping tolerance. That explains the <code>0</code>; it does not mean that SSE itself is zero. Other search methods can use additional codes, as listed in <a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/optim.html">R’s <code>optim()</code> documentation</a>.</p>
 <p>Starting guesses, bounds and stopping rules can affect the numerical result. Two implementations can therefore return slightly different estimates without either being incorrectly coded. Compare the objective, fitted values and forecasts, rather than demanding the same parameter digits.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
