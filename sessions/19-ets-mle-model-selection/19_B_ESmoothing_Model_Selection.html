@@ -2350,27 +2350,32 @@ window.Quarto = {
    
   <ul>
   <li><a href="#references" id="toc-references" class="nav-link active" data-scroll-target="#references">References</a></li>
+  <li><a href="#route" id="toc-route" class="nav-link" data-scroll-target="#route">Today’s route</a></li>
   <li><a href="#libraries" id="toc-libraries" class="nav-link" data-scroll-target="#libraries">Libraries</a></li>
   <li><a href="#before-class" id="toc-before-class" class="nav-link" data-scroll-target="#before-class">Before class: a short likelihood guide</a></li>
-  <li><a href="#state-space" id="toc-state-space" class="nav-link" data-scroll-target="#state-space">From an update rule to a statistical model</a></li>
-  <li><a href="#framework" id="toc-framework" class="nav-link" data-scroll-target="#framework">The ETS statistical framework and model selection</a>
+  <li><a href="#state-space" id="toc-state-space" class="nav-link" data-scroll-target="#state-space">From an update rule to a statistical model</a>
+  <ul>
+  <li><a href="#multiplicative-errors" id="toc-multiplicative-errors" class="nav-link" data-scroll-target="#multiplicative-errors">Models with multiplicative errors</a></li>
+  <li><a href="#residuals" id="toc-residuals" class="nav-link" data-scroll-target="#residuals">Residuals and multiplicative errors</a></li>
+  </ul></li>
+  <li><a href="#framework" id="toc-framework" class="nav-link" data-scroll-target="#framework">Fitting by maximum likelihood</a>
   <ul>
   <li><a href="#likelihood" id="toc-likelihood" class="nav-link" data-scroll-target="#likelihood">Minimizing the SSE vs maximizing the likelihood</a></li>
-  <li><a href="#information-criteria" id="toc-information-criteria" class="nav-link" data-scroll-target="#information-criteria">Information criteria vs the likelihood</a></li>
-  <li><a href="#ic-vs-cv" id="toc-ic-vs-cv" class="nav-link" data-scroll-target="#ic-vs-cv">Information criteria vs cross-validation</a></li>
   </ul></li>
   <li><a href="#criteria" id="toc-criteria" class="nav-link" data-scroll-target="#criteria">The information criteria</a>
   <ul>
   <li><a href="#aic" id="toc-aic" class="nav-link" data-scroll-target="#aic">AIC: Akaike’s Information Criterion</a></li>
   <li><a href="#aicc" id="toc-aicc" class="nav-link" data-scroll-target="#aicc">AICc: the bias-corrected AIC</a></li>
+  <li><a href="#information-criteria" id="toc-information-criteria" class="nav-link" data-scroll-target="#information-criteria">Information criteria vs the likelihood</a></li>
+  <li><a href="#ic-vs-cv" id="toc-ic-vs-cv" class="nav-link" data-scroll-target="#ic-vs-cv">Information criteria vs cross-validation</a></li>
   <li><a href="#bic" id="toc-bic" class="nav-link" data-scroll-target="#bic">Reference: BIC, the Bayesian Information Criterion</a></li>
-  <li><a href="#excluded" id="toc-excluded" class="nav-link" data-scroll-target="#excluded">Reference: model combinations that are excluded</a></li>
-  <li><a href="#multiplicative-errors" id="toc-multiplicative-errors" class="nav-link" data-scroll-target="#multiplicative-errors">Models with multiplicative errors</a></li>
-  <li><a href="#residuals" id="toc-residuals" class="nav-link" data-scroll-target="#residuals">Residuals and multiplicative errors</a></li>
   </ul></li>
   <li><a href="#automatic" id="toc-automatic" class="nav-link" data-scroll-target="#automatic">Automatic ETS model selection</a>
   <ul>
-  <li><a href="#how-to-choose" id="toc-how-to-choose" class="nav-link" data-scroll-target="#how-to-choose">How to ask <code>ETS()</code> to choose</a></li>
+  <li><a href="#how-to-choose" id="toc-how-to-choose" class="nav-link" data-scroll-target="#how-to-choose">How to ask <code>ETS()</code> to choose</a>
+  <ul>
+  <li><a href="#excluded" id="toc-excluded" class="nav-link" data-scroll-target="#excluded">Model combinations that are excluded</a></li>
+  </ul></li>
   <li><a href="#example-1" id="toc-example-1" class="nav-link" data-scroll-target="#example-1">Continuing example: Australian holiday trips</a></li>
   <li><a href="#diagnostics" id="toc-diagnostics" class="nav-link" data-scroll-target="#diagnostics">Check the selected model</a></li>
   </ul></li>
@@ -2416,6 +2421,41 @@ window.Quarto = {
 </ol>
 <p>This notebook follows reference 1, with additional explanations of likelihood, model selection and forecast evaluation.</p>
 </section>
+<section id="route" class="level1">
+<h1>Today’s route</h1>
+<p>A <strong>specification</strong> is a model form, such as additive errors, an additive trend and no seasonality. This notebook takes one series, Australian holiday trips, through four tasks that are worth keeping distinct:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Task</th>
+<th>What changes or is judged?</th>
+<th>Where</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Choose a form</td>
+<td>Decide which error, trend and seasonal components are allowed: the three ETS letters.</td>
+<td><a href="19_A_ExpSmoothing_Classification.html#notation">19_A</a> and <a href="#state-space">the statistical model</a></td>
+</tr>
+<tr class="even">
+<td>Fit</td>
+<td>Estimate parameters and initial states within each chosen form, using training data, by maximizing the likelihood.</td>
+<td><a href="#likelihood">Likelihood</a></td>
+</tr>
+<tr class="odd">
+<td>Select</td>
+<td>Rank eligible fitted forms using AICc on comparable likelihoods.</td>
+<td><a href="#criteria">Information criteria</a> and <a href="#automatic">automatic selection</a></td>
+</tr>
+<tr class="even">
+<td>Evaluate</td>
+<td>Inspect diagnostics and test forecasts on later data at the relevant horizons.</td>
+<td><a href="#diagnostics">Diagnostics</a> and <a href="#forecasting">forecasts</a></td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="libraries" class="level1">
 <h1>Libraries</h1>
 <div class="cell">
@@ -2430,9 +2470,31 @@ window.Quarto = {
 <li><strong>Density is not a probability at a point.</strong> For continuous data, likelihood uses the heights of probability density curves at the observations. These heights need not be below one.</li>
 <li><strong>A time series uses conditional densities.</strong> At each date, predict using earlier information; evaluate that observation under its conditional distribution. Multiply those densities to obtain the likelihood, or add their logarithms to obtain the log-likelihood.</li>
 <li><strong>Fit and complexity are separate questions.</strong> Fitting chooses a model’s parameters. Model selection also asks whether extra flexibility earns its place.</li>
-<li><strong>Forecast evaluation asks a different question.</strong> AICc uses the fitted training likelihood; rolling-origin evaluation measures actual forecast errors at specified horizons.</li>
+<li><strong>Forecast evaluation asks a different question.</strong> AICc, defined <a href="#aicc">below</a>, is a fit score with a penalty for extra parameters. Like the SSE in Session 16 on fitting SES, it is computed on the training data, whereas rolling-origin evaluation, as in Session 14 on cross-validation, measures actual forecast errors at specified horizons.</li>
 </ol>
 <p>Check your understanding: What stays fixed during estimation? Why is a very wide distribution not automatically a good fit? What is the difference between estimating alpha and selecting the trend type? Which errors matter for a twelve-month inventory decision? Why must model selection be repeated inside each training fold when evaluating an automatic procedure?</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Answers: open after trying the questions">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Answers: open after trying the questions
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>What stays fixed during estimation?</strong> The observations. Fitting varies the parameters and initial states and asks which values make those fixed data most plausible.</li>
+<li><strong>Why is a very wide distribution not automatically a good fit?</strong> Widening a distribution lowers its curve near the center, where well-predicted observations fall, and a very wide one is low everywhere. The heights at the observations shrink, so the likelihood falls.</li>
+<li><strong>Estimating alpha or selecting the trend type?</strong> Estimating alpha is fitting: the form is fixed, and the likelihood chooses the value. Selecting the trend type compares different forms, each fitted first, so it needs a criterion that charges for the extra parameters, such as AICc.</li>
+<li><strong>Which errors matter for a twelve-month inventory decision?</strong> Forecast errors at horizons up to twelve months, on data the model did not use for fitting. One-step training residuals do not measure them.</li>
+<li><strong>Why repeat selection inside each training fold?</strong> Automatic selection is part of the procedure being evaluated. Choosing the form once on the full series would let earlier folds use information from their future.</li>
+</ul>
+</div>
+</div>
+</div>
 <p>The handwritten <code>19_A_MLE_Informal_Intro.pdf</code> is optional background. No calculus proof or memorization of the general likelihood derivation is needed for this session.</p>
 </section>
 <section id="state-space" class="level1">
@@ -2442,59 +2504,40 @@ window.Quarto = {
 y_t=\ell_{t-1}+e_t,\qquad \ell_t=\ell_{t-1}+\alpha e_t.
 \]</span></p>
 <p>The level equation is the <strong>SES error-correction form</strong> from Session 15 on SES equations: <span class="math inline">\(\ell_t=\ell_{t-1}+\alpha(y_t-\ell_{t-1})\)</span>. The new ingredient is the probabilistic observation equation and the distribution of its shock.</p>
-<p>Before observing <span class="math inline">\(y_t\)</span>, <span class="math inline">\(e_t\)</span> is a random innovation describing possible surprises. After fitting to the training data, reconstruct the <strong>fitted innovation residual</strong> <span class="math inline">\(\hat e_t=y_t-\hat y_{t|t-1}\)</span>. This is a calculated difference at estimated settings. It estimates a realized shock; it is not itself a new random draw or a held-out forecast error. If the shocks are independent normal variables, these equations specify conditional normal distributions, a likelihood, and forecast distributions. They also explain why uncertainty can grow while the point forecast stays flat.</p>
+<p>Before observing <span class="math inline">\(y_t\)</span>, <span class="math inline">\(e_t\)</span> is a random innovation describing possible surprises. After fitting to the training data, reconstruct the <strong>fitted innovation residual</strong> <span class="math inline">\(\hat e_t=y_t-\hat y_{t|t-1}\)</span>, where <span class="math inline">\(\hat y_{t|t-1}\)</span> is the prior prediction (<code>fable</code> calls it the fitted value). This is a calculated difference at estimated settings. It estimates a realized shock; it is not itself a new random draw or a held-out forecast error. If the shocks are independent normal variables, these equations specify conditional normal distributions, a likelihood, and forecast distributions. They also explain why uncertainty can grow while the point forecast stays flat.</p>
 <p>With multiplicative errors the observation equation is <span class="math inline">\(y_t=\ell_{t-1}(1+\varepsilon_t)\)</span>: the innovation is a relative surprise. Refitting with a different error type can change parameter estimates and point forecasts as well as intervals. For suitable paired models, the familiar point recursions coincide when their states and parameters are held fixed; that is not a promise that separately fitted models forecast identically.</p>
+<section id="multiplicative-errors" class="level2">
+<h2 class="anchored" data-anchor-id="multiplicative-errors">Models with multiplicative errors</h2>
+<ul>
+<li>Useful when the data are <strong>strictly positive</strong>.</li>
+<li>Numerically unstable when the data contain zeros or negative values, so <code>ETS()</code> does not consider multiplicative errors for a series that is not strictly positive.</li>
+</ul>
+<p>For zeros or negative values, consider an additive-error specification and inspect its suitability. A transformation changes the modeling scale and requires its own justification; it does not automatically make a multiplicative model admissible. In particular, <span class="math inline">\(\log(1+x)\)</span> still maps zero to zero.</p>
+</section>
+<section id="residuals" class="level2">
+<h2 class="anchored" data-anchor-id="residuals">Residuals and multiplicative errors</h2>
+<p>The random innovation belongs to the stochastic model; an innovation residual is reconstructed after fitting. With multiplicative errors, response and innovation residuals differ even without a transformation. <code>augment()</code> returns both:</p>
+<ul>
+<li><strong>Response residuals</strong> (<code>.resid</code>): <span class="math inline">\(y_t - \hat{y}_{t|t-1}\)</span>, in the data’s units.</li>
+<li><strong>Innovation residuals</strong> (<code>.innov</code>):
+<ul>
+<li>additive error model: <span class="math inline">\(\hat{\varepsilon}_t = y_t - \hat{y}_{t|t-1}\)</span>;</li>
+<li>multiplicative error model: <span class="math inline">\(\hat{\varepsilon}_t = \dfrac{y_t - \hat{y}_{t|t-1}}{\hat{y}_{t|t-1}}\)</span>, a relative error.</li>
+</ul></li>
+</ul>
+<p>For multiplicative errors, apply the checks from Session 9 on residual diagnostics to <code>.innov</code>, because this is the relative error assumed by the model. The holiday-trips model selected <a href="#example-1">later in this notebook</a> has multiplicative errors, so its diagnostics use <code>.innov</code>.</p>
+</section>
 </section>
 <section id="framework" class="level1">
-<h1>The ETS statistical framework and model selection</h1>
-<p>A <strong>specification</strong> is a model form, such as additive errors, an additive trend and no seasonality. Keep four tasks distinct:</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Task</th>
-<th>What changes or is judged?</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Choose a form</td>
-<td>Decide which error, trend and seasonal components are allowed.</td>
-</tr>
-<tr class="even">
-<td>Fit</td>
-<td>Estimate parameters and initial states within each chosen form, using training data.</td>
-</tr>
-<tr class="odd">
-<td>Select</td>
-<td>Rank eligible fitted forms using AICc on comparable likelihoods.</td>
-</tr>
-<tr class="even">
-<td>Evaluate</td>
-<td>Inspect diagnostics and test forecasts on later data at the relevant horizons.</td>
-</tr>
-</tbody>
-</table>
-<p>For automatic selection, repeat fitting and selection inside each cross-validation training fold. Full-series selection would give earlier folds information from their future.</p>
+<h1>Fitting by maximum likelihood</h1>
 <section id="likelihood" class="level2">
 <h2 class="anchored" data-anchor-id="likelihood">Minimizing the SSE vs maximizing the likelihood</h2>
+<p>In Session 16 on fitting SES, we fitted by searching: each candidate pair of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\ell_0\)</span> received a score, its SSE, and the candidate with the best score was kept. <code>ETS()</code> searches in the same way but with a different score. For each candidate it asks how plausible the observed data are under that candidate’s one-step forecast distributions, and it keeps the candidate with the highest likelihood.</p>
 <p>The <strong>likelihood</strong> evaluates the model’s joint density at the observed data. Keep those observations fixed and vary the parameters: a larger likelihood indicates a closer fit under that probability model. For continuous observations, density is a curve height, not the probability of an exact value. The preparation guide explains this distinction; the handwritten primer provides optional detail.</p>
 <ul>
 <li><strong>For an additive error model</strong>, maximizing the likelihood (assuming normally distributed errors) gives the same parameters as minimizing the sum of squared errors, as in SES and the additive-error examples in the preceding sessions. The multiplicative-error examples already used likelihood.</li>
 <li><strong>For a multiplicative error model</strong>, the two give different results. <code>ETS()</code> maximizes likelihood by default in both cases.</li>
 </ul>
-</section>
-<section id="information-criteria" class="level2">
-<h2 class="anchored" data-anchor-id="information-criteria">Information criteria vs the likelihood</h2>
-<p>Information criteria combine the likelihood with a penalty for the number of parameters. For nested models fitted to the same data, adding parameters cannot reduce the best achievable likelihood: the larger model can reproduce the smaller one. Arbitrary ETS variants need not be nested. A complexity penalty discourages flexibility that improves training fit without enough evidence of predictive value; it does not guarantee good forecasts.</p>
-</section>
-<section id="ic-vs-cv" class="level2">
-<h2 class="anchored" data-anchor-id="ic-vs-cv">Information criteria vs cross-validation</h2>
-<p>For our practical comparisons, use AICc between ETS candidates fitted to the <strong>same observations and response scale</strong>, with comparable likelihood definitions. Do not directly compare the reported AICc for <code>y</code> and <code>log(y)</code>.</p>
-<p>This is a safe workflow, not a theorem that information criteria can only compare one model family. Across families, likelihood conventions, constants and the observations included must also be compatible. Use rolling-origin evaluation on a common outcome scale when that comparability is uncertain, or when a particular horizon and loss matter (Session 14 on cross-validation).</p>
 </section>
 </section>
 <section id="criteria" class="level1">
@@ -2519,6 +2562,15 @@ y_t=\ell_{t-1}+e_t,\qquad \ell_t=\ell_{t-1}+\alpha e_t.
 \]</span></p>
 <p>As with the AIC, lower is better. <code>ETS()</code> uses the <span class="math inline">\(AIC_c\)</span> by default when it chooses a model.</p>
 </section>
+<section id="information-criteria" class="level2">
+<h2 class="anchored" data-anchor-id="information-criteria">Information criteria vs the likelihood</h2>
+<p>Information criteria combine the likelihood with a penalty for the number of parameters. For nested models fitted to the same data, adding parameters cannot reduce the best achievable likelihood: the larger model can reproduce the smaller one. Arbitrary ETS variants need not be nested. A complexity penalty discourages flexibility that improves training fit without enough evidence of predictive value; it does not guarantee good forecasts.</p>
+</section>
+<section id="ic-vs-cv" class="level2">
+<h2 class="anchored" data-anchor-id="ic-vs-cv">Information criteria vs cross-validation</h2>
+<p>For our practical comparisons, use AICc between ETS candidates fitted to the <strong>same observations and response scale</strong>, with comparable likelihood definitions. Do not directly compare the reported AICc for <code>y</code> and <code>log(y)</code>.</p>
+<p>This is a safe workflow, not a theorem that information criteria can only compare one model family. Across families, likelihood conventions, constants and the observations included must also be compatible. Use rolling-origin evaluation on a common outcome scale when that comparability is uncertain, or when a particular horizon and loss matter (Session 14 on cross-validation).</p>
+</section>
 <section id="bic" class="level2">
 <h2 class="anchored" data-anchor-id="bic">Reference: BIC, the Bayesian Information Criterion</h2>
 <p><span class="math display">\[
@@ -2526,9 +2578,15 @@ y_t=\ell_{t-1}+e_t,\qquad \ell_t=\ell_{t-1}+\alpha e_t.
 \]</span></p>
 <p>For <span class="math inline">\(T\geq8\)</span>, <span class="math inline">\(\log T&gt;2\)</span>, so BIC puts more weight on the parameter penalty than AIC. Use the same comparable candidate set when interpreting that difference; the formula is supporting reading.</p>
 </section>
-<section id="excluded" class="level2">
-<h2 class="anchored" data-anchor-id="excluded">Reference: model combinations that are excluded</h2>
-<p>Three combinations of (Error, Trend, Season) can be numerically unstable, because their state equations divide by values that may be close to zero:</p>
+</section>
+<section id="automatic" class="level1">
+<h1>Automatic ETS model selection</h1>
+<section id="how-to-choose" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-choose">How to ask <code>ETS()</code> to choose</h2>
+<p>When the formula does not fix a component, <code>ETS()</code> tries every allowed option for it and keeps the model with the lowest <span class="math inline">\(AIC_c\)</span>. With no specials, <code>ETS(y)</code> searches applicable combinations. Frequency, positivity, data length and fitting restrictions can reduce the candidates; annual nonseasonal data do not get seasonal models.</p>
+<section id="excluded" class="level3">
+<h3 class="anchored" data-anchor-id="excluded">Model combinations that are excluded</h3>
+<p>The search is also smaller than the list of letters suggests. Three combinations of (Error, Trend, Season) can be numerically unstable, because their state equations divide by values that may be close to zero:</p>
 <ul>
 <li><span class="math inline">\(ETS(A, N, M)\)</span></li>
 <li><span class="math inline">\(ETS(A, A, M)\)</span></li>
@@ -2536,37 +2594,11 @@ y_t=\ell_{t-1}+e_t,\qquad \ell_t=\ell_{t-1}+\alpha e_t.
 </ul>
 <p>They are not considered when <code>ETS()</code> chooses a model. With trends N, A and Ad, errors A and M, and seasons N, A and M, that leaves 15 of the 18 combinations.</p>
 </section>
-<section id="multiplicative-errors" class="level2">
-<h2 class="anchored" data-anchor-id="multiplicative-errors">Models with multiplicative errors</h2>
-<ul>
-<li>Useful when the data are <strong>strictly positive</strong>.</li>
-<li>Numerically unstable when the data contain zeros or negative values, so <code>ETS()</code> does not consider multiplicative errors for a series that is not strictly positive.</li>
-</ul>
-<p>For zeros or negative values, consider an additive-error specification and inspect its suitability. A transformation changes the modeling scale and requires its own justification; it does not automatically make a multiplicative model admissible. In particular, <span class="math inline">\(\log(1+x)\)</span> still maps zero to zero.</p>
-</section>
-<section id="residuals" class="level2">
-<h2 class="anchored" data-anchor-id="residuals">Residuals and multiplicative errors</h2>
-<p>The random innovation belongs to the stochastic model; an innovation residual is reconstructed after fitting. With multiplicative errors, response and innovation residuals differ even without a transformation. <code>augment()</code> returns both:</p>
-<ul>
-<li><strong>Response residuals</strong> (<code>.resid</code>): <span class="math inline">\(\hat{e}_t = y_t - \hat{y}_{t|t-1}\)</span>.</li>
-<li><strong>Innovation residuals</strong> (<code>.innov</code>):
-<ul>
-<li>additive error model: <span class="math inline">\(\hat{\varepsilon}_t = y_t - \hat{y}_{t|t-1}\)</span>;</li>
-<li>multiplicative error model: <span class="math inline">\(\hat{\varepsilon}_t = \dfrac{y_t - \hat{y}_{t|t-1}}{\hat{y}_{t|t-1}}\)</span>, a relative error.</li>
-</ul></li>
-</ul>
-<p>For multiplicative errors, apply the checks from Session 9 on residual diagnostics to <code>.innov</code>, because this is the relative error assumed by the model.</p>
-</section>
-</section>
-<section id="automatic" class="level1">
-<h1>Automatic ETS model selection</h1>
-<section id="how-to-choose" class="level2">
-<h2 class="anchored" data-anchor-id="how-to-choose">How to ask <code>ETS()</code> to choose</h2>
-<p>When the formula does not fix a component, <code>ETS()</code> tries every allowed option for it and keeps the model with the lowest <span class="math inline">\(AIC_c\)</span>. With no specials, <code>ETS(y)</code> searches applicable combinations. Frequency, positivity, data length and fitting restrictions can reduce the candidates; annual nonseasonal data do not get seasonal models.</p>
 </section>
 <section id="example-1" class="level2">
 <h2 class="anchored" data-anchor-id="example-1">Continuing example: Australian holiday trips</h2>
 <p>The <code>tourism</code> dataset records quarterly domestic overnight trips in Australia. As in Session 18 on Holt-Winters, aggregate holiday trips across regions and convert thousands to millions. The resulting <code>aus_holidays</code> dataset is used for selection, diagnostics and forecasting.</p>
+<p>Four functions read a fitted model. <code>report()</code> shows which form was chosen, together with its estimates and criteria. <code>tidy()</code> returns the estimates as a table, one estimate per row. <code>glance()</code> returns a single summary row for each model, with <code>log_lik</code>, AIC, AICc and BIC among its columns. <code>components()</code> returns the paths of the level and the seasonal states, which <code>autoplot()</code> draws.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>aus_holidays <span class="ot">&lt;-</span> tourism <span class="sc">|&gt;</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Purpose <span class="sc">==</span> <span class="st">&quot;Holiday&quot;</span>) <span class="sc">|&gt;</span></span>
@@ -2623,30 +2655,74 @@ Model: ETS(M,N,A)
 </div>
 </div>
 </div>
-<p>Read the three letters before interpreting the parameters. The corrected Akaike information criterion (AICc) ranks the fitted candidates, while residual checks and forecast evaluation assess their usefulness.</p>
-<p>Read the selected form in the <code>report(fit)</code> output above; a future run can differ with software and optimization. For this example, compare two eligible forms, <span class="math inline">\(ETS(M,N,A)\)</span> (multiplicative errors, no trend, additive seasonality) and <span class="math inline">\(ETS(M,N,M)\)</span>:</p>
+<p>In this run <code>ETS()</code> chose <span class="math inline">\(ETS(M,N,A)\)</span>; a future software version could choose differently, so read the first lines of the <code>report()</code> output. Read the three letters before interpreting the parameters:</p>
+<ul>
+<li><strong>M, multiplicative errors.</strong> Misses scale with the level. <code>report()</code> rounds <span class="math inline">\(\sigma^2\)</span> to 0.0022 (0.00215 before rounding), so a one-step relative miss has a standard deviation of about <span class="math inline">\(\sqrt{0.00215}\approx0.046\)</span>, or 4.6% of the prediction.</li>
+<li><strong>N, no trend.</strong> The forecasts carry no slope.</li>
+<li><strong>A, additive seasonality.</strong> Each quarter’s effect is a fixed number of trips. The initial seasonal states put Q1 about 1.52 million trips above the level and Q3 about 0.69 million below it. As in Session 18 on Holt-Winters, <code>tidy()</code> lists them backward in time: <code>s[-3]</code> is Q1 and <code>s[0]</code> is Q4.</li>
+<li><strong>The weights.</strong> <span class="math inline">\(\alpha\approx0.35\)</span> lets the level adapt, while <span class="math inline">\(\gamma\approx0.0001\)</span> means that the seasonal pattern barely changes over the twenty years.</li>
+</ul>
+<p><strong>Counting <span class="math inline">\(k\)</span>.</strong> <code>glance()</code> computes the AIC with <span class="math inline">\(k=7\)</span> for this model. <code>tidy()</code> lists seven estimates, but the four initial seasonal states are constrained to sum to zero (<span class="math inline">\(1.519-0.293-0.688-0.538\approx0\)</span>), so only three of them are free. Add <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\gamma\)</span>, <span class="math inline">\(\ell_0\)</span> and the innovation variance <span class="math inline">\(\sigma^2\)</span>, and <span class="math inline">\(k=3+4=7\)</span>. Then AIC <span class="math inline">\(=-2(-106.114)+2\times7=226.23\)</span>, as <code>glance()</code> reports. The <a href="#calculator">calculator comparison</a> supplies <span class="math inline">\(k\)</span> for its models.</p>
+<p><strong>Check: does a trend earn its place?</strong> Session 18 on Holt-Winters fitted holiday trips with an additive trend. Adding that trend to the selected model gives <span class="math inline">\(ETS(M,A,A)\)</span>, and its log-likelihood rises from <span class="math inline">\(-106.114\)</span> to <span class="math inline">\(-104.265\)</span>. The trend costs two more estimates, the slope weight <span class="math inline">\(\beta\)</span> and the initial slope <span class="math inline">\(b_0\)</span>, so <span class="math inline">\(k=9\)</span>. Compute both AIC values: which model does the referee keep? Commit before opening.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Answer: open after choosing a model">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Answer: open after choosing a model
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><span class="math inline">\(ETS(M,N,A)\)</span>: <span class="math inline">\(212.23+14=226.23\)</span>. <span class="math inline">\(ETS(M,A,A)\)</span>: <span class="math inline">\(208.53+18=226.53\)</span>. The trend raises the log-likelihood by 1.85, so the fit term falls by 3.70, but the penalty rises by 4. The AIC therefore keeps the model without a trend, narrowly. With 80 quarters, the AICc charges more for each extra parameter and widens the gap, 227.78 against 229.10:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>aus_holidays <span class="sc">|&gt;</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">model</span>(</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">MNA =</span> <span class="fu">ETS</span>(Trips <span class="sc">~</span> <span class="fu">error</span>(<span class="st">&quot;M&quot;</span>) <span class="sc">+</span> <span class="fu">trend</span>(<span class="st">&quot;N&quot;</span>) <span class="sc">+</span> <span class="fu">season</span>(<span class="st">&quot;A&quot;</span>)),</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">MNM =</span> <span class="fu">ETS</span>(Trips <span class="sc">~</span> <span class="fu">error</span>(<span class="st">&quot;M&quot;</span>) <span class="sc">+</span> <span class="fu">trend</span>(<span class="st">&quot;N&quot;</span>) <span class="sc">+</span> <span class="fu">season</span>(<span class="st">&quot;M&quot;</span>))</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">MAA =</span> <span class="fu">ETS</span>(Trips <span class="sc">~</span> <span class="fu">error</span>(<span class="st">&quot;M&quot;</span>) <span class="sc">+</span> <span class="fu">trend</span>(<span class="st">&quot;A&quot;</span>) <span class="sc">+</span> <span class="fu">season</span>(<span class="st">&quot;A&quot;</span>))</span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glance</span>() <span class="sc">|&gt;</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(.model, AICc)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 2 × 2
-  .model  AICc
-  &lt;chr&gt;  &lt;dbl&gt;
-1 MNA     228.
-2 MNM     228.</code></pre>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(.model, log_lik, AIC, AICc) <span class="sc">|&gt;</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">.model</th>
+<th style="text-align: right;">log_lik</th>
+<th style="text-align: right;">AIC</th>
+<th style="text-align: right;">AICc</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">MNA</td>
+<td style="text-align: right;">-106.11</td>
+<td style="text-align: right;">226.23</td>
+<td style="text-align: right;">227.78</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MAA</td>
+<td style="text-align: right;">-104.26</td>
+<td style="text-align: right;">226.53</td>
+<td style="text-align: right;">229.10</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
-<p>The two seasonal forms are close by AICc in this fit. A change of units should not change their theoretical ranking when likelihoods are computed consistently: it adds the same constant. Numerical optimization can nevertheless change a near-tie in practice. Inspect convergence, forecasts and validation evidence instead of treating a tiny difference as decisive.</p>
+<p><code>knitr::kable(digits = 2)</code> prints the table with two decimals, whereas a tibble would print these values as whole numbers, such as <code>226.</code>. The referee keeps <span class="math inline">\(ETS(M,N,A)\)</span>, the model the automatic search chose.</p>
+</div>
+</div>
+</div>
 </section>
 <section id="diagnostics" class="level2">
 <h2 class="anchored" data-anchor-id="diagnostics">Check the selected model</h2>
+<p><strong>In-class check.</strong> Work through the four residual checks of Session 9 on residual diagnostics, using the innovation residuals. Where does the selected model still fall short? Discuss before opening the interpretation.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>fit <span class="sc">|&gt;</span> <span class="fu">gg_tsresiduals</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>fit <span class="sc">|&gt;</span> <span class="fu">gg_tsresiduals</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -2654,12 +2730,35 @@ Model: ETS(M,N,A)
 </figure>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">augment</span>(fit) <span class="sc">|&gt;</span> <span class="fu">features</span>(.innov, ljung_box, <span class="at">lag =</span> <span class="dv">8</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">augment</span>(fit) <span class="sc">|&gt;</span> <span class="fu">features</span>(.innov, ljung_box, <span class="at">lag =</span> <span class="dv">8</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 3
   .model lb_stat lb_pvalue
   &lt;chr&gt;    &lt;dbl&gt;     &lt;dbl&gt;
 1 auto      6.57     0.584</code></pre>
+</div>
+</div>
+<p>All three panels plot the innovation residuals, <code>.innov</code>, although the histogram’s axis is labeled <code>.resid</code>.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Worked interpretation: open after discussing in class">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Worked interpretation: open after discussing in class
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Mean (time plot).</strong> The innovations average about +0.5%, so on average the prior predictions were slightly too low.</li>
+<li><strong>Spread (time plot).</strong> From 1998 to 2004 the misses stay within about ±6%; from 2005 on they reach about ±10%. The spread is not constant, which matters for the width of the intervals.</li>
+<li><strong>Autocorrelation (ACF and Ljung–Box).</strong> Only the bar at lag 14 crosses the band, and the Ljung–Box test with lag 8, twice the quarterly period, gives p = 0.58. There is little evidence of autocorrelation at short lags.</li>
+<li><strong>Distribution shape (histogram).</strong> Roughly symmetric around zero. As in Session 12 on prediction intervals, normality matters for the intervals, not for the point forecasts.</li>
+<li><strong>What the model still misses.</strong> 11 of the last 12 innovations are positive. The series rises from 2015, and a model without a trend keeps predicting too little, so its forecasts start from slightly behind.</li>
+</ul>
+</div>
 </div>
 </div>
 <p>Inspect innovation residuals for remaining structure. If the chosen model leaves predictable patterns, reconsider the candidates. A low AICc and a nonsignificant test alone do not guarantee suitability for every business horizon.</p>
@@ -2669,11 +2768,11 @@ Model: ETS(M,N,A)
 <h1>Forecasting with ETS models</h1>
 <p>Generate forecasts only after stating the purpose and horizon. Here eight quarters illustrate the possible path and its uncertainty, in the original units (fpp3 8.7).</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>fit <span class="sc">|&gt;</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">forecast</span>(<span class="at">h =</span> <span class="dv">8</span>) <span class="sc">|&gt;</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(aus_holidays) <span class="sc">+</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Australian domestic tourism&quot;</span>,</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Overnight trips (millions)&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>fit <span class="sc">|&gt;</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">forecast</span>(<span class="at">h =</span> <span class="dv">8</span>) <span class="sc">|&gt;</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(aus_holidays) <span class="sc">+</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Australian domestic tourism&quot;</span>,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Overnight trips (millions)&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -2682,27 +2781,62 @@ Model: ETS(M,N,A)
 </div>
 </div>
 </div>
-<p>Three points about these forecasts:</p>
+<p>For this <span class="math inline">\(ETS(M,N,A)\)</span> model, <code>forecast()</code> returns a normal distribution for each quarter, with no simulation. Its mean, in the <code>.mean</code> column, is the point forecast, and its 95% interval is the mean plus or minus 1.96 forecast standard deviations. With multiplicative errors, the spread is proportional to the level of the series.</p>
+<p><strong>Check.</strong> The point forecast for 2019 Q1 equals the one for 2018 Q1, 12.70 million trips, because the model has no trend and its seasonal pattern is fixed. Will the two 95% intervals match as well? Commit before opening.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Answer: open after predicting">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Answer: open after predicting
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>No. The 2018 Q1 interval is [11.54, 13.85], and the 2019 Q1 interval widens to [11.34, 14.05]. The point forecast repeats, but four more quarters of possible surprises can move the level, so the uncertainty grows with the horizon even when the point forecasts repeat.</p>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>fit <span class="sc">|&gt;</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">forecast</span>(<span class="at">h =</span> <span class="dv">8</span>) <span class="sc">|&gt;</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hilo</span>(<span class="at">level =</span> <span class="dv">95</span>) <span class="sc">|&gt;</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">|&gt;</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Quarter, .mean, <span class="st">`</span><span class="at">95%</span><span class="st">`</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 8 × 3
+  Quarter .mean                   `95%`
+    &lt;qtr&gt; &lt;dbl&gt;                  &lt;hilo&gt;
+1 2018 Q1  12.7 [11.540826, 13.85002]95
+2 2018 Q2  10.9 [ 9.814061, 11.95109]95
+3 2018 Q3  10.5 [ 9.396164, 11.57892]95
+4 2018 Q4  10.6 [ 9.485864, 11.79090]95
+5 2019 Q1  12.7 [11.339233, 14.05161]95
+6 2019 Q2  10.9 [ 9.598829, 12.16633]95
+7 2019 Q3  10.5 [ 9.184652, 11.79043]95
+8 2019 Q4  10.6 [ 9.283806, 11.99295]95</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Other ETS models: point forecasts and simulated intervals">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Other ETS models: point forecasts and simulated intervals
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
 <ul>
-<li><strong>Point forecasts.</strong> <code>forecast()</code> returns distribution means in <code>.mean</code> for all these models. For multiplicative seasonal models, the traditional recursion obtained by setting future errors to zero need not equal that mean; use the returned distribution for decisions involving uncertainty.</li>
+<li><strong>Point forecasts.</strong> <code>forecast()</code> returns distribution means in <code>.mean</code> for all ETS models. For multiplicative seasonal models, the traditional recursion obtained by setting future errors to zero need not equal that mean; use the returned distribution for decisions involving uncertainty.</li>
 <li><strong>Intervals.</strong> The prediction intervals differ between models with additive and multiplicative components: with multiplicative errors they widen with the level of the series.</li>
 <li><strong>How they are computed.</strong> For some ETS models there is no formula for the forecast variance. Then <code>forecast()</code> simulates many future paths and takes percentiles of them, parametric simulation with errors drawn from the assumed distribution. Residual bootstrapping instead samples fitted innovations; it is a different simulation choice.</li>
 </ul>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>fit <span class="sc">|&gt;</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">forecast</span>(<span class="at">h =</span> <span class="dv">8</span>) <span class="sc">|&gt;</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hilo</span>(<span class="at">level =</span> <span class="dv">95</span>) <span class="sc">|&gt;</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tsibble: 4 x 5 [1Q]
-# Key:       .model [1]
-  .model Quarter
-  &lt;chr&gt;    &lt;qtr&gt;
-1 auto   2018 Q1
-2 auto   2018 Q2
-3 auto   2018 Q3
-4 auto   2018 Q4
-# ℹ 3 more variables: Trips &lt;dist&gt;, .mean &lt;dbl&gt;, `95%` &lt;hilo&gt;</code></pre>
+</div>
 </div>
 </div>
 </section>
@@ -2718,17 +2852,18 @@ Model: ETS(M,N,A)
 </section>
 <section id="exercise-2" class="level1">
 <h1>Exercise 2</h1>
-<p>Sum the trips with purpose <code>Holiday</code> over all regions, as in the forecasting section above (in thousands of trips this time).</p>
+<p>Sum the trips with purpose <code>Holiday</code> over all regions, as in the <a href="#example-1">continuing example</a> (in thousands of trips this time).</p>
 <ol type="1">
 <li>Fit an automatic ETS model and report it.</li>
 <li>Do the response residuals and the innovation residuals match? Check with <code>all.equal()</code> and explain why in one sentence.</li>
 </ol>
+<p><strong>A note on units.</strong> In millions, the continuing example chose <span class="math inline">\(ETS(M,N,A)\)</span>, with <span class="math inline">\(ETS(M,N,M)\)</span> close behind: their AICc values are about 0.6 apart. Changing the units multiplies every observation by the same number, which adds the same constant to the log-likelihood of every model, so in theory the ranking cannot change. In practice the numerical search can flip such a near-tie. As with <code>optim()</code> in Session 16 on fitting SES, the search only tells us where it stopped, and an AICc gap of 0.6 is still too small to mean anything. To choose between two such close models, compare their forecasts on a test set or by cross-validation.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>aus_holidays_total <span class="ot">&lt;-</span> tourism <span class="sc">|&gt;</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Purpose <span class="sc">==</span> <span class="st">&quot;Holiday&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Trips =</span> <span class="fu">sum</span>(Trips))</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>aus_holidays_total</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>aus_holidays_total <span class="ot">&lt;-</span> tourism <span class="sc">|&gt;</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Purpose <span class="sc">==</span> <span class="st">&quot;Holiday&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Trips =</span> <span class="fu">sum</span>(Trips))</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>aus_holidays_total</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tsibble: 80 x 2 [1Q]
    Quarter  Trips
@@ -2750,6 +2885,7 @@ Model: ETS(M,N,A)
 <section id="exercise-3" class="level1">
 <h1>Exercise 3</h1>
 <p>The <code>PBS</code> dataset records Australian pharmaceutical prescriptions and costs by month. Select corticosteroids with <code>ATC2 == &quot;H02&quot;</code>, then sum <code>Cost</code> across the other categories for each month. Costs are measured in Australian dollars.</p>
+<p>Automatic selection is part of the forecasting procedure being evaluated here. So, in cross-validation, repeat both fitting and selection inside each training fold: selecting on the full series would give earlier folds information from their future.</p>
 <ol type="1">
 <li>Fit an automatic ETS model and say which model was chosen.</li>
 <li>Fit <span class="math inline">\(ETS(A,A,A)\)</span> as well, and compare the two by <span class="math inline">\(AIC_c\)</span>.</li>
@@ -2757,11 +2893,11 @@ Model: ETS(M,N,A)
 <li>In one sentence: why can the AICc compare these two models, and when would you need cross-validation instead?</li>
 </ol>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>h02 <span class="ot">&lt;-</span> PBS <span class="sc">|&gt;</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ATC2 <span class="sc">==</span> <span class="st">&quot;H02&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Cost =</span> <span class="fu">sum</span>(Cost))</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>h02 <span class="sc">|&gt;</span> <span class="fu">autoplot</span>(Cost)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>h02 <span class="ot">&lt;-</span> PBS <span class="sc">|&gt;</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ATC2 <span class="sc">==</span> <span class="st">&quot;H02&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Cost =</span> <span class="fu">sum</span>(Cost))</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>h02 <span class="sc">|&gt;</span> <span class="fu">autoplot</span>(Cost)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -2773,7 +2909,8 @@ Model: ETS(M,N,A)
 <section id="calculator" class="level3">
 <h3 class="anchored" data-anchor-id="calculator">Calculator comparison</h3>
 <p>For the fixed <code>ETS(A,A,A)</code> model in Exercise 3, take <code>log_lik</code> from <code>glance()</code>, rounded to two decimals, and calculate AIC using <span class="math inline">\(k=17\)</span>. For a second fixed candidate <code>ETS(M,Ad,M)</code> on the same data, use <span class="math inline">\(k=18\)</span>. Compare both AIC values and check them against <code>glance()</code>. How much improvement in log-likelihood is needed to offset one extra parameter? Explain why the lower AIC need not win at your chosen forecast horizon.</p>
-<p>The supplied counts include smoothing parameters, free initial states and the innovation variance. Counting constrained seasonal states is reference material; focus on the fit-versus-complexity tradeoff.</p>
+<p>A tibble prints a <code>log_lik</code> this large as a whole number, <code>-2776.</code>, which is not precise enough here. To read it to two decimals, pipe the selected <code>glance()</code> columns into <code>knitr::kable(digits = 2)</code>, as in the <a href="#example-1">continuing example</a>.</p>
+<p>The supplied counts include smoothing parameters, free initial states and the innovation variance, counted as in the continuing example: with monthly data, eleven of the twelve initial seasonal states are free. Focus on the fit-versus-complexity tradeoff.</p>
 </section>
 </section>
 
