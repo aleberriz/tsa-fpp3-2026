@@ -2377,7 +2377,7 @@ window.Quarto = {
   <li><a href="#calculator" id="toc-calculator" class="nav-link" data-scroll-target="#calculator">Calculator check: a seasonal surprise</a></li>
   </ul></li>
   <li><a href="#fitting" id="toc-fitting" class="nav-link" data-scroll-target="#fitting">5. Fit with the same search as SES</a></li>
-  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example">6. Inspect the fitted components and forecasts in R</a>
+  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example">6. Inspect the additive fit and compare seasonal forms</a>
   <ul>
   <li><a href="#code" id="toc-code" class="nav-link" data-scroll-target="#code">Fit the additive model</a></li>
   <li><a href="#additive-multiplicative" id="toc-additive-multiplicative" class="nav-link" data-scroll-target="#additive-multiplicative">Extend the model: fixed amounts or proportional swings</a>
@@ -2474,7 +2474,7 @@ window.Quarto = {
 <li><a href="#component-form">How do the three states update?</a></li>
 <li><a href="#worked-row">How do we calculate a row and match a future quarter?</a></li>
 <li><a href="#fitting">How are the settings fitted?</a></li>
-<li><a href="#example">What does the fitted additive model show?</a> <a href="#multiplicative">How does proportional seasonality change its forecasts?</a></li>
+<li><a href="#example">What does the fitted additive model show?</a> <a href="#additive-multiplicative">How does proportional seasonality change its forecasts?</a></li>
 <li><a href="#evaluation">What evidence judges the forecasts?</a></li>
 </ol>
 <p>Build the additive case first, then extend the same ideas to proportional seasonality. The required work is the Additive sheet of workbook <code>18_B</code>, the <a href="#calculator">calculator update and beyond-cycle forecast</a>, and <a href="#exercise">the arrivals exercise</a>, questions 1 to 6. The appendix supplies full multiplicative recursions, its reference table, detailed state counts, the daily example and optional cross-validation.</p>
@@ -2985,7 +2985,7 @@ T+5-4(1+1)=T-3.
 </div>
 </section>
 <section id="example" class="level1">
-<h1>6. Inspect the fitted components and forecasts in R</h1>
+<h1>6. Inspect the additive fit and compare seasonal forms</h1>
 <section id="code" class="level2">
 <h2 class="anchored" data-anchor-id="code">Fit the additive model</h2>
 <p>The <code>aus_holidays</code> series is the quarterly total plotted at the start. In <code>ETS()</code>, <code>error(&quot;A&quot;)</code> specifies additive errors, <code>trend(&quot;A&quot;)</code> an additive trend and <code>season(&quot;A&quot;)</code> additive seasonality:</p>

@@ -15,7 +15,7 @@ aus_holidays |>
   labs(title = "Australian domestic holiday trips",
        y = "Overnight trips (millions)")
 
-# 6. Inspect the fitted components and forecasts in R ----
+# 6. Inspect the additive fit and compare seasonal forms ----
 
 ## Fit the additive model ----
 fit_additive <- aus_holidays |>

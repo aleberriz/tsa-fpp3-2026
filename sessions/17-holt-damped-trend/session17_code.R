@@ -11,7 +11,7 @@ aus_economy <- global_economy |>
 autoplot(aus_economy, Pop) +
   labs(y = "Millions", title = "Australian population")
 
-# 6. Inspect the fitted model in R ----
+# 6. Inspect the Holt fit and extend it with damping ----
 fit <- aus_economy |>
   model(
     AAN = ETS(Pop ~ error("A") + trend("A") + season("N"))
