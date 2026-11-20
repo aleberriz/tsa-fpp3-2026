@@ -2396,8 +2396,8 @@ window.Quarto = {
   <li><a href="#exercise-1" id="toc-exercise-1" class="nav-link" data-scroll-target="#exercise-1">1. Time plot</a></li>
   <li><a href="#exercise-2" id="toc-exercise-2" class="nav-link" data-scroll-target="#exercise-2">2. Fit models to a training dataset</a></li>
   <li><a href="#exercise-3" id="toc-exercise-3" class="nav-link" data-scroll-target="#exercise-3">3. Forecast 8 steps ahead</a></li>
-  <li><a href="#exercise-4" id="toc-exercise-4" class="nav-link" data-scroll-target="#exercise-4">4. Graphs for the forecasts</a></li>
-  <li><a href="#exercise-5" id="toc-exercise-5" class="nav-link" data-scroll-target="#exercise-5">5. Interpreting the forecasts</a></li>
+  <li><a href="#exercise-4" id="toc-exercise-4" class="nav-link" data-scroll-target="#exercise-4">4. Forecast plots (optional)</a></li>
+  <li><a href="#exercise-5" id="toc-exercise-5" class="nav-link" data-scroll-target="#exercise-5">5. Interpreting the forecast plots (optional)</a></li>
   <li><a href="#exercise-6" id="toc-exercise-6" class="nav-link" data-scroll-target="#exercise-6">6. Held-out accuracy</a></li>
   </ul></li>
   <li><a href="#appendix" id="toc-appendix" class="nav-link" data-scroll-target="#appendix">Appendix: supporting explanations and variants</a>
@@ -2477,7 +2477,7 @@ window.Quarto = {
 <li><a href="#example">What does the fitted additive model show?</a> <a href="#additive-multiplicative">How does proportional seasonality change its forecasts?</a></li>
 <li><a href="#evaluation">What evidence judges the forecasts?</a></li>
 </ol>
-<p>Build the additive case first, then extend the same ideas to proportional seasonality. The required work is the Additive sheet of workbook <code>18_B</code>, the <a href="#calculator">calculator update and beyond-cycle forecast</a>, and <a href="#exercise">the arrivals exercise</a>, questions 1 to 6. The appendix supplies full multiplicative recursions, its reference table, detailed state counts, the daily example and optional cross-validation.</p>
+<p>Build the additive case first, then extend the same ideas to proportional seasonality. The required work is the Additive sheet of workbook <code>18_B</code>, the <a href="#calculator">calculator update and beyond-cycle forecast</a>, and <a href="#exercise">the two-model arrivals comparison</a>, questions 1, 2, 3 and 6. The appendix supplies full multiplicative recursions, its reference table, detailed state counts, the daily example and optional cross-validation.</p>
 </section>
 <section id="motivation" class="level1">
 <h1>1. Why Holt needs a seasonal state</h1>
@@ -3129,7 +3129,7 @@ T+5-4(1+1)=T-3.
 </div>
 </div>
 </div>
-<p>Both paths are similar, yet the multiplicative Q1 peaks rise faster: 13.3, 13.8 and 14.4, compared with 12.9, 13.4 and 13.9 for the additive model. A factor grows with the rising level, while an additive index adds the same amount every year.</p>
+<p>The underlying paths rise by about 0.48 million trips a year for the additive fit and 0.49 million for the multiplicative fit. Adding the same Q1 effect leaves the additive peak rising by about 0.48 million a year. The Q1 factor of about 1.16 scales the rise in the multiplicative fit to about 0.57 million a year (<span class="math inline">\(1.16\times0.49\)</span>).</p>
 <p>The residual RMSE, or root mean squared error, compares training fit in the original units. The small difference here does not establish which model forecasts better. Use held-out errors, as in Session 13 on train/test splits and accuracy.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>fit <span class="sc">|&gt;</span> <span class="fu">accuracy</span>() <span class="sc">|&gt;</span> <span class="fu">select</span>(.model, RMSE) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">RMSE =</span> <span class="fu">round</span>(RMSE, <span class="dv">4</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -3274,7 +3274,7 @@ Removed 14 rows containing missing values or values outside the scale range
 </section>
 <section id="exercise" class="level1">
 <h1>Exercise: seasonal exponential smoothing</h1>
-<p>Use the quarterly number of arrivals to Australia from New Zealand, 1981 Q1 to 2012 Q3, from the dataset <code>aus_arrivals</code>.</p>
+<p>Use the quarterly number of arrivals to Australia from New Zealand, 1981 Q1 to 2012 Q3, from <code>aus_arrivals</code>. For homework, submit your answer to question 1 and your R code and results for questions 2, 3 and 6. Questions 4 and 5 and the third model in question 2 are optional practice.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>nz_arrivals <span class="ot">&lt;-</span> aus_arrivals <span class="sc">|&gt;</span> <span class="fu">filter</span>(Origin <span class="sc">==</span> <span class="st">&quot;NZ&quot;</span>)</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>nz_arrivals <span class="sc">|&gt;</span> <span class="fu">autoplot</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -3291,8 +3291,8 @@ Removed 14 rows containing missing values or values outside the scale range
 </div>
 <section id="exercise-1" class="level2">
 <h2 class="anchored" data-anchor-id="exercise-1">1. Time plot</h2>
-<p>Make a time plot, with a grid that makes the yearly seasonality easy to see.</p>
-<p>Would you say that multiplicative seasonality is necessary?</p>
+<p>Read the time plot above. You can add a yearly grid as optional plotting practice.</p>
+<p>In one sentence, say which seasonal form the time plot suggests and why.</p>
 </section>
 <section id="exercise-2" class="level2">
 <h2 class="anchored" data-anchor-id="exercise-2">2. Fit models to a training dataset</h2>
@@ -3305,14 +3305,15 @@ Removed 14 rows containing missing values or values outside the scale range
 <ol type="1">
 <li>Holt-Winters with additive seasonality. Call it <code>hw_additive</code>.</li>
 <li>Holt-Winters with multiplicative seasonality. Call it <code>hw_multiplicative</code>.</li>
-<li>Holt-Winters with a damped trend and multiplicative seasonality, as in the <a href="#damped-spec">damped model specification</a>. Call it <code>hw_multiplicative_damped</code>.</li>
+<li><strong>Optional:</strong> Holt-Winters with a damped trend and multiplicative seasonality. Use the <a href="#damped-spec">damped model specification</a> and call it <code>hw_multiplicative_damped</code>.</li>
 </ol>
 </section>
 <section id="exercise-3" class="level2">
 <h2 class="anchored" data-anchor-id="exercise-3">3. Forecast 8 steps ahead</h2>
+<p>Forecast eight quarters ahead from <code>nz_tr</code> for each model you fit. Keep the forecasts for question 6.</p>
 </section>
 <section id="exercise-4" class="level2">
-<h2 class="anchored" data-anchor-id="exercise-4">4. Graphs for the forecasts</h2>
+<h2 class="anchored" data-anchor-id="exercise-4">4. Forecast plots (optional)</h2>
 <p>Create the following graphs:</p>
 <ol type="1">
 <li><p>The forecasts of all the models, with the historical series, without prediction intervals.</p></li>
@@ -3320,12 +3321,12 @@ Removed 14 rows containing missing values or values outside the scale range
 </ol>
 </section>
 <section id="exercise-5" class="level2">
-<h2 class="anchored" data-anchor-id="exercise-5">5. Interpreting the forecasts</h2>
-<p>Compare the three point-forecast paths: how do they differ? For the multiplicative model, how wide are the prediction intervals relative to its seasonal swing? Why can a narrower interval, on its own, not show that a model is better?</p>
+<h2 class="anchored" data-anchor-id="exercise-5">5. Interpreting the forecast plots (optional)</h2>
+<p>Compare your point-forecast paths. How do they differ? For the multiplicative model, how wide are the prediction intervals relative to its seasonal swing? Why can a narrower interval, on its own, not show that a model is better?</p>
 </section>
 <section id="exercise-6" class="level2">
 <h2 class="anchored" data-anchor-id="exercise-6">6. Held-out accuracy</h2>
-<p>Compute accuracy on the eight held-out quarters using the full series. Which model has the smallest test RMSE? Does it agree with your visual assessment? Explain what further evidence could change your recommendation.</p>
+<p>Use <code>accuracy(fc, nz_arrivals)</code> to obtain test RMSE for each fitted model on the eight held-out quarters. Report the RMSEs and say in one sentence whether the better test result agrees with your answer to question 1.</p>
 </section>
 </section>
 <section id="appendix" class="level1">

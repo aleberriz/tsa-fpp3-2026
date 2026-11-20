@@ -5,8 +5,7 @@
 - **Group Assignment 2 is released today**, Monday 23 November 2026. The assignment file and its
   data are in the `assignments/` folder of the repo; pull before you start. **Due Sunday 6 December
   2026, 23:59.**
-- **Homework due Sunday 29 November 2026, 23:59**, the same day as the Session 18 homework. Both are
-  short because Group Assignment 2 is open.
+- **Homework due Sunday 6 December 2026, 23:59.** See the [homework summary](README.md#homework).
 - **The common-errors note on this homework** goes up on Blackboard after the due date.
 - **Midterm calculations, worked on new numbers.** As promised,
   [`midterm_calculations_review.md`](midterm_calculations_review.md) has the seven calculation

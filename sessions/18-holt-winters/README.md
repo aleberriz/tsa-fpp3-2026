@@ -8,6 +8,10 @@
 
 **R:** `ETS(y ~ error("A") + trend("A") + season("A"))`, `ETS(y ~ error("M") + trend("A") + season("M"))`, `trend("Ad")`, `components()`, `tidy()`.
 
-**Homework:** Complete the workbook's **Additive** sheet and the notebook's [calculator update and beyond-cycle check](18_A_ExpSmoothing_Seasonal.html#calculator). Complete the New Zealand arrivals exercise, questions 1–6: three models, eight-quarter forecasts, two plots, interpretation and held-out accuracy. Submit on Blackboard; see [announcements](announcements.md) for this class's deadline. The notebook follows the same seven-question route as the slides and supplies the full explanations for independent study. Full multiplicative arithmetic, reference table, detailed state counts, daily example and cross-validation extension are in its supporting appendix.
+### Homework
+
+Complete the Additive sheet of workbook 18_B and both [calculator checks](18_A_ExpSmoothing_Seasonal.html#calculator). In the [arrivals exercise](18_A_ExpSmoothing_Seasonal.html#exercise), answer questions 1, 2, 3 and 6. Fit the two undamped models, forecast eight quarters ahead and compare test RMSE with your visual impression.
+
+Submit the workbook and a short document with your working and R results on Blackboard. See [announcements](announcements.md) for the deadline. The notebook follows the same seven-question route as the slides and supplies the full explanations for independent study. Full multiplicative arithmetic, reference table, detailed state counts, daily example and cross-validation extension are in its supporting appendix.
 
 **Before Session 19 on ETS and model selection:** Read the [short likelihood guide](../19-ets-mle-model-selection/19_B_ESmoothing_Model_Selection.html#before-class). The handwritten maximum-likelihood primer is optional.

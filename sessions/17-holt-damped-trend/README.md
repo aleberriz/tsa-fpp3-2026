@@ -8,7 +8,11 @@
 
 **R:** `ETS(y ~ error("A") + trend("A") + season("N"))`, `trend("Ad")`, `components()`, `augment()`, `tidy()`.
 
-**Homework:** Complete the Australian-population workbook, including its ten forecasts, and the notebook's [calculator update](17_A_ESmoothing_Trended.html#calculator). Complete Exercise 1 on internet usage: fit SES, Holt and damped Holt, compare residuals with Ljung–Box, and produce the two forecast plots. Add the sentence on damping and the [two-step damped forecast by hand](17_A_ESmoothing_Trended.html#damped-calculator). Submit on Blackboard; see [announcements](announcements.md) for this class's deadline.
+### Homework
+
+Complete [workbook 17_B](17_B_ExpSmoothing_Trended_students.xlsx), including its ten forecasts, and the [calculator update](17_A_ESmoothing_Trended.html#calculator). In [Exercise 1](17_A_ESmoothing_Trended.html#exercise-1), fit Holt and damped Holt, report the two Ljung–Box p-values and interpret one point-forecast plot. Include the [two-step damped calculation](17_A_ESmoothing_Trended.html#damped-calculator).
+
+Submit the workbook and a short document with your working and R results on Blackboard. See [announcements](announcements.md) for the deadline.
 
 The notebook follows the same seven-question route as the slides and supplies the full explanations for independent study. Its appendix contains the responsiveness slider, full damped updates, fixed phi, custom bounds and optional Exercise 2 on cross-validation. The beta conversion is explained beside the first parameter output.
 
