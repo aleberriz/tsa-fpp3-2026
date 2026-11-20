@@ -2885,11 +2885,10 @@ Model: ETS(M,N,A)
 <section id="exercise-3" class="level1">
 <h1>Exercise 3</h1>
 <p>The <code>PBS</code> dataset records Australian pharmaceutical prescriptions and costs by month. Select corticosteroids with <code>ATC2 == &quot;H02&quot;</code>, then sum <code>Cost</code> across the other categories for each month. Costs are measured in Australian dollars.</p>
-<p>Automatic selection is part of the forecasting procedure being evaluated here. So, in cross-validation, repeat both fitting and selection inside each training fold: selecting on the full series would give earlier folds information from their future.</p>
 <ol type="1">
 <li>Fit an automatic ETS model and say which model was chosen.</li>
 <li>Fit <span class="math inline">\(ETS(A,A,A)\)</span> as well, and compare the two by <span class="math inline">\(AIC_c\)</span>.</li>
-<li>Use cross-validation to choose between the two for forecasts across the next twelve months: the smallest training set has 80% of the observations, the sets grow one month at a time, and the forecasts go up to 12 months ahead. Repeat automatic model selection using only each fold’s training data. Retain origins with all twelve future observations available, and compare RMSE pooled across horizons 1 to 12. This is different from evaluating only horizon 12.</li>
+<li><strong>Optional.</strong> Use cross-validation to choose between the two for forecasts across the next twelve months: the smallest training set has 80% of the observations, the sets grow one month at a time, and the forecasts go up to 12 months ahead. Repeat both fitting and automatic selection inside each fold. Choosing the model once on the full series would give earlier folds information from their future. Retain origins with all twelve future observations available, and compare RMSE pooled across horizons 1 to 12. This is different from evaluating only horizon 12.</li>
 <li>In one sentence: why can the AICc compare these two models, and when would you need cross-validation instead?</li>
 </ol>
 <div class="cell">
