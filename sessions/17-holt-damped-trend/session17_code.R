@@ -4,16 +4,14 @@
 library(fpp3)
 library(patchwork)
 
-# Motivation ----
+# 1. Why SES needs a slope ----
 aus_economy <- global_economy |>
   filter(Code == "AUS") |>
   mutate(Pop = Population / 1e6)
 autoplot(aus_economy, Pop) +
   labs(y = "Millions", title = "Australian population")
 
-# Holt's linear trend method ----
-
-## R example: Australian population ----
+# 6. Inspect the Holt fit and extend it with damping ----
 fit <- aus_economy |>
   model(
     AAN = ETS(Pop ~ error("A") + trend("A") + season("N"))
@@ -30,6 +28,7 @@ beta_hat <- holt_estimates$estimate[holt_estimates$term == "beta"]
 # beta-star, the slope weight in the equations and the workbook
 beta_hat / alpha_hat
 
+### Why the two beta labels differ ----
 fitted_vals <-
   fit |>
   augment()
@@ -49,6 +48,21 @@ holts_components
 
 # Depict the components
 holts_components |> autoplot()
+
+### Forecasts from the final level and slope ----
+fc <-
+  fit |>
+  forecast(h = 10)
+
+fc |> autoplot(aus_economy, level = NULL) +
+  labs(title = "Australian population",
+       y = "Millions") +
+  guides(colour = guide_legend(title = "Forecast"))
+
+final <- tail(holts_components, 1)
+final$level + (1:3) * final$slope
+
+fc |> head(3) |> pull(.mean)
 
 # Use the equation for the prior predictions
 holts_components <-
@@ -73,24 +87,9 @@ fitted_components <-  fitted_components[!is.na(fitted_components)]
 
 all.equal(fitted_augment, fitted_components)
 
-### Forecasts from the final level and slope ----
-fc <-
-  fit |>
-  forecast(h = 10)
+## Worked answer: open after you have committed ----
 
-fc |> autoplot(aus_economy, level = NULL) +
-  labs(title = "Australian population",
-       y = "Millions") +
-  guides(colour = guide_legend(title = "Forecast"))
-
-final <- tail(holts_components, 1)
-final$level + (1:3) * final$slope
-
-fc |> head(3) |> pull(.mean)
-
-# Damped trend methods ----
-
-## Damped example: `ETS()` estimates $\phi$ ----
+### Damped example: `ETS()` estimates $\phi$ ----
 fit_damped <-
   aus_economy |>
       model(
@@ -114,6 +113,18 @@ fc_damped |>
   as_tibble() |>
   select(Year, .model, .mean) |>
   pivot_wider(values_from = c(`.mean`), names_from = c(`.model`))
+
+# Exercise 1: internet usage ----
+# Convert time series object to tsibble object for compatibility with fable methods and tools
+www_usage <- as_tsibble(WWWusage)
+
+# Plot the data
+www_usage |>
+  autoplot(value) +
+  labs(x="Minute", y="Number of users",
+       title = "Internet usage per minute")
+
+# Appendix: supporting explanations and variants ----
 
 ## Optional: fix $\phi$ ----
 fit_phi_fixed <-
@@ -159,13 +170,3 @@ fc_phi_range |>
   labs(title = "Australian population",
        y = "Millions") +
   guides(colour = guide_legend(title = "Forecast"))
-
-# Exercise 1: internet usage ----
-# Convert time series object to tsibble object for compatibility with fable methods and tools
-www_usage <- as_tsibble(WWWusage)
-
-# Plot the data
-www_usage |>
-  autoplot(value) +
-  labs(x="Minute", y="Number of users",
-       title = "Internet usage per minute")

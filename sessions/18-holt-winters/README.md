@@ -4,10 +4,14 @@
 
 **Materials:** [Slides](session18_slides.html), [notebook](18_A_ExpSmoothing_Seasonal.html), [workbook](18_B_ExpSmoothing_Seasonal_students2.xlsx), and [R script](session18_code.R).
 
-**In class:** Add seasonality to the level and slope. Remove the old seasonal effect, update the components, then restore the season matching the forecast date. Work through an additive update and a forecast beyond one seasonal cycle. Fit additive and multiplicative candidates to the same series, compare their components and forecasts, and discuss what held-out errors add to the visual evidence.
+**In class:** See why Holt needs a seasonal state and establish the additive forecast shape before the updates. Trace one row and the workbook, match a future quarter, recall the fitting search, then inspect the additive R fit. Extend to proportional seasonality and damping, compare the fitted forecasts and components, and distinguish training fit from held-out evidence.
 
 **R:** `ETS(y ~ error("A") + trend("A") + season("A"))`, `ETS(y ~ error("M") + trend("A") + season("M"))`, `trend("Ad")`, `components()`, `tidy()`.
 
-**Homework:** Complete the workbook's **Additive** sheet and the notebook's [calculator update and beyond-cycle check](18_A_ExpSmoothing_Seasonal.html#calculator). Complete the New Zealand arrivals exercise, questions 1–6: three models, eight-quarter forecasts, two plots, interpretation and held-out accuracy. Submit on Blackboard; see [announcements](announcements.md) for this class's deadline. The full multiplicative arithmetic, daily example and cross-validation extension are supporting reading.
+### Homework
+
+Complete the Additive sheet of workbook 18_B and both [calculator checks](18_A_ExpSmoothing_Seasonal.html#calculator). In the [arrivals exercise](18_A_ExpSmoothing_Seasonal.html#exercise), answer questions 1, 2, 3 and 6. Fit the two undamped models, forecast eight quarters ahead and compare test RMSE with your visual impression.
+
+Submit the workbook and a short document with your working and R results on Blackboard. See [announcements](announcements.md) for the deadline. The notebook follows the same seven-question route as the slides and supplies the full explanations for independent study. Full multiplicative arithmetic, reference table, detailed state counts, daily example and cross-validation extension are in its supporting appendix.
 
 **Before Session 19 on ETS and model selection:** Read the [short likelihood guide](../19-ets-mle-model-selection/19_B_ESmoothing_Model_Selection.html#before-class). The handwritten maximum-likelihood primer is optional.
