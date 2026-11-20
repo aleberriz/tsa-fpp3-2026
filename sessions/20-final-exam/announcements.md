@@ -4,7 +4,7 @@
 
 ## Preparation for this class
 
-The Session 14 announcements promised a calculation practice set based on the homework and a study guide before the final. Their links will appear here when the materials are available. There is no mock exam or advance question bank.
+Use the [final exam calculator practice](final_calculator_practice.html) to revisit the homework on paper. Check your results against the numeric answers at the end. The study guide will be linked here when it is ready.
 
 For the promises and the response to the class poll, see the [Session 14 announcements](../14-cross-validation/announcements.md).
 
