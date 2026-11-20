@@ -35,9 +35,6 @@ fc_additive |>
 
 ### Compare the two specifications in R ----
 # Fit the models: additive and multiplicative seasonality
-# Pay attention to the error terms! (for numerical stability):
-  # error("A") for the additive model.
-  # error("M") for the multiplicative model.
 fit <- aus_holidays |>
   model(
     additive = ETS(Trips ~ error("A") + trend("A") + season("A")),
