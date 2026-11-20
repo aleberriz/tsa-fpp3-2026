@@ -4,6 +4,7 @@
 
 - **Homework due Sunday 6 December 2026, 23:59**, the same day as Group Assignment 2. It is the
   last homework, and it is short.
+- Exercise 3’s cross-validation is now optional.
 - **Group Assignment 2 is due Sunday 6 December 2026, 23:59.**
 - **There is no session on Monday 7 or Tuesday 8 December** (Constitution Day and Inmaculada
   Concepción).
