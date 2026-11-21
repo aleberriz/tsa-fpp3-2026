@@ -3320,7 +3320,7 @@ b_t=b_{t-1}+\alpha\beta^* e_t=b_{t-1}+\beta e_t,
 <tbody>
 <tr class="odd">
 <td><span class="math inline">\(\alpha\)</span>, the level</td>
-<td>An unexpected observation only slightly corrects the projected level <span class="math inline">\(\ell_{t-1}+b_{t-1}\)</span>. The level still advances by the slope each period; it is slow to react to surprises.</td>
+<td>The level stays close to its one-step projection, <span class="math inline">\(\ell_{t-1}+b_{t-1}\)</span> in Holt or <span class="math inline">\(\ell_{t-1}+\phi b_{t-1}\)</span> with damping: a surprise barely moves it.</td>
 <td>The level follows the latest observation; at <span class="math inline">\(\alpha=1\)</span> it <em>is</em> the latest observation.</td>
 </tr>
 <tr class="even">
