@@ -1,5 +1,4 @@
 # R code from the 18_A_ExpSmoothing_Seasonal notebook, in notebook order.
-#| warning: false
 library(fpp3)
 
 library(patchwork) # to place two plots side by side with p1 + p2
@@ -18,7 +17,6 @@ aus_holidays |>
 # 3. Holt and Holt-Winters in R ----
 
 ## Fit both and compare the forecasts ----
-#| fig-alt: "Holiday trips from 1998 to 2017 with forecasts for 2018 to 2020. Holt's forecast is a straight rising line through the middle of the seasonal swings. Holt-Winters repeats the Q1 peaks and Q3 troughs while rising."
 fit_holt_hw <- aus_holidays |>
   model(
     Holt     = ETS(Trips ~ error("A") + trend("A") + season("N")),
@@ -60,7 +58,6 @@ fit_gamma <- aus_holidays |>
                              season("A", gamma = 0.4))
   )
 
-#| fig-alt: "The Q1 seasonal effect from 1997 to 2017 under three gamma values. At 0.0001 it stays at 1.53 million. At 0.1 it moves between about 1.44 and 1.71. At 0.4 it moves between about 1.23 and 2.17."
 fit_gamma |>
   components() |>
   filter(quarter(Quarter) == 1) |>
@@ -113,7 +110,6 @@ fit |> tidy()
 ## Seasonal damping ----
 
 ### Model specification for a damped Holt-Winters model ----
-#| fig-alt: "Holiday-trip forecasts for 2018 to 2022. The multiplicative and damped multiplicative paths repeat the same seasonal pattern; the damped path rises more slowly, with a 2022 Q1 forecast of about 14.9 million against 15.5."
 fit_damped_hw <- aus_holidays |>
   model(
     multiplicative = ETS(Trips ~ error("M") + trend("A") + season("M")),

@@ -3184,7 +3184,7 @@ T+5-4(1+1)=T-3.
 </section>
 <section id="multiplicative" class="level2">
 <h2 class="anchored" data-anchor-id="multiplicative">The multiplicative equations</h2>
-<p>Start from the additive equations. Wherever the seasonal effect was added it now multiplies, and wherever it was subtracted it now divides. The changed terms are in color:</p>
+<p>Start from the additive equations. Where the seasonal effect was added to the forecast it now multiplies, and the two subtractions become divisions: the level update divides the observation by the old seasonal factor, and the season update divides it by the projected level. The changed terms are in color:</p>
 <p><span class="math display">\[
 \begin{align*}
 &amp;\text{Forecast} &amp;&amp; \hat y_{T+h|T}=(\ell_T+hb_T)\,\textcolor{#B5471E}{\times}\, s_{T+h-m(k+1)}\\
@@ -3193,7 +3193,7 @@ T+5-4(1+1)=T-3.
 &amp;\text{Season} &amp;&amp; s_t=\gamma\,\textcolor{#B5471E}{\frac{y_t}{\ell_{t-1}+b_{t-1}}}+(1-\gamma)\,s_{t-m}
 \end{align*}
 \]</span></p>
-<p>The slope equation and the calendar lookup stay the same, and in the forecast the level and slope still combine additively; the level and season updates divide by a factor instead of subtracting an effect. In the fitted holiday-trips model below, Q1’s factor of 1.16 puts its forecast 16% above the underlying path, while Q3’s 0.93 puts it 7% below. The absolute seasonal swing therefore grows when the underlying path rises. The <a href="#multiplicative-equations">multiplicative reference table</a> in the appendix replays this model; the required workbook uses additive seasonality.</p>
+<p>The slope equation and the calendar lookup stay the same, and in the forecast the level and slope still combine additively; the level update divides the observation <span class="math inline">\(y_t\)</span> by the old seasonal factor <span class="math inline">\(s_{t-m}\)</span>, and the season update divides <span class="math inline">\(y_t\)</span> by the projected level <span class="math inline">\(\ell_{t-1}+b_{t-1}\)</span>. In the fitted holiday-trips model below, Q1’s factor of 1.16 puts its forecast 16% above the underlying path, while Q3’s 0.93 puts it 7% below. The absolute seasonal swing therefore grows when the underlying path rises. The <a href="#multiplicative-equations">multiplicative reference table</a> in the appendix replays this model; the required workbook uses additive seasonality.</p>
 </section>
 <section id="comparison" class="level2">
 <h2 class="anchored" data-anchor-id="comparison">Compare the two forms in R</h2>
@@ -3379,7 +3379,7 @@ Removed 14 rows containing missing values or values outside the scale range
 <tbody>
 <tr class="odd">
 <td><span class="math inline">\(\alpha\)</span>, the level</td>
-<td>The level moves slowly and averages many past seasonally adjusted observations.</td>
+<td>An unexpected seasonally adjusted observation only slightly corrects the projected level <span class="math inline">\(\ell_{t-1}+b_{t-1}\)</span>, which still advances by the slope each period.</td>
 <td>The level follows the latest seasonally adjusted observation.</td>
 </tr>
 <tr class="even">
