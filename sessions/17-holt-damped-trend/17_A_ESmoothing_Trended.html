@@ -3310,7 +3310,7 @@ b_t=b_{t-1}+\alpha\beta^* e_t=b_{t-1}+\beta e_t,
 </tr>
 <tr class="even">
 <td><span class="math inline">\(\beta^*\)</span>, the slope</td>
-<td>The slope barely changes, so the trend is almost a fixed straight line; at <span class="math inline">\(\beta^*=0\)</span> the slope stays at <span class="math inline">\(b_0\)</span> for ever.</td>
+<td>The slope barely changes. In undamped Holt the trend is then almost a fixed straight line, and at <span class="math inline">\(\beta^*=0\)</span> the slope stays at <span class="math inline">\(b_0\)</span> for ever. In the damped method, <span class="math inline">\(\beta^*=0\)</span> gives <span class="math inline">\(b_t=\phi b_{t-1}\)</span>, so the slope still decays when <span class="math inline">\(0&lt;\phi&lt;1\)</span>.</td>
 <td>The slope chases each latest change in level, so the trend can turn quickly, including on a one-off jump.</td>
 </tr>
 <tr class="odd">
@@ -3320,7 +3320,7 @@ b_t=b_{t-1}+\alpha\beta^* e_t=b_{t-1}+\beta e_t,
 </tr>
 </tbody>
 </table>
-<p>The population fit set <span class="math inline">\(\alpha\)</span> almost to one, so its level tracks each year’s population, and <span class="math inline">\(\beta^*\)</span> to about 0.33, a slope that follows lasting changes in growth. The damped fit’s <span class="math inline">\(\phi=0.98\)</span> keeps the trend for a long time. These settings describe how the method reacts; they come from the training fit, and only forecasts of later observations can say whether a setting forecasts well.</p>
+<p>The two population fits are separate models, so read each from its own rows of <code>tidy()</code>. The Holt fit has <span class="math inline">\(\alpha=1.00\)</span> and <span class="math inline">\(\beta^*\approx0.33\)</span>: a level that tracks each year’s population and a slope that follows lasting changes in growth. The damped fit has <span class="math inline">\(\alpha=1.00\)</span>, <span class="math inline">\(\beta^*\approx0.43\)</span> and <span class="math inline">\(\phi=0.98\)</span>: a slightly more responsive slope that fades only slowly. These settings describe how the method reacts; they come from the training fit, and only forecasts of later observations can say whether a setting forecasts well.</p>
 </section>
 </section>
 <section id="evaluation" class="level1">
