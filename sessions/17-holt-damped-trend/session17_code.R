@@ -121,7 +121,7 @@ fc_damped |>
   pivot_wider(values_from = c(`.mean`), names_from = c(`.model`))
 
 ## How $\phi$ shapes the forecast ----
-#| fig-alt: "Forecasts to 2047. Holt is a straight line reaching about 35.7 million. Damped forecasts with phi 0.98, 0.9 and 0.8 bend away from it and level off near 32.7, 27.9 and 26.1 million."
+#| fig-alt: "Forecasts to 2047. Holt is a straight line reaching about 35.7 million in 2047. Damped forecasts with phi 0.98, 0.9 and 0.8 bend away from it and reach about 32.7, 27.9 and 26.1 million in 2047; the 0.9 and 0.8 paths have almost leveled off, while the 0.98 path is still rising."
 fit_phi <- aus_economy |>
   model(
     Holt         = ETS(Pop ~ error("A") + trend("A") + season("N")),
