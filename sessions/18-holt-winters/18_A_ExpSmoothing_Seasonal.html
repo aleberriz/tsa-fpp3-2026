@@ -3375,12 +3375,12 @@ Removed 14 rows containing missing values or values outside the scale range
 </tr>
 <tr class="even">
 <td><span class="math inline">\(\beta^*\)</span>, the slope</td>
-<td>The slope barely changes, so the underlying trend is almost a fixed straight line; at <span class="math inline">\(\beta^*=0\)</span> it stays at <span class="math inline">\(b_0\)</span>.</td>
+<td>The slope barely changes. Without damping the underlying trend is then almost a fixed straight line, and at <span class="math inline">\(\beta^*=0\)</span> it stays at <span class="math inline">\(b_0\)</span>; with damping, <span class="math inline">\(\beta^*=0\)</span> still lets the slope decay by <span class="math inline">\(\phi\)</span> each period.</td>
 <td>The slope chases each latest change in level, so the trend can turn quickly.</td>
 </tr>
 <tr class="odd">
 <td><span class="math inline">\(\gamma\)</span>, the season</td>
-<td>The seasonal pattern stays the same every year, like the fixed indices of classical decomposition in Session 7.</td>
+<td>The seasonal pattern barely changes from year to year. At <span class="math inline">\(\gamma=0\)</span> the indices never change, like the fixed indices of classical decomposition in Session 7; a small positive <span class="math inline">\(\gamma\)</span> lets them drift slightly.</td>
 <td>Each quarter’s effect is rebuilt mostly from its latest year, so one unusual summer carries into next year’s forecast.</td>
 </tr>
 <tr class="even">
@@ -3390,7 +3390,7 @@ Removed 14 rows containing missing values or values outside the scale range
 </tr>
 </tbody>
 </table>
-<p>For the holiday trips, the additive fit has <span class="math inline">\(\alpha\approx0.26\)</span>, a moderately responsive level; <span class="math inline">\(\beta^*\approx0.165\)</span>, a slowly turning slope; and <span class="math inline">\(\gamma=0.0001\)</span>, a fixed seasonal pattern. These settings come from the training fit and describe how the method reacts; only forecasts of later observations can say whether they forecast well.</p>
+<p>For the holiday trips, the additive fit has <span class="math inline">\(\alpha\approx0.26\)</span>, a moderately responsive level; <span class="math inline">\(\beta^*\approx0.165\)</span>, a slowly turning slope; and <span class="math inline">\(\gamma=0.0001\)</span>, a seasonal pattern that changes only very slightly. These settings come from the training fit and describe how the method reacts; only forecasts of later observations can say whether they forecast well.</p>
 </section>
 </section>
 <section id="evaluation" class="level1">
