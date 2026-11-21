@@ -11,6 +11,22 @@ aus_economy <- global_economy |>
 autoplot(aus_economy, Pop) +
   labs(y = "Millions", title = "Australian population")
 
+#| fig-alt: "Australian population rises from 1960 to 2017. The SES point forecast is a flat dashed line at about 24.60 million from 2018 to 2027."
+fit_ses <- aus_economy |>
+  model(SES = ETS(Pop ~ error("A") + trend("N") + season("N")))
+
+fc_ses <- fit_ses |>
+  forecast(h = 10)
+
+autoplot(aus_economy, Pop) +
+  geom_line(data = fc_ses, aes(y = .mean),
+            colour = "#0072B2", linetype = "dashed") +
+  annotate("text", x = 2023, y = 23.8, label = "SES", colour = "#0072B2") +
+  labs(title = "SES forecasts stay flat despite the rising population",
+       subtitle = "Australian population, with forecasts for 2018 to 2027",
+       x = "Year", y = "Population (millions)",
+       caption = "Source: global_economy. Dashed line: SES point forecasts; prediction intervals omitted.")
+
 # 6. Inspect the Holt fit and extend it with damping ----
 fit <- aus_economy |>
   model(
