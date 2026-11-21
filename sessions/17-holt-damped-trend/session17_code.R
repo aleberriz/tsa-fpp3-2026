@@ -15,7 +15,6 @@ autoplot(aus_economy, Pop) +
 # 3. SES and Holt in R ----
 
 ## Fit both and compare the forecasts ----
-#| fig-alt: "Australian population rises from 1960 to 2017. The SES forecast is flat at about 24.6 million from 2018 to 2027; the Holt forecast continues the rise to about 28.3 million."
 fit_ses_holt <- aus_economy |>
   model(
     SES  = ETS(Pop ~ error("A") + trend("N") + season("N")),
@@ -70,7 +69,6 @@ fit_beta <- aus_economy |>
                            season("N"))
   )
 
-#| fig-alt: "Three slope paths from 1959 to 2017. With beta-star 0.05 the slope stays near 0.22 to 0.29. With 0.9 it jumps between about 0.14 and 0.44. With 0.3 it moves between the two."
 fit_beta |>
   components() |>
   ggplot(aes(x = Year, y = slope, colour = .model)) +
@@ -121,7 +119,6 @@ fc_damped |>
   pivot_wider(values_from = c(`.mean`), names_from = c(`.model`))
 
 ## How $\phi$ shapes the forecast ----
-#| fig-alt: "Forecasts to 2047. Holt is a straight line reaching about 35.7 million in 2047. Damped forecasts with phi 0.98, 0.9 and 0.8 bend away from it and reach about 32.7, 27.9 and 26.1 million in 2047; the 0.9 and 0.8 paths have almost leveled off, while the 0.98 path is still rising."
 fit_phi <- aus_economy |>
   model(
     Holt         = ETS(Pop ~ error("A") + trend("A") + season("N")),
