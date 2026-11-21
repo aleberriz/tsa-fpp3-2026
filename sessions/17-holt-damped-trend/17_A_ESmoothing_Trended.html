@@ -3150,7 +3150,7 @@ b_t=b_{t-1}+\alpha\beta^* e_t=b_{t-1}+\beta e_t,
 \end{align*}
 \]</span></p>
 <ul>
-<li><strong>Forecast.</strong> Holt adds <span class="math inline">\(h\)</span> full slopes. The damped method adds <span class="math inline">\(\phi\)</span> of the slope for the first step, <span class="math inline">\(\phi^2\)</span> for the second, and so on, so each step adds less than the one before.</li>
+<li><strong>Forecast.</strong> Holt projects the same change each year. With damping, the first year’s change is <span class="math inline">\(\phi b_t\)</span>, the second year’s is <span class="math inline">\(\phi^2 b_t\)</span>, and so on. Each projected change is <span class="math inline">\(\phi\)</span> times the previous one.</li>
 <li><strong>Updates.</strong> Whenever the slope is carried one period forward, it is multiplied by <span class="math inline">\(\phi\)</span>.</li>
 <li><strong>Two endpoints.</strong> With <span class="math inline">\(\phi=1\)</span> every factor is one and we are back to Holt. The smaller <span class="math inline">\(\phi\)</span>, the sooner the forecast flattens.</li>
 </ul>
@@ -3258,7 +3258,7 @@ b_t=b_{t-1}+\alpha\beta^* e_t=b_{t-1}+\beta e_t,
 </div>
 </div>
 </div>
-<p>The four fits end with almost the same final level and slope, so the differences come from <span class="math inline">\(\phi\)</span>:</p>
+<p>The four fits end with similar levels and slopes. Most of the difference between the paths comes from <span class="math inline">\(\phi\)</span>:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>fit_phi <span class="sc">|&gt;</span> <span class="fu">components</span>() <span class="sc">|&gt;</span> <span class="fu">as_tibble</span>() <span class="sc">|&gt;</span> <span class="fu">group_by</span>(.model) <span class="sc">|&gt;</span></span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_tail</span>(<span class="at">n =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(.model, level, slope)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -3273,11 +3273,13 @@ b_t=b_{t-1}+\alpha\beta^* e_t=b_{t-1}+\beta e_t,
 4 phi = 0.98  24.6 0.363</code></pre>
 </div>
 </div>
-<p>Each damped forecast levels off. The weights <span class="math inline">\(\phi+\phi^2+\cdots\)</span> add up to less and less with each step, and their total approaches <span class="math inline">\(\phi/(1-\phi)\)</span>. The forecast therefore approaches</p>
+<p>Start with the <span class="math inline">\(\phi=0.8\)</span> fit. Its final level is about 24.60 million people and its final slope is about 0.388 million people per year. Holt would project the same yearly increase from a given final slope. Damping keeps only 80% of that increase in the first forecast year, then 80% of the previous year’s increase at each step. The projected gains are <span class="math inline">\(0.8\times0.388\approx0.31\)</span> million people in year 1, about 0.25 million in year 2, and about 0.20 million in year 3. Each gain is smaller, and the forecast levels off as these gains approach zero.</p>
+<p>To find where it levels off, add the gains for all future years. The fractions <span class="math inline">\(0.8+0.8^2+0.8^3+\cdots\)</span> sum to <span class="math inline">\(0.8/(1-0.8)=4\)</span>. That makes the <strong>total projected gain</strong> <span class="math inline">\(4\times0.388\approx1.55\)</span> million people. Starting from 24.60 million, the forecast approaches 26.15 million people.</p>
+<p>The multiplier <span class="math inline">\(\phi/(1-\phi)\)</span> converts the estimated change for one year into the total projected change over all future years. The long-run forecast is the final level plus that total.</p>
 <p><span class="math display">\[
 \ell_T+\frac{\phi}{1-\phi}\,b_T .
 \]</span></p>
-<p>With <span class="math inline">\(\phi=0.8\)</span> the slope can add at most four final slopes, <span class="math inline">\(0.8/0.2=4\)</span>: <span class="math inline">\(24.60+4\times0.388\approx26.15\)</span> million, which the forecast all but reaches within about fifteen years. With <span class="math inline">\(\phi=0.9\)</span> the ceiling is nine slopes, <span class="math inline">\(24.59+9\times0.381\approx28.0\)</span> million, approached more slowly. With <span class="math inline">\(\phi=0.98\)</span> it is 49 slopes, about <span class="math inline">\(24.60+49\times0.363\approx42.4\)</span> million, far beyond this plot: in 2047 the forecast is 32.7 million and still rising by about 0.2 million a year. A forecast at a given horizon is not the same as the limit it approaches. The <a href="#damped-sum">appendix</a> shows the algebra.</p>
+<p>With <span class="math inline">\(\phi=0.98\)</span>, each yearly gain keeps 98% of the previous one. The gains shrink more slowly, so more growth accumulates. The multiplier is <span class="math inline">\(0.98/(1-0.98)=49\)</span>. With this fit’s final slope of 0.3634 million people per year, the total projected gain is about 17.81 million people. The forecast is 32.7 million people in 2047 and is still rising toward its long-run level of 42.4 million. The <a href="#damped-sum">appendix</a> derives the multiplier.</p>
 </section>
 <section id="damped-check" class="level2">
 <h2 class="anchored" data-anchor-id="damped-check">Check: damping a falling trend</h2>
@@ -3294,8 +3296,8 @@ b_t=b_{t-1}+\alpha\beta^* e_t=b_{t-1}+\beta e_t,
 </div>
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>Holt’s forecast adds three full slopes: <span class="math inline">\(\ell_T+3b_T=50-3\times2=44\)</span>.</p>
-<p>The damped forecast adds three shrinking ones: <span class="math inline">\(\ell_T+(\phi+\phi^2+\phi^3)b_T=50-(0.9+0.81+0.729)\times2=45.12\)</span>.</p>
+<p>Holt projects a drop of 2 in each of the three periods: <span class="math inline">\(\ell_T+3b_T=50-3\times2=44\)</span>.</p>
+<p>Damped Holt projects smaller drops each period: <span class="math inline">\(\ell_T+(\phi+\phi^2+\phi^3)b_T=50-(0.9+0.81+0.729)\times2=45.12\)</span>.</p>
 <p>The damped forecast is above Holt’s. Damping shrinks the trend’s contribution whatever its sign, so, holding the final states fixed, it lowers a rising path and raises a falling one. Separately fitted models may have different final states as well as different damping, so compare their actual forecasts.</p>
 </div>
 </div>
@@ -3330,12 +3332,11 @@ b_t=b_{t-1}+\alpha\beta^* e_t=b_{t-1}+\beta e_t,
 </tr>
 <tr class="odd">
 <td><span class="math inline">\(\phi\)</span>, the damping</td>
-<td>The slope fades fast and the forecast levels off within a few periods: with <span class="math inline">\(\phi=0.8\)</span> it adds at most four more slopes.</td>
-<td>The slope persists and the forecast is almost Holt’s straight line; <span class="math inline">\(\phi=1\)</span> is Holt.</td>
+<td>Projected yearly changes shrink quickly and the forecast levels off sooner.</td>
+<td>Projected yearly changes persist longer. At <span class="math inline">\(\phi=1\)</span> they stay constant, giving Holt’s straight line.</td>
 </tr>
 </tbody>
 </table>
-<p>The two population fits are separate models, so read each from its own rows of <code>tidy()</code>. The Holt fit has <span class="math inline">\(\alpha=1.00\)</span> and <span class="math inline">\(\beta^*\approx0.33\)</span>: a level that tracks each year’s population and a slope that follows lasting changes in growth. The damped fit has <span class="math inline">\(\alpha=1.00\)</span>, <span class="math inline">\(\beta^*\approx0.43\)</span> and <span class="math inline">\(\phi=0.98\)</span>: a slightly more responsive slope that fades only slowly. These settings describe how the method reacts; they come from the training fit, and only forecasts of later observations can say whether a setting forecasts well.</p>
 </section>
 </section>
 <section id="evaluation" class="level1">
