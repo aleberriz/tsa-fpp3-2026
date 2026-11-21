@@ -2384,6 +2384,7 @@ window.Quarto = {
   <ul>
   <li><a href="#damped-spec" id="toc-damped-spec" class="nav-link" data-scroll-target="#damped-spec">Model specification for a damped Holt-Winters model</a></li>
   </ul></li>
+  <li><a href="#dials" id="toc-dials" class="nav-link" data-scroll-target="#dials">The four dials: what small and large values mean</a></li>
   </ul></li>
   <li><a href="#evaluation" id="toc-evaluation" class="nav-link" data-scroll-target="#evaluation">7. Judge the forecasts</a></li>
   <li><a href="#exercise" id="toc-exercise" class="nav-link" data-scroll-target="#exercise">Exercise: seasonal exponential smoothing</a>
@@ -2453,7 +2454,7 @@ window.Quarto = {
 <li><a href="#example">Holt and Holt-Winters in R</a>: fit both, compare their forecasts, inspect the seasonal states.</li>
 <li><a href="#interpreting">Reading the equations</a>: predict first, then update; what <span class="math inline">\(\gamma\)</span> does; which seasonal index a forecast uses.</li>
 <li><a href="#worked-row">Holt-Winters by hand</a>: one update on a calculator, then the Excel workbook.</li>
-<li><a href="#additive-multiplicative">Proportional seasonality</a>: the multiplicative equations, the two forms compared in R, and seasonal damping.</li>
+<li><a href="#additive-multiplicative">Proportional seasonality</a>: the multiplicative equations, the two forms compared in R, seasonal damping, and what small and large values of <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\beta^*\)</span>, <span class="math inline">\(\gamma\)</span> and <span class="math inline">\(\phi\)</span> mean.</li>
 <li><a href="#evaluation">Judge the forecasts</a>: training fit against held-out evidence.</li>
 </ol>
 <p>The required work is the Additive sheet of workbook <code>18_B</code>, the <a href="#calculator">calculator update and beyond-cycle forecast</a>, and <a href="#exercise">the two-model arrivals comparison</a>, questions 1, 2, 3 and 6. The appendix holds the multiplicative reference table, detailed state counts, the full damped seasonal updates, a daily example, reference sketches and optional cross-validation.</p>
@@ -2484,7 +2485,7 @@ window.Quarto = {
 <tr class="header">
 <th></th>
 <th>Session 17: Holt</th>
-<th>Today: Holt-Winters</th>
+<th>Today: additive Holt-Winters</th>
 </tr>
 </thead>
 <tbody>
@@ -3183,7 +3184,7 @@ T+5-4(1+1)=T-3.
 &amp;\text{Season} &amp;&amp; s_t=\gamma\,\textcolor{#B5471E}{\frac{y_t}{\ell_{t-1}+b_{t-1}}}+(1-\gamma)\,s_{t-m}
 \end{align*}
 \]</span></p>
-<p>The level and slope still combine additively, and the calendar lookup is unchanged. In the fitted holiday-trips model below, Q1’s factor of 1.16 puts its forecast 16% above the underlying path, while Q3’s 0.93 puts it 7% below. The absolute seasonal swing therefore grows when the underlying path rises. The <a href="#multiplicative-equations">multiplicative reference table</a> in the appendix replays this model; the required workbook uses additive seasonality.</p>
+<p>The slope equation and the calendar lookup stay the same, and in the forecast the level and slope still combine additively; the level and season updates divide by a factor instead of subtracting an effect. In the fitted holiday-trips model below, Q1’s factor of 1.16 puts its forecast 16% above the underlying path, while Q3’s 0.93 puts it 7% below. The absolute seasonal swing therefore grows when the underlying path rises. The <a href="#multiplicative-equations">multiplicative reference table</a> in the appendix replays this model; the required workbook uses additive seasonality.</p>
 </section>
 <section id="comparison" class="level2">
 <h2 class="anchored" data-anchor-id="comparison">Compare the two forms in R</h2>
@@ -3349,6 +3350,47 @@ Removed 14 rows containing missing values or values outside the scale range
 </div>
 <p>The estimated <span class="math inline">\(\phi\)</span> is 0.98, again at the top of the default range. By 2022 Q1 the damped forecast is about 14.9 million against 15.5. Use forecast evidence at the required horizon to decide whether damping helps.</p>
 </section>
+</section>
+<section id="dials" class="level2">
+<h2 class="anchored" data-anchor-id="dials">The four dials: what small and large values mean</h2>
+<p>Each weight is a dial that sets how a state reacts to new data. None of them is the size of the level, the slope or a seasonal effect.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Dial</th>
+<th>Small</th>
+<th>Large</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(\alpha\)</span>, the level</td>
+<td>The level moves slowly and averages many past seasonally adjusted observations.</td>
+<td>The level follows the latest seasonally adjusted observation.</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\beta^*\)</span>, the slope</td>
+<td>The slope barely changes, so the underlying trend is almost a fixed straight line; at <span class="math inline">\(\beta^*=0\)</span> it stays at <span class="math inline">\(b_0\)</span>.</td>
+<td>The slope chases each latest change in level, so the trend can turn quickly.</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\gamma\)</span>, the season</td>
+<td>The seasonal pattern stays the same every year, like the fixed indices of classical decomposition in Session 7.</td>
+<td>Each quarter’s effect is rebuilt mostly from its latest year, so one unusual summer carries into next year’s forecast.</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\phi\)</span>, the damping</td>
+<td>The slope fades fast, so the underlying path levels off soon while the seasons keep repeating.</td>
+<td>The slope persists; <span class="math inline">\(\phi=1\)</span> is no damping.</td>
+</tr>
+</tbody>
+</table>
+<p>For the holiday trips, the additive fit has <span class="math inline">\(\alpha\approx0.26\)</span>, a moderately responsive level; <span class="math inline">\(\beta^*\approx0.165\)</span>, a slowly turning slope; and <span class="math inline">\(\gamma=0.0001\)</span>, a fixed seasonal pattern. These settings come from the training fit and describe how the method reacts; only forecasts of later observations can say whether they forecast well.</p>
 </section>
 </section>
 <section id="evaluation" class="level1">
