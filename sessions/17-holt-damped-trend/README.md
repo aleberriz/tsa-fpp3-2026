@@ -4,7 +4,7 @@
 
 **Materials:** [Slides](session17_slides.html), [notebook](17_A_ESmoothing_Trended.html), [workbook](17_B_ExpSmoothing_Trended_students.xlsx), and [R script](session17_code.R).
 
-**In class:** See why SES needs a slope and establish Holt’s straight forecast path before interpreting the state updates. Trace one row and the workbook, recall the fitting search from SES, then inspect the population fit and forecasts in R. Extend the path with damping and distinguish forecast shape, residual checks and held-out evidence.
+**In class:** Start from the SES equations and add a slope. Fit SES and Holt in R and compare their forecasts, then read the update equations and see how the slope weight changes the slope. Work one update by hand and start the workbook. Add damping, fit it in R, see how the damping factor flattens the forecast, and distinguish forecast shape from held-out evidence.
 
 **R:** `ETS(y ~ error("A") + trend("A") + season("N"))`, `trend("Ad")`, `components()`, `augment()`, `tidy()`.
 
@@ -14,6 +14,6 @@ Complete [workbook 17_B](17_B_ExpSmoothing_Trended_students.xlsx), including its
 
 Submit the workbook and a short document with your working and R results on Blackboard. See [announcements](announcements.md) for the deadline.
 
-The notebook follows the same seven-question route as the slides and supplies the full explanations for independent study. Its appendix contains the responsiveness slider, full damped updates, fixed phi, custom bounds and optional Exercise 2 on cross-validation. The beta conversion is explained beside the first parameter output.
+The notebook follows the slides in the same order, and each slide links to its section. Its appendix contains a reconstruction of the fitted values, the algebra of the damped forecast limit, custom phi bounds, reference sketches and optional Exercise 2 on cross-validation. The beta conversion is explained beside the first parameter output.
 
 **Group Assignment 2:** The [Efficient Market Hypothesis assignment](../../assignments/) accompanies this session. See [announcements](announcements.md) for this class's release date and deadline.

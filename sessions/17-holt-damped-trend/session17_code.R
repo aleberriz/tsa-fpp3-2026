@@ -4,36 +4,34 @@
 library(fpp3)
 library(patchwork)
 
-# 1. Why SES needs a slope ----
+# 1. From SES to Holt ----
 aus_economy <- global_economy |>
   filter(Code == "AUS") |>
   mutate(Pop = Population / 1e6)
+
 autoplot(aus_economy, Pop) +
   labs(y = "Millions", title = "Australian population")
 
-#| fig-alt: "Australian population rises from 1960 to 2017. The SES point forecast is a flat dashed line at about 24.60 million from 2018 to 2027."
-fit_ses <- aus_economy |>
-  model(SES = ETS(Pop ~ error("A") + trend("N") + season("N")))
+# 3. SES and Holt in R ----
 
-fc_ses <- fit_ses |>
-  forecast(h = 10)
-
-autoplot(aus_economy, Pop) +
-  geom_line(data = fc_ses, aes(y = .mean),
-            colour = "#0072B2", linetype = "dashed") +
-  annotate("text", x = 2023, y = 23.8, label = "SES", colour = "#0072B2") +
-  labs(title = "SES forecasts stay flat despite the rising population",
-       subtitle = "Australian population, with forecasts for 2018 to 2027",
-       x = "Year", y = "Population (millions)",
-       caption = "Source: global_economy. Dashed line: SES point forecasts; prediction intervals omitted.")
-
-# 6. Inspect the Holt fit and extend it with damping ----
-fit <- aus_economy |>
+## Fit both and compare the forecasts ----
+#| fig-alt: "Australian population rises from 1960 to 2017. The SES forecast is flat at about 24.6 million from 2018 to 2027; the Holt forecast continues the rise to about 28.3 million."
+fit_ses_holt <- aus_economy |>
   model(
-    AAN = ETS(Pop ~ error("A") + trend("A") + season("N"))
+    SES  = ETS(Pop ~ error("A") + trend("N") + season("N")),
+    Holt = ETS(Pop ~ error("A") + trend("A") + season("N"))
   )
 
-fit
+fc_ses_holt <- fit_ses_holt |> forecast(h = 10)
+
+fc_ses_holt |>
+  autoplot(aus_economy, level = NULL) +
+  labs(title = "SES stays flat; Holt continues the trend",
+       y = "Population (millions)") +
+  guides(colour = guide_legend(title = "Forecast"))
+
+## Inspect the Holt fit ----
+fit <- fit_ses_holt |> select(Holt)
 
 tidy(fit)
 
@@ -44,68 +42,60 @@ beta_hat <- holt_estimates$estimate[holt_estimates$term == "beta"]
 # beta-star, the slope weight in the equations and the workbook
 beta_hat / alpha_hat
 
-### Why the two beta labels differ ----
-fitted_vals <-
-  fit |>
-  augment()
-
-resid <-  fitted_vals$.innov
-
-# Sum of squared residuals
-SSE <- sum(resid^2)
-SSE
-
-### Components of the model ----
-holts_components <-
-  fit |>
-    components()
-
+holts_components <- fit |> components()
 holts_components
 
-# Depict the components
 holts_components |> autoplot()
-
-### Forecasts from the final level and slope ----
-fc <-
-  fit |>
-  forecast(h = 10)
-
-fc |> autoplot(aus_economy, level = NULL) +
-  labs(title = "Australian population",
-       y = "Millions") +
-  guides(colour = guide_legend(title = "Forecast"))
 
 final <- tail(holts_components, 1)
 final$level + (1:3) * final$slope
 
-fc |> head(3) |> pull(.mean)
+fc_ses_holt |> filter(.model == "Holt") |> head(3) |> pull(.mean)
 
-# Use the equation for the prior predictions
-holts_components <-
-  holts_components |>
-  mutate(
-    .fitted = lag(level) + lag(slope) # Prior prediction: previous level plus slope
+# 4. Reading the equations ----
+
+## What $\beta^*$ does to the slope ----
+alpha_demo <- 0.8
+
+fit_beta <- aus_economy |>
+  model(
+    `beta* = 0.05` = ETS(Pop ~ error("A") +
+                           trend("A", alpha = alpha_demo, beta = alpha_demo * 0.05) +
+                           season("N")),
+    `beta* = 0.3`  = ETS(Pop ~ error("A") +
+                           trend("A", alpha = alpha_demo, beta = alpha_demo * 0.3) +
+                           season("N")),
+    `beta* = 0.9`  = ETS(Pop ~ error("A") +
+                           trend("A", alpha = alpha_demo, beta = alpha_demo * 0.9) +
+                           season("N"))
   )
 
-# Vector of fitted values computed using augment
-fitted_augment <-
-  fit |>
-    augment() |>
-    pull(.fitted)
+#| fig-alt: "Three slope paths from 1959 to 2017. With beta-star 0.05 the slope stays near 0.22 to 0.29. With 0.9 it jumps between about 0.14 and 0.44. With 0.3 it moves between the two."
+fit_beta |>
+  components() |>
+  ggplot(aes(x = Year, y = slope, colour = .model)) +
+  geom_line() +
+  labs(title = "Small beta-star: a steady slope. Large beta-star: a jumpy one",
+       y = "Slope (millions per year)", colour = "Model")
 
-# Vector of fitted values computed using the components() and the equation
-fitted_components <-
-  holts_components |>
-  pull(.fitted)
+fit_beta |> accuracy() |> select(.model, RMSE)
 
-# Remove NAs
-fitted_components <-  fitted_components[!is.na(fitted_components)]
+fit_beta |>
+  forecast(h = 10) |>
+  autoplot(aus_economy, level = NULL) +
+  labs(title = "Forecasts from the three slope weights",
+       y = "Population (millions)", colour = "Model")
 
-all.equal(fitted_augment, fitted_components)
+## Fitting: the same search as SES ----
+fitted_vals <- fit |> augment()
 
-## Worked answer: open after you have committed ----
+# Sum of squared residuals
+SSE <- sum(fitted_vals$.innov^2)
+SSE
 
-### Damped example: `ETS()` estimates $\phi$ ----
+# 6. Damped trend ----
+
+## Damped example: `ETS()` estimates $\phi$ ----
 fit_damped <-
   aus_economy |>
       model(
@@ -130,6 +120,26 @@ fc_damped |>
   select(Year, .model, .mean) |>
   pivot_wider(values_from = c(`.mean`), names_from = c(`.model`))
 
+## How $\phi$ shapes the forecast ----
+#| fig-alt: "Forecasts to 2047. Holt is a straight line reaching about 35.7 million. Damped forecasts with phi 0.98, 0.9 and 0.8 bend away from it and level off near 32.7, 27.9 and 26.1 million."
+fit_phi <- aus_economy |>
+  model(
+    Holt         = ETS(Pop ~ error("A") + trend("A") + season("N")),
+    `phi = 0.98` = ETS(Pop ~ error("A") + trend("Ad", phi = 0.98) + season("N")),
+    `phi = 0.9`  = ETS(Pop ~ error("A") + trend("Ad", phi = 0.9) + season("N")),
+    `phi = 0.8`  = ETS(Pop ~ error("A") + trend("Ad", phi = 0.8) + season("N"))
+  )
+
+fc_phi <- fit_phi |> forecast(h = 30)
+
+fc_phi |>
+  autoplot(aus_economy, level = NULL) +
+  labs(title = "The smaller phi, the sooner the forecast levels off",
+       y = "Population (millions)", colour = "Model")
+
+fit_phi |> components() |> as_tibble() |> group_by(.model) |>
+  slice_tail(n = 1) |> select(.model, level, slope)
+
 # Exercise 1: internet usage ----
 # Convert time series object to tsibble object for compatibility with fable methods and tools
 www_usage <- as_tsibble(WWWusage)
@@ -142,25 +152,30 @@ www_usage |>
 
 # Appendix: supporting explanations and variants ----
 
-## Optional: fix $\phi$ ----
-fit_phi_fixed <-
-  aus_economy |>
-    model(
-      holts = ETS(Pop ~ error("A") + trend("A") + season("N")),
-
-    # Damping parameter explicitly set to 0.9
-     damped_holts = ETS(Pop ~ error("A") + trend("Ad", phi = 0.9) + season("N"))
+## Optional: reconstruct the fitted values ----
+# Use the equation for the prior predictions
+holts_components <-
+  holts_components |>
+  mutate(
+    .fitted = lag(level) + lag(slope) # Prior prediction: previous level plus slope
   )
 
-fc_phi_fixed <-
-  fit_phi_fixed |>
-  forecast(h = 15)
+# Vector of fitted values computed using augment
+fitted_augment <-
+  fit_ses_holt |>
+    select(Holt) |>
+    augment() |>
+    pull(.fitted)
 
-fc_phi_fixed |>
-  autoplot(aus_economy, level = NULL) +
-  labs(title = "Australian population",
-       y = "Millions") +
-  guides(colour = guide_legend(title = "Forecast"))
+# Vector of fitted values computed using the components() and the equation
+fitted_components <-
+  holts_components |>
+  pull(.fitted)
+
+# Remove NAs
+fitted_components <-  fitted_components[!is.na(fitted_components)]
+
+all.equal(fitted_augment, fitted_components)
 
 ## Optional: change $\phi$'s range ----
 fit_phi_range <-
