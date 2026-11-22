@@ -2441,7 +2441,7 @@ window.Quarto = {
 <li><a href="#diagnostics">Check the selected model</a>: the residual checks on the innovation residuals.</li>
 <li><a href="#forecasting">Forecasting with ETS</a>: forecast distributions, one interval by hand, whether an interval repeats with its point forecast, and the whole route in one table.</li>
 </ol>
-<p>The required work is <a href="#exercise-1">Exercise 1</a> parts 1, 2 and 5, <a href="#exercise-3">Exercise 3</a> parts 1 and 2, and its <a href="#calculator">calculator comparison</a>: the tasks the final exam builds on. Everything else in the exercises, Exercise 2 included, is optional practice. The appendix holds BIC, the nested-model argument, comparisons across model families, zeros and transformations, simulated intervals, and where the likelihood score comes from.</p>
+<p>The required work is <a href="#exercise-1">Exercise 1</a> parts 1, 2 and 5, <a href="#exercise-3">Exercise 3</a> parts 1 and 2, and its <a href="#calculator">calculator comparison</a>. Everything else in the exercises, Exercise 2 included, is optional practice. The appendix holds BIC, the nested-model argument, comparisons across model families, zeros and transformations, simulated intervals, and where the likelihood score comes from.</p>
 </section>
 <section id="references" class="level1">
 <h1>References</h1>
@@ -3450,7 +3450,7 @@ Model: ETS(M,N,A)
 <li><strong>Optional.</strong> Forecast eight quarters for every region, and plot the Brisbane forecasts with the data.</li>
 <li>Without R, name the ETS model that each description asks for, and say which feature set each letter:
 <ol type="a">
-<li>Forecast misses of about the same size in trips at any level of the series, no trend, and a seasonal pattern that adds roughly the same number of trips to each quarter every year.</li>
+<li>Forecast misses of about the same size in trips at any level of the series, no trend, and a summer quarter about 20 thousand trips above the series level each year, whether the year is busy or quiet.</li>
 <li>Forecast misses that stay a roughly constant percentage of the forecast, a slope that the forecasts extend at a constant rate for as far ahead as you look, and no seasonal pattern.</li>
 <li>Forecast misses that stay a roughly constant percentage of the forecast, no trend, and seasonal effects that act as percentages of the level, so a busier year has bigger seasonal swings.</li>
 </ol></li>
@@ -3458,7 +3458,7 @@ Model: ETS(M,N,A)
 </section>
 <section id="exercise-2" class="level1">
 <h1>Exercise 2</h1>
-<p><strong>Optional practice.</strong> The final exam does not build on this exercise.</p>
+<p><strong>Optional practice.</strong></p>
 <p>Sum the trips with purpose <code>Holiday</code> over all regions, as in the <a href="#example-1">continuing example</a> (in thousands of trips this time).</p>
 <ol type="1">
 <li>Fit an automatic ETS model and report it.</li>

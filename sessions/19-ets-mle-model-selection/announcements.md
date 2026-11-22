@@ -4,7 +4,7 @@
 
 - **Homework due Sunday 6 December 2026, 23:59**, the same day as Group Assignment 2. It is the
   last homework, and it is short.
-- Only the parts the final exam builds on are required: Exercise 1 parts 1, 2 and 5, Exercise 3 parts 1 and 2, and the AIC calculation by hand. Everything else in the exercises is optional practice.
+- The required parts are Exercise 1 parts 1, 2 and 5, Exercise 3 parts 1 and 2, and the AIC calculation by hand; Blackboard lists the points for each. Everything else in the exercises is optional practice.
 - **Group Assignment 2 is due Sunday 6 December 2026, 23:59.**
 - **There is no session on Monday 7 or Tuesday 8 December** (Constitution Day and Inmaculada
   Concepción).
