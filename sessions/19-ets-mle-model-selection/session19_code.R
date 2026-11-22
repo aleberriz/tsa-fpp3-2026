@@ -185,8 +185,8 @@ augment(fit) |> features(.innov, ljung_box, lag = 8)
 fc <- fit |> forecast(h = 8)
 
 fc |>
-  autoplot(aus_holidays) +
-  labs(title = "Australian domestic tourism",
+  autoplot(aus_holidays, level = NULL) +
+  labs(title = "Australian domestic tourism: point forecasts",
        y = "Overnight trips (millions)")
 
 ## The one-step interval by hand ----
@@ -202,6 +202,11 @@ fc |>
   hilo(level = 95) |>
   as_tibble() |>
   select(Quarter, .mean, `95%`)
+
+fc |>
+  autoplot(aus_holidays) +
+  labs(title = "Australian domestic tourism: forecast intervals",
+       y = "Overnight trips (millions)")
 
 # Exercise 2 ----
 aus_holidays_total <- tourism |>
