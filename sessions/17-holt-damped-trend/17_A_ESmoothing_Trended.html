@@ -2746,7 +2746,7 @@ b_t=b_{t-1}+\alpha\beta^* e_t=b_{t-1}+\beta e_t,
 <span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>                           <span class="fu">season</span>(<span class="st">&quot;N&quot;</span>))</span>
 <span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>The slope component of each fit shows the difference:</p>
+<p>All three curves show Holt’s estimated slope year by year.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>fit_beta <span class="sc">|&gt;</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">components</span>() <span class="sc">|&gt;</span></span>
@@ -2763,9 +2763,9 @@ b_t=b_{t-1}+\alpha\beta^* e_t=b_{t-1}+\beta e_t,
 </div>
 </div>
 <ul>
-<li>With <span class="math inline">\(\beta^*=0.05\)</span> the slope barely moves: it behaves almost like the fixed slope of the drift method.</li>
+<li>With <span class="math inline">\(\beta^*=0.05\)</span>, Holt gives the latest change in level only 5% weight. The estimated slope rises slowly after growth speeds up around 2005.</li>
 <li>With <span class="math inline">\(\beta^*=0.9\)</span> the slope chases every change in yearly growth, up to 0.44 in 2009 and down again two years later.</li>
-<li>With <span class="math inline">\(\beta^*=0.3\)</span> it follows the lasting changes, such as faster growth after 2005, without most of the jumps.</li>
+<li>With <span class="math inline">\(\beta^*=0.3\)</span> it follows the faster growth after 2005 and smooths out most of the jumps. This curve looks most like the slope panel in the earlier plot, where Holt estimated <span class="math inline">\(\beta^*\)</span> at about <span class="math inline">\(0.327\)</span>.</li>
 </ul>
 <p>The training errors tell us which of the three fits the observed years best:</p>
 <div class="cell">
@@ -2779,7 +2779,7 @@ b_t=b_{t-1}+\alpha\beta^* e_t=b_{t-1}+\beta e_t,
 3 beta* = 0.9  0.0666</code></pre>
 </div>
 </div>
-<p>Both extremes fit worse than the middle value. A slope that never moves misses the faster growth after 2005; a slope that chases every change carries one year’s jump into the next prediction. The final slopes differ too, so the forecasts do:</p>
+<p>Both extremes fit worse than the middle value. A slope that moves slowly takes longer to reflect faster growth. A slope that chases every change carries one year’s jump into the next prediction. The final slopes differ too, so the forecasts do:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>fit_beta <span class="sc">|&gt;</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">forecast</span>(<span class="at">h =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span></span>
