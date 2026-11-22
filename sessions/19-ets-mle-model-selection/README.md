@@ -6,7 +6,7 @@
 
 **Before class:** Read the [short likelihood guide](19_B_ESmoothing_Model_Selection.html#before-class) and try its check questions; the answers are collapsed below them. The [handwritten primer](19_A_MLE_Informal_Intro.pdf) is optional.
 
-**In class:** Follow Australian holiday trips along one route: choose a form (the ETS letters and the state-space model), fit it by likelihood, select by AICc, then evaluate it with residual diagnostics and forecast distributions. Read the selected model letter by letter, see how its parameter count is made, and compare AIC values using supplied parameter counts. BIC remains reference material.
+**In class:** Start from Session 18 on Holt-Winters and let `ETS()` choose the form for Australian holiday trips. Read the ETS letters, see how an observation equation turns a smoothing method into a statistical model with additive or multiplicative errors, how likelihood scores a fit, and how AICc compares forms, with one AIC comparison by hand. Then check the selected model's residuals and read its forecast distributions, with one interval by hand. The slides and the numbered sections of `19_B` follow the same order; BIC and the derivations are in the notebook's appendix.
 
 **R:** `ETS(y)`, `report()`, `glance()`, `tidy()`, `components()`, `augment()`, `forecast()`, `hilo()`.
 
