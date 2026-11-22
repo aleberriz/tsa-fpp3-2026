@@ -2441,7 +2441,7 @@ window.Quarto = {
 <li><a href="#diagnostics">Check the selected model</a>: the residual checks on the innovation residuals.</li>
 <li><a href="#forecasting">Forecasting with ETS</a>: forecast distributions, one interval by hand, whether an interval repeats with its point forecast, and the whole route in one table.</li>
 </ol>
-<p>The required work is Exercises 1 and 2, Exercise 3 parts 1, 2 and 4, and its <a href="#calculator">calculator comparison</a>; Exercise 3 part 3 is optional. The appendix holds BIC, the nested-model argument, comparisons across model families, zeros and transformations, simulated intervals, and where the likelihood score comes from.</p>
+<p>The required work is <a href="#exercise-1">Exercise 1</a> parts 1, 2 and 5, <a href="#exercise-3">Exercise 3</a> parts 1 and 2, and its <a href="#calculator">calculator comparison</a>: the tasks the final exam builds on. Everything else in the exercises, Exercise 2 included, is optional practice. The appendix holds BIC, the nested-model argument, comparisons across model families, zeros and transformations, simulated intervals, and where the likelihood score comes from.</p>
 </section>
 <section id="references" class="level1">
 <h1>References</h1>
@@ -3446,12 +3446,19 @@ Model: ETS(M,N,A)
 <ol type="1">
 <li>Fit an automatic ETS model to every series, chosen by <span class="math inline">\(AIC_c\)</span>.</li>
 <li>Report the model chosen for the region of Brisbane, and say in one sentence what each of its three letters means for this series.</li>
-<li>Plot the components of the Brisbane model.</li>
-<li>Forecast eight quarters for every region, and plot the Brisbane forecasts with the data.</li>
+<li><strong>Optional.</strong> Plot the components of the Brisbane model.</li>
+<li><strong>Optional.</strong> Forecast eight quarters for every region, and plot the Brisbane forecasts with the data.</li>
+<li>Without R, name the ETS model that each description asks for, and say which feature set each letter:
+<ol type="a">
+<li>Forecast misses of about the same size in trips at any level of the series, no trend, and a seasonal pattern that adds roughly the same number of trips to each quarter every year.</li>
+<li>Forecast misses that stay a roughly constant percentage of the forecast, a slope that the forecasts extend at a constant rate for as far ahead as you look, and no seasonal pattern.</li>
+<li>Forecast misses that stay a roughly constant percentage of the forecast, no trend, and seasonal effects that act as percentages of the level, so a busier year has bigger seasonal swings.</li>
+</ol></li>
 </ol>
 </section>
 <section id="exercise-2" class="level1">
 <h1>Exercise 2</h1>
+<p><strong>Optional practice.</strong> The final exam does not build on this exercise.</p>
 <p>Sum the trips with purpose <code>Holiday</code> over all regions, as in the <a href="#example-1">continuing example</a> (in thousands of trips this time).</p>
 <ol type="1">
 <li>Fit an automatic ETS model and report it.</li>
@@ -3489,7 +3496,7 @@ Model: ETS(M,N,A)
 <li>Fit an automatic ETS model and say which model was chosen.</li>
 <li>Fit <span class="math inline">\(ETS(A,A,A)\)</span> as well, and compare the two by <span class="math inline">\(AIC_c\)</span>.</li>
 <li><strong>Optional.</strong> Use cross-validation to choose between the two for forecasts across the next twelve months: the smallest training set has 80% of the observations, the sets grow one month at a time, and the forecasts go up to 12 months ahead. Repeat both fitting and automatic selection inside each fold. Choosing the model once on the full series would give earlier folds information from their future. Retain origins with all twelve future observations available, and compare RMSE pooled across horizons 1 to 12. This is different from evaluating only horizon 12.</li>
-<li>In one sentence: why can the AICc compare these two models, and when would you need cross-validation instead?</li>
+<li><strong>Optional.</strong> In one sentence: why can the AICc compare these two models, and when would you need cross-validation instead?</li>
 </ol>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>h02 <span class="ot">&lt;-</span> PBS <span class="sc">|&gt;</span></span>
