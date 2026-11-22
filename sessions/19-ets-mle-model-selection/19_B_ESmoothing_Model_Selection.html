@@ -2384,7 +2384,7 @@ window.Quarto = {
   <li><a href="#forecasting" id="toc-forecasting" class="nav-link" data-scroll-target="#forecasting">7. Forecasting with ETS</a>
   <ul>
   <li><a href="#interval-by-hand" id="toc-interval-by-hand" class="nav-link" data-scroll-target="#interval-by-hand">The one-step interval by hand</a></li>
-  <li><a href="#horizon" id="toc-horizon" class="nav-link" data-scroll-target="#horizon">Same point forecast, wider interval</a></li>
+  <li><a href="#horizon" id="toc-horizon" class="nav-link" data-scroll-target="#horizon">Will the interval repeat too?</a></li>
   <li><a href="#recap" id="toc-recap" class="nav-link" data-scroll-target="#recap">The route for holiday trips</a></li>
   </ul></li>
   <li><a href="#exercise-1" id="toc-exercise-1" class="nav-link" data-scroll-target="#exercise-1">Exercise 1</a></li>
@@ -2439,7 +2439,7 @@ window.Quarto = {
 <li><a href="#framework">Fitting by likelihood</a>: how a prediction’s distribution scores an observation, and the score <code>ETS()</code> maximizes.</li>
 <li><a href="#criteria">Choosing by AICc</a>: AIC and AICc by hand, the parameter count, and the scoreboard behind automatic selection.</li>
 <li><a href="#diagnostics">Check the selected model</a>: the residual checks on the innovation residuals.</li>
-<li><a href="#forecasting">Forecasting with ETS</a>: forecast distributions, one interval by hand, how intervals grow with the horizon, and the whole route in one table.</li>
+<li><a href="#forecasting">Forecasting with ETS</a>: forecast distributions, one interval by hand, whether an interval repeats with its point forecast, and the whole route in one table.</li>
 </ol>
 <p>The required work is Exercises 1 and 2, Exercise 3 parts 1, 2 and 4, and its <a href="#calculator">calculator comparison</a>; Exercise 3 part 3 is optional. The appendix holds BIC, the nested-model argument, comparisons across model families, zeros and transformations, simulated intervals, and where the likelihood score comes from.</p>
 </section>
@@ -2895,7 +2895,7 @@ window.Quarto = {
 </section>
 <section id="likelihood-slice" class="level2">
 <h2 class="anchored" data-anchor-id="likelihood-slice">The same search as Session 16, with a new score</h2>
-<p><code>ETS()</code> searches for the values of <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\gamma\)</span> and the initial states that give the highest log-likelihood. To see the score’s shape, take a <strong>slice</strong> through the search: hold <span class="math inline">\(\gamma\)</span> and the five initial states at their fitted values, vary <span class="math inline">\(\alpha\)</span> alone, and for each candidate run the predict-observe-update loop through the 80 quarters, as in Session 16. For <span class="math inline">\(ETS(M,N,A)\)</span> the updates are those of additive seasonal smoothing without a slope, written in error-correction form:</p>
+<p><code>ETS()</code> searches for the values of <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\gamma\)</span> and the initial states that give the highest log-likelihood. To see the score’s shape, take a <strong>slice</strong> through the search: hold <span class="math inline">\(\gamma\)</span>, the initial level and the initial seasonal states at their fitted values, vary <span class="math inline">\(\alpha\)</span> alone, and for each candidate run the predict-observe-update loop through the 80 quarters, as in Session 16. For <span class="math inline">\(ETS(M,N,A)\)</span> the updates are those of additive seasonal smoothing without a slope, written in error-correction form:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>est <span class="ot">&lt;-</span> fit <span class="sc">|&gt;</span> <span class="fu">tidy</span>() <span class="sc">|&gt;</span> <span class="fu">select</span>(term, estimate) <span class="sc">|&gt;</span> <span class="fu">deframe</span>()</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -2938,7 +2938,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>The slice peaks at the fitted <span class="math inline">\(\alpha\approx0.35\)</span>. A small <span class="math inline">\(\alpha\)</span> lets the level lag the rise since 2015; a large one chases each quarter’s surprise. <code>ETS()</code> searched over all seven values at once, and the slice shows one direction through that search near its end point.</p>
+<p>The slice peaks at the fitted <span class="math inline">\(\alpha\approx0.35\)</span>. A small <span class="math inline">\(\alpha\)</span> lets the level lag the rise since 2015; a large one chases each quarter’s surprise. <code>ETS()</code> searched over six values at once: <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\gamma\)</span>, the initial level and the three free initial seasonal states. The slice shows one direction through that search near its end point. The innovation variance <span class="math inline">\(\sigma^2\)</span> is not part of the search: for any candidate, its best value follows from that candidate’s errors, as the <a href="#score">appendix</a> shows. The AIC still counts it, as the seventh estimated value of <a href="#example-1">section 5</a>.</p>
 <ul>
 <li><strong>Additive errors.</strong> With normal errors, the candidate with the highest likelihood is the one with the smallest SSE. The additive-error fits of Sessions 16 to 18 are therefore the same whichever score you think of.</li>
 <li><strong>Multiplicative errors.</strong> The two scores differ: the likelihood scores relative errors and includes the conversion term. <code>ETS()</code> maximizes the likelihood in both cases.</li>
@@ -3341,7 +3341,7 @@ Model: ETS(M,N,A)
 <p>With <span class="math inline">\(\sigma=\sqrt{0.002153}=0.0464\)</span>, the standard deviation is <span class="math inline">\(12.695\times0.0464=0.589\)</span>, and the 95% interval is <span class="math inline">\(12.695\pm1.96\times0.589\)</span>, that is <span class="math inline">\([11.54,\,13.85]\)</span> million trips, as <code>hilo()</code> reports below. Rounding the mean to 12.7 before multiplying moves the lower end to 11.55: carry the decimals until the last step.</p>
 </section>
 <section id="horizon" class="level2">
-<h2 class="anchored" data-anchor-id="horizon">Same point forecast, wider interval</h2>
+<h2 class="anchored" data-anchor-id="horizon">Will the interval repeat too?</h2>
 <p><strong>Check.</strong> The point forecast for 2019 Q1 equals the one for 2018 Q1, 12.70 million trips, because the model has no trend and its seasonal pattern is fixed. Will the two 95% intervals match as well? Commit before opening.</p>
 <div class="callout callout-style-default callout-tip callout-titled" title="Answer: open after predicting">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">

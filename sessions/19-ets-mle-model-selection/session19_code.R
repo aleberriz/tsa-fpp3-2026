@@ -197,7 +197,7 @@ fc |>
   head(1) |>
   knitr::kable(digits = 4)
 
-## Same point forecast, wider interval ----
+## Will the interval repeat too? ----
 fc |>
   hilo(level = 95) |>
   as_tibble() |>
