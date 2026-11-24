@@ -2614,7 +2614,7 @@ window.Quarto = {
 9 additive s[-3]  1.50    </code></pre>
 </div>
 </div>
-<p><code>tidy()</code> lists the fitted weights and initial states. <code>s[0]</code> is 1997 Q4 and <code>s[-3]</code> is 1997 Q1, so it lists the seasonal states backward in time. These are estimates from fitting, not observations.</p>
+<p><code>tidy()</code> lists the fitted weights and initial states. The first observation is 1998 Q1, so the model places the four estimated starting seasonal effects in the preceding year, 1997. It lists them backward in time, from <code>s[0]</code> for 1997 Q4 to <code>s[-3]</code> for 1997 Q1.</p>
 <p><strong>Checking the slope weight:</strong> the workbook uses <span class="math inline">\(\beta^*\)</span>, while <code>tidy()</code> reports <span class="math inline">\(\beta=\alpha\beta^*\)</span>. Divide its beta by alpha: for the additive fit, <span class="math inline">\(0.043/0.262\approx0.165\)</span>. This is the same conversion as in Session 17 on Holt and damped trends; here alpha is far from one, so the two numbers differ.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>additive_components <span class="ot">&lt;-</span> fit_additive <span class="sc">|&gt;</span> <span class="fu">components</span>()</span>
@@ -3180,7 +3180,8 @@ T+5-4(1+1)=T-3.
 </tr>
 </tbody>
 </table>
-<p>Unlike fixed classical-decomposition indices, these states can be revised as observations arrive. A time plot suggests forms to try; it does not choose the more accurate forecaster.</p>
+<p>Unlike fixed classical-decomposition indices, these states can be revised as observations arrive.</p>
+<p><strong>The time plot gives you an educated guess.</strong> If the swings stay roughly the same size as the level rises, try additive seasonality. If they grow roughly in proportion to the level, try multiplicative seasonality. To see which model forecasts better, fit both on the earlier quarters and compare their errors on the same held-out quarters.</p>
 </section>
 <section id="multiplicative" class="level2">
 <h2 class="anchored" data-anchor-id="multiplicative">The multiplicative equations</h2>
