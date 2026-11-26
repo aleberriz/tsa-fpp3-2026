@@ -276,3 +276,5 @@ hourly |>
   chart_theme +
   theme(panel.grid = element_blank())
 ```
+
+Who might be catching the bus when boardings pick up again at 4 a.m. on Monday through Thursday nights?
