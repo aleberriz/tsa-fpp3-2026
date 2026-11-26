@@ -1,13 +1,13 @@
 # The forecaster's toolbox: a reference
 
-*A reference page for the first fourteen sessions, extended after Session 19 with exponential
-smoothing and the AICc, kept here for revision. It is not taught in class. The notebooks carry the
-explanations; this page shows where each tool fits and which R function does the job. The section
-numbers point to [fpp3](https://otexts.com/fpp3/).*
+*A reference page for the first fourteen sessions, kept here for revision. It is not taught in
+class. The notebooks carry the explanations; this page shows where each tool fits and which R
+function does the job. The section numbers point to [fpp3](https://otexts.com/fpp3/). Session 19
+on ETS and model selection has a copy of this page with a second part on exponential smoothing.*
 
 Every forecasting task in this course follows the same workflow (fpp3 5.1), and none of its steps
-depends on which model you use. The first fourteen sessions used the four benchmark methods;
-Sessions 15 to 19 take exponential smoothing through exactly the same steps.
+depends on which model you use. The first fourteen sessions use the four benchmark methods, and
+every model added later goes through exactly the same steps.
 
 > **tidy → visualize → (transform, decompose) → specify and estimate → check the residuals →
 > forecast → evaluate**
@@ -27,10 +27,9 @@ loaded, so call it as `slider::slide_dbl()`.
 | **Decompose** | What are the trend and the seasonal component? | Schemes, moving averages, classical decomposition and STL (Sessions 5 to 7) | `slider::slide_dbl()`, `classical_decomposition()`, `STL()`, `components()` |
 | **Transform** | Does the variance need stabilizing? | Box–Cox (Session 11), forecasting with transformations (Session 12) | `log()`, `box_cox()`, `features(..., guerrero)` |
 | **Specify and estimate** | Which model, fitted to which data? | Benchmark methods (Session 8) | `model()`, `MEAN()`, `NAIVE()`, `SNAIVE()`, `RW(~ drift())`, `decomposition_model()`, `tidy()`, `augment()` |
-| **Specify and estimate: exponential smoothing (ETS)** | Which error, trend and seasonal components? | SES (Sessions 15 and 16), Holt and damped trends (Session 17), Holt-Winters (Session 18), ETS and model selection (Session 19) | `ETS(y ~ error() + trend() + season())`, `ETS(y)`, `report()`, `tidy()`, `components()` |
 | **Check the residuals** | Has the model used all the information in the data? | Residual diagnostics (Session 9) | `gg_tsresiduals()`, `features(.innov, ljung_box, lag = ...)` |
 | **Forecast** | What comes next, and how uncertain is it? | Benchmark methods (Session 8), prediction intervals (Session 12) | `forecast()`, `hilo()`, `unpack_hilo()` |
-| **Evaluate** | How good are the forecasts on unseen data? | Train/test accuracy (Session 13), cross-validation (Session 14), AICc between ETS candidates (Session 19) | `filter()`, `filter_index()`, `slice()`, `accuracy()`, `stretch_tsibble()`, `as_fable()`, `glance()` |
+| **Evaluate** | How good are the forecasts on unseen data? | Train/test accuracy (Session 13), cross-validation (Session 14) | `filter()`, `filter_index()`, `slice()`, `accuracy()`, `stretch_tsibble()`, `as_fable()` |
 
 ---
 
@@ -129,7 +128,7 @@ data |> autoplot(box_cox(y, lambda))
 - Declare the transformation **inside the model formula**, `RW(log(y) ~ drift())`, and fable
   back-transforms the forecasts and the intervals for you.
 
-## 5. Specify and estimate: benchmark methods and exponential smoothing
+## 5. Specify and estimate: benchmark methods
 
 | Method | Forecast | R |
 |---|---|---|
@@ -149,26 +148,11 @@ decomposition_model(STL(y), RW(season_adjust ~ drift()))   # SNAIVE() is used fo
 after it, so the two are not interchangeable. `tidy()` works on the benchmark methods, but not on a
 `decomposition_model()`.
 
-**Exponential smoothing (ETS)**, from Sessions 15 to 19, names a model by three letters: the error
-(A or M), the trend (N, A or Ad) and the season (N, A or M). `ETS()` estimates the smoothing weights
-and the initial states by maximum likelihood.
-
-```r
-data |> model(ETS(y ~ error("M") + trend("Ad") + season("M")))   # fix every letter
-data |> model(ETS(y))                                              # let the AICc choose the letters
-fit |> report()                                                    # the chosen model and its estimates
-fit |> components() |> autoplot()                                  # level, slope and season over time
-```
-
-**Watch out for:** `tidy()` reports `beta` = α × β\*, not the β\* of the hand calculations in
-Session 17 on Holt and damped trends. Multiplicative errors need strictly positive data, and
-ETS(A,N,M), ETS(A,A,M) and ETS(A,Ad,M) are left out of automatic selection.
-
 ## 6. Check the residuals
 
 If the model has used all the information in the data, its residuals look like white noise.
-Residuals e<sub>t</sub> = y<sub>t</sub> − ŷ<sub>t|t−1</sub>, from the `.innov` column of `augment()`, should be (with no
-transformation, `.innov` equals `.resid`; with one, use `.innov`):
+Residuals e<sub>t</sub> = y<sub>t</sub> − ŷ<sub>t|t−1</sub>, from the `.innov` column of `augment()`, should be (for the
+benchmark methods with no transformation, `.innov` equals `.resid`; otherwise, use `.innov`):
 
 1. **Uncorrelated.** If not, the model has missed something.
 2. **Zero mean.** If not, the forecasts are biased; add the mean to them.
@@ -246,18 +230,6 @@ and only the second judges a forecast. The k-fold cross-validation of other cour
 data, so the model is trained on the future: **no shuffling, ever.** The last training sets
 forecast past the end of the data, so `accuracy()` warns that the future dataset is incomplete;
 the warning does not affect the result.
-
-**Between ETS candidates, by AICc** (Session 19 on ETS and model selection): AIC = −2 log L + 2k,
-where k counts the estimated parameters, the free initial states and the error variance, and the
-AICc adds a correction for short series. Lower is better.
-
-```r
-fit |> glance() |> select(.model, log_lik, AIC, AICc)
-```
-
-**Watch out for:** the AICc is a training score with a penalty, not a forecast error. It compares
-only candidates fitted to the same observations and response scale, never `y` against `log(y)`;
-when that does not hold, or when one horizon matters for the decision, use cross-validation.
 
 > **Train to fit, test to judge.**
 
