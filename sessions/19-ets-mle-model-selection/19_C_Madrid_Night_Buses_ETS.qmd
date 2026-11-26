@@ -1,0 +1,280 @@
+---
+title: "After midnight in Madrid"
+subtitle: "Forecasting Cibeles night-bus boardings with ETS"
+format: html
+editor: source
+execute:
+  message: false
+---
+
+If you planned service for Madrid’s Búhos night buses, which months would you prepare for heavier demand?
+
+## Boardings dip in August and are lower in winter
+
+The data count boardings across routes N1–N24, which connect Cibeles with Madrid’s neighborhoods. This notebook embeds the monthly totals and runs offline with the course R packages.
+
+The totals sum all time bands for route codes 501–524 by calendar month, from January 2022 through September 2026. The archive was updated September 29, 2026 and the current-year file October 15, 2026. [Archive and current data](https://datos.emtmadrid.es/es/dataset/demanda-diaria-viajeros-autobus) · [Route codes](https://datos.emtmadrid.es/dataset/lineas-emt)
+
+Madrid announced the night-network restructuring on November 29, 2023. It included changes to several of these routes and more frequent weekend service from December 1. [Original announcement hosted by EMT](https://www.emtmadrid.es/getattachment/9b1d3c2f-c0d4-405c-875b-76247de5721b/El-Ayuntamiento-potencia-la-red-de-%E2%80%98buhos%E2%80%99-de-EMT.aspx)
+
+Contains data from EMT Madrid’s Daily Bus Ridership, accessed November 26, 2026 and available under the Open Data Commons Attribution License. [Powered by EMT de Madrid](https://www.emtmadrid.es/) · [Data license](https://opendatacommons.org/licenses/by/1-0/)
+
+```{r}
+library(fpp3)
+```
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the embedded monthly data"
+
+monthly_csv <- "
+month,boardings
+2022-01,245110
+2022-02,271348
+2022-03,308782
+2022-04,337432
+2022-05,406720
+2022-06,391254
+2022-07,452409
+2022-08,307625
+2022-09,422159
+2022-10,465303
+2022-11,375880
+2022-12,456673
+2023-01,329697
+2023-02,333572
+2023-03,399668
+2023-04,408210
+2023-05,446265
+2023-06,530722
+2023-07,554307
+2023-08,422025
+2023-09,549583
+2023-10,546919
+2023-11,450925
+2023-12,562277
+2024-01,402603
+2024-02,429026
+2024-03,478109
+2024-04,491955
+2024-05,558041
+2024-06,577213
+2024-07,578808
+2024-08,500221
+2024-09,555044
+2024-10,576947
+2024-11,553351
+2024-12,563445
+2025-01,455308
+2025-02,454794
+2025-03,483466
+2025-04,520547
+2025-05,628108
+2025-06,635359
+2025-07,619529
+2025-08,535602
+2025-09,599958
+2025-10,630763
+2025-11,551180
+2025-12,604717
+2026-01,500099
+2026-02,488468
+2026-03,512678
+2026-04,566664
+2026-05,645099
+2026-06,593428
+2026-07,654132
+2026-08,532011
+2026-09,634192
+"
+
+rides <- readr::read_csv(I(monthly_csv), show_col_types = FALSE) |>
+  transmute(Month = yearmonth(month), Boardings = boardings / 1000) |>
+  as_tsibble(index = Month)
+```
+
+```{r}
+#| fig-alt: "Boardings rise from 2022 through 2026. They dip each August, with a lower point in January or February each year. A vertical line marks the November 2023 service change."
+
+source_note <- "Powered by EMT de Madrid · Nov 26, 2026"
+chart_theme <- theme_minimal(base_size = 12) +
+  theme(panel.grid.minor = element_blank(), legend.position = "bottom")
+
+rides |>
+  autoplot(Boardings) +
+  geom_point(data = rides |> filter(month(Month) == 8),
+             aes(x = Month, y = Boardings), colour = "#1261A0", size = 2) +
+  geom_vline(xintercept = yearmonth("2023 Nov"), linetype = "dashed",
+             colour = "grey45") +
+  scale_x_yearmonth(breaks = "1 year", date_labels = "%Y") +
+  expand_limits(y = 0) +
+  labs(subtitle = "August (dots)\nNov 2023 service change (dash)",
+       x = NULL, y = "Monthly boardings (thousands)", caption = source_note) +
+  chart_theme
+```
+
+## Where do the fitted values miss?
+
+Fit through September 2025. Both models damp the trend. `A,Ad,A` uses additive errors and seasonality. `M,Ad,M` uses multiplicative errors and seasonality.
+
+```{r}
+train <- rides |> filter(Month < yearmonth("2025 Oct"))
+test <- rides |> filter(Month >= yearmonth("2025 Oct"))
+
+fit <- train |>
+  model(
+    `A,Ad,A` = ETS(Boardings ~ error("A") + trend("Ad") + season("A")),
+    `M,Ad,M` = ETS(Boardings ~ error("M") + trend("Ad") + season("M"))
+  )
+
+fit |>
+  tidy() |>
+  filter(term %in% c("alpha", "beta", "gamma", "phi")) |>
+  pivot_wider(names_from = term, values_from = estimate) |>
+  transmute(Model = .model, alpha, beta_star = beta / alpha, gamma, phi) |>
+  knitr::kable(digits = 5, col.names = c("ETS", "α", "β*", "γ", "φ"))
+```
+
+Read α for level, β* for trend, γ for seasonality, and φ for damping. Fable reports β, so the table uses β* = β / α. Both β estimates are effectively at fable’s lower bound of 0.0001, so different α values account for the gap in β*. Both γ estimates are near the same lower bound. New observations barely revise the slope and seasonal pattern. The additive φ rounds to fable’s upper bound of 0.98, and the multiplicative φ is just below it. Both fits damp the trend only slightly each month. [Fable’s ETS reference](https://fable.tidyverts.org/reference/ETS.html)
+
+```{r}
+#| fig-alt: "Monthly observed-minus-fitted errors for both models, with a horizontal zero line and the same scale in both panels."
+
+fit |>
+  augment() |>
+  ggplot(aes(x = Month, y = .resid)) +
+  geom_hline(yintercept = 0, colour = "grey55") +
+  geom_line(colour = "#26364A") +
+  facet_wrap(vars(.model), ncol = 1) +
+  scale_x_yearmonth(breaks = "1 year", date_labels = "%Y") +
+  labs(subtitle = "Fitting errors through Sep 2025",
+       x = NULL, y = "Observed - fitted (thousands)", caption = source_note) +
+  chart_theme
+```
+
+## Does ETS beat last year’s numbers?
+
+Forecast the 12 months after September 2025, then compare with the boardings EMT observed. Use seasonal naive as a benchmark. For each month, it predicts the boardings recorded in the same month the year before.
+
+```{r}
+#| fig-alt: "Solid observed counts and two dashed forecast series for October 2025 through September 2026. Both models miss by the most in June 2026."
+
+test_fc <- fit |> forecast(h = 12)
+
+test |>
+  ggplot(aes(x = Month)) +
+  geom_line(aes(y = Boardings), colour = "#26364A", linewidth = 0.8) +
+  geom_line(data = as_tibble(test_fc),
+            aes(y = .mean, colour = .model, linetype = .model),
+            linewidth = 0.8) +
+  scale_colour_manual(values = c("A,Ad,A" = "#1261A0", "M,Ad,M" = "#A34C14")) +
+  scale_linetype_manual(values = c("A,Ad,A" = "dashed", "M,Ad,M" = "dotdash")) +
+  scale_x_yearmonth(breaks = "3 months", date_labels = "%b %y") +
+  labs(subtitle = "Observed boardings (solid line)\nVertical axis starts above zero",
+       x = NULL, y = "Monthly boardings (thousands)",
+       colour = "ETS", linetype = "ETS", caption = source_note) +
+  chart_theme
+```
+
+```{r}
+benchmark_fc <- train |>
+  model(`Seasonal naive` = SNAIVE(Boardings)) |>
+  forecast(h = 12)
+
+training_scores <- fit |> accuracy() |> select(.model, `Training RMSE` = RMSE)
+test_scores <- bind_rows(accuracy(test_fc, test), accuracy(benchmark_fc, test)) |>
+  select(.model, `Held-out RMSE` = RMSE)
+fit_scores <- fit |> glance() |> select(.model, AICc)
+
+model_scores <- test_scores |>
+  left_join(fit_scores, by = ".model") |>
+  left_join(training_scores, by = ".model") |>
+  select(Model = .model, AICc, `Training RMSE`, `Held-out RMSE`)
+
+withr::with_options(
+  list(knitr.kable.NA = ""),
+  knitr::kable(
+    model_scores, digits = 1,
+    caption = "RMSE is in thousands of boardings. AICc and training RMSE are shown for the ETS fits."
+  )
+)
+```
+
+The ETS training RMSE scores one-step-ahead fitted values. Held-out RMSE scores the same 12 months for all three methods. The additive ETS fit cuts held-out RMSE by about 22% compared with seasonal naive. The multiplicative fit has a slightly higher RMSE than the benchmark. Both ETS forecasts overshot June 2026 by more than any other month. What might explain that miss?
+
+## What should EMT plan for over the next year?
+
+Among the two ETS models, AICc and held-out RMSE both favor `ETS(A,Ad,A)`. Re-estimate it using data through September 2026.
+
+```{r}
+#| fig-alt: "Observed boardings through September 2026 and a monthly forecast through September 2027 with a shaded 95 percent prediction interval."
+
+final_fit <- rides |>
+  model(`A,Ad,A` = ETS(Boardings ~ error("A") + trend("Ad") + season("A")))
+final_fc <- final_fit |> forecast(h = 12)
+
+final_fc |>
+  autoplot(rides |> filter(Month >= yearmonth("2024 Oct")), level = 95) +
+  geom_vline(xintercept = yearmonth("2026 Oct"), linetype = "dashed",
+             colour = "grey45") +
+  scale_x_yearmonth(breaks = "6 months", date_labels = "%b %y") +
+  expand_limits(y = 0) +
+  guides(fill_ramp = guide_legend(title = "Prediction interval")) +
+  labs(subtitle = "Forecast starts in Oct 2026",
+       x = NULL, y = "Monthly boardings (thousands)", caption = source_note) +
+  chart_theme
+```
+
+If you use the upper end of the 95% prediction interval to plan for July 2027, how many boardings would you be ready for? How much room does that give you above the point forecast?
+
+```{r}
+final_fc |>
+  filter(Month == yearmonth("2027 Jul")) |>
+  hilo(level = 95) |>
+  unpack_hilo(`95%`) |>
+  as_tibble() |>
+  select(Month, Forecast = .mean, Lower = `95%_lower`, Upper = `95%_upper`) |>
+  knitr::kable(digits = 1, caption = "July 2027 forecast and 95% interval, in thousands of boardings")
+```
+
+## Saturday’s busiest hour starts at 1 a.m.
+
+Friday and Saturday nights carried **51% of boardings** in the hours shown. Halloween 2025 was the busiest night in this period, with **about 62,100 boardings**, twice the Friday average. Friday night includes Saturday morning.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the hourly data and chart code"
+#| fig-alt: "Heatmap of average hourly boardings on routes N1 to N24. Friday and Saturday are busiest just after midnight. The highest average is 6,400 boardings from 1 to 2 a.m. on Saturday nights."
+
+# Mean boardings per night for EMT route codes 501-524, using H23 and M00-M07.
+hourly_csv <- "
+Night,11 p.m.,Midnight,1 a.m.,2 a.m.,3 a.m.,4 a.m.,5 a.m.,6 a.m.,7 a.m.
+Mon,1088,1706,1471,1510,1157,1887,1575,23,0
+Tue,1250,1943,1751,1801,1276,1984,1626,68,14
+Wed,1329,2172,1936,1983,1420,2099,1685,105,5
+Thu,1435,2476,2351,2546,1824,2407,1866,97,5
+Fri,2381,5492,5900,5763,4495,3912,2338,83,4
+Sat,2628,5847,6391,6123,4779,4036,3036,1140,85
+Sun,1184,2002,1785,1877,1301,2007,1614,40,1
+"
+
+hourly <- readr::read_csv(I(hourly_csv), show_col_types = FALSE) |>
+  pivot_longer(-Night, names_to = "Hour", values_to = "Boardings") |>
+  mutate(Night = factor(Night, levels = unique(Night)),
+         Hour = factor(Hour, levels = rev(unique(Hour))),
+         Thousands = Boardings / 1000)
+
+hourly |>
+  ggplot(aes(x = Night, y = Hour, fill = Thousands)) +
+  geom_tile(colour = "white", linewidth = 0.4) +
+  geom_text(data = hourly |> slice_max(Boardings, n = 1),
+            aes(label = round(Thousands, 1)), colour = "white", size = 3.5) +
+  scale_fill_gradient(low = "#E8F1F8", high = "#10456C") +
+  labs(subtitle = "Routes N1-N24\nJan 2024 to Sep 2026",
+       x = "Night begins on", y = "Hour starts at",
+       fill = "Avg. boardings\n(thousands)", caption = source_note) +
+  chart_theme +
+  theme(panel.grid = element_blank())
+```
+
+Who might be catching the bus when boardings pick up again at 4 a.m. on Monday through Thursday nights?

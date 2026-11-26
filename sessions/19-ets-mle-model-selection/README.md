@@ -4,6 +4,8 @@
 
 **Materials:** [Slides](session19_slides.html), [ETS classification](19_A_ExpSmoothing_Classification.html), [model selection and forecasting notebook](19_B_ESmoothing_Model_Selection.html), and [R script](session19_code.R).
 
+**Optional at-home demo.** To get the `.qmd`, pull the repo or choose **Download raw file** on the notebook’s GitHub page. Open it in RStudio and run the R chunks in order. [After midnight in Madrid](19_C_Madrid_Night_Buses_ETS.qmd)
+
 **Before class:** Read the [short likelihood guide](19_B_ESmoothing_Model_Selection.html#before-class) and try its check questions; the answers are collapsed below them. The [handwritten primer](19_A_MLE_Informal_Intro.pdf) is optional.
 
 **In class:** Start from Session 18 on Holt-Winters and let `ETS()` choose the form for Australian holiday trips. Read the ETS letters, see how an observation equation turns a smoothing method into a statistical model with additive or multiplicative errors, how likelihood scores a fit, and how AICc compares forms, with one AIC comparison by hand. Then check the selected model's residuals and read its forecast distributions, with one interval by hand. The slides and the numbered sections of `19_B` follow the same order; BIC and the derivations are in the notebook's appendix.
