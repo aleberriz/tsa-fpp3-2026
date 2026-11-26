@@ -4,7 +4,7 @@
 
 ## Preparation for this class
 
-Use the [final exam calculator practice](final_calculator_practice.html) to revisit the homework on paper. Check your results against the numeric answers at the end. The study guide will be linked here when it is ready.
+Use the [final exam calculator practice](final_calculator_practice.html) to revisit the homework on paper. Check your results against the numeric answers at the end. The study guide is the [revision slides](session20_slides.html), which we walk through at the end of Session 19: how the exam works, what is on it, and a check-yourself line for every session.
 
 For the promises and the response to the class poll, see the [Session 14 announcements](../14-cross-validation/announcements.md).
 

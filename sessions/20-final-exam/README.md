@@ -4,6 +4,8 @@
 
 **Format:** 20 multiple-choice questions, with four options on concept questions and five on calculations. Bring a **non-programmable, non-graphing calculator**. Notes and formula sheets are not allowed; formulas that are unreasonable to memorize will be supplied in the question.
 
+**Materials:** [Revision slides](session20_slides.html), [calculator practice](final_calculator_practice.html) with numeric checks, and the [toolbox reference](../19-ets-mle-model-selection/19_Toolbox_Reference.md) in the Session 19 folder.
+
 **Preparation:** Review the rendered notebooks for concepts. Redo the homework calculations on paper with your calculator, then check them in R. Practice explaining the method and interpreting the result, including when you would use it. The exam uses new numbers and may combine steps practiced separately.
 
 See [announcements](announcements.md) for this class's preparation materials and exam updates.
