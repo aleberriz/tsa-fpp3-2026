@@ -9,11 +9,13 @@ execute:
 
 If you planned service for Madrid’s Búhos night buses, which months would you prepare for heavier demand?
 
-## Boardings dip every August
+## Boardings dip in August and are lower in winter
 
 The data count boardings across routes N1–N24, which connect Cibeles with Madrid’s neighborhoods. This notebook embeds the monthly totals and runs offline with the course R packages.
 
-The totals sum all time bands for route codes 501–524 by calendar month, from January 2022 through September 2026. The archive was updated September 29, 2026 and the current-year file October 15, 2026. [Archive and current data](https://datos.emtmadrid.es/es/dataset/demanda-diaria-viajeros-autobus) · [Route codes](https://datos.emtmadrid.es/dataset/lineas-emt) · [November 2023 service change](https://www.emtmadrid.es/Noticias/EMT-Madrid-pone-en-marcha-la-nueva-linea-%E2%80%98buho%E2%80%99-N3.aspx)
+The totals sum all time bands for route codes 501–524 by calendar month, from January 2022 through September 2026. The archive was updated September 29, 2026 and the current-year file October 15, 2026. [Archive and current data](https://datos.emtmadrid.es/es/dataset/demanda-diaria-viajeros-autobus) · [Route codes](https://datos.emtmadrid.es/dataset/lineas-emt)
+
+EMT began restructuring its night network on November 29, 2023, including changes to several of these routes. [City of Madrid announcement](https://diario.madrid.es/blog/notas-de-prensa/el-ayuntamiento-potencia-la-red-de-buhos-de-la-emt-reduce-la-frecuencia-a-15-minutos-y-crea-una-linea-circular-nocturna/)
 
 Contains data from EMT Madrid’s Daily Bus Ridership, accessed November 26, 2026 and available under the Open Data Commons Attribution License. [Powered by EMT de Madrid](https://www.emtmadrid.es/) · [Data license](https://opendatacommons.org/licenses/by/1-0/)
 
@@ -92,7 +94,7 @@ rides <- readr::read_csv(I(monthly_csv), show_col_types = FALSE) |>
 ```
 
 ```{r}
-#| fig-alt: "Boardings rise from 2022 through 2026 and dip every August. A vertical line marks the November 2023 service change."
+#| fig-alt: "Boardings rise from 2022 through 2026. They dip each August, with a lower point in January or February each year. A vertical line marks the November 2023 service change."
 
 source_note <- "Powered by EMT de Madrid · Nov 26, 2026"
 chart_theme <- theme_minimal(base_size = 12) +
@@ -133,7 +135,7 @@ fit |>
   knitr::kable(digits = 5, col.names = c("ETS", "α", "β*", "γ", "φ"))
 ```
 
-Read α for level, β* for trend, γ for seasonality, and φ for damping. Fable reports β, so the table uses β* = β / α. The small β* and γ values mean new observations barely revise the slope and seasonal pattern. Both φ estimates are close to fable’s default upper bound of 0.98. [Fable’s ETS reference](https://fable.tidyverts.org/reference/ETS.html)
+Read α for level, β* for trend, γ for seasonality, and φ for damping. Fable reports β, so the table uses β* = β / α. Both β estimates are effectively at fable’s lower bound of 0.0001, so different α values account for the gap in β*. Both γ estimates are near the same lower bound. New observations barely revise the slope and seasonal pattern. The additive φ rounds to fable’s upper bound of 0.98, and the multiplicative φ is just below it. Both fits damp the trend only slightly each month. [Fable’s ETS reference](https://fable.tidyverts.org/reference/ETS.html)
 
 ```{r}
 #| fig-alt: "Monthly observed-minus-fitted errors for both models, with a horizontal zero line and the same scale in both panels."
@@ -146,13 +148,13 @@ fit |>
   facet_wrap(vars(.model), ncol = 1) +
   scale_x_yearmonth(breaks = "1 year", date_labels = "%Y") +
   labs(subtitle = "Fitting errors through Sep 2025",
-       x = NULL, y = "Observed − fitted (thousands)", caption = source_note) +
+       x = NULL, y = "Observed - fitted (thousands)", caption = source_note) +
   chart_theme
 ```
 
-## Which forecast comes closer over the next 12 months?
+## Does ETS beat last year’s numbers?
 
-Forecast all 12 months from September 2025, then compare with the boardings EMT observed.
+Forecast the 12 months after September 2025, then compare with the boardings EMT observed. Use seasonal naive as a benchmark. For each month, it predicts the boardings recorded in the same month the year before.
 
 ```{r}
 #| fig-alt: "Solid observed counts and two dashed forecast series for October 2025 through September 2026. Both models miss by the most in June 2026."
@@ -175,32 +177,36 @@ test |>
 ```
 
 ```{r}
-training_scores <- fit |> accuracy() |> select(.model, `Training RMSE` = RMSE)
-test_scores <- test_fc |> accuracy(test) |> select(.model, `Held-out RMSE` = RMSE)
+benchmark_fc <- train |>
+  model(`Seasonal naive` = SNAIVE(Boardings)) |>
+  forecast(h = 12)
 
-fit |>
-  glance() |>
-  select(.model, AICc) |>
+training_scores <- fit |> accuracy() |> select(.model, `Training RMSE` = RMSE)
+test_scores <- bind_rows(accuracy(test_fc, test), accuracy(benchmark_fc, test)) |>
+  select(.model, `Held-out RMSE` = RMSE)
+fit_scores <- fit |> glance() |> select(.model, AICc)
+
+test_scores |>
+  left_join(fit_scores, by = ".model") |>
   left_join(training_scores, by = ".model") |>
-  left_join(test_scores, by = ".model") |>
-  rename(ETS = .model) |>
-  knitr::kable(digits = 1, caption = "Model comparison. RMSE is in thousands of boardings.")
+  select(Model = .model, AICc, `Training RMSE`, `Held-out RMSE`) |>
+  knitr::kable(digits = 1, caption = "RMSE is in thousands of boardings. AICc and training RMSE are shown for the ETS fits.")
 ```
 
-Training RMSE scores one-step-ahead fitted values. Held-out RMSE scores months 1 through 12 from the same forecast date. Which months account for the larger misses?
+The ETS training RMSE scores one-step-ahead fitted values. Held-out RMSE scores the same 12 months for all three methods. The additive ETS fit cuts held-out RMSE by about 22% compared with seasonal naive. The multiplicative fit has a slightly higher RMSE than the benchmark. Both ETS forecasts overshot June 2026 by more than any other month. What might explain that miss?
 
 ## What should EMT plan for over the next year?
 
-Among these two models, both AICc and held-out RMSE favor `ETS(A,Ad,A)`. Re-estimate it using data through September 2026. Which months look busiest, and how wide is the 95% prediction interval?
+Among the two ETS models, AICc and held-out RMSE both favor `ETS(A,Ad,A)`. Re-estimate it using data through September 2026.
 
 ```{r}
 #| fig-alt: "Observed boardings through September 2026 and a monthly forecast through September 2027 with a shaded 95 percent prediction interval."
 
 final_fit <- rides |>
   model(`A,Ad,A` = ETS(Boardings ~ error("A") + trend("Ad") + season("A")))
+final_fc <- final_fit |> forecast(h = 12)
 
-final_fit |>
-  forecast(h = 12) |>
+final_fc |>
   autoplot(rides |> filter(Month >= yearmonth("2024 Oct")), level = 95) +
   geom_vline(xintercept = yearmonth("2026 Oct"), linetype = "dashed",
              colour = "grey45") +
@@ -210,4 +216,16 @@ final_fit |>
   labs(subtitle = "Forecast starts in Oct 2026",
        x = NULL, y = "Monthly boardings (thousands)", caption = source_note) +
   chart_theme
+```
+
+If you use the upper end of the 95% prediction interval to plan for July 2027, how many boardings would you be ready for? How much room does that give you above the point forecast?
+
+```{r}
+final_fc |>
+  filter(Month == yearmonth("2027 Jul")) |>
+  hilo(level = 95) |>
+  unpack_hilo(`95%`) |>
+  as_tibble() |>
+  select(Month, Forecast = .mean, Lower = `95%_lower`, Upper = `95%_upper`) |>
+  knitr::kable(digits = 1, caption = "July 2027 forecast and 95% interval, in thousands of boardings")
 ```

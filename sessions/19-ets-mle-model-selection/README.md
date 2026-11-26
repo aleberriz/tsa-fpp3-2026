@@ -4,7 +4,7 @@
 
 **Materials:** [Slides](session19_slides.html), [ETS classification](19_A_ExpSmoothing_Classification.html), [model selection and forecasting notebook](19_B_ESmoothing_Model_Selection.html), and [R script](session19_code.R).
 
-**Optional at-home demo.** Download the `.qmd` and run its R chunks in order in RStudio. [After midnight in Madrid](19_C_Madrid_Night_Buses_ETS.qmd)
+**Optional at-home demo.** To get the `.qmd`, pull the repo or choose **Download raw file** on the notebook’s GitHub page. Open it in RStudio and run the R chunks in order. [After midnight in Madrid](19_C_Madrid_Night_Buses_ETS.qmd)
 
 **Before class:** Read the [short likelihood guide](19_B_ESmoothing_Model_Selection.html#before-class) and try its check questions; the answers are collapsed below them. The [handwritten primer](19_A_MLE_Informal_Intro.pdf) is optional.
 
