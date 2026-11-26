@@ -5,8 +5,8 @@ The Blackboard assignment is the official submission point; this page repeats it
 ## Instructions
 
 Three short tasks in **`19_B_ESmoothing_Model_Selection`** (`sessions/19-ets-mle-model-selection/`
-in the course repo). This is the last homework of the course, and it is due the same day as
-Group Assignment 2, so only the three tasks below are required.
+in the course repo). This is the last homework of the course, and it is short: only the three
+tasks below are required.
 
 ### 1. Read and name ETS models (`19_B` Exercise 1, parts 1, 2 and 5)
 
