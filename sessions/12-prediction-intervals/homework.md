@@ -5,8 +5,7 @@ The Blackboard assignment is the official submission point; this page repeats it
 ## Instructions
 
 One exercise, **`12` Exercise 1** (`sessions/12-prediction-intervals/` in the course repo), two
-sentences, and one interval by hand. Short on purpose: it is posted together with the Session 13
-homework.
+sentences, and one interval by hand.
 
 ### 1. Forecast with a transformation (`12` Exercise 1)
 

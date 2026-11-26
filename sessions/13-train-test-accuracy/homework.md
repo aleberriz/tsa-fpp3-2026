@@ -4,8 +4,7 @@ The Blackboard assignment is the official submission point; this page repeats it
 
 ## Instructions
 
-Three parts, in `sessions/13-train-test-accuracy/` of the course repo. The Session 12 homework is posted at the same time;
-it is short.
+Three parts, in `sessions/13-train-test-accuracy/` of the course repo.
 
 ### 1. Splitting a series (`13_Train_Test`, Exercises 1 to 3)
 
