@@ -10,4 +10,6 @@
 
 **Homework:** Complete `09_B` Exercise 1 on the supplied retail decomposition model: assess all four residual properties, justify the test lag, run Ljung–Box and compare response and innovation residuals. Exercise 2 is optional. Submit on Blackboard; the deadline is in [announcements](announcements.md).
 
+Full instructions: [homework.md](homework.md).
+
 **Revision:** The [midterm revision deck](../10-midterm/session10_slides.html) is for self-study and office hours. Residual diagnostics is examined in the final. See [announcements](announcements.md) for cohort feedback.

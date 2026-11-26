@@ -12,4 +12,6 @@
 
 **Homework:** Complete `04_C` Exercises 1–4 and both sections of `04_D`: weekly and monthly Beijing pollution, then quarterly fuel prices. Include code, plots and one sentence per exercise explaining the result. Submit on Blackboard.
 
+Full instructions: [homework.md](homework.md).
+
 **Announcements:** See [announcements](announcements.md) for this class's schedule and deadlines.

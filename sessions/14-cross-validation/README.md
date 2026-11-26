@@ -10,4 +10,6 @@
 
 **Homework:** Complete the notebook's beer-production exercise with four benchmarks and horizons 1–4. On paper, apply expanding-window evaluation to the last eight quarters using naive and seasonal naive one-step forecasts; calculate MAE and RMSE, photograph the work and check in R. Add the two interpretation sentences. Submit on Blackboard; see [announcements](announcements.md) for this class's deadline.
 
+Full instructions: [homework.md](homework.md).
+
 Session 15 on simple exponential smoothing begins the model family evaluated with these tools.

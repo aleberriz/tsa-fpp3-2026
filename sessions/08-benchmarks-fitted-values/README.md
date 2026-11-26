@@ -10,4 +10,6 @@
 
 **Homework:** Choose a seasonal series from `fpp3`. Fit all four benchmarks in one `model()` call, forecast at least two full seasons and plot the forecasts over the data. Write one sentence defending a method from the series' features. No tuning or accuracy metrics are required. Submit on Blackboard; the deadline is in [announcements](announcements.md).
 
+Full instructions: [homework.md](homework.md).
+
 **Exam coverage:** This is the last session covered by the midterm. Session 9 on residual diagnostics is examined in the final. See [announcements](announcements.md) for cohort feedback and revision notices.

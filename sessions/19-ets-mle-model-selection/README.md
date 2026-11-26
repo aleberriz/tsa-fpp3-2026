@@ -13,3 +13,5 @@
 **R:** `ETS(y)`, `report()`, `glance()`, `tidy()`, `components()`, `augment()`, `forecast()`, `hilo()`.
 
 **Homework:** In `19_B`, [Exercise 1](19_B_ESmoothing_Model_Selection.html#exercise-1) parts 1, 2 and 5: read the three letters of Brisbane’s automatic model, then name three ETS models from their descriptions. [Exercise 3](19_B_ESmoothing_Model_Selection.html#exercise-3) parts 1 and 2: compare the automatic model and ETS(A,A,A) for corticosteroid costs by AICc. Then the [two-model AIC calculation](19_B_ESmoothing_Model_Selection.html#calculator) by hand and its interpretation. Everything else in the exercises, Exercise 2 included, is optional practice. Submit on Blackboard by the deadline in [announcements](announcements.md).
+
+Full instructions: [homework.md](homework.md).

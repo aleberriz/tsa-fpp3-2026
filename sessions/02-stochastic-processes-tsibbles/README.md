@@ -10,4 +10,6 @@
 
 **Homework:** Complete all 15 exercises in [the `00_C` primer](../../self-study/00-r-basics/00_C_basic_tibbles_dplyr_exercises.html), with code and output. Also build a tsibble from a table of your choice and include its printed header showing the index, interval and key. Submit both in one `.R` or `.qmd` file on Blackboard.
 
+Full instructions: [homework.md](homework.md).
+
 **Announcements:** See [announcements](announcements.md) for this class's schedule and deadlines.

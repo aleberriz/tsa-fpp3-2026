@@ -10,4 +10,6 @@
 
 **Homework:** Trace the first two workbook observations with a calculator, separating each prior prediction from the updated level. Fill the level and fitted-value columns with formulas, calculate SSE and compare with R. Change alpha to 0.2 and write two sentences about fit, weights and the evidence needed to judge forecasting. Submit the workbook, calculator working, R check and sentences on Blackboard; see [announcements](announcements.md) for the deadline.
 
+Full instructions: [homework.md](homework.md).
+
 The handwritten deck gives the longer derivation. Before Session 16 on fitting SES in R, review functions and `for` loops.
