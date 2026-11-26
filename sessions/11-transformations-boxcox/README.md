@@ -4,6 +4,8 @@
 
 **Materials:** [Slides](session11_slides.html), [notebook](11_A_TS_BoxCox_Transformation.html), [logarithmic-scale notes](11_B_TS_logarithmic_scales.pdf), and [R script](session11_code.R).
 
+**Midterm review:** the [midterm calculations on new numbers](midterm_calculations_review.md), with [worked answers](midterm_calculations_worked.md).
+
 **In class:** Use logs and power transformations when the spread changes with a series' level. Explain `log(1+x)` for zeros and choose a Box–Cox lambda with `guerrero()`. Check the plot before accepting the suggested transformation. Work through GDP, Victorian bulls, tobacco and retail examples.
 
 **R:** `log1p()`, `box_cox()`, `features(y, guerrero)`.
