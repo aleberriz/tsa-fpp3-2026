@@ -111,7 +111,7 @@ rides |>
   chart_theme
 ```
 
-## Where do the one-month fits miss?
+## Where do the fitted values miss?
 
 Fit through September 2025. Both models damp the trend. `A,Ad,A` uses additive errors and seasonality. `M,Ad,M` uses multiplicative errors and seasonality.
 
@@ -133,7 +133,7 @@ fit |>
   knitr::kable(digits = 5, col.names = c("ETS", "α", "β*", "γ", "φ"))
 ```
 
-Read α for level, β* for trend, γ for seasonality, and φ for damping. Fable reports β, so the table uses β* = β / α. A small γ means the estimated seasonal pattern updates slowly.
+Read α for level, β* for trend, γ for seasonality, and φ for damping. Fable reports β, so the table uses β* = β / α. The small β* and γ values mean new observations barely revise the slope and seasonal pattern. Both φ estimates are close to fable’s default upper bound of 0.98. [Fable’s ETS reference](https://fable.tidyverts.org/reference/ETS.html)
 
 ```{r}
 #| fig-alt: "Monthly observed-minus-fitted errors for both models, with a horizontal zero line and the same scale in both panels."
@@ -145,7 +145,7 @@ fit |>
   geom_line(colour = "#26364A") +
   facet_wrap(vars(.model), ncol = 1) +
   scale_x_yearmonth(breaks = "1 year", date_labels = "%Y") +
-  labs(subtitle = "One-month fits through Sep 2025",
+  labs(subtitle = "Fitting errors through Sep 2025",
        x = NULL, y = "Observed − fitted (thousands)", caption = source_note) +
   chart_theme
 ```
@@ -168,8 +168,7 @@ test |>
   scale_colour_manual(values = c("A,Ad,A" = "#1261A0", "M,Ad,M" = "#A34C14")) +
   scale_linetype_manual(values = c("A,Ad,A" = "dashed", "M,Ad,M" = "dotdash")) +
   scale_x_yearmonth(breaks = "3 months", date_labels = "%b %y") +
-  expand_limits(y = 0) +
-  labs(subtitle = "Solid line shows observed boardings",
+  labs(subtitle = "Observed boardings (solid line)\nVertical axis starts above zero",
        x = NULL, y = "Monthly boardings (thousands)",
        colour = "ETS", linetype = "ETS", caption = source_note) +
   chart_theme
@@ -185,14 +184,14 @@ fit |>
   left_join(training_scores, by = ".model") |>
   left_join(test_scores, by = ".model") |>
   rename(ETS = .model) |>
-  knitr::kable(digits = 1, caption = "RMSE in thousands of boardings")
+  knitr::kable(digits = 1, caption = "Model comparison. RMSE is in thousands of boardings.")
 ```
 
-Training RMSE scores one-month fits. Held-out RMSE scores months 1 through 12 from the same forecast date. Which months account for the larger misses?
+Training RMSE scores one-step-ahead fitted values. Held-out RMSE scores months 1 through 12 from the same forecast date. Which months account for the larger misses?
 
 ## What should EMT plan for over the next year?
 
-`ETS(A,Ad,A)` had lower RMSE on the held-out year. Re-estimate it using data through September 2026. Which months look busiest, and how wide is the 95% prediction interval?
+Among these two models, both AICc and held-out RMSE favor `ETS(A,Ad,A)`. Re-estimate it using data through September 2026. Which months look busiest, and how wide is the 95% prediction interval?
 
 ```{r}
 #| fig-alt: "Observed boardings through September 2026 and a monthly forecast through September 2027 with a shaded 95 percent prediction interval."
