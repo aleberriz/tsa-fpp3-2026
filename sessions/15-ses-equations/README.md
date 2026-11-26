@@ -2,7 +2,9 @@
 
 **Reading:** [fpp3 8.1](https://otexts.com/fpp3/exponential-smoothing.html#sec-ses).
 
-**Materials:** [Slides](session15_slides.html), [handwritten equations](15_A_SES_Equations.pdf), [notebook](15_B_SES.html), [workbook](15_C_SES_excel_fittedvals_exercise.xlsx), and [R script](session15_code.R).
+**Materials:** [Slides](session15_slides.html), [notebook](15_B_SES.html), [workbook](15_C_SES_excel_fittedvals_exercise.xlsx), and [R script](session15_code.R).
+
+**Going further (optional, not examined):** the [handwritten equations](going-further/15_A_SES_Equations.pdf), with the full geometric-series derivation, in the [`going-further/`](going-further/) folder.
 
 **In class:** Compare the weights used by naive, mean and simple exponential smoothing (SES). Predict from the previous level, observe the error, then update the level. Expand the recursion into finite weights, retaining the initial level's contribution. Explain alpha, flat forecasts and the difference between fitting by training sum of squared errors (SSE) and evaluating future forecasts. The example uses Algerian exports as a percentage of GDP.
 
