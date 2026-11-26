@@ -236,3 +236,43 @@ final_fc |>
   select(Month, Forecast = .mean, Lower = `95%_lower`, Upper = `95%_upper`) |>
   knitr::kable(digits = 1, caption = "July 2027 forecast and 95% interval, in thousands of boardings")
 ```
+
+## Saturday’s busiest hour starts at 1 a.m.
+
+Friday and Saturday nights carried **51% of boardings** in the hours shown. Halloween 2025 was the busiest night in this period, with **about 62,100 boardings**, twice the Friday average. Friday night includes Saturday morning.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the hourly data and chart code"
+#| fig-alt: "Heatmap of average hourly boardings on routes N1 to N24. Friday and Saturday are busiest just after midnight. The highest average is 6,400 boardings from 1 to 2 a.m. on Saturday nights."
+
+# Mean boardings per night for EMT route codes 501-524, using H23 and M00-M07.
+hourly_csv <- "
+Night,11 p.m.,Midnight,1 a.m.,2 a.m.,3 a.m.,4 a.m.,5 a.m.,6 a.m.,7 a.m.
+Mon,1088,1706,1471,1510,1157,1887,1575,23,0
+Tue,1250,1943,1751,1801,1276,1984,1626,68,14
+Wed,1329,2172,1936,1983,1420,2099,1685,105,5
+Thu,1435,2476,2351,2546,1824,2407,1866,97,5
+Fri,2381,5492,5900,5763,4495,3912,2338,83,4
+Sat,2628,5847,6391,6123,4779,4036,3036,1140,85
+Sun,1184,2002,1785,1877,1301,2007,1614,40,1
+"
+
+hourly <- readr::read_csv(I(hourly_csv), show_col_types = FALSE) |>
+  pivot_longer(-Night, names_to = "Hour", values_to = "Boardings") |>
+  mutate(Night = factor(Night, levels = unique(Night)),
+         Hour = factor(Hour, levels = rev(unique(Hour))),
+         Thousands = Boardings / 1000)
+
+hourly |>
+  ggplot(aes(x = Night, y = Hour, fill = Thousands)) +
+  geom_tile(colour = "white", linewidth = 0.4) +
+  geom_text(data = hourly |> slice_max(Boardings, n = 1),
+            aes(label = round(Thousands, 1)), colour = "white", size = 3.5) +
+  scale_fill_gradient(low = "#E8F1F8", high = "#10456C") +
+  labs(subtitle = "Routes N1-N24\nJan 2024 to Sep 2026",
+       x = "Night begins on", y = "Hour starts at",
+       fill = "Avg. boardings\n(thousands)", caption = source_note) +
+  chart_theme +
+  theme(panel.grid = element_blank())
+```
