@@ -6,7 +6,7 @@ The Blackboard assignment is the official submission point; this page repeats it
 
 One exercise, **`12` Exercise 1** (`sessions/12-prediction-intervals/` in the course repo), two
 sentences, and one interval by hand. Short on purpose: it is posted together with the Session 13
-homework, both are due the same day, and Group Assignment 1 is due two days earlier.
+homework.
 
 ### 1. Forecast with a transformation (`12` Exercise 1)
 

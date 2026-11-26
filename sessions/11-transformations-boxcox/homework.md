@@ -5,7 +5,7 @@ The Blackboard assignment is the official submission point; this page repeats it
 ## Instructions
 
 Two exercises, both in the **Homework** section of `11_A` (`sessions/11-transformations-boxcox/`
-in the course repo). Short on purpose: Group Assignment 1 is due shortly after this homework.
+in the course repo). Short on purpose, to leave time for Group Assignment 1.
 
 Both exercises need a data file from the `data/` folder at the repository root. The notebook's
 code reads them with a relative path, so run it from the session folder, or adjust the path.

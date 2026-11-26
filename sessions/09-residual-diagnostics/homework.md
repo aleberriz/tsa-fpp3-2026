@@ -6,7 +6,7 @@ The Blackboard assignment is the official submission point; this page repeats it
 
 One exercise: **`09_B` Exercise 1** (`sessions/09-residual-diagnostics/` in the course repo).
 
-Short on purpose. It is due after the midterm, so revise first.
+Short on purpose, so that it leaves time to revise for the midterm.
 
 ### 1. Diagnose the decomposition model (`09_B` Exercise 1)
 
@@ -51,10 +51,7 @@ results are not allowed. See the syllabus for the full policy.
 
 ## Prep for Session 10 (not submitted)
 
-**Session 10 is the midterm**: 20 multiple-choice questions, four options
-each, covering **Sessions 1–8**. There is no retake.
+**Session 10 is the midterm**, covering **Sessions 1–8**. Its format is in the Session 10 folder.
 
-Session 09 is not examined in the midterm. It is examined in the final, together with train/test
+Session 9 is not examined in the midterm. It is examined in the final, together with train/test
 accuracy (Session 13) and cross-validation (Session 14).
-
-Office hours before the midterm; times on Blackboard.

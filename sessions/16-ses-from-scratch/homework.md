@@ -40,7 +40,7 @@ results are not allowed. See the syllabus for the full policy.
 
 ## Prep for Session 17 (not submitted)
 
-Session 17 adds a trend to the smoothing equations, and releases Group Assignment 2. Have fresh:
+Session 17 adds a trend to the smoothing equations. Have fresh:
 
 - the component form of SES from Session 15: a forecast equation and a smoothing equation for
   the level. Holt's method adds a second smoothing equation.
