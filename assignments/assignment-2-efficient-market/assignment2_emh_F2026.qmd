@@ -1,0 +1,406 @@
+---
+title: "Group Assignment 2 - The Efficient Market Hypothesis"
+self-contained: true
+self-contained-math: true
+format: html
+editor: source
+toc: true
+toc-location: left
+toc-depth: 6
+---
+
+**Released:** Thursday 26 November 2026.
+**Due:** Wednesday 9 December 2026, 23:59, on Blackboard.
+
+Two weeks. The final exam is on Monday 14 December, so the deadline leaves the last week clear for
+revision.
+
+This is group work, in the same groups as Assignment 1. It receives detailed written feedback.
+
+```{r}
+library(fpp3)
+library(patchwork)
+```
+
+# References
+
+[1] Fama, Eugene (1970). "Efficient Capital Markets: A Review of Theory and Empirical Work". Journal of Finance. 25 (2): 383-417. doi:10.2307/2325486. JSTOR 2325486.
+
+[2] Investopedia - Efficient Market Hypothesis [Link](https://www.investopedia.com/terms/e/efficientmarkethypothesis.asp)
+
+# The Efficient Market Hypothesis and random walks
+
+This assignment compares a forecasting strategy built on the Efficient Market Hypothesis (EMH)
+against the two non-trivial models you have met: simple exponential smoothing, and exponential
+smoothing with an additive damped trend.
+
+The EMH says that in a perfectly efficient market, prices are accurate and already reflect all
+available information. If that holds, no amount of analysis lets you beat the market consistently.
+
+In his 1970 paper ([1]), Eugene Fama set out three forms of the hypothesis, differing in what counts
+as available information:
+
+1. *Weak form*: the information in past prices.
+2. *Semi-strong form*: all public information, past prices included.
+3. *Strong form*: private information as well.
+
+This assignment takes the weak form and uses nothing but past prices. Stated in the language of this
+course, the weak form says that a price series is a random walk: the value at time t is the value at
+t-1 plus an uncorrelated white-noise shock.
+
+$$
+y_t = y_{t-1} + \varepsilon_t
+$$
+
+So the change from one day to the next is pure noise.
+
+$$
+y_t - y_{t-1} =  \varepsilon_t
+$$
+
+That is the Naive method. The Naive forecast at time T+h, beyond the training data, is the last
+observed value:
+
+$$
+\hat{y}_{T+h|T} = y_T
+$$
+
+Set h=1 and substitute t=T+1, as in the session on benchmark models, and you get the fitted values of
+the Naive model:
+
+$$
+\hat{y}_{t|t-1} = y_{t-1} \ \ \ \ \ \text{(fitted values of the Naive model)}
+$$
+
+Residuals are the series minus the fitted values, so for the Naive model:
+
+$$
+y_t - \hat{y}_{t|t-1} = y_t - y_{t-1}
+$$
+
+If the series really is a random walk, those residuals are uncorrelated white noise. The random walk
+equation says the same thing:
+
+$$
+y_t = y_{t-1} + \varepsilon_t \rightarrow y_t - y_{t-1} = \varepsilon_t
+$$
+
+So the question this assignment answers is a concrete one. **Can either exponential smoothing model
+beat the Naive method on a stock index?** If neither can, the weak form of the EMH survives the test.
+Question 8 also tests the random walk directly, on the residuals of the Naive model.
+
+The data is the daily closing level of the **Euro Stoxx 50**, the blue-chip index of the euro area,
+from October 2023 to June 2026.
+
+# Assignment
+
+Marks are shown per question and add up to 100.
+
+### **1. Load the data and index it by trading day** (0 points)
+
+Point the file picker at `STOXX50E_Prices.csv`, which ships in this folder.
+
+```{r}
+tr_data <- readr::read_csv(file.choose()) # Opens a window for you to pick the .csv file
+tr_data <-
+  tr_data |>
+  as_tsibble(key = symbol, index = 'trading_day') |>
+  fill(close, .direction = "downup") # Fill any missing values
+```
+
+### **1.1 Plot the series and describe it in at most 75 words** (10 points)
+
+```{r}
+# YOUR CODE GOES HERE
+# DO NOT ADD EXTRA CODE CHUNKS
+```
+
+------
+
+YOUR ANSWER GOES HERE. MAX 75 WORDS.
+
+------
+
+### **2. Build two training sets, holding 80% and 60% of the data** (0 points)
+
+Complete the code below. The result is a single tsibble in which `.id` identifies the training set.
+
+NOTE: `stretch_tsibble()` is not used here, because we want exactly two training sets.
+
+```{r}
+n_obs_80 <- # Your code goes here. The whole number of observations closest to 80% of the data
+n_obs_60 <- # Your code goes here. The whole number of observations closest to 60% of the data
+n_obs_list <- c(n_obs_60, n_obs_80)
+train_sets <- tibble() # EMPTY TIBBLE THE DATA IS INSERTED INTO
+
+# The loop builds the training sets and stacks them into one dataframe.
+# Just run it.
+for (i in seq_along(n_obs_list)) {
+  train_i <- tr_data |> slice(1:n_obs_list[i]) |> mutate(.id = i)
+  train_sets <- bind_rows(train_sets, train_i)
+}
+
+# Turn it back into a tsibble so the fable library accepts it.
+# Just run it.
+train_sets <- as_tsibble(train_sets, key = .id, index = trading_day)
+```
+
+### **3. Fit three models to each training set** (10 points)
+
+* a Naive model, called `naive`
+* a Simple Exponential Smoothing model, called `ses`
+* an exponential smoothing model with an additive damped trend and no seasonality, called
+  `holts_damped`
+
+Store the fitted models in `fit_train_sets`.
+
+```{r}
+# YOUR CODE GOES HERE, DO NOT ADD EXTRA CODE CHUNKS
+# COMPLETE THE CODE BELOW WHERE MARKED
+fit_train_sets <-
+  train_sets |>
+  model(
+    naive = # Your code goes here
+    ses = # Your code goes here
+    holts_damped =  # Your code goes here
+  )
+
+fit_train_sets
+```
+
+### **4. Forecast 5 trading days ahead from each fitted model** (10 points)
+
+The result is a `fable`, a forecast table. Name it `fc_train_sets`.
+
+Add a column `h` giving the forecast horizon of each row. The session on cross-validation shows how.
+
+Then apply `as_fable(response = "close", distribution = close)`, so the result is still a `fable` and
+still works with `accuracy()`.
+
+Finish with `ungroup()`, so the result is not left grouped.
+
+```{r}
+fc_train_sets <-
+  fit_train_sets |>
+  # YOUR CODE GOES HERE
+```
+
+### **5. Errors and error metrics for each training set**
+
+#### 5.1 Compute the absolute error and the absolute percentage error at every point, without averaging (10 points)
+
+Follow the steps below.
+
+```{r}
+# 0. Keep trading_day and close from tr_data, and rename close to close_data
+#    using rename(close_data = close). Store the result in aux1.
+aux1 <-
+  tr_data |>
+  ...
+
+# 1. left_join() fc_train_sets (left) to aux1 (right) to attach the actual
+#    value of close to each forecast. Store the result in df_errors.
+df_errors <-
+  fc_train_sets |>
+  left_join(aux1, ...)
+
+# 2. Add two columns to df_errors:
+    # abs_error: the absolute error of each individual forecast
+    # abs_perc_error: the absolute percentage error of each individual forecast
+df_errors <-
+  df_errors |>
+
+# 3. Check the result. It should have 30 rows
+#    (3 models * 2 training sets * 5 forecasts per model).
+df_errors
+
+```
+
+#### 5.2 Produce the following graphs and answer the questions (10 points)
+
+##### TWO GRAPHS OF THE ABSOLUTE ERRORS, ONE PER TRAINING SET
+
+Use `ggplot`. Each graph must have:
+
+- the forecast horizon on the x-axis, with only whole numbers on the grid
+- the absolute error on the y-axis. **Both graphs must share a y-axis scale, so they can be compared**
+- three lines, one per model
+
+`facet_grid(vars(.id))` as the final ggplot command is the easy way to get one panel per training
+set. This is the faceting you used in Session 7, and it shares the y-axis across panels by default,
+which is what the second requirement above asks for. Any other route to the same result is fine.
+
+```{r}
+df_errors |>
+  # YOUR CODE GOES HERE
+```
+
+##### TWO GRAPHS OF THE ABSOLUTE PERCENTAGE ERRORS, ONE PER TRAINING SET
+
+Same requirements, with the absolute percentage error on the y-axis.
+
+```{r}
+df_errors |>
+  # YOUR CODE GOES HERE
+```
+
+##### QUESTIONS ABOUT THE GRAPHS
+
+1. Does the choice of training set change the errors?
+
+------
+
+**YOUR ANSWER GOES HERE**
+MAX 30 WORDS
+
+------
+
+2. Does any model beat the others? Is the answer the same for both training sets?
+
+------
+
+**YOUR ANSWER GOES HERE**
+MAX 30 WORDS
+
+------
+
+#### 5.3 For each training set, compute the RMSE, MAE and MAPE of each model, averaged over all five horizons (10 points)
+
+Do it twice, two different ways.
+
+##### **METHOD 1: `accuracy(tr_data, by = ...)` on `fc_train_sets`.** Store the result in `error_metrics_accuracy`
+
+```{r}
+error_metrics_accuracy <-
+  fc_train_sets |>
+  accuracy(tr_data, ...)
+```
+
+##### **METHOD 2: from the `abs_error` and `abs_perc_error` columns of `df_errors`, with `group_by()`, `summarise()` and the formulas for the metrics.** Store the result in `error_metrics_manual`
+
+```{r}
+error_metrics_manual <-
+  df_errors |>
+  as_tibble() |>
+  group_by(...) |>
+  ...
+```
+
+##### COMPARE: run the code below. All three must return TRUE
+
+```{r}
+# COMPARE METRICS
+all.equal(error_metrics_manual$MAE, error_metrics_accuracy$MAE)
+all.equal(error_metrics_manual$RMSE, error_metrics_accuracy$RMSE)
+all.equal(error_metrics_manual$MAPE, error_metrics_accuracy$MAPE)
+```
+
+### **6. Replace the two training sets with cross-validation** (15 points)
+
+Two training sets give you two answers, and question 5.2 shows they disagree. Cross-validation
+replaces them with many, so the comparison no longer depends on where you happened to split.
+
+Produce the cross-validated MAE, RMSE and MAPE for every combination of model and forecast horizon.
+
+- The final table has 3 x 5 = 15 rows, one per model and horizon, with a column for each metric.
+- The smallest training set holds 60% of the trading days.
+- Training sets grow in steps of 5 trading days.
+- **Hold back the last 5 trading days before you build the training sets.** Otherwise the final
+  training sets run to the end of the data and there is nothing left to score their forecasts
+  against, so the five horizons would be averaged over different numbers of folds.
+
+```{r}
+# 1. Build the training sets
+init_obs <- as.integer(nrow(tr_data) * 0.6)
+
+tr_data_cv <-
+  tr_data |>
+  # YOUR CODE GOES HERE
+
+# 2. Fit the models to every training set
+fit_cv <-
+  tr_data_cv |>
+  # YOUR CODE GOES HERE
+
+# 3. Forecast from each training set,
+    # and add the h column so the metrics can be split by horizon.
+fc_cv <-
+  fit_cv |>
+  # YOUR CODE GOES HERE
+
+# Accuracy metrics per model and horizon:
+summary_cv <-
+  fc_cv |>
+    accuracy( # YOUR CODE GOES HERE) |>
+    # YOUR CODE GOES HERE
+```
+
+### **7. Produce the following graphs and answer the questions** (10 points)
+
+Two graphs, one for the MAE and one for the MAPE. Each must have:
+
+- the forecast horizon on the x-axis, discrete, with only whole numbers on the grid
+- the metric on the y-axis, MAE in one graph and MAPE in the other
+- three lines, one per model
+
+```{r}
+# YOUR CODE GOES HERE
+```
+
+* How do these graphs differ from the ones in question 5.2? Answer briefly.
+
+------
+
+YOUR ANSWER GOES HERE: MAX 30 WORDS
+
+------
+
+* Does any model beat the others?
+
+------
+
+YOUR ANSWER GOES HERE: MAX 30 WORDS
+
+------
+
+### **8. Test the Naive model's residuals for white noise** (10 points)
+
+The top of this document says that if the series is a random walk, the residuals of the Naive model
+are white noise. This question tests that claim directly, with the residual diagnostics of Session 9.
+
+Use the Naive model fitted to the 80% training set (`.id == 2` in `fit_train_sets`).
+
+1. Plot its residuals with `gg_tsresiduals()`.
+2. Run a Ljung-Box test on its innovation residuals with `features()`. Use `lag = 10`, the rule from
+   Session 9 for non-seasonal data: trading days have no seasonal period.
+
+```{r}
+# YOUR CODE GOES HERE
+# DO NOT ADD EXTRA CODE CHUNKS
+```
+
+* Can the residuals be told apart from white noise? What does that say about the weak form of the EMH?
+
+------
+
+YOUR ANSWER GOES HERE: MAX 40 WORDS
+
+------
+
+### **9. What do your results say about the Efficient Market Hypothesis?** (5 points)
+
+Three things to cover:
+
+1. State which model won on cross-validated accuracy, and by how much. Quote a number.
+2. Say what that means for the weak form of the EMH. Use both lines of evidence, the accuracy
+   comparison and the residual test in question 8, and the link between the Naive method and the
+   random walk set out at the top of this document. Do the two agree?
+3. Give one reason your evidence is not conclusive. Think about what you tested: one index, one
+   period, one forecast horizon range, three models.
+
+------
+
+YOUR ANSWER GOES HERE.
+MAX 120 WORDS.
+
+------

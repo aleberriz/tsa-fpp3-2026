@@ -13,10 +13,11 @@ without `autoplot()`, and judge the two decompositions against the two criteria 
 Assignment 1 runs for just over four weeks and is due **Friday 30 October 2026, 23:59** — after the midterm,
 so that exam revision and a from-scratch implementation do not compete for the same week.
 
-## 2 — The Efficient Market Hypothesis (released Session 17, due Sunday 6 December 2026)
+## 2 — The Efficient Market Hypothesis (released 26 November, due Wednesday 9 December 2026)
 
-Released on **Monday 23 November 2026**. The assignment file and the data it needs appear in this
-folder on that date.
+Released on **Thursday 26 November 2026**. The assignment file and the data it needs are in
+[`assignment-2-efficient-market/`](assignment-2-efficient-market/). Due **Wednesday 9 December 2026,
+23:59**.
 
 The EMH as a random walk. Compare the naïve method against simple exponential smoothing and damped
 Holt, with error metrics computed both via `accuracy()` and by hand, then full cross-validation.
