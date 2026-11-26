@@ -1,9 +1,9 @@
 # Midterm calculations: practice on new numbers
 
 These are the seven kinds of calculation the midterm asked for, on a new table. There are no answer
-options: work each one out by hand with your calculator. A video walkthrough that solves each one
-step by step will follow on Blackboard. The final covers the whole course, so this algorithm can
-come back.
+options: work each one out by hand with your calculator, then compare with the
+[worked answers](midterm_calculations_worked.md). The final covers the whole course, so this
+algorithm can come back.
 
 **How to work.** The decomposition is additive. Keep one decimal place at every step, rounding
 as you go, and give each answer with one decimal place too.

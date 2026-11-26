@@ -9,10 +9,11 @@
   start the population workbook after this class. See the
   [homework summary](README.md#homework).
 - **The common-errors note on this homework** goes up on Blackboard after the due date.
-- **Midterm calculations, worked on new numbers.** As promised,
-  [`midterm_calculations_review.md`](midterm_calculations_review.md) has the seven calculation
-  questions of the midterm on a new table, without answer options. Do them by hand first. A video
-  walkthrough will follow on Blackboard.
+- **Midterm calculations, worked on new numbers.** As promised, the
+  [midterm calculations](../11-transformations-boxcox/midterm_calculations_review.md) has the seven
+  calculation questions of the midterm on a new table, without answer options. Do them by hand
+  first. Instead of the video, the [worked answers](../11-transformations-boxcox/midterm_calculations_worked.md)
+  are now written out step by step, next to the sheet in the Session 11 folder.
 - **Session 18** is Wednesday 25 November.
 - **Office hours** on request, for concrete questions: email aberrizbeitia@faculty.ie.edu.
 
