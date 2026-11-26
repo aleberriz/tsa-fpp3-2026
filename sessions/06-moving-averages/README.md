@@ -10,4 +10,6 @@
 
 **Homework:** Complete notebook Exercises 1, 3 and 4: compute a 2×12-MA of retail employment in R, then derive the 3×7-MA and 2×8-MA weights on paper. Check symmetry, total weight and window length. Submit the code and plot plus a scan or photograph of the derivations on Blackboard. Exercise 2 is optional. The deadline is in [announcements](announcements.md).
 
+Full instructions: [homework.md](homework.md).
+
 This continues Session 5 on decomposition schemes and prepares the trend estimate used in Session 7 on classical decomposition and STL.

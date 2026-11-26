@@ -14,4 +14,6 @@
 2. Repeat the beer example's manual MAE and RMSE in R for seasonal naive, on both sets. On paper, calculate MAE, RMSE, MAPE and MASE for the four quarters supplied in the homework; include a photo and an R check.
 3. `13_A` Exercise 1, sections 2 and 3: residual and forecast metrics, units and interpretation. Section 1 and question 3.3 are not assigned.
 
+Full instructions: [homework.md](homework.md).
+
 The deadline is in [announcements](announcements.md). Section 5.9 on distributional accuracy belongs to the follow-up course; sMAPE and the metric proofs are supporting reading in the notebook appendix.

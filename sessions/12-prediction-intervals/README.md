@@ -10,4 +10,6 @@
 
 **Homework:** Complete notebook Exercise 1: forecast retail turnover 36 months ahead with the log decomposition model, plot mean and median forecasts, and extract the 80% intervals at horizons 1 and 36. Explain the widening and the mean–median gap in two sentences. Extend the Google 2015 manual interval check to horizon 5 using `sigma * sqrt(5)`, verify in R and show the calculator working. Submit on Blackboard; see [announcements](announcements.md) for this class's deadline.
 
+Full instructions: [homework.md](homework.md).
+
 Bootstrapped intervals are available in the notebook but are not examined.

@@ -14,4 +14,6 @@
 
 **Homework:** Complete all eight parts of `16_B`: plot the series, fit SES and forecast eight years, interpret parameters and recent weights, calculate residual standard deviation and a 95% first interval, and compare with `fable`. Calculate recent weights once in part 3. Use R for full-series residual sums, showing the formula and counts. Part 7 supplies a separate five-observation series and forecast for calculation by hand; part 8 asks you to interpret numerical results and identify predictive evidence. Submit on Blackboard; see [announcements](announcements.md) for the deadline.
 
+Full instructions: [homework.md](homework.md).
+
 The appendices in both notebooks are optional, outside homework, group assignments and exams. This includes the repeated from-scratch Argentina fit and full-history weight display. The required submission is `16_B` parts 1 to 8, using `fable` for Argentina. Optimizer internals and R argument syntax are outside examination scope.

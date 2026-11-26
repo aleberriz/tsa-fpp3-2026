@@ -10,4 +10,6 @@
 
 **Homework:** Work through `00_A_1`–`00_A_4` and `00_B_1` in the [R primer](../../self-study/00-r-basics/). Submit a PDF or Word document on Blackboard with a screenshot of `library(fpp3)` loading and the beer-production plot from section 4 of `session01.R`.
 
+Full instructions: [homework.md](homework.md).
+
 **Announcements:** See [announcements](announcements.md) for this class's schedule and deadlines.

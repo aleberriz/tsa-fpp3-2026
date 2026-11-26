@@ -10,6 +10,8 @@
 
 ### Homework
 
+Full instructions: [homework.md](homework.md).
+
 Complete [workbook 17_B](17_B_ExpSmoothing_Trended_students.xlsx), including its ten forecasts, and the [calculator update](17_A_ESmoothing_Trended.html#calculator). In [Exercise 1](17_A_ESmoothing_Trended.html#exercise-1), fit Holt and damped Holt, report the two Ljung–Box p-values and interpret one point-forecast plot. Include the [two-step damped calculation](17_A_ESmoothing_Trended.html#damped-calculator).
 
 Submit the workbook and a short document with your working and R results on Blackboard. See [announcements](announcements.md) for the deadline.

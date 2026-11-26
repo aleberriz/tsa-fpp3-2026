@@ -12,4 +12,6 @@
 
 **Homework:** Complete notebook Examples 2, 4, 5, 7 and 8, then the scatterplot-matrix exercise with SOI lags 1–8. Include the code, plots and one sentence per exercise explaining what you see. Submit on Blackboard.
 
+Full instructions: [homework.md](homework.md).
+
 **Announcements:** See [announcements](announcements.md) for this class's schedule and deadlines.

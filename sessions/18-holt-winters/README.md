@@ -10,6 +10,8 @@
 
 ### Homework
 
+Full instructions: [homework.md](homework.md).
+
 Complete the Additive sheet of workbook 18_B and both [calculator checks](18_A_ExpSmoothing_Seasonal.html#calculator). In the [arrivals exercise](18_A_ExpSmoothing_Seasonal.html#exercise), answer questions 1, 2, 3 and 6. Fit the two undamped models, forecast eight quarters ahead and compare test RMSE with your visual impression.
 
 See [Judge the forecasts](18_A_ExpSmoothing_Seasonal.html#evaluation) for how to interpret the held-out errors.

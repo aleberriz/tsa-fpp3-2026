@@ -10,4 +10,6 @@
 
 **Homework:** Complete `07_D` Exercise 1, the gas-production outlier experiment. In `07_E`, complete *STL Example 3*, items 1.1–1.2 on `labour`, and *Exercise 2*, item 2.1 on daily electricity demand. Report the STL settings you tried. The electricity task asks for a diagnosis; item 2.2 is not assigned. Submit on Blackboard; see [announcements](announcements.md) for the deadline.
 
+Full instructions: [homework.md](homework.md).
+
 **Group Assignment 1:** The [classical-decomposition assignment](../../assignments/) launches here. See [announcements](announcements.md) for this class's release date and deadline.
