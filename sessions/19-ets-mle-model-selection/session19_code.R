@@ -93,35 +93,6 @@ tibble(y = seq(10, 14.2, by = 0.01)) |>
   labs(title = "2017 Q1: the score is the curve's height at the observation",
        x = "Overnight trips (millions)", y = "Density")
 
-## The same search as Session 16, with a new score ----
-est <- fit |> tidy() |> select(term, estimate) |> deframe()
-
-loglik_mna <- function(alpha, y = aus_holidays$Trips) {
-  level  <- est[["l[0]"]]
-  season <- est[c("s[-3]", "s[-2]", "s[-1]", "s[0]")]  # Q1 to Q4 before 1998 Q1
-  pred <- err <- numeric(length(y))
-  for (t in seq_along(y)) {
-    pred[t] <- level + season[1]                    # predict y_t
-    err[t]  <- (y[t] - pred[t]) / pred[t]           # relative error
-    level   <- level + alpha * (y[t] - pred[t])     # update the level
-    season  <- c(season[-1], season[1] + est[["gamma"]] * (y[t] - pred[t]))  # update the season
-  }
-  -0.5 * (length(y) * log(sum(err^2)) + 2 * sum(log(pred)))  # fable's log-likelihood
-}
-
-c(by_hand = loglik_mna(est[["alpha"]]), glance = glance(fit)$log_lik)
-
-slice <- tibble(alpha = seq(0.1, 0.7, by = 0.01)) |>
-  mutate(log_lik = sapply(alpha, loglik_mna))
-
-slice |>
-  ggplot(aes(x = alpha, y = log_lik)) +
-  geom_line() +
-  geom_vline(xintercept = est[["alpha"]], linetype = "dashed") +
-  labs(title = "The slice peaks at the fitted alpha",
-       x = "alpha (gamma and initial states at their fitted values)",
-       y = "Log-likelihood")
-
 # 5. Choosing by AICc ----
 
 ## Reading the selected model ----
@@ -140,42 +111,6 @@ fit_trend |>
   glance() |>
   select(.model, log_lik, AIC, AICc) |>
   knitr::kable(digits = 2)
-
-## Automatic ETS model selection ----
-
-### The scoreboard behind the choice ----
-fit_all <- aus_holidays |>
-  model(
-    ANN  = ETS(Trips ~ error("A") + trend("N")  + season("N")),
-    AAN  = ETS(Trips ~ error("A") + trend("A")  + season("N")),
-    AAdN = ETS(Trips ~ error("A") + trend("Ad") + season("N")),
-    ANA  = ETS(Trips ~ error("A") + trend("N")  + season("A")),
-    AAA  = ETS(Trips ~ error("A") + trend("A")  + season("A")),
-    AAdA = ETS(Trips ~ error("A") + trend("Ad") + season("A")),
-    MNN  = ETS(Trips ~ error("M") + trend("N")  + season("N")),
-    MAN  = ETS(Trips ~ error("M") + trend("A")  + season("N")),
-    MAdN = ETS(Trips ~ error("M") + trend("Ad") + season("N")),
-    MNA  = ETS(Trips ~ error("M") + trend("N")  + season("A")),
-    MAA  = ETS(Trips ~ error("M") + trend("A")  + season("A")),
-    MAdA = ETS(Trips ~ error("M") + trend("Ad") + season("A")),
-    MNM  = ETS(Trips ~ error("M") + trend("N")  + season("M")),
-    MAM  = ETS(Trips ~ error("M") + trend("A")  + season("M")),
-    MAdM = ETS(Trips ~ error("M") + trend("Ad") + season("M"))
-  )
-
-scores <- fit_all |>
-  glance() |>
-  select(.model, AICc) |>
-  mutate(gap = AICc - min(AICc)) |>
-  arrange(AICc)
-
-scores |> knitr::kable(digits = 2)
-
-scores |>
-  ggplot(aes(x = gap, y = reorder(.model, -gap))) +
-  geom_point() +
-  labs(title = "Seasonality decides; the top three are close",
-       x = "AICc minus the lowest AICc", y = NULL)
 
 # 6. Check the selected model ----
 fit |> gg_tsresiduals()
@@ -221,3 +156,70 @@ h02 <- PBS |>
   summarise(Cost = sum(Cost))
 
 h02 |> autoplot(Cost)
+
+# Appendix: supporting explanations ----
+
+## A slice through the likelihood search ----
+# The selected ETS(M,N,A), under its own name in case fit was reused.
+fit_auto <- fit_open |> select(auto)
+est <- fit_auto |> tidy() |> select(term, estimate) |> deframe()
+
+loglik_mna <- function(alpha, y = aus_holidays$Trips) {
+  level  <- est[["l[0]"]]
+  season <- est[c("s[-3]", "s[-2]", "s[-1]", "s[0]")]  # Q1 to Q4 before 1998 Q1
+  pred <- err <- numeric(length(y))
+  for (t in seq_along(y)) {
+    pred[t] <- level + season[1]                    # predict y_t
+    err[t]  <- (y[t] - pred[t]) / pred[t]           # relative error
+    level   <- level + alpha * (y[t] - pred[t])     # update the level
+    season  <- c(season[-1], season[1] + est[["gamma"]] * (y[t] - pred[t]))  # update the season
+  }
+  -0.5 * (length(y) * log(sum(err^2)) + 2 * sum(log(pred)))  # fable's log-likelihood
+}
+
+c(by_hand = loglik_mna(est[["alpha"]]), glance = glance(fit_auto)$log_lik)
+
+slice <- tibble(alpha = seq(0.1, 0.7, by = 0.01)) |>
+  mutate(log_lik = sapply(alpha, loglik_mna))
+
+slice |>
+  ggplot(aes(x = alpha, y = log_lik)) +
+  geom_line() +
+  geom_vline(xintercept = est[["alpha"]], linetype = "dashed") +
+  labs(title = "The slice peaks at the fitted alpha",
+       x = "alpha (gamma and initial states at their fitted values)",
+       y = "Log-likelihood")
+
+## The scoreboard behind the choice ----
+fit_all <- aus_holidays |>
+  model(
+    ANN  = ETS(Trips ~ error("A") + trend("N")  + season("N")),
+    AAN  = ETS(Trips ~ error("A") + trend("A")  + season("N")),
+    AAdN = ETS(Trips ~ error("A") + trend("Ad") + season("N")),
+    ANA  = ETS(Trips ~ error("A") + trend("N")  + season("A")),
+    AAA  = ETS(Trips ~ error("A") + trend("A")  + season("A")),
+    AAdA = ETS(Trips ~ error("A") + trend("Ad") + season("A")),
+    MNN  = ETS(Trips ~ error("M") + trend("N")  + season("N")),
+    MAN  = ETS(Trips ~ error("M") + trend("A")  + season("N")),
+    MAdN = ETS(Trips ~ error("M") + trend("Ad") + season("N")),
+    MNA  = ETS(Trips ~ error("M") + trend("N")  + season("A")),
+    MAA  = ETS(Trips ~ error("M") + trend("A")  + season("A")),
+    MAdA = ETS(Trips ~ error("M") + trend("Ad") + season("A")),
+    MNM  = ETS(Trips ~ error("M") + trend("N")  + season("M")),
+    MAM  = ETS(Trips ~ error("M") + trend("A")  + season("M")),
+    MAdM = ETS(Trips ~ error("M") + trend("Ad") + season("M"))
+  )
+
+scores <- fit_all |>
+  glance() |>
+  select(.model, AICc) |>
+  mutate(gap = AICc - min(AICc)) |>
+  arrange(AICc)
+
+scores |> knitr::kable(digits = 2)
+
+scores |>
+  ggplot(aes(x = gap, y = reorder(.model, -gap))) +
+  geom_point() +
+  labs(title = "Seasonality decides; the top three are close",
+       x = "AICc minus the lowest AICc", y = NULL)
