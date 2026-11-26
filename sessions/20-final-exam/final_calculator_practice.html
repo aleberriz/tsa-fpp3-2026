@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.10.19">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -2273,7 +2273,7 @@ vertical-align: -.125em;
 <h2 class="anchored" data-anchor-id="what-a-new-observation-or-damping-does-to-a-trend-forecast">5. What a new observation or damping does to a trend forecast</h2>
 <ul>
 <li><strong>Australian population.</strong> Use the <a href="../17-holt-damped-trend/17_A_ESmoothing_Trended.html#component-form">Holt equations from Homework 17</a> with this rounded extract from the population example. At the end of 1961, the estimated level was 10.48 million and the slope was 0.22 million per year. Use alpha = 0.4 and beta-star = 0.25, as in the homework calculator check. Forecast 1963 before you learn the 1962 population. Now use the 1962 observation of 10.74 million to update the states and revise your 1963 forecast. Report the original forecast, the revised forecast and the size of the revision.</li>
-<li><strong>Internet usage.</strong> In the <a href="../17-holt-damped-trend/17_A_ESmoothing_Trended.html#damped-calculator">damped forecast exercise from Homework 17</a>, the final level is 220, the slope is −2 units per minute, and phi is 0.815. Forecast four minutes ahead with and without damping from these same states. How much of the decline in the straight-line forecast does damping remove?</li>
+<li><strong>A damped decline.</strong> The <a href="../17-holt-damped-trend/17_A_ESmoothing_Trended.html#damped-calculator">damped forecast exercise from Homework 17</a> uses your own fitted states for internet usage. Here, use these instead: the final level is 180, the slope is −3 units per minute, and phi is 0.85. Forecast four minutes ahead with and without damping from these same states. How much of the decline in the straight-line forecast does damping remove?</li>
 </ul>
 </section>
 <section id="the-calendar-in-additive-holt-winters" class="level2">
@@ -2354,7 +2354,7 @@ vertical-align: -.125em;
 </tr>
 <tr class="odd">
 <td>5. Trend forecasts</td>
-<td>Population <strong>10.92</strong> before the update and <strong>10.94</strong> after it, an increase of <strong>0.02</strong> million. Internet usage <strong>215.08</strong> damped and <strong>212.00</strong> with the straight line, a reduction in the decline of <strong>3.08</strong> units.</td>
+<td>Population <strong>10.92</strong> before the update and <strong>10.94</strong> after it, an increase of <strong>0.02</strong> million. Damped decline <strong>171.87</strong> with damping and <strong>168.00</strong> with the straight line, a reduction in the decline of <strong>3.87</strong> units.</td>
 </tr>
 <tr class="even">
 <td>6. Additive Holt-Winters</td>
