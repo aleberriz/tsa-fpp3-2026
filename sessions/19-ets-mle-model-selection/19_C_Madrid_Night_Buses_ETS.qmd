@@ -15,7 +15,7 @@ The data count boardings across routes N1–N24, which connect Cibeles with Madr
 
 The totals sum all time bands for route codes 501–524 by calendar month, from January 2022 through September 2026. The archive was updated September 29, 2026 and the current-year file October 15, 2026. [Archive and current data](https://datos.emtmadrid.es/es/dataset/demanda-diaria-viajeros-autobus) · [Route codes](https://datos.emtmadrid.es/dataset/lineas-emt)
 
-EMT began restructuring its night network on November 29, 2023, including changes to several of these routes. [City of Madrid announcement](https://diario.madrid.es/blog/notas-de-prensa/el-ayuntamiento-potencia-la-red-de-buhos-de-la-emt-reduce-la-frecuencia-a-15-minutos-y-crea-una-linea-circular-nocturna/)
+Madrid announced the night-network restructuring on November 29, 2023. It included changes to several of these routes and more frequent weekend service from December 1. [Original announcement hosted by EMT](https://www.emtmadrid.es/getattachment/9b1d3c2f-c0d4-405c-875b-76247de5721b/El-Ayuntamiento-potencia-la-red-de-%E2%80%98buhos%E2%80%99-de-EMT.aspx)
 
 Contains data from EMT Madrid’s Daily Bus Ridership, accessed November 26, 2026 and available under the Open Data Commons Attribution License. [Powered by EMT de Madrid](https://www.emtmadrid.es/) · [Data license](https://opendatacommons.org/licenses/by/1-0/)
 
@@ -186,11 +186,18 @@ test_scores <- bind_rows(accuracy(test_fc, test), accuracy(benchmark_fc, test)) 
   select(.model, `Held-out RMSE` = RMSE)
 fit_scores <- fit |> glance() |> select(.model, AICc)
 
-test_scores |>
+model_scores <- test_scores |>
   left_join(fit_scores, by = ".model") |>
   left_join(training_scores, by = ".model") |>
-  select(Model = .model, AICc, `Training RMSE`, `Held-out RMSE`) |>
-  knitr::kable(digits = 1, caption = "RMSE is in thousands of boardings. AICc and training RMSE are shown for the ETS fits.")
+  select(Model = .model, AICc, `Training RMSE`, `Held-out RMSE`)
+
+withr::with_options(
+  list(knitr.kable.NA = ""),
+  knitr::kable(
+    model_scores, digits = 1,
+    caption = "RMSE is in thousands of boardings. AICc and training RMSE are shown for the ETS fits."
+  )
+)
 ```
 
 The ETS training RMSE scores one-step-ahead fitted values. Held-out RMSE scores the same 12 months for all three methods. The additive ETS fit cuts held-out RMSE by about 22% compared with seasonal naive. The multiplicative fit has a slightly higher RMSE than the benchmark. Both ETS forecasts overshot June 2026 by more than any other month. What might explain that miss?
