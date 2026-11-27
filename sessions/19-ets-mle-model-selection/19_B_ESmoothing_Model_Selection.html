@@ -2352,7 +2352,6 @@ window.Quarto = {
   <li><a href="#route" id="toc-route" class="nav-link active" data-scroll-target="#route">Reading route</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   <li><a href="#libraries" id="toc-libraries" class="nav-link" data-scroll-target="#libraries">Libraries</a></li>
-  <li><a href="#before-class" id="toc-before-class" class="nav-link" data-scroll-target="#before-class">Before class: a short likelihood guide</a></li>
   <li><a href="#motivation" id="toc-motivation" class="nav-link" data-scroll-target="#motivation">1. From Holt-Winters to ETS</a></li>
   <li><a href="#letters" id="toc-letters" class="nav-link" data-scroll-target="#letters">2. The ETS letters</a></li>
   <li><a href="#state-space" id="toc-state-space" class="nav-link" data-scroll-target="#state-space">3. From a method to a statistical model</a>
@@ -2392,6 +2391,7 @@ window.Quarto = {
   </ul></li>
   <li><a href="#appendix" id="toc-appendix" class="nav-link" data-scroll-target="#appendix">Appendix: supporting explanations</a>
   <ul>
+  <li><a href="#likelihood-guide" id="toc-likelihood-guide" class="nav-link" data-scroll-target="#likelihood-guide">A short likelihood guide</a></li>
   <li><a href="#by-hand" id="toc-by-hand" class="nav-link" data-scroll-target="#by-hand">One update by hand, in both error forms</a></li>
   <li><a href="#likelihood-slice" id="toc-likelihood-slice" class="nav-link" data-scroll-target="#likelihood-slice">A slice through the likelihood search</a></li>
   <li><a href="#score" id="toc-score" class="nav-link" data-scroll-target="#score">Where the likelihood score comes from</a></li>
@@ -2442,7 +2442,7 @@ window.Quarto = {
 <li><a href="#diagnostics">Check the selected model</a>: the residual checks on the innovation residuals.</li>
 <li><a href="#forecasting">Forecasting with ETS</a>: forecast distributions, one interval by hand, how intervals grow with the horizon, and the whole route in one table.</li>
 </ol>
-<p>The required work is <a href="#exercise-1">Exercise 1</a> parts 1, 2 and 5, <a href="#exercise-3">Exercise 3</a> parts 1 and 2, and its <a href="#calculator">calculator comparison</a>. Everything else in the exercises, Exercise 2 included, is optional practice. The <a href="#appendix">appendix</a> holds optional supporting material: one update by hand in both error forms, a slice through the likelihood search, the scoreboard of all eligible models and the excluded combinations, BIC, the nested-model argument, comparisons across model families, zeros and transformations, simulated intervals, and where the likelihood score comes from.</p>
+<p>The required work is <a href="#exercise-1">Exercise 1</a> parts 1, 2 and 5, <a href="#exercise-3">Exercise 3</a> parts 1 and 2, and its <a href="#calculator">calculator comparison</a>. Everything else in the exercises, Exercise 2 included, is optional practice. The <a href="#appendix">appendix</a> holds optional supporting material: <a href="#likelihood-guide">a short likelihood guide</a>, one update by hand in both error forms, a slice through the likelihood search, the scoreboard of all eligible models and the excluded combinations, BIC, the nested-model argument, comparisons across model families, zeros and transformations, simulated intervals, and where the likelihood score comes from.</p>
 </section>
 <section id="references" class="level1">
 <h1>References</h1>
@@ -2457,41 +2457,6 @@ window.Quarto = {
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fpp3)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section>
-<section id="before-class" class="level1">
-<h1>Before class: a short likelihood guide</h1>
-<p>Allow about ten minutes. We keep the observations fixed and ask which model settings make them more plausible.</p>
-<ol type="1">
-<li><strong>Prediction and uncertainty belong together.</strong> A forecast of 100 with a standard deviation of 2 describes a different distribution from a forecast of 100 with a standard deviation of 20.</li>
-<li><strong>Density is not a probability at a point.</strong> For continuous data, likelihood uses the heights of probability density curves at the observations. These heights need not be below one.</li>
-<li><strong>A time series uses conditional densities.</strong> At each date, predict using earlier information; evaluate that observation under its conditional distribution. Multiply those densities to obtain the likelihood, or add their logarithms to obtain the log-likelihood.</li>
-<li><strong>Fit and complexity are separate questions.</strong> Fitting chooses a model’s parameters. Model selection also asks whether extra flexibility earns its place.</li>
-<li><strong>Forecast evaluation asks a different question.</strong> AICc, defined <a href="#aicc">below</a>, is a fit score with a penalty for extra parameters. Like the SSE in Session 16 on fitting SES, it is computed on the training data, whereas rolling-origin evaluation, as in Session 14 on cross-validation, measures actual forecast errors at specified horizons.</li>
-</ol>
-<p>Check your understanding: What stays fixed during estimation? Why is a very wide distribution not automatically a good fit? What is the difference between estimating alpha and selecting the trend type? Which errors matter for a twelve-month inventory decision? Why must model selection be repeated inside each training fold when evaluating an automatic procedure?</p>
-<div class="callout callout-style-default callout-tip callout-titled" title="Answers: open after trying the questions">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Answers: open after trying the questions
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<ul>
-<li><strong>What stays fixed during estimation?</strong> The observations. Fitting varies the parameters and initial states and asks which values make those fixed data most plausible.</li>
-<li><strong>Why is a very wide distribution not automatically a good fit?</strong> Widening a distribution lowers its curve near the center, where well-predicted observations fall, and a very wide one is low everywhere. The heights at the observations shrink, so the likelihood falls.</li>
-<li><strong>Estimating alpha or selecting the trend type?</strong> Estimating alpha is fitting: the form is fixed, and the likelihood chooses the value. Selecting the trend type compares different forms, each fitted first, so it needs a criterion that charges for the extra parameters, such as AICc.</li>
-<li><strong>Which errors matter for a twelve-month inventory decision?</strong> Forecast errors at horizons up to twelve months, on data the model did not use for fitting. One-step training residuals do not measure them.</li>
-<li><strong>Why repeat selection inside each training fold?</strong> Automatic selection is part of the procedure being evaluated. Choosing the form once on the full series would let earlier folds use information from their future.</li>
-</ul>
-</div>
-</div>
-</div>
-<p>The <a href="going-further/19_A_MLE_Informal_Intro.pdf">handwritten primer</a> is optional background. No calculus proof or memorization of the general likelihood derivation is needed for this session.</p>
 </section>
 <section id="motivation" class="level1">
 <h1>1. From Holt-Winters to ETS</h1>
@@ -2639,7 +2604,7 @@ window.Quarto = {
 <p>With no trend and no season the forecast is flat at the last level. An additive trend adds a slope. An additive season puts the quarters back. The error letter does not show in these point forecasts; <a href="#error-forms">section 3</a> shows what it changes. <a href="19_A_ExpSmoothing_Classification.html#notation">Notebook 19_A</a> collects the nine trend and season combinations and the fpp3 table of their recursions, as reference.</p>
 <p><strong>Check: name a model.</strong> You want errors measured in the data’s units, a slope that keeps shrinking the further ahead you forecast, and no seasonal pattern. Which ETS model is it? Then read the automatic choice of section 1, <span class="math inline">\(ETS(M,N,A)\)</span>, one letter at a time. Commit before opening.</p>
 <div class="callout callout-style-default callout-tip callout-titled" title="Answer: open after naming the model">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -2648,7 +2613,7 @@ window.Quarto = {
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ul>
 <li>Errors in the data’s units: <strong>A</strong>. A slope that keeps shrinking: <strong>Ad</strong>, the damped trend. No seasonal pattern: <strong>N</strong>. The model is <span class="math inline">\(ETS(A,Ad,N)\)</span>, damped Holt from Session 17.</li>
@@ -2778,7 +2743,7 @@ window.Quarto = {
 <li>Read the <strong>height</strong> of its density curve at the observed <span class="math inline">\(y_t\)</span>.</li>
 <li>Multiply the heights over all training quarters to get the likelihood, or add their logarithms to get the <strong>log-likelihood</strong>.</li>
 </ol>
-<p>A higher likelihood means the observations are more plausible under that candidate’s predictions. For continuous data, a density height is not the probability of one exact value, and it can be larger than one. The <a href="#before-class">short likelihood guide</a> explains the distinction.</p>
+<p>A higher likelihood means the observations are more plausible under that candidate’s predictions. For continuous data, a density height is not the probability of one exact value, and it can be larger than one. The <a href="#likelihood-guide">short likelihood guide in the appendix</a> explains the distinction.</p>
 <p>One quarter of the selected model shows step 2. Its distribution is normal, centered on the prior prediction, with a standard deviation of the prediction times <span class="math inline">\(\sigma\)</span>, because the errors are relative:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>sigma2 <span class="ot">&lt;-</span> <span class="fu">glance</span>(fit)<span class="sc">$</span>sigma2</span>
@@ -2819,7 +2784,7 @@ window.Quarto = {
 </div>
 <p><strong>Check: why is a very wide distribution not automatically a good fit?</strong> It cannot miss badly, so it may seem safe. Commit before opening.</p>
 <div class="callout callout-style-default callout-tip callout-titled" title="Answer: open after deciding">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -2828,7 +2793,7 @@ window.Quarto = {
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Widening a distribution lowers its curve near the center, where well-predicted observations fall. For 2017 Q1 the fitted curve is 0.59 high at the observation; a curve three times wider is only 0.23 high there, so the score falls. A badly predicted quarter, such as 2017 Q4, gains a little from a wider curve. The likelihood adds up all 80 quarters, so the width that scores best balances the two: that is how fitting estimates <span class="math inline">\(\sigma\)</span>.</p>
 </div>
@@ -2931,7 +2896,7 @@ Model: ETS(M,N,A)
 </ul>
 <p><strong>Counting <span class="math inline">\(k\)</span>.</strong> <code>glance()</code> computes the AIC with <span class="math inline">\(k=7\)</span> for this model: <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\gamma\)</span>, the initial level <span class="math inline">\(\ell_0\)</span>, three free initial seasonal states and the innovation variance <span class="math inline">\(\sigma^2\)</span>. Then AIC <span class="math inline">\(=-2(-106.114)+2\times7=226.23\)</span>, as <code>glance()</code> reports. The <a href="#calculator">calculator comparison</a> supplies <span class="math inline">\(k\)</span> for its models.</p>
 <div class="callout callout-style-default callout-note callout-titled" title="Why three seasonal states, not four">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -2940,7 +2905,7 @@ Model: ETS(M,N,A)
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><code>tidy()</code> lists four initial seasonal states, but they are constrained to sum to zero (<span class="math inline">\(1.519-0.293-0.688-0.538\approx0\)</span>), so the fourth follows from the other three and is not a separate estimate. With monthly data, eleven of the twelve are free.</p>
 </div>
@@ -2948,7 +2913,7 @@ Model: ETS(M,N,A)
 </div>
 <p><strong>Check: does a trend earn its place?</strong> Session 18 on Holt-Winters fitted holiday trips with an additive trend. Adding that trend to the selected model gives <span class="math inline">\(ETS(M,A,A)\)</span>, and its log-likelihood rises from <span class="math inline">\(-106.114\)</span> to <span class="math inline">\(-104.265\)</span>. The trend costs two more estimates, the slope weight <span class="math inline">\(\beta\)</span> and the initial slope <span class="math inline">\(b_0\)</span>, so <span class="math inline">\(k=9\)</span>. Compute both AIC values: which model does the referee keep? Commit before opening.</p>
 <div class="callout callout-style-default callout-tip callout-titled" title="Answer: open after choosing a model">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -2957,7 +2922,7 @@ Model: ETS(M,N,A)
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p><span class="math inline">\(ETS(M,N,A)\)</span>: <span class="math inline">\(212.23+14=226.23\)</span>. <span class="math inline">\(ETS(M,A,A)\)</span>: <span class="math inline">\(208.53+18=226.53\)</span>. The trend raises the log-likelihood by 1.85, so the fit term falls by 3.70, but the penalty rises by 4. The AIC therefore keeps the model without a trend, narrowly. With 80 quarters, the AICc charges more for each extra parameter and widens the gap, 227.78 against 229.10:</p>
 <div class="cell">
@@ -3039,7 +3004,7 @@ Model: ETS(M,N,A)
 </div>
 <p>All three panels plot the innovation residuals, <code>.innov</code>, although the histogram’s axis is labeled <code>.resid</code>.</p>
 <div class="callout callout-style-default callout-tip callout-titled" title="Worked interpretation: open after discussing in class">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -3048,7 +3013,7 @@ Model: ETS(M,N,A)
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ul>
 <li><strong>Mean (time plot).</strong> The innovations average about +0.5%, so on average the prior predictions were slightly too low.</li>
@@ -3116,7 +3081,7 @@ Model: ETS(M,N,A)
 <h2 class="anchored" data-anchor-id="horizon">Will the interval repeat too?</h2>
 <p><strong>Check.</strong> The point forecast for 2019 Q1 equals the one for 2018 Q1, 12.70 million trips, because the model has no trend and its seasonal pattern is fixed. Will the two 95% intervals match as well? Commit before opening.</p>
 <div class="callout callout-style-default callout-tip callout-titled" title="Answer: open after predicting">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -3125,7 +3090,7 @@ Model: ETS(M,N,A)
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>No. The 2018 Q1 interval is [11.54, 13.85], and the 2019 Q1 interval widens to [11.34, 14.05]. The point forecast repeats, but four more quarters of possible surprises can move the level, so the uncertainty grows with the horizon even when the point forecasts repeat.</p>
 </div>
@@ -3294,6 +3259,41 @@ Model: ETS(M,N,A)
 <section id="appendix" class="level1">
 <h1>Appendix: supporting explanations</h1>
 <p>Supporting reading for study after class. None of it is needed for the homework, the group assignments or the final.</p>
+<section id="likelihood-guide" class="level2">
+<h2 class="anchored" data-anchor-id="likelihood-guide">A short likelihood guide</h2>
+<p><span id="before-class"></span> In likelihood fitting, we keep the observations fixed and ask which model settings make them more plausible.</p>
+<ol type="1">
+<li><strong>Prediction and uncertainty belong together.</strong> A forecast of 100 with a standard deviation of 2 describes a different distribution from a forecast of 100 with a standard deviation of 20.</li>
+<li><strong>Density is not a probability at a point.</strong> For continuous data, likelihood uses the heights of probability density curves at the observations. These heights need not be below one.</li>
+<li><strong>A time series uses conditional densities.</strong> At each date, predict using earlier information; evaluate that observation under its conditional distribution. Multiply those densities to obtain the likelihood, or add their logarithms to obtain the log-likelihood.</li>
+<li><strong>Fit and complexity are separate questions.</strong> Fitting chooses a model’s parameters. Model selection also asks whether extra flexibility earns its place.</li>
+<li><strong>Forecast evaluation asks a different question.</strong> AICc, defined in <a href="#aicc">Section 5</a>, is a fit score with a penalty for extra parameters. Like the SSE in Session 16 on fitting SES, it is computed on the training data, whereas rolling-origin evaluation, as in Session 14 on cross-validation, measures actual forecast errors at specified horizons.</li>
+</ol>
+<p>Check your understanding: What stays fixed during estimation? Why is a very wide distribution not automatically a good fit? What is the difference between estimating alpha and selecting the trend type? Which errors matter for a twelve-month inventory decision? Why must model selection be repeated inside each training fold when evaluating an automatic procedure?</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Answers: open after trying the questions">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Answers: open after trying the questions
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>What stays fixed during estimation?</strong> The observations. Fitting varies the parameters and initial states and asks which values make those fixed data most plausible.</li>
+<li><strong>Why is a very wide distribution not automatically a good fit?</strong> Widening a distribution lowers its curve near the center, where well-predicted observations fall, and a very wide one is low everywhere. The heights at the observations shrink, so the likelihood falls.</li>
+<li><strong>Estimating alpha or selecting the trend type?</strong> Estimating alpha is fitting: the form is fixed, and the likelihood chooses the value. Selecting the trend type compares different forms, each fitted first, so it needs a criterion that charges for the extra parameters, such as AICc.</li>
+<li><strong>Which errors matter for a twelve-month inventory decision?</strong> Forecast errors at horizons up to twelve months, on data the model did not use for fitting. One-step training residuals do not measure them.</li>
+<li><strong>Why repeat selection inside each training fold?</strong> Automatic selection is part of the procedure being evaluated. Choosing the form once on the full series would let earlier folds use information from their future.</li>
+</ul>
+</div>
+</div>
+</div>
+<p>The <a href="going-further/19_A_MLE_Informal_Intro.pdf">handwritten primer</a> is optional background. No calculus proof or memorization of the general likelihood derivation is needed for this session.</p>
+</section>
 <section id="by-hand" class="level2">
 <h2 class="anchored" data-anchor-id="by-hand">One update by hand, in both error forms</h2>
 <p>Take made-up numbers. Two models with no trend and no season, <span class="math inline">\(ETS(A,N,N)\)</span> and <span class="math inline">\(ETS(M,N,N)\)</span>, both have the level <span class="math inline">\(\ell_{t-1}=100\)</span> and <span class="math inline">\(\alpha=0.3\)</span>. The observation is <span class="math inline">\(y_t=106\)</span>. For each model: predict <span class="math inline">\(y_t\)</span>, compute the error, update the level and predict <span class="math inline">\(y_{t+1}\)</span>. Then say what <code>.resid</code> and <code>.innov</code> would show for this quarter. Commit to your numbers before opening.</p>
@@ -3592,7 +3592,7 @@ Model: ETS(M,N,A)
 </section>
 <section id="primer" class="level2">
 <h2 class="anchored" data-anchor-id="primer">The handwritten likelihood primer</h2>
-<p>The <a href="going-further/19_A_MLE_Informal_Intro.pdf">handwritten primer</a> develops maximum likelihood informally, with more steps than the <a href="#before-class">short guide</a>. It is optional background.</p>
+<p>The <a href="going-further/19_A_MLE_Informal_Intro.pdf">handwritten primer</a> develops maximum likelihood informally, with more steps than the <a href="#likelihood-guide">short guide</a>. It is optional background.</p>
 </section>
 </section>
 

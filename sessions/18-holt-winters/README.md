@@ -18,4 +18,4 @@ See [Judge the forecasts](18_A_ExpSmoothing_Seasonal.html#evaluation) for how to
 
 Submit the workbook and a short document with your working and R results on Blackboard. See [announcements](announcements.md) for the deadline. The notebook follows the slides in the same order, and each slide links to its section. The multiplicative reference table, detailed state counts, damped seasonal updates, daily example and cross-validation extension are in its supporting appendix.
 
-**Before Session 19 on ETS and model selection:** Read the [short likelihood guide](../19-ets-mle-model-selection/19_B_ESmoothing_Model_Selection.html#before-class). The handwritten maximum-likelihood primer is optional.
+**Optional review for Session 19 on ETS and model selection:** See the [short likelihood guide in the Session 19 notebook appendix](../19-ets-mle-model-selection/19_B_ESmoothing_Model_Selection.html#likelihood-guide).
