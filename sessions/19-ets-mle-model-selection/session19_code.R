@@ -73,25 +73,29 @@ widths |>
 ## Score each prediction's distribution at its observation ----
 sigma2 <- glance(fit)$sigma2
 
-one_quarter <- augment(fit) |>
-  filter(Quarter == yearquarter("2017 Q1")) |>
+quarter_scores <- augment(fit) |>
   mutate(sd = .fitted * sqrt(sigma2),
-         height = dnorm(Trips, mean = .fitted, sd = sd),
-         height_wide = dnorm(Trips, mean = .fitted, sd = 3 * sd))
+         height = dnorm(Trips, mean = .fitted, sd = sd))
 
-one_quarter |>
-  as_tibble() |>
-  select(Quarter, Trips, .fitted, sd, height, height_wide)
+three_quarters <- quarter_scores |>
+  filter(between(Quarter, yearquarter("2017 Q1"), yearquarter("2017 Q3")))
 
-tibble(y = seq(10, 14.2, by = 0.01)) |>
-  mutate(fitted = dnorm(y, one_quarter$.fitted, one_quarter$sd),
-         `three times wider` = dnorm(y, one_quarter$.fitted, 3 * one_quarter$sd)) |>
-  pivot_longer(-y, names_to = "distribution", values_to = "density") |>
-  ggplot(aes(x = y, y = density, colour = distribution)) +
+one_quarter <- three_quarters |> filter(Quarter == yearquarter("2017 Q1"))
+
+tibble(y = seq(10.3, 13.8, by = 0.01)) |>
+  mutate(density = dnorm(y, one_quarter$.fitted, one_quarter$sd)) |>
+  ggplot(aes(x = y, y = density)) +
   geom_line() +
   geom_vline(xintercept = one_quarter$Trips) +
-  labs(title = "2017 Q1: the score is the curve's height at the observation",
+  annotate("point", x = one_quarter$Trips, y = one_quarter$height, colour = "#B5471E") +
+  labs(title = "Step 2. Read the density at the observed value in 2017 Q1",
        x = "Overnight trips (millions)", y = "Density")
+
+three_quarters |>
+  as_tibble() |>
+  select(Quarter, `Prediction (millions)` = .fitted, `Observed (millions)` = Trips,
+         `Density height` = height) |>
+  knitr::kable(digits = 3)
 
 # 5. Choosing by AICc ----
 

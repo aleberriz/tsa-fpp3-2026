@@ -50,7 +50,7 @@ document or as one more file.
 Write the formulas and the code yourself. The course policy on generative AI is strict:
 AI-generated code or results are not allowed. See the syllabus for the full policy.
 
-## Prep for Session 19 (not submitted)
+## Optional review for Session 19
 
 Session 19 names every model you have fitted with three letters and lets `ETS()` choose among them.
-Read the ten-minute guide at the start of `19_B_ESmoothing_Model_Selection.html` and answer its five self-check questions. The handwritten [maximum-likelihood primer](../19-ets-mle-model-selection/going-further/19_A_MLE_Informal_Intro.pdf) is optional background.
+The [short likelihood guide](../19-ets-mle-model-selection/19_B_ESmoothing_Model_Selection.html#likelihood-guide) and its self-check questions are in the Session 19 notebook appendix. The handwritten [maximum-likelihood primer](../19-ets-mle-model-selection/going-further/19_A_MLE_Informal_Intro.pdf) goes into more detail.
