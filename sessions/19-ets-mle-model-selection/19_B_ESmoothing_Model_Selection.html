@@ -2660,21 +2660,22 @@ window.Quarto = {
 </section>
 <section id="state-space" class="level1">
 <h1>3. From a method to a statistical model</h1>
-<p>Write simple exponential smoothing (SES) in the order of Sessions 17 and 18: predict <span class="math inline">\(y_t\)</span>, then update the level. The prediction <span class="math inline">\(\hat y_{t|t-1}\)</span> is called the <strong>prior prediction</strong> because it is made before <span class="math inline">\(y_t\)</span> is observed, from the level <span class="math inline">\(\ell_{t-1}\)</span> available at that time. The colored line is new:</p>
+<p>Start with simple exponential smoothing (SES). We predict <span class="math inline">\(y_t\)</span> from the previous level <span class="math inline">\(\ell_{t-1}\)</span> and then update the level by <span class="math inline">\(\alpha\)</span> times the observed miss <span class="math inline">\(e_t=y_t-\hat y_{t|t-1}\)</span>. This is the <strong>error-correction form</strong> from Session 15 on SES equations. The value <span class="math inline">\(\hat y_{t|t-1}\)</span> is the <strong>prior prediction</strong> because we make it before observing <span class="math inline">\(y_t\)</span>.</p>
+<p>The additive-error model, <span class="math inline">\(ETS(A,N,N)\)</span>, adds an observation equation. It describes the observation as the prior prediction plus a random surprise <span class="math inline">\(\varepsilon_t\)</span>, the <strong>innovation</strong>. In this model, <span class="math inline">\(\varepsilon_t=y_t-\hat y_{t|t-1}\)</span>, so the miss <span class="math inline">\(e_t\)</span> in the SES update is the same innovation:</p>
 <p><span class="math display">\[
 \begin{align*}
 &amp;\text{Predict } y_t &amp;&amp; \hat y_{t|t-1}=\ell_{t-1}\\
-&amp;\text{Update the level} &amp;&amp; \ell_t=\ell_{t-1}+\alpha e_t,\qquad e_t=y_t-\hat y_{t|t-1}\\
+&amp;\text{Update the level} &amp;&amp; \ell_t=\ell_{t-1}+\alpha\textcolor{#B5471E}{\varepsilon_t}\\
 &amp;\textcolor{#B5471E}{\text{Observation}} &amp;&amp; \textcolor{#B5471E}{y_t=\ell_{t-1}+\varepsilon_t,\qquad \varepsilon_t\sim N(0,\sigma^2)\text{, independent over time}}
 \end{align*}
 \]</span></p>
-<p>The first two lines are the SES method in its <strong>error-correction form</strong> from Session 15 on SES equations. The new line says which values <span class="math inline">\(y_t\)</span> could take before it is observed: the prior prediction plus a random surprise <span class="math inline">\(\varepsilon_t\)</span>, the <strong>innovation</strong>, normal with mean zero and variance <span class="math inline">\(\sigma^2\)</span>. With it, the method becomes a statistical model, <span class="math inline">\(ETS(A,N,N)\)</span>, and three things follow:</p>
+<p>The normal innovation has three consequences:</p>
 <ul>
 <li><strong>A prediction is the center of a distribution.</strong> Before <span class="math inline">\(y_t\)</span> arrives, the model says <span class="math inline">\(y_t\sim N(\ell_{t-1},\sigma^2)\)</span>. <a href="#framework">Section 4</a> scores each observation against that distribution.</li>
 <li><strong>One surprise moves both.</strong> The same innovation that moves <span class="math inline">\(y_t\)</span> away from its prediction moves the level, by <span class="math inline">\(\alpha\)</span> times its size. This is why fpp3 calls these models <em>innovations state space models</em> (fpp3 8.5).</li>
 <li><strong>Future surprises are unknown.</strong> Each one will move a future level, so the model gives a distribution of possible paths, and with it <a href="#forecasting">forecast intervals</a>.</li>
 </ul>
-<p>After fitting, <span class="math inline">\(e_t=y_t-\hat y_{t|t-1}\)</span>, computed at the estimated settings, is the <strong>fitted innovation residual</strong>: an estimate of the surprise that actually happened. <code>fable</code> calls the prior prediction the fitted value, <code>.fitted</code>.</p>
+<p>After fitting, the miss <span class="math inline">\(e_t=y_t-\hat y_{t|t-1}\)</span> computed from the fitted model is the <strong>fitted innovation residual</strong>. It estimates the innovation that actually occurred. <code>fable</code> calls the prior prediction the fitted value, <code>.fitted</code>.</p>
 <section id="multiplicative-errors" class="level2">
 <h2 class="anchored" data-anchor-id="multiplicative-errors">Multiplicative errors</h2>
 <p>With multiplicative errors the surprise is a proportion of the prediction. The colored terms change:</p>
