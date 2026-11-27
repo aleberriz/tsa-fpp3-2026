@@ -2745,7 +2745,8 @@ window.Quarto = {
 <li>Multiply the heights over all training quarters to get the likelihood, or add their logarithms to get the <strong>log-likelihood</strong>.</li>
 </ol>
 <p>A higher likelihood means the observations are more plausible under that candidate’s predictions. For continuous data, a density height is not the probability of one exact value, and it can be larger than one. The <a href="#likelihood-guide">short likelihood guide in the appendix</a> explains the distinction.</p>
-<p>One quarter of the selected model shows step 2. Its distribution is normal, centered on the prior prediction, with a standard deviation of the prediction times <span class="math inline">\(\sigma\)</span>, because the errors are relative:</p>
+<p>One quarter of the selected model shows step 2. Its distribution is normal, centered on the prior prediction, with a standard deviation of the prediction times <span class="math inline">\(\sigma\)</span>, because the errors are relative.</p>
+<p><code>glance()</code> gives one row of fit statistics per fitted model, including the estimated innovation variance (<code>sigma2</code>), log-likelihood (<code>log_lik</code>), and AICc. Here we take the square root of <code>sigma2</code> to get <span class="math inline">\(\sigma\)</span>, the standard deviation of the relative innovations.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>sigma2 <span class="ot">&lt;-</span> <span class="fu">glance</span>(fit)<span class="sc">$</span>sigma2</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
