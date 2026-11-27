@@ -76,20 +76,18 @@ sigma2 <- glance(fit)$sigma2
 one_quarter <- augment(fit) |>
   filter(Quarter == yearquarter("2017 Q1")) |>
   mutate(sd = .fitted * sqrt(sigma2),
-         height = dnorm(Trips, mean = .fitted, sd = sd),
-         height_wide = dnorm(Trips, mean = .fitted, sd = 3 * sd))
+         height = dnorm(Trips, mean = .fitted, sd = sd))
 
 one_quarter |>
   as_tibble() |>
-  select(Quarter, Trips, .fitted, sd, height, height_wide)
+  select(Quarter, Trips, .fitted, sd, height)
 
-tibble(y = seq(10, 14.2, by = 0.01)) |>
-  mutate(fitted = dnorm(y, one_quarter$.fitted, one_quarter$sd),
-         `three times wider` = dnorm(y, one_quarter$.fitted, 3 * one_quarter$sd)) |>
-  pivot_longer(-y, names_to = "distribution", values_to = "density") |>
-  ggplot(aes(x = y, y = density, colour = distribution)) +
+tibble(y = seq(10.3, 13.8, by = 0.01)) |>
+  mutate(density = dnorm(y, one_quarter$.fitted, one_quarter$sd)) |>
+  ggplot(aes(x = y, y = density)) +
   geom_line() +
   geom_vline(xintercept = one_quarter$Trips) +
+  annotate("point", x = one_quarter$Trips, y = one_quarter$height, colour = "#B5471E") +
   labs(title = "2017 Q1: the score is the curve's height at the observation",
        x = "Overnight trips (millions)", y = "Density")
 
