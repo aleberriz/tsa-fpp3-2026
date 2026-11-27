@@ -2363,7 +2363,7 @@ window.Quarto = {
   <li><a href="#framework" id="toc-framework" class="nav-link" data-scroll-target="#framework">4. Fitting by likelihood</a>
   <ul>
   <li><a href="#likelihood" id="toc-likelihood" class="nav-link" data-scroll-target="#likelihood">Score each prediction’s distribution at its observation</a></li>
-  <li><a href="#search" id="toc-search" class="nav-link" data-scroll-target="#search">The same search as Session 16, with a new score</a></li>
+  <li><a href="#search" id="toc-search" class="nav-link" data-scroll-target="#search">From the SSE search to the likelihood search</a></li>
   </ul></li>
   <li><a href="#criteria" id="toc-criteria" class="nav-link" data-scroll-target="#criteria">5. Choosing by AICc</a>
   <ul>
@@ -2737,7 +2737,8 @@ window.Quarto = {
 <h1>4. Fitting by likelihood</h1>
 <section id="likelihood" class="level2">
 <h2 class="anchored" data-anchor-id="likelihood">Score each prediction’s distribution at its observation</h2>
-<p>In Session 16 on fitting SES, we fitted by searching: each candidate pair of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\ell_0\)</span> received a score, its SSE, and the search kept the best. Since Session 17, <code>ETS()</code> has done the fitting, and its score is the <strong>likelihood</strong>:</p>
+<p>SES gives us the rule for updating the level and making the next forecast. In Session 16 we chose its weight <span class="math inline">\(\alpha\)</span> and initial level <span class="math inline">\(\ell_0\)</span> by minimizing the sum of squared errors (SSE). In Sessions 17 and 18 we specified Holt and Holt-Winters and let <code>ETS()</code> choose their weights and starting values. By default it maximizes the log-likelihood. For the additive-error examples, the Gaussian log-likelihood and SSE favor the same settings. Today we explain that connection and see how likelihood handles multiplicative errors, where the expected spread in trips grows with the prediction.</p>
+<p>Here is how the <strong>likelihood</strong> scores a candidate:</p>
 <ol type="1">
 <li>For each training quarter, take the distribution of the prior prediction, from <a href="#state-space">section 3</a>.</li>
 <li>Read the <strong>height</strong> of its density curve at the observed <span class="math inline">\(y_t\)</span>.</li>
@@ -2801,10 +2802,10 @@ window.Quarto = {
 </div>
 </section>
 <section id="search" class="level2">
-<h2 class="anchored" data-anchor-id="search">The same search as Session 16, with a new score</h2>
+<h2 class="anchored" data-anchor-id="search">From the SSE search to the likelihood search</h2>
 <p><code>ETS()</code> runs the same kind of search as Session 16, with the log-likelihood as its score instead of the SSE: it tries values of <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\gamma\)</span> and the initial states, runs the predict-observe-update loop through the 80 training quarters for each, and keeps the values with the highest log-likelihood. For <span class="math inline">\(ETS(M,N,A)\)</span> it searches six values at once: <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\gamma\)</span>, the initial level and the three free initial seasonal states. The innovation variance <span class="math inline">\(\sigma^2\)</span> is not searched: for any candidate, its best value follows from that candidate’s errors. The AIC still counts it, as the seventh estimated value in <a href="#example-1">section 5</a>.</p>
 <ul>
-<li><strong>Additive errors.</strong> With normal errors, the candidate with the highest likelihood is the one with the smallest SSE. The additive-error fits of Sessions 16 to 18 are therefore the same whichever score you think of.</li>
+<li><strong>Additive errors.</strong> For a given model on the same data, with the same parameter bounds, maximizing the Gaussian likelihood and minimizing SSE favor the same weights and starting values.</li>
 <li><strong>Multiplicative errors.</strong> The two scores differ: the likelihood scores relative errors, with a term that converts them back to trips (<a href="#score">appendix</a>). <code>ETS()</code> maximizes the likelihood in both cases.</li>
 </ul>
 <p>The <a href="#likelihood-slice">appendix</a> takes one slice through this search, varying <span class="math inline">\(\alpha\)</span> alone, with a ten-line loop that reproduces the log-likelihood <code>glance()</code> reports.</p>
